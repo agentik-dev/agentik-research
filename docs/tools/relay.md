@@ -1,13 +1,13 @@
 # agentik-relay
 
-agentik-relay runs a night of queued packets while nobody watches: one git worktree, one branch and one `claude -p` child per queue row, a deterministic gate that decides whether the branch merges, thirty named stop reasons, and two layers of money cap. It exists because the owner's earlier unattended runs forked past their means, spent on packets that bought nothing, and left no door back into a stopped session.[^readme][^reviews] The repo's record is the longest in the suite: 132 sitting charters, 87 packets and 706 test functions at commit a326550, all from one owner's nights on one laptop between 2026-09-22 and 2026-10-13.[^sittings][^packetsdir] Everything on this page is that record, labelled our use, unless marked otherwise.
+agentik-relay runs a night of queued packets while nobody watches: one git worktree, one branch and one `claude -p` child per queue row, a deterministic gate that decides whether the branch merges, thirty named stop reasons, and two layers of money cap. Its README states the aim: a night that fails early, never pushes, amends or rebases, and leaves a door back into every stopped sitting.[^readme] Its reviews record the earlier runs that forked past their means, and its ledger the packets that bought nothing.[^reviews][^decisions] The repo's record is the longest in the suite: 132 sitting charters and 87 packets at commit a326550, and 706 test functions by a count of the test files against the README's 699, all from one owner's nights on one Mac between 2026-09-22 and 2026-10-13.[^sittings][^packetsdir][^readme][^nth] Everything on this page is that record, labelled our use, unless marked otherwise.
 
 ## The problem, as the repo records it
 
-- **Runaway recursion.** On 2026-09-23 a night was bounded against a fork storm, and a design review counted nine cycles by which the relay could re-invoke itself. Eight were bounded; one was not: a child running `agentik relay run` would spawn grandchildren under its own worktree with the same environment. An adversarial review reproduced it, and a killed relay left two spawned processes alive. The response was a TLA+ model of the night with two fork storms kept as violations the checker must find.[^reviews][^packetsdir][^tla]
+- **Runaway recursion.** On 2026-09-23 a night was bounded against a fork storm, and a design review counted nine cycles by which the relay could re-invoke itself. Eight were bounded; one was not: a child running `agentik relay run` would spawn grandchildren under its own worktree with the same environment. An adversarial review reproduced it, and a killed relay left two spawned processes alive. The response was a TLA+ model of the night with fork storms kept as violations the checker must find, four of them at the commit read.[^reviews][^packetsdir][^tla]
 - **Lock contention.** The stage lock never checked its holder's pid, so a crashed relay left its row refused until a person removed the lock; the live-process probe had no timeout and took minutes under load; a shell shim held a rehash lock for 60 seconds. The one-relay-per-account guard went from a pid file to a loopback TCP port, because a child could change its environment or detach to evade the earlier forms.[^reviews][^designr1]
-- **Flaky tests under load.** A test of the orphan probe failed 20 of 20 runs with its timeout cut to 3 milliseconds, the test's clock racing a fake process's start-up. The full check went red under a load of 20 on 16 cores when a hand gate started four minutes in; one package took 316 seconds alone, over half of Go's default test timeout. The load breaker itself over-fired on a laptop with efficiency cores, reading a load of 40.23 with 59 to 73 percent idle; across five ledgers it never opened in 166 plans.[^sittings][^nth][^breaker]
-- **A child that cannot tell it has stalled.** The design watches from outside, because the child cannot. No real stall is recorded, so the stall rule has no tuning data. Agents also cannot count their own turns: the adversary agent ended at its cap with no report three times on 2026-10-11, and a prompt line asking for a report by turn 70 did not help.[^designr1][^nth]
+- **Flaky tests under load.** A test of the orphan probe failed 20 of 20 runs with its timeout cut to 3 milliseconds, the test's clock racing a fake process's start-up. The full check went red under a load of 20 on 16 cores when a hand gate started four minutes in; one package took 316 seconds alone, over half of Go's default test timeout. The load signal itself misled on a Mac with efficiency cores: a plan baseline read a load of 40.23 with 59 to 73 percent idle and marked 8 of 9 checks unrun as loaded; the breaker proper never opened in 166 plans across five ledgers.[^sittings][^nth][^breaker]
+- **A child that cannot tell it has stalled.** The design watches from outside, because the child cannot. This site's survey found no real stall recorded in the repo, so the stall rule has no tuning data. Agents also cannot count their own turns: the adversary agent ended at its cap with no report three times on 2026-10-11, and a prompt line asking for a report by turn 70 did not help.[^designr1][^nth]
 - **Cost.** One run of 183 sittings cost 653 dollars, of which 58 packet-writer sittings cost 261; builders ran the verify line about 2.7 times a row, 46 percent of a night's time; a row whose gate read unrun after a bytecode file moved cost 6.79 dollars with five acts unjudged; two nights lost stacks of 9 and 7 dependent rows when a parent row hit its soft context ceiling one act short.[^decisions][^packetsdir][^nth][^pycache]
 - **What a child can reach.** Reviewers reproduced a child moving `main` with `update-ref`, hiding touched paths behind a tag, and passing a helper `claude` line that disabled hooks or set an unbounded turn count. These are reproductions on the relay's own code, not misbehaviour seen in a night.[^reviews][^designr1]
 
@@ -29,7 +29,8 @@ flowchart TD
   C -->|"weekly limit or auth"| AS["Failed: usage-limit or auth; the night stops"]
   C -->|"exit"| G{"Gate: exit, commit, clean, origin, orphans, touch, acceptance, verify"}
   G -->|"green"| M["Merge with no fast-forward, verify on the merged tree first"]
-  G -->|"red"| R["Red: the night moves on; dependents skipped; a resume line"]
+  G -->|"no result, no commit, dirty tree, origin moved"| SF["Failed: the night stops"]
+  G -->|"touch, acceptance or verify red"| R["Red: the night moves on; dependents skipped; a resume line"]
   G -->|"facts unreadable"| U["Red: gate unrun, never a pass"]
 ```
 
@@ -39,7 +40,7 @@ flowchart TD
 - **Stop reasons.** Thirty in the code. A packet failure (a red gate, a stall, an unrun gate) is the builder's, and the night moves on to the next independent row. A sitting failure means the prompt or the driver is broken, and the night stops. A usage limit or an expired login kills every running row.[^code][^designr1]
 - **Money.** Per row, the budget becomes the child's own `--max-budget-usd`, with defaults of 15 dollars and 100 turns. Per night, `--max-usd` is compared with the ledger tally before each pick, where a sitting whose cost no result event read is held at its own budget, never at zero. No code kills a running sitting for the night cap, so a night can overshoot by the running rows' budgets; that is our reading of the code, not a measured overshoot.[^code][^queue]
 - **The watchdog.** Every 60 seconds it samples the worktree's HEAD, the newest file time outside `.git`, and the CPU seconds of the child's process group. All three unchanged for 2,700 seconds kills the group; the row is red with reason stalled, and a second stall stops the night. An orphan sweep after exit kills survivors by start time, so a reused pid is never killed.[^designr1][^code]
-- **Usage limits.** A rate-limit event is classified as a window, a weekly limit, a model limit or unknown. A window limit pauses the night until the reset plus two minutes; a model limit with a reset pauses only that model's rows; a weekly limit stops the night. Paused rows continue under a fresh session id, because a resumed session sat at 206k context with a cold cache.[^usagelimit][^decisions]
+- **Usage limits.** A rate-limit event is classified as a window, a weekly limit, a model limit or unknown. A window limit pauses the night until the reset plus two minutes; a model limit with a reset pauses only that model's rows; a weekly limit stops the night. Paused rows continue under a fresh session id, because a row stopped by a limit had sat at 206k context, which a resume would reload with a cold cache.[^usagelimit][^decisions]
 - **The morning read.** `agentik relay report` prints merged SHAs, stops verbatim, burn per sitting, branches waiting and the resume line for every red or failed row.[^readme]
 
 ## Alternatives the repo rejected
@@ -52,27 +53,27 @@ flowchart TD
 | The verify limit is per repo | One fixed 900-second limit | A verify line cut at 900 seconds read as a failure with no failing test[^decisions] |
 | A model's own limit pauses only its rows | Pause the whole night on any limit | Other models' rows can run on[^decisions] |
 | Soft request at 90 percent, kill at 120 | A hard kill at 100 percent | The kill is for runaways; the share is tuned from recorded nights, not guessed[^designr1] |
-| The ledger stays out of the repo | Copy it into history at close | The report is the only repo write; the child can write any repo path[^designr1] |
+| The ledger stays out of the repo | Copy it into history at close | Decision D18: the report is the only repo write[^designr1] |
 | A stalled row is red, a second stall stops the night | Every stall stops the night | A stall can be the driver's as much as the packet's[^reviews] |
 
 ## What part 1 says
 
 - The budget overshoot is documented: `--max-budget-usd` is checked after each response and is a client-side estimate. See [Unattended runs and guardrails](../field/unattended-and-guardrails.md).
-- The rule that a completed `-p` run kills background work held from Claude Code 2.1.163 to 2.1.291 and not after; the relay's record dates from 2.1.269 to 2.1.280.
+- The rule that a completed `-p` run stops background work held from Claude Code 2.1.163 to 2.1.291 and not after; the relay's record names versions 2.1.263 to 2.1.296.[^usagelimit]
 - Claude Code does not strip `CLAUDE*` variables from a child; it sets `CLAUDECODE` and `CLAUDE_CODE_CHILD_SESSION` there. The relay strips them itself, which is a choice, not a correction of the engine.
 - The 600-second cap on the Bash tool that the relay plans around is the documented ceiling; the default is 120 seconds. The `subagents/` transcript directory is documented. No main-session progress watchdog is documented, so the relay's outside watchdog fills a real gap.
-- Deny rules that match command text share the documented bypasses (an absolute path, `sh -c`, `git -C`); hooks fail open on a timeout by default; the sandbox covers Bash only, and the relay has none. The relay's four recorded bypasses are the documented ones.[^nth]
+- Deny rules that match command text have documented bypasses (an absolute path, `sh -c`, `git -C`); hooks fail open on a timeout by default; the sandbox covers shell commands only, and the relay has none. The relay's four recorded guard evasions (a command substitution, backticks, a variable holding the command name, `pkill -f`) are of the same kind.[^nth]
 - One worktree per writer is supported by the documentation and by two reported isolation leaks; the step from shared refs to lock contention is conjecture. See [Many agents](../field/many-agents.md).
 - A sign-off that is a check outside the reviewer follows the measured finding that external checks beat self-judgement. See [Review that ends](../field/review.md).
 
 ## What is open
 
-- Every incident and measurement is one owner's, on one macOS laptop; the ledger is outside the repo, so no aggregate of nights or dollars can be checked.[^nth]
+- Every incident and measurement is one owner's, on one Mac; the ledger is outside the repo, so no aggregate of nights or dollars can be checked.[^nth]
 - There is no sandbox. The design says a line can do anything the owner's account can until it runs in one, and the hooks stay advisory.[^designr1]
 - The zsh test table for the guard parser is owed and recorded as an open risk.[^decisions]
 - The 120 percent kill and the 25 percent idle floor are judgments; the breaker page disagrees with itself on whether a second sweep has run.[^breaker]
 - Usage-limit handling rests on stream fields the repo calls unpublished, and all 46 model-limit messages it measured named no reset.[^usagelimit]
-- No real stall is recorded, so the 2,700-second default has no tuning data.[^designr1]
+- This site's survey found no real stall recorded, so the 2,700-second default has no tuning data.[^designr1]
 - The README and the Makefile say the check wall is 840 seconds; the design record says 900.[^readme][^designr1]
 - Several mechanisms are macOS-specific: `caffeinate`, the load reader, the pinned paths.[^breaker]
 
