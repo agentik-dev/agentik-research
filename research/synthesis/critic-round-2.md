@@ -21,3 +21,15 @@ All nine round-1 findings fixed. New, all polish (CSS is docs/assets/stylesheets
 4. List pages, 390 and 1280 light: the usage-window card lists Open before Did not work (living.md:5-6). The other two cards list Did not work first.
 5. Journal index: the meta description is the site default. docs/journal/index.md has no `description`.
 6. Entries, 1280, both schemes: a flat band sits behind "Back to index" and "Table of contents". It is Material's `.md-nav__title` background; CSS:89 sets only its colour.
+
+## Tools: FAIL
+
+Round 1: diagrams mostly fixed (text 11 px or more, wide ones scroll with an edge fade; relay still overflows); commas fixed; index and agents tables fixed; agents From the journal fixed; ledes fixed (session 71 words, agents 80); 6 skipped (NICE_TO_HAVE); 7 still open: 42 groups of footnote marks out of order, for example decisions.md:40 "14,16,7", session.md:40 "22,23,2,24", index.md:76 "12,1". The empty header is fixed.
+
+New, worst first:
+1. relay at 768 and 1280, both schemes: the diagram scrolls 22 to 35 px. The fade (agentik-site.css:194) erases the card's right border and the "Red: gate unrun" box at desktop width. relay.md:52 still draws about 1,010 px wide, and agentik.js:306 (MIN_SCALE) floors it at 728 px in a 706 px column. agents does the same at 390 (19 px).
+2. 390, both schemes: three-column tables wrap one to three words a line. The respeak.md:90 table is 1,824 px tall and the relay.md:86 table 1,128 px. agentik-site.css:214 sets a minimum width only for tables of four or more columns.
+3. 390: the decisions and relay diagrams open on a side branch, with the start node off-screen right ("A fork the design" shows as "A fo").
+4. respeak, all widths: the hook's arrow runs through the cluster title "Machine lane: agent to agent" (respeak.md:48).
+5. respeak.md:3: the lede is now the longest at 115 words and ends on commit bookkeeping.
+6. agents, 768 to 1680: the diagram sits at the left of its card; the others are centred.
