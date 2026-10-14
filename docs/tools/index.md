@@ -1,6 +1,6 @@
 # The agentik tools
 
-The agentik tools are six public repos under one GitHub organization, all written by one owner. The organization profile gives the one-line purpose: guardrails for long, unattended Claude Code work.[^profile] Five are Claude Code plugins, four of them with a command-line tool behind them, and each meets one failure. The sixth, agentik-commons, is the shared front door and the conventions.[^commonsrecord] The evidence is our use, by one owner. The sources found include no measurement that a tool beats the alternative it replaced.
+The agentik tools are seven public repos under one GitHub organization, all written by one owner. The organization profile gives the one-line purpose: guardrails for long, unattended Claude Code work.[^profile] Five are Claude Code plugins, four of them with a command-line tool behind them, and each meets one failure. The sixth, agentik-commons, is the shared front door and the conventions.[^commonsrecord] The seventh, `.github`, holds that organization profile.[^profile] The evidence is our use, by one owner. The sources found include no measurement that a tool beats the alternative it replaced.
 
 ## The problem
 
@@ -20,19 +20,19 @@ The suite had a problem of its own. Its record opens with it: five tools, five n
 
 ## A human example: the shipping container
 
-The shipping container's sizes were fixed before countries adopted it. In 1961 a US maritime board fixed the nominal dimensions: 8 feet wide, 8 feet high, and 10, 20, 30 or 40 feet long. The International Organization for Standardization adopted the four lengths in 1964, and strength and lifting standards in 1965. A 2013 working paper by Daniel Bernhofen, Zouheir El-Sahli and Richard Kneller traces this sequence. In its sample, the first countries began handling containers in 1966. The paper says the ability of land and sea carriers to handle each other's containers set the foundation for global adoption.[^bernhofen]
+The shipping container's sizes were fixed before it went international, not before it went to sea. A 2013 working paper by Daniel Bernhofen, Zouheir El-Sahli and Richard Kneller traces the sequence. US container shipping began in 1956. The first fully containerised ships carried 35-foot boxes, the longest allowed for trucks on US highways, and other lines used smaller sizes. In 1961 a US maritime board fixed the nominal dimensions: 8 feet wide, 8 feet high, and 10, 20, 30 or 40 feet long. The International Organization for Standardization adopted the four lengths in 1964, and strength and lifting standards in 1965. Australia took up containers in 1964, but not in international trade. In the paper's sample, the first countries began handling container cargo in 1966, the year the first container services crossed the Atlantic. The paper says the ability of land and sea carriers to handle each other's containers set the foundation for global adoption.[^bernhofen]
 
 The paper then estimates what containerisation did to trade. It follows product-level trade between 157 countries from 1962 to 1990. It times the effect from the year both countries of a pair first handled cargo through container ports or rail. For trade among rich countries, the abstract puts the cumulative average effect over 20 years at "about 700%". The body's benchmark estimates sum to 790 percent <span class="ev ev-measured">measured</span>. A free trade agreement raised trade 45 percent cumulatively, and joint GATT membership 285 percent.[^bernhofen]
 
-The figures are the working paper's; the abstract of the 2016 journal version states no percentage. The abstract and the body give different figures for one effect. Both hold for North-North trade only, and the paper reports smaller effects for other country pairs. Above all, the paper measures containerisation as a whole, container technology and its intermodal system, not the size standard alone. It describes the standard as a precondition and gives it no estimate of its own.[^bernhofen] The paper measures trade, not software. The suite borrows the shape, not the number. Its five tools share one front door command, one naming guide and one set of exit codes, so a person or an agent learns one shape once.
+The figures are the working paper's; the abstract of the 2016 journal version states no percentage. The abstract and the body give different figures for one effect. Both hold for North-North trade only, and the paper reports smaller effects for other country pairs. Above all, the paper measures containerisation as a whole, container technology and its intermodal system, not the size standard alone. It describes the standard as a precondition and gives it no estimate of its own.[^bernhofen] The paper measures trade, not software. The suite borrows the shape, not the number. Four of its tools run behind one front door command, `agentik <tool>`; respeak has no command-line tool in this round.[^commonsrecord] All five follow one guide for names, verbs and exit codes.[^guide]
 
 ## What the research teaches
 
-Part 1 supports the causes behind three of commons' rules. It measures none of the rules themselves.
+Part 1 supports the causes behind two of commons' rules, and sets a third beside a finding of another kind. It measures none of the rules themselves.
 
 - **Guards that match text miss other spellings.** <span class="ev ev-documented">documented</span> [Unattended runs and guardrails](../field/unattended-and-guardrails.md) finds that Claude Code's deny rules match command text, so `Bash(rm *)` misses `/bin/rm -rf`. It advises testing each guard with the absolute-path, `sh -c` and `git -C` spellings. The commons record found a weakness of the same kind in the relay's guards, below.
 - **Tests fail under load.** <span class="ev ev-measured">measured</span> The same chapter cites a study in which 46.5 percent of 608 flaky tests were affected by computational resources, with CPU starvation worst. A load check is the relay's own rule, and the [Practices](../practices.md) page pairs the finding with the `bounded` wrapper.
-- **A refusal is unrun, never red.** [Review that ends](../field/review.md) sets this commons rule beside the measured finding that an outside signal beats self-correction. The rule itself is the owner's.
+- **A refusal is unrun, never red.** <span class="ev ev-our-use">our use</span> The rule is the owner's.[^guide] [Review that ends](../field/review.md) sets it beside the measured finding that an outside signal beats self-correction. That study measured language models revising their own reasoning, not checks that refused to run.
 
 Each tool page reads its own premise against the field chapters that bear on it.
 
@@ -69,14 +69,14 @@ The tools are consistent, not dependent: each runs alone, and a cross-link turns
 
 <div class="ak-verdict" markdown>
 
-<span class="ev ev-our-use">our use</span> Six repos by one owner, each with a public history of one to three commits from 2026-10-13. No count on this page measures what the shared front door and conventions save a person or an agent.
+<span class="ev ev-our-use">our use</span> Seven repos by one owner, each with a public history that starts on 2026-10-13 and held 2 to 38 commits when read on 2026-10-14. No count on this page measures what the shared front door and conventions save a person or an agent.
 
 </div>
 
 Every claim in this part is the repos' own record, labelled our use, unless a page says otherwise. The [method](../method.md) page gives the limits.
 
-- **The scale.** The working records start in September 2026. Before the public commits, the record is each repo's design files and changelogs. Each git history begins at one commit of 2026-10-13 and holds one to three commits.[^respeakchangelog][^firstcommits]
-- **The copies.** At the survey's date the hygiene scan and the `bounded` wrapper still matched in all five repos. The drift that commons guards against had not yet happened.[^commonsrecord]
+- **The scale.** The working records start in September 2026. Before the public commits, the record is each repo's design files and changelogs. Each git history begins at one commit of 2026-10-13. At the commits the first reading used, which most footnotes here cite, each held one to three commits.[^respeakchangelog][^firstcommits] Read on 2026-10-14, the seven held 2 to 38, and agentik-session's newest commit is dated 2026-10-14.[^githeads]
+- **The copies.** At the survey's date the hygiene scan and the `bounded` wrapper matched in all five repos, and the doc gate `doclint` in three.[^commonsrecord] The guide says `doclint` stays byte-identical across the repos.[^guide] At commit a326550, and still at 405d1e0, the relay's copy has another sha256, and its Makefile pins that one.[^relaydoclint] So one shared script had already drifted; the record leaves `doclint` as one copy to r2.[^commonsrecord]
 
 Not measured: whether a tool beats the alternative it replaced, and whether one front door and one guide save a person or an agent any learning. Each tool page says so where it matters.
 
@@ -89,22 +89,23 @@ Two pieces of the shared tooling have failed.
 
 What stays open:
 
-- The suite rename recorded in the commons design is partly done at the commit read. The switch, the proofs and the cold window are written as steps still to run, and the organization profile still shows the earlier install lines.[^commonsrecord][^profile]
+- The suite rename recorded in the commons design is partly done. At e456f4b, the newest commons commit, the record still writes the switch, the proofs and the cold window as steps to run.[^commonsrecord] At commit 6476f3a the organization profile showed the earlier install lines.[^profile] On 2026-10-13 the five tool repos merged their rename branches within one minute of each other.[^githeads] The record allows that merge only in the switch.[^commonsrecord] The profile merged its own branch in the same minute: at 8a0a188 it installs `session@agentik` and the other four plugins from the `agentik` marketplace.[^githeads][^profiler1]
 - The switch installs from a local marketplace built from each checkout, with the public marketplace as the fallback if the local proof fails. The record plans the switch and its proof, and records no run of either.[^commonsrecord]
 - Nine items sit in the commons backlog.[^commonsnth]
 
 ## From the journal
 
-- [Two lanes](../journal/posts/2026-08-31-two-lanes.md): agents drift into shorthand and the reader becomes the outsider; respeak splits the lanes and gates the human one (n=1).
-- [The probe that stopped a night](../journal/posts/2026-09-30-the-probe-that-stopped-a-night.md): a review agent's hand-built relay replaced a running night's lock file, and the night stopped with nine rows still ready.
-- [Restart, don't compact](../journal/posts/2026-10-05-restart-dont-compact.md): a charter under 4 KB and a fresh session carried one night across three restarts; nobody has compared it with compaction.
-- [A wake that cost a turn](../journal/posts/2026-10-10-a-wake-that-cost-a-turn.md): 581 of 614 self-paced wakeups in one count took a turn of their own, and four pacing rules followed.
-- [The ledger that ran away](../journal/posts/2026-10-10-the-ledger-that-ran-away.md): a decision ledger grew past 400 entries, and a cap, a sign-off bar and four severity levels were the fix.
-- [Living inside a usage window](../journal/posts/2026-10-14-living-inside-a-usage-window.md): a band that paces helpers and a pause that waits for the five-hour window to reset; neither has run long enough to judge.
+- [Two lanes](../journal/posts/2026-08-31-two-lanes.md): the premise is that agents that write to each other drift toward shorthand, and the person reading the run becomes the outsider. respeak splits the lanes and gates the human one. One field test, n=1, and the drift has never been caught in a transcript.
+- [The probe that stopped a night](../journal/posts/2026-09-30-the-probe-that-stopped-a-night.md): a review agent's hand-built relay replaced a running night's lock file, and the night stopped with nine rows still ready. Every guard we had was a slice with a hole in it.
+- [Restart, don't compact](../journal/posts/2026-10-05-restart-dont-compact.md): instead of compacting a full context, a sitting writes a charter under 4 KB and a fresh session starts from it. It carried one night across three restarts. No source we found compares it with compaction.
+- [A wake that cost a turn](../journal/posts/2026-10-10-a-wake-that-cost-a-turn.md): 581 of 614 self-paced wakeups in one count took a turn of their own. Four pacing rules followed. The count has not been re-run.
+- [The ledger that ran away](../journal/posts/2026-10-10-the-ledger-that-ran-away.md): a decision ledger grew past 400 entries, and nothing in it said which of them mattered. A cap, a sign-off bar and four priority levels followed. The old 401 entries still bind.
+- [Living inside a usage window](../journal/posts/2026-10-14-living-inside-a-usage-window.md): a subscription meters use in five-hour windows under a weekly limit. We built two answers, a band that paces helpers and a pause that waits for the reset. Neither has run long enough to say if it works.
 
 ## Sources
 
 [^profile]: agentik-dev, ".github/profile/README.md", commit 6476f3a, <https://github.com/agentik-dev/.github/blob/6476f3a/profile/README.md>.
+[^profiler1]: agentik-dev, ".github/profile/README.md", the merge of the profile's rename packet, commit 8a0a188, <https://github.com/agentik-dev/.github/blob/8a0a188/profile/README.md>.
 [^commonsrecord]: agentik-dev/agentik-commons, "design/agentik-r1.md", the suite record, commit e456f4b, <https://github.com/agentik-dev/agentik-commons/blob/e456f4b/design/agentik-r1.md>.
 [^marketplace]: agentik-dev/agentik-commons, ".claude-plugin/marketplace.json", commit e456f4b, <https://github.com/agentik-dev/agentik-commons/blob/e456f4b/.claude-plugin/marketplace.json>.
 [^commonstests]: agentik-dev/agentik-commons, "tests/test_hygiene.py", commit e456f4b, <https://github.com/agentik-dev/agentik-commons/blob/e456f4b/tests/test_hygiene.py>.
@@ -117,10 +118,12 @@ What stays open:
 [^relayreadme]: agentik-dev/agentik-relay, "README.md", commit a326550, <https://github.com/agentik-dev/agentik-relay/blob/a326550/README.md>.
 [^relaycode]: agentik-dev/agentik-relay, "internal/relay/types.go", the stop reasons, and "internal/night/night.go", the night cap, commit a326550, <https://github.com/agentik-dev/agentik-relay/tree/a326550/internal>.
 [^relayr1]: agentik-dev/agentik-relay, "design/relay-r1.md", section 6, the gate, commit a326550, <https://github.com/agentik-dev/agentik-relay/blob/a326550/design/relay-r1.md>.
+[^relaydoclint]: agentik-dev/agentik-relay, "scripts/doclint" and "Makefile", line 6, commit a326550, <https://github.com/agentik-dev/agentik-relay/blob/a326550/scripts/doclint>.
 [^relaynth]: agentik-dev/agentik-relay, "NICE_TO_HAVE.md", line 442, commit a326550, <https://github.com/agentik-dev/agentik-relay/blob/a326550/NICE_TO_HAVE.md>.
 [^decisionsreadme]: agentik-dev/agentik-decisions, "README.md", commit 80d59eb, <https://github.com/agentik-dev/agentik-decisions/blob/80d59eb/README.md>.
 [^respeakreadme]: agentik-dev/agentik-respeak, "README.md", commit 319f060, <https://github.com/agentik-dev/agentik-respeak/blob/319f060/README.md>.
 [^respeakchangelog]: agentik-dev/agentik-respeak, "CHANGELOG.md", commit 319f060, <https://github.com/agentik-dev/agentik-respeak/blob/319f060/CHANGELOG.md>.
 [^agentsreadme]: agentik-dev/agentik-agents, "README.md", commit 78ce312, <https://github.com/agentik-dev/agentik-agents/blob/78ce312/README.md>.
 [^firstcommits]: agentik-dev, the first public commit of each repository, all dated 2026-10-13, read in the checkouts at the commits cited on this page; for example <https://github.com/agentik-dev/agentik-commons/commits/e456f4b>.
+[^githeads]: agentik-dev, the git history of each repository, read on 2026-10-14 at its newest commit (session 89c69a8, relay 405d1e0, decisions fabb212, respeak eb7d642, agents 40fbe9e, commons e456f4b, profile 8a0a188); for example <https://github.com/agentik-dev/agentik-session/commits/89c69a8>.
 [^bernhofen]: Daniel M. Bernhofen, Zouheir El-Sahli and Richard Kneller, "Estimating the effects of the container revolution on world trade", GEP Research Paper 2013/02 (working paper; the journal version is Journal of International Economics 98:36-50, 2016), 2013, <https://www.nottingham.ac.uk/gep/documents/papers/2013/2013-02.pdf>.
