@@ -1,6 +1,6 @@
 ---
 repo: agentik-dev/agentik-relay
-path: history/sittings/, design/packets/, design/review-r6.md, design/packets/ar11-tla-night.md, design/packets/rows-2026-09-23-r3.json, design/breaker-signal-r1.md, internal/night/night.go, internal/night/bound.go, Makefile, README.md
+path: history/sittings/, design/packets/, design/review-r6.md, design/packets/ar11-tla-night.md, design/packets/rows-2026-09-23-r3.json, design/breaker-signal-r1.md, internal/night/night.go, internal/night/bound.go, Makefile, README.md, design/review-adv13.md, design/review-adv14.md, design/relay-r1.md, internal/night/pidfile.go
 commit: 405d1e0
 title: "agentik-relay at its head on 2026-10-14: the record's counts, the fork-storm fix, the idle floor, the build name"
 author: agentik-dev
@@ -37,6 +37,13 @@ Read on 2026-10-14 in the attached checkout at 405d1e0 (2026-10-13 19:18:20 -070
 - `git show 72c0fe0 -- Makefile` (2026-10-13 17:43:48 -0700, "agentik-r1-relay act 5, its rest: the install target, the plugin relay") is the change from `bin/relay` and `./cmd/relay` to the new name; the merge a166166 (2026-10-13 18:42:08 -0700) took it to `main`.
 - `README.md`: every command line uses `agentik relay <verb>` (lines 15 to 41, for example `agentik relay run` and `agentik relay report`); line 5 names the binary `agentik-relay`, with the bare name a link to it until 2026-12-31.
 
+### The pid file, the port lock and two reviews (for the probe entry)
+- `design/review-adv13.md`, read in full (133 lines; the review of 59b087a..1c3b734, target AR21; its repros ran in a temp world and touched no live pid dir, lines 5-7). ADV13-4 (lines 45-51): "a removed pid file gives a second holder (fork-storm door)"; the flock held an inode, not a path, and after an unlink or a rename the next comer held the lock. Its fix: "a lock a sitting cannot unlink (a loopback port or a Mach name), and the holder re-stats the path each poll and stops the night on a new inode." ADV13-13 (lines 91-95): "a relinked or edited relay picks its own pid dir"; the hook allowed `go -C cmd/relay build -ldflags "-X …PidHomeLink=/tmp/h"` and two other build spellings, and the relinked binary under `env -i` passed a held lock. Its fix: read `go -C` and a cwd in cmd/relay, "and name the pid file advisory against a hostile child."
+- `design/review-adv14.md`, read in full (136 lines; the review of 7d2b60f..9b99873, targets AR22, "the pinned reader and the port lock", and AR23). Lines 13-14: of the ADV13 fixes, 4 holds ("unlink, rename or a moved dir gives no second holder"). Line 20: "Open, deferred by AR22: 9, 13 (a new route: ADV14-9)." ADV14-9 (lines 79-85): "ADV13-13 is open with a new route"; with hook decisions `{}`, a binary built with `-ldflags "-X …LockPortLink=4242"` "printed port 4242, not 20501: its own lock"; the fix it names puts the link variables behind a test build tag, and "an edited source still escapes (the sandbox)." ADV14-10 (lines 89-91): `LockMoved` reads only (dev, inode), so an in-place rewrite of `relay.pid`, a hard link and restore, or a `mv` away and back leave it `""`. Lines 111-112: no TLA+ action reads `unlinked`, so the `lock-moved` stop and its evasions are outside the model.
+- `design/relay-r1.md:205`, "The account lock is a port" (AR22 act 2; ADV13-4): the lock is a TCP listener on 127.0.0.1, port `20000 + uid % 10000`; `run`, a measuring `plan` and `resume` "refuse ANY live holder", so "a second night from another shell is refused"; `relay.pid` "only names the holder", and "a missing file or a new inode stops the night `lock-moved`"; its residuals include that the lock "is advisory against a child that builds its own relay with its own port link (ADV13-13)". Line 253, the sandbox's seam: "Not built (the owner's open decision). The seam is the child's argv and env in `internal/effects/spawn.go`, the one place a sitting starts". Lines 635-636, AR24's deferrals: ADV14-9 ("a copied `cmd/relay` built with its own port link") and ADV14-10's `LockMoved` evasions go to "the sandbox". Line 259: the `helper-relay` row holds "a helper of any session".
+- `internal/night/pidfile.go:21`: "the lock is the port, never the file." Lines 382-400: `LockMoved` returns a reason when `os.Lstat` fails ("is gone") or `os.SameFile` says the inode differs ("is a new inode"), else `""`.
+- `git grep -n helper-relay 405d1e0` outside `internal/` finds only the AR40 packet, its charter, `design/relay-r1.md:259` and `NICE_TO_HAVE.md`; no line counts helper calls the guard denied or passed.
+
 ## Limits
 - Counts of files, not of nights: a charter is written by its own sitting, and the ledger of nights is outside the repo.
 - The fix for C4 is read from the design, the packet and one code comment; this note ran no test and no night. A fix in the repo is not proof it holds.
@@ -44,3 +51,4 @@ Read on 2026-10-14 in the attached checkout at 405d1e0 (2026-10-13 19:18:20 -070
 
 ## Used in
 - docs/tools/relay.md
+- docs/journal/posts/2026-09-30-the-probe-that-stopped-a-night.md

@@ -35,3 +35,4 @@ The packet is 43 lines and carries no date; the event it records is dated 2026-0
 
 ## Used in
 - research/synthesis/journal-probe.md
+- docs/journal/posts/2026-09-30-the-probe-that-stopped-a-night.md

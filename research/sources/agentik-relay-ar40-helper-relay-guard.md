@@ -27,3 +27,4 @@ The packet is 41 lines and carries no date. Read in full, with `history/sittings
 
 ## Used in
 - research/synthesis/journal-probe.md
+- docs/journal/posts/2026-09-30-the-probe-that-stopped-a-night.md

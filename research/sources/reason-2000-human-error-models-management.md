@@ -21,4 +21,5 @@ kind: documented
 
 ## Used in
 - research/synthesis/journal-probe.md
+- docs/journal/posts/2026-09-30-the-probe-that-stopped-a-night.md
 - docs/summary.md
