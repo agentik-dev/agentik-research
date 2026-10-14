@@ -33,3 +33,14 @@ New, worst first:
 4. respeak, all widths: the hook's arrow runs through the cluster title "Machine lane: agent to agent" (respeak.md:48).
 5. respeak.md:3: the lede is now the longest at 115 words and ends on commit bookkeeping.
 6. agents, 768 to 1680: the diagram sits at the left of its card; the others are centred.
+
+## Field: FAIL
+
+Round 1: 1, 2, 3, 5, 6 (light pills 4.59 to 5.0:1) and 7 fixed; 4 fixed except code over 40 characters still breaks at a hyphen (unattended-and-guardrails.md:28, at 390); 8 partly open: many-agents has no "From the journal" (no entry links it: leave), and telling-people.md:5 repeats line 25 word for word.
+
+New, worst first:
+1. Every page, light, all widths: inline-code chips are invisible. `--md-code-bg-color` #f1eee6 (docs/assets/glass/skins/agentik.css:123) is 1.04:1 against the canvas. The 0.3em padding (agentik-site.css:180) then reads as stray spaces: "with /resume .", "(commit ba78699 )", "check /status .".
+2. Budgets, 768 light: the five-column lanes table scrolls 72 px, and the fade hides its Evidence pills. The table fits without the 8rem cell minimum, but that rule applies up to 959 px (agentik-site.css:213-214).
+3. Length, memory and unattended, 390, both schemes: the same rule makes every column 160 px wide, so Result is no wider than Study. Length's first table runs 2196 px tall, and the Evidence pills sit off-screen. A min-width on the whole table would read better.
+4. Many-agents, Sources, all widths: footnote 14 shows literal backslashes, `isolation: \"worktree\"` (many-agents.md:89).
+5. Many-agents limits card: its first bullet is notes, not a sentence (many-agents.md:55).
