@@ -81,7 +81,7 @@ Twenty-six practices for long-running and multi-agent Claude Code work, grouped 
 ## Sources
 
 [^laban]: Philippe Laban et al., "LLMs Get Lost In Multi-Turn Conversation", May 2025, <https://arxiv.org/abs/2505.06120>.
-[^kim]: Yubin Kim et al., "Towards a Science of Scaling Agent Systems", December 2025, <https://arxiv.org/abs/2512.08296>.
+[^kim]: Yubin Kim et al., "Towards a Science of Scaling Agent Systems", version 3, 8 April 2026 (first version December 2025), <https://arxiv.org/abs/2512.08296>.
 [^huang]: Jie Huang et al., "Large Language Models Cannot Self-Correct Reasoning Yet", October 2023, <https://arxiv.org/abs/2310.01798>.
 [^advani]: Advani, "From Confident Closing to Silent Failure: Characterizing False Success in LLM Agents", June 2026, <https://arxiv.org/abs/2606.09863>.
 [^bestpractices]: Anthropic, "Best practices for Claude Code", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/best-practices>.

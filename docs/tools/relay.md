@@ -60,7 +60,7 @@ flowchart TD
 - The budget overshoot is documented: `--max-budget-usd` is checked after each response and is a client-side estimate. See [Unattended runs and guardrails](../field/unattended-and-guardrails.md).
 - The rule that a completed `-p` run kills background work held from Claude Code 2.1.163 to 2.1.291 and not after; the relay's record dates from 2.1.269 to 2.1.280.
 - Claude Code does not strip `CLAUDE*` variables from a child; it sets `CLAUDECODE` and `CLAUDE_CODE_CHILD_SESSION` there. The relay strips them itself, which is a choice, not a correction of the engine.
-- The Bash tool's default timeout is 120 seconds, not 600. The `subagents/` transcript directory is documented. No main-session progress watchdog is documented, so the relay's outside watchdog fills a real gap.
+- The 600-second cap on the Bash tool that the relay plans around is the documented ceiling; the default is 120 seconds. The `subagents/` transcript directory is documented. No main-session progress watchdog is documented, so the relay's outside watchdog fills a real gap.
 - Deny rules that match command text share the documented bypasses (an absolute path, `sh -c`, `git -C`); hooks fail open on a timeout by default; the sandbox covers Bash only, and the relay has none. The relay's four recorded bypasses are the documented ones.[^nth]
 - One worktree per writer is supported by the documentation and by two reported isolation leaks; the step from shared refs to lock contention is conjecture. See [Many agents](../field/many-agents.md).
 - A sign-off that is a check outside the reviewer follows the measured finding that external checks beat self-judgement. See [Review that ends](../field/review.md).

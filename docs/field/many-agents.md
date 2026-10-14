@@ -1,6 +1,6 @@
 # Many agents
 
-Many agents help when the work splits into independent parts and hurt when it does not. The one study that matched token budgets across 260 configurations found changes from +80.8 percent on decomposable work to -70.0 percent on sequential planning, and every multi-agent design lost on sequential work.[^kim] A taxonomy of 1,642 traces found failure rates of 41 to 86.7 percent across seven frameworks.[^mast] The vendor's own research system gained 90.2 percent on an internal evaluation, at about fifteen times the tokens, and the same post calls most coding a poor fit.[^anthropicresearch] This chapter answers research question 5: subagents and context isolation, fan-out, worktrees, orchestrator, builder and refuter roles, and the strongest published case on each side.
+Many agents help when the work splits into independent parts and hurt when it does not. A study that matched token budgets across 260 configurations found changes from +80.8 percent on decomposable work to -70.0 percent on sequential planning, and every multi-agent design lost on sequential work.[^kim] A taxonomy of 1,642 traces found failure rates of 41 to 86.7 percent across seven frameworks.[^mast] The vendor's own research system gained 90.2 percent on an internal evaluation, at about fifteen times the tokens of a chat, and the same post calls most coding a poor fit.[^anthropicresearch] This chapter answers research question 5: subagents and context isolation, fan-out, worktrees, orchestrator, builder and refuter roles, and the strongest published case on each side.
 
 ## What is measured
 
@@ -17,7 +17,7 @@ As of October 2026 the documentation says:
 - Under `claude -p` a subagent runs in the background unless Claude needs its result, in which case it runs in the foreground. A Workflow call shows no prompt and needs an allow rule, auto mode, bypass mode, a hook or a host callback; a `-p` run with no mode set can start in auto mode.[^subagents][^workflows][^headless]
 - `maxTurns` in an agent's front matter caps its turns and returns partial output since 2.1.246 (August 2026). The documentation does not say whether a subagent can see its own turn count.[^subagents][^changelog]
 - The Stop hook runs when the main agent finishes, not on a user interrupt. SubagentStop covers subagents, and tool events inside a subagent carry `agent_id` (2.1.69, March 2026).[^hooks][^changelog]
-- Worktrees give each session its own files and branch while sharing `.git`. Four checks block edits and git commands that would reach the main checkout; they do not track `cp` or shell redirects. `git worktree lock` guards pruning only.[^worktrees] Git keeps the index and HEAD per worktree and shares refs, objects and config; its documentation does not discuss lock contention.[^gitworktree][^gitlayout]
+- Worktrees give each session its own files and branch while sharing `.git`. Four checks block edits and git commands that would reach the main checkout; they do not track `cp` or shell redirects. `git worktree lock` stops cleanup and removal, not edits.[^worktrees] Git keeps the index and HEAD per worktree and shares refs, objects and config; its documentation does not discuss lock contention.[^gitworktree][^gitlayout]
 - Subagents continue after a permission denial (2.1.0, January 2026).[^changelog]
 - Vendor guidance from January 2026: expect 3 to 10 times the tokens; split by context, not by role; verifiers declare early victory without concrete criteria.[^multiagentblog]
 
@@ -30,7 +30,7 @@ As of October 2026 the documentation says:
 
 For: Kim's +80.8 percent on decomposable work, and Anthropic's +90.2 percent on research. The limits are one task family and an internal evaluation where tokens explain most of the variance.[^kim][^anthropicresearch]
 
-Against: Kim's -39 to -70 percent on sequential work, MAST's 41 to 86.7 percent failure rates, and Cognition's conflicting decisions. The limits are a coding sample of 20, no single-agent control, and no data.[^kim][^mast][^cognition]
+Against: Kim's -39 to -70 percent on sequential work, MAST's 41 to 86.7 percent failure rates, and Cognition's conflicting decisions. The limits are 50 to 100 instances on the planning benchmark and 20 per coding cell, no single-agent control, and no data.[^kim][^mast][^cognition]
 
 ## When many agents help, and when they hurt
 
@@ -49,7 +49,7 @@ Against: Kim's -39 to -70 percent on sequential work, MAST's 41 to 86.7 percent 
 
 ## What this means for the agentik tools
 
-agentik-relay runs one child per worktree and ships a report-only adversary agent. Context isolation is documented, though a subagent's tokens still count against the limits.[^subagents] A foreground Agent call under `-p` is documented and the relay measured one.[^workflows][^relayorch] `maxTurns` is documented; the relay's finding that an agent cannot see its turn count is its own.[^relaynth] Stop fires for the main agent only, as agentik-session also found.[^hooks] One worktree per writer is supported by the documentation; the relay's step from there to git's `index.lock` is conjecture, since neither the Claude Code nor the git documentation mentions lock contention.[^gitlayout]
+agentik-relay runs one child per worktree and ships a report-only adversary agent.[^relaydesign][^relayadversary] Context isolation is documented, though a subagent's tokens still count against the limits.[^subagents] A foreground Agent call under `-p` is documented and the relay measured one.[^workflows][^relayorch] `maxTurns` is documented; the relay's finding that an agent cannot see its turn count is its own.[^relaynth] Stop fires for the main agent only, as agentik-session also found.[^hooks][^sessionrespawn] One worktree per writer is supported by the documentation; the relay's step from shared refs to `index.lock` contention is conjecture,[^relaydesign] since the Claude Code documentation does not mention locks and git's lockfile page says only that a second locker fails at once.[^gitlayout][^gitlock]
 
 agentik-agents found that three of four delegates which hit a denied tool returned a placeholder after full cost. The documentation says subagents continue after a denial; it does not describe placeholders, and the cause is conjecture.[^changelog][^agentsbin]
 
@@ -61,7 +61,7 @@ agentik-agents found that three of four delegates which hit a denied tool return
 
 ## Sources
 
-[^kim]: Yubin Kim et al., "Towards a Science of Scaling Agent Systems", December 2025, <https://arxiv.org/abs/2512.08296>.
+[^kim]: Yubin Kim et al., "Towards a Science of Scaling Agent Systems", version 3, 8 April 2026 (first version December 2025), <https://arxiv.org/abs/2512.08296>.
 [^mast]: Mert Cemri et al., "Why Do Multi-Agent LLM Systems Fail?", March 2025, <https://arxiv.org/abs/2503.13657>.
 [^anthropicresearch]: Anthropic, "How we built our multi-agent research system", 13 June 2025, <https://www.anthropic.com/engineering/multi-agent-research-system>.
 [^subagents]: Anthropic, "Create custom subagents", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/sub-agents>.
@@ -74,8 +74,12 @@ agentik-agents found that three of four delegates which hit a denied tool return
 [^gitlayout]: Git project, "gitrepository-layout documentation", read 2026-10-14, <https://git-scm.com/docs/gitrepository-layout>.
 [^multiagentblog]: Cara Phillips, Anthropic, "Building multi-agent systems: When and how to use them", 23 January 2026, <https://www.claude.com/blog/building-multi-agent-systems-when-and-how-to-use-them>.
 [^cognition]: Walden Yan, Cognition, "Don't Build Multi-Agents", 12 June 2025, <https://cognition.com/blog/dont-build-multi-agents>.
-[^issue52958]: Issue reporter, "Agent isolation: worktree leaks cwd into parent checkout", anthropics/claude-code issue 52958, 24 April 2026, <https://github.com/anthropics/claude-code/issues/52958>.
+[^issue52958]: Issue reporter, "Agent `isolation: \"worktree\"` leaks cwd into parent checkout mid-session, destroying untracked files", anthropics/claude-code issue 52958, 24 April 2026, <https://github.com/anthropics/claude-code/issues/52958>.
 [^issue84685]: Issue reporter, "EnterWorktree/isolation state is session-global", anthropics/claude-code issue 84685, 7 August 2026, <https://github.com/anthropics/claude-code/issues/84685>.
 [^relayorch]: agentik-dev/agentik-relay, "design/relay-orchestrator-r1.md", commit a326550, <https://github.com/agentik-dev/agentik-relay/blob/a326550/design/relay-orchestrator-r1.md>.
+[^relaydesign]: agentik-dev/agentik-relay, "design/relay-r1.md", line 201, commit a326550, <https://github.com/agentik-dev/agentik-relay/blob/a326550/design/relay-r1.md>.
+[^relayadversary]: agentik-dev/agentik-relay, "plugin/agents/adversary.md", commit a326550, <https://github.com/agentik-dev/agentik-relay/blob/a326550/plugin/agents/adversary.md>.
+[^sessionrespawn]: agentik-dev/agentik-session, "design/respawn-r1.md", lines 218 to 221, commit e7f0723, <https://github.com/agentik-dev/agentik-session/blob/e7f0723/design/respawn-r1.md>.
+[^gitlock]: Git project, "Git lockfile API", read 2026-10-14, <https://git-scm.com/docs/api-lockfile>.
 [^relaynth]: agentik-dev/agentik-relay, "NICE_TO_HAVE.md", commit a326550, <https://github.com/agentik-dev/agentik-relay/blob/a326550/NICE_TO_HAVE.md>.
 [^agentsbin]: agentik-dev/agentik-agents, "bin/", the API wrapper's comments, commit 78ce312, <https://github.com/agentik-dev/agentik-agents/tree/78ce312/bin>.

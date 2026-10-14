@@ -56,7 +56,7 @@ The record names no one-lane alternative, no hosted router, and no use of the Ag
 - Subagents continue after a denial, as documented; a placeholder returned after full cost is not described, and its cause is conjecture.
 - The local speeds the repo measured sit in the range two practitioners report. No source measures tool-call accuracy for a 27B-class model.
 - Routing studies route on query difficulty, none on privacy, and several routers lose to the best single model; name-only routing is neither contradicted nor shown sufficient. The vendor's advice is to sweep effort first.
-- The claim that the Agent SDK is API-billed is contradicted as a blanket statement: billing follows the credential. See [Budgets, pacing and cost lanes](../field/budgets-and-lanes.md).
+- Billing follows the credential, not the entry point: on a plan login, SDK and `claude -p` usage counts against plan limits. See [Budgets, pacing and cost lanes](../field/budgets-and-lanes.md).
 
 ## What is open
 

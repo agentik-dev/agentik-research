@@ -17,11 +17,11 @@ The bottom line: long Claude Code work fails from context length, from compactio
 
 ## Part 2: the tools, in six lines
 
-- **agentik-session**: a meter on the transcript, a charter at 80 percent, a restart from the charter, compaction blocked. Its premise has support in direction and no measured strength; its model-window table is stale or cautious, and four of its vendor numbers are wrong as of October 2026.[^sessionreadme]
+- **agentik-session**: a meter on the transcript, a charter at 80 percent, a restart from the charter, compaction blocked. Its premise has support in direction and no measured strength; its model-window table is stale or cautious, and three of its vendor numbers are wrong or conditional as of October 2026.[^sessionreadme]
 - **agentik-relay**: nights of packets, one worktree and one child per row, a deterministic gate, thirty stop reasons, two money caps, an outside watchdog. One owner's nights; no sandbox; no stall yet recorded.[^relayreadme][^relaydesign][^relaycode]
 - **agentik-decisions**: one ledger per repository, capped at 25 and 7, rendered into CLAUDE.md, with batched owner questions. The mechanics are documented; the benefit is unmeasured and the caps have no source.[^decisionsreadme]
 - **agentik-respeak**: two lanes, a gate and a prose-only verifier. The human-lane tooling has field evidence; the machine lane and the readability grades are unmeasured.[^respeakreadme]
-- **agentik-agents**: three billing lanes, a router by model name, a pooled fan-out. One machine, one model family; the SDK billing claim is contradicted.[^agentsreadme]
+- **agentik-agents**: three billing lanes, a router by model name, a pooled fan-out. One machine, one model family; no window hit recorded.[^agentsreadme]
 - **agentik-commons**: the front door and the conventions, after five tools had five naming schemes.[^commonsrecord]
 
 ## Part 3: the practice
@@ -45,7 +45,7 @@ Researched and written on 2026-10-14 by one Claude Code cloud session with helpe
 [^hooks]: Anthropic, "Hooks reference", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/hooks>.
 [^caching]: Anthropic, "How Claude Code uses prompt caching", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/prompt-caching>.
 [^agentloop]: Anthropic, "How the agent loop works", Claude Agent SDK documentation read 2026-10-14, <https://code.claude.com/docs/en/agent-sdk/agent-loop>.
-[^kim]: Yubin Kim et al., "Towards a Science of Scaling Agent Systems", December 2025, <https://arxiv.org/abs/2512.08296>.
+[^kim]: Yubin Kim et al., "Towards a Science of Scaling Agent Systems", version 3, 8 April 2026 (first version December 2025), <https://arxiv.org/abs/2512.08296>.
 [^multiagentblog]: Cara Phillips, Anthropic, "Building multi-agent systems: When and how to use them", 23 January 2026, <https://www.claude.com/blog/building-multi-agent-systems-when-and-how-to-use-them>.
 [^headless]: Anthropic, "Run Claude Code programmatically", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/headless>.
 [^hiddenfailures]: Rahman et al., "Locating Hidden Failures Makes Long-Horizon Agents More Reliable", 15 September 2026, <https://arxiv.org/abs/2609.17930>.
