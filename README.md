@@ -24,8 +24,9 @@ make serve   # http://127.0.0.1:8000
 | `research/sources/` | One note per source: what was opened, when, and what it says |
 | `research/synthesis/` | The internal survey per tool and the external survey per question |
 | `research/OUTLINE.md` | Each page's claims in order, with sources and evidence levels |
+| `research/prompts/` | One prompt per agentik repository, listing the numbers and claims the survey found wrong or unsourced |
 | `history/` | The brief and the sitting charters |
-| `scripts/` | `sources` (links the source repos) and `check` (the structural checks) |
+| `scripts/` | `sources` (links the source repos), `check` (the structural checks) and `sources-page` (writes `docs/sources.md` from the notes; regenerate it, never edit it by hand) |
 | `.claude/` | The three helper agents and respeak's project configuration |
 
 ## License
