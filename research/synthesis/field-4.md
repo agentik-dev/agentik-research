@@ -5,15 +5,14 @@ Turn and context ceilings, usage windows, prompt-cache lifetimes and their cost,
 
 ## Findings
 Measured:
-- None. No source here is a controlled study; the two with a readable method are practitioners' own transcripts, under reported.
+- None. No source here is a controlled study; the two with a readable method are practitioners' transcripts, under reported.
 
 Documented (as of October 2026):
 - Cache lifetime, main conversation (interactive, `claude -p`, Agent SDK): one hour only on a subscription within plan usage; five minutes on usage credits, an API key or a cloud provider. [code-docs-prompt-caching; documented]
 - Cache lifetime, everything else (subagents, workflows, teammates, forks, compaction): five minutes, except server-controlled helpers (one hour on a subscription). A fork reads the parent's cache; a fresh subagent does not. [code-docs-prompt-caching; documented]
 - `promptCacheTtl` and `subagentPromptCacheTtl` (`5m` or `1h`, Claude Code 2.1.242 or later) set each bucket. [anthropic-docs-settings-compaction; documented]
-- Cache write is 1.25 times base input (five minutes) or 2 times (one hour). Read is 0.1 times; 0.05 times on Opus 5.5 and Sonnet 5.5; 0.025 times on Fable 5.1. Caching pays off after one read (five minutes) or two (one hour). [anthropic-pricing-doc; documented]
-- Per million tokens (input; one-hour write; read): Fable 5.1 $10, $20, $0.25; Opus 5.5 $4, $8, $0.20; Sonnet 5.5 $2, $4, $0.10. [anthropic-pricing-doc; documented]
-- Current models list a 1,000,000-token window and 128,000 output tokens. Claude 4.6 and later cost the same per token across the window (no premium above 200,000); Haiku 5.5 charges more above 100,000 prompt tokens. [anthropic-models-overview, anthropic-pricing-doc; documented]
+- Cache write is 1.25 times base input (five minutes) or 2 times (one hour). Read is 0.1 times; 0.05 times on Opus 5.5 ($0.20 per million tokens) and Sonnet 5.5 ($0.10); 0.025 times on Fable 5.1 ($0.25). Caching pays off after one read (five minutes) or two (one hour). [anthropic-pricing-doc; documented]
+- Current models list a 1,000,000-token window. Claude 4.6 and later cost the same per token across it (no premium above 200,000); Haiku 5.5 charges more above 100,000 prompt tokens. [anthropic-models-overview, anthropic-pricing-doc; documented]
 - Subscriptions have a five-hour session limit and a weekly limit shared with chat; Max adds a weekly Fable limit. [support-claude-pro-max-usage; documented]
 - Session and weekly limits span all models; Opus and Sonnet limits are per family. One workflow burst can exhaust the weekly limit. [code-docs-errors-usage-limits; documented]
 - Subagent requests count toward the same limits as the main conversation. [code-docs-sub-agents-budgets; documented]
@@ -23,30 +22,29 @@ Documented (as of October 2026):
 - `--max-turns` and `--max-budget-usd` work in print mode only and default to no limit; the budget is a client-side estimate that can pass the cap. [code-docs-cli-reference-budgets; documented]
 - Status line: `rate_limits.five_hour` and `seven_day` give `used_percentage` (0 to 100) and `resets_at` (epoch seconds); `prompt_cache` gives `warm`, `ttl`, `hit_ratio`, `misses` (2.1.251 or later). [code-docs-statusline; documented]
 - Stream event `rate_limit_event`: TypeScript lists `resetsAt`; Python lists `rate_limit_type` of `five_hour`, `seven_day`, `seven_day_opus`, `seven_day_sonnet`, `overage`. [code-docs-agent-sdk-rate-limit-event; documented]
-- Bash timeout defaults to 120,000 ms (maximum 600,000 ms); a timed-out command moves to the background; unattended background commands get 30 minutes (maximum 2 hours). [code-docs-tools-reference-bash-timeouts; documented]
+- Bash timeout defaults to 120,000 ms (maximum 600,000 ms); a timed-out command moves to the background (30 minutes unattended, maximum 2 hours). [code-docs-tools-reference-bash-timeouts; documented]
 - Hook timeout defaults to 600 seconds (command), 30 (prompt), 60 (agent). [code-docs-hooks-timeouts; documented]
 - A self-paced `/loop` waits 1 minute to 1 hour; `/loop 5m` runs 4 minutes 45 seconds apart so the five-minute cache stays warm; recurring tasks expire after 7 days; a scheduled task fires on an idle session and resends the full context. [code-docs-scheduled-tasks, code-docs-costs; documented]
 
 Reported:
 - Across 63,880 requests the hit rate was 96.59 percent token-weighted but 86.41 percent for the median session, where writes were 75.9 percent of cache cost. [primeline-cache-cost; reported]
 - Opus 4.6 per turn: about $0.03 at turn 20 (60K tokens), $0.15 at turn 50 (150K), over $0.33 at turn 80. [zivtech-economics-session-timing; reported]
-- One user's 119,866 calls: one-hour writes only from 1 February to 5 March 2026, then five-minute writes (93 percent by 21 March). [github-claude-code-issue-46829; reported]
 
 ## The cost model
 - Each turn resends the whole conversation, priced as uncached input, cache write or cache read, plus output. [code-docs-costs, anthropic-pricing-doc; documented]
-- A miss follows a gap past the lifetime, a model switch, a tool-definition change, fast mode, compaction or an upgrade. [code-docs-prompt-caching; documented]
+- A miss follows a gap past the lifetime, a model switch, a tool-definition change, compaction or an upgrade. [code-docs-prompt-caching; documented]
 - A warm 200,000-token turn costs $0.04 on Opus 5.5; a cold one-hour rewrite costs $1.60 (40 times). [anthropic-pricing-doc; documented prices, arithmetic ours]
 - So cost is turns times context only while warm; each miss reprices the context at the write rate. [anthropic-pricing-doc; conjecture; test: sum `cache_creation` tokens per session]
 
 ## Disputes
-- Lifetime history: one report says one hour became five minutes on 6 March 2026; the October 2026 documentation gives per-bucket lifetimes. [github-claude-code-issue-46829; reported]
+- Lifetime history: one user's 119,866 calls showed one-hour writes from 1 February to 5 March 2026, then five-minute writes (93 percent by 21 March); the October 2026 documentation gives per-bucket lifetimes. [github-claude-code-issue-46829; reported]
 - Whether cache reads count in full against subscription limits is unconfirmed; the comments are self-reported. [github-claude-code-issue-24147; reported]
 - All cost figures are single-user; the aggregate 96.59 percent hides the 86.41 percent median. [primeline-cache-cost; reported]
 
 ## What this says about the agentik claims
 - (a) Partly: the one-hour main loop and five-minute subagents hold only on a subscription within plan usage; the 2 times write holds; the 0.1 times read is wrong for Opus 5.5 and Sonnet 5.5 (0.05) and Fable 5.1 (0.025). [code-docs-prompt-caching, anthropic-pricing-doc]
-- (b) Supported: shared limits, no wait in `-p`, default true, Fable credits. [code-docs-sub-agents-budgets, code-docs-interactive-mode-usage-limit, code-docs-model-config]
-- (c) Partly: separate windows and `resetsAt` are documented; the wire spelling `rateLimitType` is not. [code-docs-agent-sdk-rate-limit-event]
+- (b) Supported: shared limits, no wait in `-p`, default true, Fable credits. [code-docs-sub-agents-budgets, code-docs-interactive-mode-usage-limit]
+- (c) Partly: separate windows and `resetsAt` are documented; `rateLimitType` is not. [code-docs-agent-sdk-rate-limit-event]
 - (d) Contradicted: the field is `used_percentage`, not `percentUsed`. [code-docs-statusline]
 - (e) Not in the docs: no 60-minute cloud prompt, no figure for a late wake (the repo saw 3,636 to 3,648 seconds). [code-docs-scheduled-tasks; agentik-session-nice-to-have; our use]
 - (f) Supported, first-order only. [code-docs-costs]
