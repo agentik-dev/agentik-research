@@ -1,17 +1,18 @@
 ---
 repo: agentik-dev/agentik-research
-path: the commit history from 9663532 to a22116f (git log with dates, git show --stat per commit, git show of the charters at c2bbc52, a0a612c and 6d71aef, of mkdocs.yml at 49fcc10 and requirements.txt at 6421f89, git ls-tree of research/sources/ at 6060f64)
-commit: a22116f
-title: "The commit history of agentik-research to a22116f"
+path: the commit history from 9663532 to 401d7a7; research/synthesis/critic-round-1.md and research/synthesis/critic-round-2.md (git log with dates, git show --stat per commit, git show of the charters at c2bbc52, a0a612c and 6d71aef, of mkdocs.yml at 49fcc10 and requirements.txt at 6421f89, git ls-tree of research/sources/ at 6060f64)
+commit: 401d7a7
+title: "The commit history of agentik-research to 401d7a7"
 author: agentik-dev
 published: 2026-10-14
 accessed: 2026-10-14
 kind: our-use
 ---
 
-Read on 2026-10-14 in this repo's checkout, branch head a22116f. An earlier reading stopped at 5852ebc; everything below holds at a22116f.
+Read on 2026-10-14 in this repo's checkout, last at branch head 401d7a7. Earlier readings stopped at 5852ebc and a22116f; everything below holds at 401d7a7.
 
 ## What it says
+- From a22116f to 401d7a7: 15 commits titled "refute round 2" run from a42b450 to 3aa79bc; the sweep is 4177334 and ae9ccca; the critic reports are committed in dc6e33c to 0bf8e27 (round 1) and 8535904 to 1330dc8 (round 2), with the fixes in 4b2666d, 744382e, 1097198 and 401d7a7; 16 commits titled "the editor's pass on" one page each. critic-round-1.md records five groups, each FAIL; critic-round-2.md records the home page and summary PASS, the journal PASS, and the field, the tools and the reference pages FAIL.
 - The research sitting. Two commits seed the repo on 2026-10-13 (author time, -0700): 9663532 at 18:52:37, "seed: respeak's project config" (one file, `.claude/respeak/config.yaml`), and 4703b79 at 18:53:54, "seed: the research site's brief, charter, agents, checks and a one-page site" (22 files). No commit holds phases 1 to 4 alone: 6060f64, titled "refute: decisions page; counts and citations corrected", changes 461 files (15,076 insertions), among them all 20 docs pages and the research/ work.
 - `git ls-tree` of research/sources/ at 6060f64: 402 notes besides README.md, 108 with a `repo:` line in their front matter and 294 with a `url:` line, none with both.
 - Round 1 refute commits, 6060f64, b0fab9b, a6a3177, 581fa32, c727e5d and c2bbc52 (six), whose titles name 8 pages: decisions, relay, respeak, agents, practices, method, glossary, sources.
