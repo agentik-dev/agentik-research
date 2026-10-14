@@ -1,6 +1,6 @@
 # agentik-respeak
 
-agentik-respeak splits communication into two lanes. Agents may write shorthand to each other only for terms a lexicon ratifies; a person reads a narrative that a translator subagent writes in one of three modes, held to a style gate and to a verifier that proves an editorial pass changed prose only. The firmest evidence in the repo is for the human lane's tooling: a field run over about 2,000 files on 2026-09-21 drove a round of fixes, and three charters record the verifier refusing a model's render of the README.[^changelog][^sittings] The weakest evidence is for the problem itself and for the machine lane: the repo records no incident of a person misreading agent shorthand, its lexicon holds three seed entries with zero recorded uses, and nothing measures token savings, a readability grade or the translator's accuracy.[^corpus][^readme] Everything on this page is the repo's record at commit 319f060 unless marked otherwise.
+agentik-respeak splits communication into two lanes. Agents may write shorthand to each other only for terms a lexicon ratifies; a person reads a narrative that a translator subagent writes in one of three modes, held to a style gate and to a verifier that proves an editorial pass changed prose only. The firmest evidence in the repo is for the human lane's tooling: a field run over about 2,000 files on 2026-09-21 drove a round of fixes, and two charters record the verifier refusing a model's render of the README.[^changelog][^sittings] The weakest evidence is for the problem itself and for the machine lane: a search of the repo's charters and tests found no incident of a person misreading agent shorthand, its lexicon holds three seed entries with zero recorded uses, and nothing measures token savings, a readability grade or the translator's accuracy.[^sittings][^tests][^corpus][^readme] Everything on this page is the repo's record at commit 319f060 unless marked otherwise.
 
 ## The problem, as the repo states it
 
@@ -13,9 +13,9 @@ The design leans on a literature the repo surveyed in August 2026: pairs of peop
 | Measurement | Result | Caveat |
 |---|---|---|
 | One editorial pass over a 4,000-word design document, 2026-08-31 | Error-severity banned phrases 3 to 0; em-dashes per 1,000 words 19.9 to 3.1; average sentence 32.1 to 24.5 words; headings, links, code and numbers unchanged | The README calls it sizing evidence; the source document was removed; the sentence figures predate a splitter fix[^readme][^changelog] |
-| A ten-agent pass over nine sites, about 2,000 files, 2026-09-21 | A heading hit locked a file against every later edit; a bullet list read as a 68.9-word sentence; a scan without its config reported 36 errors against 13 real ones; a hard-wrapped line published as a heading while the verifier passed | The sites are private; the counts cannot be re-run[^changelog] |
-| The hand-edited README | 40,089 bytes; the rendered one 21,453 | One file[^changelog] |
-| README renders through the translator | One took 6 minutes; one was killed at the 600-second wall; in three charters the verifier refused a render that changed code spans, and the README was left untouched | A model call varies run to run[^sittings] |
+| A ten-agent pass over nine sites, about 2,000 files, 2026-09-21 | A heading hit locked a file against every later edit; one site's average sentence measured 68.9 words because the splitter read bullet lists as sentences; a scan without its config reported 36 errors against 13 real ones; a hard-wrapped line published as a heading while the verifier passed | The sites are private; the counts cannot be re-run[^changelog] |
+| The hand-edited README | 40,089 bytes; the rendered one 21,453 at that release, 18,541 at the commit read | One file[^changelog] |
+| README renders through the translator | One took 6 minutes; one was killed at the 600-second wall; in two charters the verifier refused a render that changed code spans, and the README was left untouched | A model call varies run to run[^sittings] |
 | Tests | 272 unit tests and 10 shell suites, counted at the commit | A count, not an outcome[^tests] |
 
 ## The design
@@ -49,7 +49,7 @@ flowchart LR
   W["Hook on a Write or Edit of a human-lane file"] -->|"blocks hits the write added"| A1
 ```
 
-The diagram follows the README, the architecture document and the gate script.[^readme][^architecture][^gate]
+The diagram follows the README, the architecture document, the gate script and the skill, which allows the scan loop at most two rounds before it relays the narrative with the report attached.[^readme][^architecture][^gate][^skill]
 
 ## Alternatives the repo rejected
 
@@ -61,7 +61,7 @@ The diagram follows the README, the architecture document and the gate script.[^
 | Statistical compression of prompts | Output is degraded English with no durable convention[^researchsurvey] |
 | Standard agent vocabularies | FIPA-ACL ossified for want of a light amendment process, so a proposal path is built in[^researchsurvey] |
 | Prompt-only enforcement | Replaced from 0.3.0 by a scanner, a hook and a skill that scans before relaying[^changelog] |
-| An external linter such as Vale | Deferred: the corpus is written so it can compile to one[^readme] |
+| An external linter such as Vale | Not rejected: compiling the corpus to a Vale package is the designed CI path, not yet built[^readme][^architecture] |
 | A hand-kept README | Replaced by a rendered, verified, stamped one after it reached 40,089 bytes[^changelog] |
 
 ## What part 1 says
@@ -71,12 +71,12 @@ The diagram follows the README, the architecture document and the gate script.[^
 - Readability formulas are a weak gate by the studies found; the repo declares a grade per mode and computes none.[^config]
 - Bottom line up front is a standard, not a measured effect on a manager.
 - The two-lane split matches a military writing regulation, a medication-safety list of error-prone abbreviations, and Claude Code's own Concise output style, so it is supported as a pattern; the gate's effect on readers is unmeasured.
-- One benchmark found a false-success rate of 75.8 percent among status claims, which argues for checking a "done" claim against a tool result before a person reads it. See [Telling people what happened](../field/telling-people.md).
+- One benchmark found a false-success rate of 75.8 percent among runs that made a status claim, which argues for checking a "done" claim against a tool result before a person reads it. See [Telling people what happened](../field/telling-people.md).
 
 ## What is open
 
 - The machine lane is unmeasured: three seed entries, zero recorded uses, no token count.[^corpus]
-- The governance keys (a legibility floor, a cap of 150 terms, expiry, audits) are read by no code; they are instructions to the translator.[^config][^readme]
+- The governance keys (a legibility floor, a cap of 150 terms, expiry, audits) are merged by the configuration resolver but enforced by no code; the translator's prompt names only the legibility floor, and the README lists the cap, the expiry and the audits as declared and not built.[^config][^readme][^tests]
 - The verifier is structural, and the README's "meaning-preserving" is stronger than its invariants.[^reviews]
 - No reader study shows that people understand the three modes better than raw output.[^readme]
 - The translator is a model call: the renderer re-words the README on every run, so a render followed by `git status` cannot come back clean.[^sittings]
@@ -96,3 +96,4 @@ The diagram follows the README, the architecture document and the gate script.[^
 [^verify]: agentik-dev/agentik-respeak, "plugin/scripts/respeak-verify-edit.py", commit 319f060, <https://github.com/agentik-dev/agentik-respeak/blob/319f060/plugin/scripts/respeak-verify-edit.py>.
 [^reviews]: agentik-dev/agentik-respeak, "design/review-adv6.md", finding ADV6-4, commit 319f060, <https://github.com/agentik-dev/agentik-respeak/blob/319f060/design/review-adv6.md>.
 [^include]: agentik-dev/agentik-respeak, "design/include-r1.md", commit 319f060, <https://github.com/agentik-dev/agentik-respeak/blob/319f060/design/include-r1.md>.
+[^skill]: agentik-dev/agentik-respeak, "plugin/skills/respeak/SKILL.md", commit 319f060, <https://github.com/agentik-dev/agentik-respeak/blob/319f060/plugin/skills/respeak/SKILL.md>.
