@@ -64,3 +64,5 @@ nav:
       - field/unattended-and-guardrails.md
       - field/review.md
       - field/telling-people.md
+  - The tools:
+      - tools/index.md
