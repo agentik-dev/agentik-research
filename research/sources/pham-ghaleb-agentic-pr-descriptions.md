@@ -9,7 +9,7 @@ kind: measured
 
 ## What it says
 - The study compares 33,596 agent-generated pull requests with 6,618 human ones. Agents write stronger commit-level messages but trail humans at pull-request-level summarization.
-- Alignment results (medians, agent against human): commit-level semantic similarity 0.72 against 0.68; a language-model quality score 4 out of 10 against 2 out of 10; pull-request-to-commit similarity 0.86 against 0.88 (all p below 0.001, with small effect sizes).
+- Alignment results (medians, agent against human): commit-level semantic similarity 0.72 against 0.68; a language-model quality score 4 out of 10 against 2 out of 10; pull-request-to-commit similarity 0.86 against 0.88 (all p below 0.001; effect sizes of about 0.04 to 0.17).
 - The authors' reading: agents describe individual commits better, humans summarize the whole pull request better; both fall short of the benchmark references.
 - Predicting a "good" agent description (pull-request-to-commit similarity of 0.9 or more, roughly the top quarter): the best model, a random forest, reached accuracy 86.22 percent but recall 31.9 percent. Average commit message length was the top predictor, then title length and body length; the associated thresholds were commit messages of about 13 or more words, titles of about 7 or more words and bodies of about 80 or more words.
 

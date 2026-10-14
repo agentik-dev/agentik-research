@@ -17,7 +17,6 @@ kind: measured
 ## Limits
 - Raters were crowd workers, not patients, and all documents concerned one condition, so prior knowledge may have shaped ratings (the authors' own limits).
 - The outcome is perceived difficulty, not a comprehension test, and the text is clinical notes, not software or agent prose. It is the nearest measured test of the formulas on specialist technical text that I found.
-- I read about the first 100,000 characters of the page.
 
 ## Used in
 - research/synthesis/field-9.md

@@ -2,7 +2,7 @@
 url: https://arxiv.org/abs/2606.09863
 title: "From Confident Closing to Silent Failure: Characterizing False Success in LLM Agents"
 author: Laksh Advani
-published: 2026-06-01 (arXiv:2606.09863; page says accepted to a workshop at ICML 2026)
+published: 2026-06-01 (arXiv:2606.09863; page says accepted to FAGEN@ICML2026)
 accessed: 2026-10-14
 kind: measured
 ---
@@ -16,7 +16,7 @@ kind: measured
 
 ## Limits
 - I read the abstract page only. The environments are benchmark tasks, not Claude Code sessions, and the page does not name the models.
-- A single-author workshop paper, so check the full text before citing the detector numbers. The finding that confident closing language is not evidence of success is the part this note is used for.
+- A single-author paper (listed as accepted to FAGEN@ICML2026), so check the full text before citing the detector numbers. The finding that confident closing language is not evidence of success is the part this note is used for.
 
 ## Used in
 - research/synthesis/field-9.md
