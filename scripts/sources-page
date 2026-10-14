@@ -1,12 +1,15 @@
 #!/usr/bin/python3
-# sources-page <repo root>: write docs/sources.md from research/sources/ front matter, one line per distinct URL or repo path,
-# and docs/assets/data/sources.json, the same sources as rows for the faceted browse (glass-browse.js; docs/assets/javascripts/agentik.js).
+# sources-page <repo root> [<date>]: write docs/sources.md from research/sources/ front matter, and
+# docs/assets/data/sources.json, the same sources as rows for the faceted browse (glass-browse.js; docs/assets/javascripts/agentik.js).
+# One line per web address (notes on one address merge into its line) and one per repository, path and commit
+# (a file read at two commits is two lines). <date> stamps the browse's data-generated attribute; it defaults to today.
+# The intro is written here, below; its counts come from the notes. Footnotes on the pages that match no note go to stderr.
 import glob, json, os, re, sys, collections
 os.chdir(sys.argv[1])
 LABELS = collections.OrderedDict([("measured", "Measured: studies and benchmarks"), ("documented", "Documented: the vendor's and other primary documentation"), ("reported", "Reported: named practitioners and vendor posts"), ("our-use", "Our use: the agentik repositories")])
 groups = collections.OrderedDict((k, []) for k in LABELS)
 GENERATED = sys.argv[2] if len(sys.argv) > 2 else __import__('datetime').date.today().isoformat()
-seen = set()
+entries = collections.OrderedDict()  # key -> {"d": the first note's front matter, "key", "first", "bodies" and "texts" of every note, "level", "row"}
 def fm(text):
     m = re.match(r"---\n(.*?)\n---\n(.*)", text, re.S)
     if not m: return None, text
@@ -31,7 +34,7 @@ def shorten(s, n=220):
     if cut >= 100: return s[:cut]
     words = s[:n].rsplit(" ", 1)[0].split(" ")
     while words and re.fullmatch(r"[\d.,%$()-]+", words[-1]): words.pop()
-    return " ".join(words).rstrip(",;:") + " \u2026"
+    return " ".join(words).rstrip(",;:") + " …"
 def display_author(d, key):
     author = clean(d.get("author", "")) or "Unsigned"
     al = author.lower()
@@ -48,16 +51,21 @@ def clean(s):
     s = re.sub(r"\s+", " ", s).strip().rstrip(".")
     s = s.replace('\\"', '"')
     return s
+nnotes = 0
 for p in sorted(glob.glob("research/sources/*.md")):
     if p.endswith("README.md"): continue
-    d, body = fm(open(p, encoding="utf-8").read())
+    raw = open(p, encoding="utf-8").read()
+    d, body = fm(raw)
     if not d: continue
+    nnotes += 1
     kind = d.get("kind", "").split("|")[0].strip().replace(" ", "-")
     if kind not in groups: kind = "our-use" if "repo" in d else "reported"
+    # A web source is its address; a repository source is its repository, path and commit together.
     if "url" in d: key = d["url"].rstrip("/")
-    else: key = d.get("repo", "") + ":" + d.get("path", "")
-    if key in seen: continue
-    seen.add(key)
+    else: key = d.get("repo", "") + ":" + d.get("path", "") + "@" + d.get("commit", "")
+    if key in entries:
+        entries[key]["bodies"].append(body); entries[key]["texts"].append(raw.lower())
+        continue
     first = ""
     m = re.search(r"^## What it says\s*\n(.*?)(?=^## |\Z)", body, re.M | re.S)
     if m:
@@ -66,14 +74,166 @@ for p in sorted(glob.glob("research/sources/*.md")):
             b = re.sub(r"^(Read in full\.\s+|[\w./-]+:\d[\d-]*\.\s+)", "", b)
             first = clean(b); break
     first = shorten(first)
-    groups[kind].append((d, key, first, body))
-out = ["---", "hide: [toc]", "---", "", "# Sources", "", "Every source behind this site, one line each, grouped by evidence level: the sources its pages cite, and the further sources the research notes read. The browse below filters them by level, kind, question, year and the page that cites each one. Each line gives the author or organization, the title, the date the source states, where it was read, and one line of what it says. The notes behind them, with what was opened and when, are in the repository's `research/sources/` folder; parallel helpers sometimes wrote more than one note for a page, so there are more notes than lines.[^notes] Issue reporters and unsigned pages are not named, since the site names only published authors. Vendor documentation is undated by its publisher and was read on 2026-10-14.", ""]
+    entries[key] = {"d": d, "key": key, "first": first, "bodies": [body], "texts": [raw.lower()], "level": kind}
+    groups[kind].append(entries[key])
+
+# --- Facets ----------------------------------------------------------------
+LEVEL_NAME = {"measured": "measured", "documented": "documented", "reported": "reported", "our-use": "our use"}
+QUESTIONS = {1: "1 Length", 2: "2 Compaction or restart", 3: "3 Memory", 4: "4 Budgets and pacing", 5: "5 Many agents",
+             6: "6 Unattended runs", 7: "7 Guardrails", 8: "8 Review", 9: "9 Telling people", 10: "10 Cost lanes"}
+CHAPTERS = {"length-and-compaction": [1, 2], "memory": [3], "budgets-and-lanes": [4, 10], "many-agents": [5],
+            "unattended-and-guardrails": [6, 7], "review": [8], "telling-people": [9]}
+TOOLS = ("session", "relay", "decisions", "respeak", "agents", "commons")
+def source_kind(d):
+    if "url" not in d: return "Repository"
+    u = d["url"].lower()
+    if re.search(r"github\.com/[^/]+/[^/]+/(issues|pull)/", u): return "Issue or pull request"
+    if re.search(r"arxiv\.org|doi\.org|ncbi\.nlm|pubmed|europepmc|ebi\.ac\.uk|acm\.org|aclanthology|openreview|nature\.com|sciencedirect|springer|wiley|cambridge\.org|jstor|ssrn|repec|ro\.ecu|dash\.harvard|\.edu/.*\.pdf|interruptions\.net|nottingham\.ac\.uk/.*\.pdf|govinfo\.gov", u): return "Paper or report"
+    if re.search(r"code\.claude\.com/docs|docs\.anthropic|platform\.claude\.com/docs|support\.claude|readthedocs|/docs/|docs\.", u): return "Documentation"
+    if re.search(r"anthropic\.com/(engineering|news|research)|claude\.com/blog|claude\.dev/blog|platform\.claude\.com/cookbook", u): return "Vendor writing"
+    # The note's level says whose text it is: a documented-level note that no address rule above places is the
+    # publisher's own file or page (a raw CHANGELOG, a pricing page, a style guide), so it is documentation.
+    # A GitHub repository page stays code, below.
+    if d.get("kind", "").split("|")[0].strip() == "documented" and "github.com/" not in u: return "Documentation"
+    if "github.com" in u: return "Code or repository"
+    return "Article or post"
+def year_of(pub):
+    # The year the source states. A value with "undated", or one that is only an access phrase ("read October 2026"),
+    # gives no publication date, so its year is "undated" even when the phrase names one.
+    if not pub or "undated" in pub.lower() or re.match(r"\s*(read|accessed|retrieved|opened)\b", pub, re.I): return "undated"
+    y = re.search(r"\b(19|20)\d{2}\b", pub)
+    return y.group(0) if y else "undated"
+def questions(bodies):
+    qs = []
+    for body in bodies:
+        m = re.search(r"^## Used in\s*\n(.*?)(?=^## |\Z)", body, re.M | re.S)
+        for line in (m.group(1) if m else "").splitlines():
+            for n in re.findall(r"field-(\d+)", line):
+                qs.append(QUESTIONS.get(int(n)))
+            for ch in re.findall(r"docs/field/([\w-]+)\.md", line):
+                qs += [QUESTIONS[n] for n in CHAPTERS.get(ch, [])]
+            for t in re.findall(r"(?:tools-|docs/tools/)(\w+)", line):
+                qs.append("The tools" if t == "index" else f"agentik-{t}" if t in TOOLS else None)
+            if re.search(r"journal", line): qs.append("The journal")
+    return sorted({q for q in qs if q}, key=lambda q: (not q[0].isdigit(), int(q.split()[0]) if q[0].isdigit() else 0, q))
+
+# --- The pages that cite each source: footnote definitions in docs/ ---------
+def norm(u):
+    # Compare URLs without scheme, www, trailing slash or fragment; an arXiv paper by its id.
+    u = re.sub(r"https?://(www\.)?", "", u.lower())
+    u = re.sub(r"arxiv\.org/(abs|pdf|html)/(\d{4}\.\d{4,5})(v\d+)?(\.pdf)?", r"arxiv:\2", u)
+    return re.sub(r"/(?=[\s>)#]|$)", "", u)
+GH = re.compile(r"github\.com/([\w.-]+/[\w.-]+)/(blob|tree|commits|commit|compare)/([^\s>)#?\]]+)")
+SHA = re.compile(r"\b(?=[0-9a-f]*\d)[0-9a-f]{7,40}\b")
+def footnote(line):
+    # One footnote definition, lowercased: its GitHub links, the agentik repositories and commits it names, and its paths:
+    # the quoted paths ("design/review-r6.md"), a file link's path, and a folder link's path when nothing is quoted.
+    links = GH.findall(line)
+    quoted = {q.rstrip("/") for q in re.findall(r'"([^"\s]+)"', line)}
+    linked = {rest.partition("/")[2].rstrip("/") for _, how, rest in links if how == "blob" or (how == "tree" and not quoted)}
+    return {"links": links, "repos": {r for r, _, _ in links} | {"agentik-dev/" + n for n in re.findall(r"\b(agentik-[a-z]+)\b", line)},
+            "shas": set(SHA.findall(line)), "paths": {q for q in quoted | linked if q}, "org": "github.com/agentik-dev" in line, "line": line}
+pages = {}
+for path in sorted(glob.glob("docs/**/*.md", recursive=True)):
+    text = open(path, encoding="utf-8").read()
+    h1 = re.search(r"^title:\s*(.+)$", text.split("\n---", 1)[0], re.M) if text.startswith("---") else None
+    h1 = h1 or re.search(r"^# (.+)$", text, re.M)
+    rel = os.path.relpath(path, "docs")
+    if rel == "sources.md": continue
+    defs = [norm(l) for l in text.splitlines() if re.match(r"^\[\^[^\]]+\]:", l)]
+    pages[rel] = (h1.group(1).strip() if h1 else rel, defs, [footnote(l) for l in defs])
+def cites_repo(e, f):
+    # A repository note matches a footnote in its repository (a note on a whole organization: in any of its repositories)
+    # that names one of the note's commits and one of its paths (or a folder holding it, or a file inside a folder it
+    # names). A history link (commits/<sha>) matches a note whose `commit:` names the sha and whose `path:` reads the
+    # history; a commit link, a note that names the sha; a compare link, a note that names both ends.
+    d = e["d"]
+    mine = d.get("repo", "").lower().strip("/")
+    org = "/" not in mine
+    ours = lambda r: r == mine or (org and r.startswith(mine + "/"))
+    if not (any(ours(r) for r in f["repos"]) or (org and f["org"])): return False
+    commits = SHA.findall(d.get("commit", "").lower())
+    same = lambda a: any(a.startswith(c) or c.startswith(a) for c in commits)
+    for r, how, rest in f["links"]:
+        if not ours(r): continue
+        if how == "commits" and same(rest) and re.search(r"history|commits", d.get("path", ""), re.I): return True
+        if how == "commit" and any(rest in t for t in e["texts"]): return True
+        if how == "compare":
+            a, _, b = rest.partition("...")
+            if a and b and any(a in t and b in t for t in e["texts"]): return True
+    if not any(same(s) for s in f["shas"]): return False
+    names = {re.sub(r":\d.*$", "", t).rstrip(".:").rstrip("/") for t in re.split(r"[\s,;()]+", d.get("path", "").lower())}
+    return any(n and (n == q or q.startswith(n + "/") or n.startswith(q + "/")) for n in names for q in f["paths"])
+def cites_url(e, f):
+    u = norm(e["d"]["url"]).split("#")[0]
+    return re.search(re.escape(u) + r"(?=[\s>)#?\]]|$)", f["line"]) is not None
+def cites(e, f): return cites_url(e, f) if "url" in e["d"] else cites_repo(e, f)
+def cited_on(e):
+    hits = [t for t, _, fns in pages.values() if any(cites(e, f) for f in fns)]
+    return sorted(set(hits)) or ["Research notes only"]
+
+rows = []
+for k, items in groups.items():
+    for e in items:
+        d, key, first = e["d"], e["key"], e["first"]
+        if "url" in d:
+            url = d["url"]
+        else:
+            repo, path_, commit = d.get("repo", ""), d.get("path", ""), d.get("commit", "")
+            single = re.fullmatch(r"[0-9a-f]{7,40}", commit or "")
+            url = (f"https://github.com/{repo}/{'tree' if path_.endswith('/') else 'blob'}/{commit}/{path_}"
+                   if single and re.fullmatch(r"[\w./-]+", path_ or "") else f"https://github.com/{repo}")
+        title = clean(d.get("title", "")) or key
+        author = re.sub(r"\s*\([^()]*(\([^()]*\)[^()]*)*\)\s*$", "", display_author(d, key)) or display_author(d, key)
+        row = {"t": title, "a": author, "y": year_of(d.get("published", "")), "l": LEVEL_NAME[k],
+               "k": source_kind(d), "qs": questions(e["bodies"]), "p": cited_on(e), "u": url}
+        row["q"] = " ".join([title, author, row["y"], row["l"], row["k"], " ".join(row["qs"]), " ".join(row["p"]), first]).lower()
+        rows.append(row)
+        e["row"] = row
+
+# Footnotes on the pages that no note matches: the intro's "every source" holds only when there are none.
+unmatched = []
+for rel, (_, _, fns) in pages.items():
+    for f in fns:
+        urls = re.findall(r"<([^>\s]+)>", f["line"]) + re.findall(r"\]\(([^)\s]+)\)", f["line"])
+        if all(u.startswith("github.com/agentik-dev/agentik-research/tree/main/research/sources") for u in urls): continue
+        if not any(cites(e, f) for e in entries.values()): unmatched.append(f"{rel}: {urls[0] if urls else f['line'][:80]}")
+for line in sorted(set(unmatched)): print("no note for", line, file=sys.stderr)
+
+# --- The page ------------------------------------------------------------------
+# The intro is written here; its counts come from the rows above, so a regeneration keeps it true.
+vendor = [e for e in entries.values() if e["row"]["k"] == "Documentation" and e["row"]["a"].startswith("Anthropic")]
+vendor_undated = [e for e in vendor if e["row"]["y"] == "undated"]
+read_on = " or ".join(sorted({e["d"].get("accessed", "") for e in vendor_undated})) or "the date each note gives"
+dated = ["\"" + clean(e["d"].get("title", "")) + "\", " + re.split(r" \(|; ", clean(e["d"].get("published", "")))[0] for e in vendor if e["row"]["y"] != "undated"]
+two_commits = sum(1 for n in collections.Counter((e["d"].get("repo"), e["d"].get("path")) for e in entries.values() if "url" not in e["d"]).values() if n > 1)
+missing_repo = sorted({u for u in unmatched if ": github.com/agentik-dev" in u})
+missing_web = sorted(set(unmatched) - set(missing_repo))
+lead = ("Every source behind this site, one line each, grouped by evidence level: the sources its pages cite, and the further sources the research notes read. "
+        if not unmatched else
+        "Every source a research note records, one line each, grouped by evidence level: the sources the site's pages cite, and the further sources the notes read. "
+        + (f"{len(missing_repo)} footnotes on the other pages have no line here: each cites a repository's file, folder or history that no note read at the cited commit. " if missing_repo else "")
+        + (f"{len(missing_web)} footnotes on the other pages cite a web address that no note records. " if missing_web else ""))
+intro = [lead + f"The {len(entries)} lines come from {nnotes} notes in the repository's `research/sources/` folder, which record what was opened and when.[^notes]",
+         "A web source is one line per address, so a second note on the same address joins its line. "
+         "A repository source is one line per repository, path and commit, so a file read at two commits is two lines"
+         + (f" ({two_commits} such {'file' if two_commits == 1 else 'files'})" if two_commits else "") + ". "
+         "Each line gives the author or organization, the title, the date the source states, where it was read, and one line of what it says. "
+         "The browse below filters the lines by level, kind, question, year and the page that cites each one. "
+         "A source that states no publication date sits under the year \"undated\", even when its note records when it was read.",
+         "Issue reporters and unsigned pages are not named in the text. "
+         "An issue in a person's public repository still carries that repository's owner in its link, since the link is the citation. "
+         f"Most vendor documentation is undated by its publisher: {len(vendor_undated)} of the {len(vendor)} documentation sources from Anthropic state no date, "
+         f"and their notes record a read on {read_on}."
+         + (f" The other {len(dated)} are dated as their notes give: " + "; ".join(dated) + "." if dated else "")]
+out = ["---", "hide: [toc]", "---", "", "# Sources", ""] + [x for p_ in intro for x in (p_, "")]
 out += ['<div class="gb-browse" data-page="sources" data-src="../assets/data/sources.json" data-generated="' + GENERATED + '">Loading the browse of every source; the full list follows below.</div>', "",
         '<div class="ak-static-list" markdown>', ""]
 for k, items in groups.items():
     out.append(f"## {LABELS[k]}")
     out.append("")
-    for d, key, first, _ in sorted(items, key=lambda t: (display_author(t[0], t[1]).lower(), t[0].get("title", "").lower())):
+    for e in sorted(items, key=lambda e: (display_author(e["d"], e["key"]).lower(), e["d"].get("title", "").lower())):
+        d, key, first = e["d"], e["key"], e["first"]
         author = display_author(d, key)
         title = clean(d.get("title", ""))
         date = clean(d.get("published", "undated")) or "undated"
@@ -92,7 +252,7 @@ for k, items in groups.items():
             elif repo:
                 where = f"[{repo}](https://github.com/{repo}), `{path}`" + (f" at {commit}" if commit else "")
         line = f"- {author}, \"{title}\", {date}. {where}."
-        if first: line += f" {first}" + ("" if first.endswith("\u2026") else ".")
+        if first: line += f" {first}" + ("" if first.endswith("…") else ".")
         out.append(line)
     out.append("")
 out.append("</div>")
@@ -102,79 +262,9 @@ out.append("")
 out.append("[^notes]: agentik-dev/agentik-research, \"research/sources/\", the source notes, on the main branch once the pull request merges, <https://github.com/agentik-dev/agentik-research/tree/main/research/sources>.")
 open("docs/sources.md", "w", encoding="utf-8").write("\n".join(out) + "\n")
 
-# --- The browse rows -------------------------------------------------------
-LEVEL_NAME = {"measured": "measured", "documented": "documented", "reported": "reported", "our-use": "our use"}
-QUESTIONS = {1: "1 Length", 2: "2 Compaction or restart", 3: "3 Memory", 4: "4 Budgets and pacing", 5: "5 Many agents",
-             6: "6 Unattended runs", 7: "7 Guardrails", 8: "8 Review", 9: "9 Telling people", 10: "10 Cost lanes"}
-CHAPTERS = {"length-and-compaction": [1, 2], "memory": [3], "budgets-and-lanes": [4, 10], "many-agents": [5],
-            "unattended-and-guardrails": [6, 7], "review": [8], "telling-people": [9]}
-TOOLS = ("session", "relay", "decisions", "respeak", "agents", "commons")
-def source_kind(d):
-    if "url" not in d: return "Repository"
-    u = d["url"].lower()
-    if re.search(r"github\.com/[^/]+/[^/]+/(issues|pull)/", u): return "Issue or pull request"
-    if re.search(r"arxiv\.org|doi\.org|ncbi\.nlm|pubmed|europepmc|ebi\.ac\.uk|acm\.org|aclanthology|openreview|nature\.com|sciencedirect|springer|wiley|cambridge\.org|jstor|ssrn|repec|ro\.ecu|dash\.harvard|\.edu/.*\.pdf|interruptions\.net|nottingham\.ac\.uk/.*\.pdf|govinfo\.gov", u): return "Paper or report"
-    if re.search(r"code\.claude\.com/docs|docs\.anthropic|platform\.claude\.com/docs|support\.claude|readthedocs|/docs/|docs\.", u): return "Documentation"
-    if re.search(r"anthropic\.com/(engineering|news|research)|claude\.com/blog|platform\.claude\.com/cookbook", u): return "Vendor writing"
-    if "github.com" in u: return "Code or repository"
-    return "Article or post"
-def questions(body):
-    m = re.search(r"^## Used in\s*\n(.*?)(?=^## |\Z)", body, re.M | re.S)
-    qs = []
-    for line in (m.group(1) if m else "").splitlines():
-        for n in re.findall(r"field-(\d+)", line):
-            qs.append(QUESTIONS.get(int(n)))
-        for ch in re.findall(r"docs/field/([\w-]+)\.md", line):
-            qs += [QUESTIONS[n] for n in CHAPTERS.get(ch, [])]
-        for t in re.findall(r"(?:tools-|docs/tools/)(\w+)", line):
-            qs.append("The tools" if t == "index" else f"agentik-{t}" if t in TOOLS else None)
-        if re.search(r"journal", line): qs.append("The journal")
-    return sorted({q for q in qs if q}, key=lambda q: (not q[0].isdigit(), int(q.split()[0]) if q[0].isdigit() else 0, q))
-# The pages that cite each source: footnote definitions in docs/, by URL or by repo and path.
-def norm(u):
-    # Compare URLs without scheme, www, trailing slash or fragment; an arXiv paper by its id.
-    u = re.sub(r"https?://(www\.)?", "", u.lower())
-    u = re.sub(r"arxiv\.org/(abs|pdf|html)/(\d{4}\.\d{4,5})(v\d+)?(\.pdf)?", r"arxiv:\2", u)
-    return re.sub(r"/(?=[\s>)#]|$)", "", u)
-pages = {}
-for path in sorted(glob.glob("docs/**/*.md", recursive=True)):
-    text = open(path, encoding="utf-8").read()
-    h1 = re.search(r"^title:\s*(.+)$", text.split("\n---", 1)[0], re.M) if text.startswith("---") else None
-    h1 = h1 or re.search(r"^# (.+)$", text, re.M)
-    rel = os.path.relpath(path, "docs")
-    if rel == "sources.md": continue
-    defs = "\n".join(l for l in text.splitlines() if re.match(r"^\[\^[^\]]+\]:", l))
-    pages[rel] = (h1.group(1).strip() if h1 else rel, norm(defs))
-def cited_on(d):
-    if "url" in d:
-        u = norm(d["url"]).split("#")[0]
-        hits = [t for t, defs in pages.values() if u in defs]
-    else:
-        repo, path_ = d.get("repo", ""), d.get("path", "").split(",")[0].strip().rstrip("/")
-        if not repo or not path_: return []
-        rx = re.compile(re.escape(f"github.com/{repo}/".lower()) + r"(blob|tree)/[0-9a-f]+/" + re.escape(path_.lower()))
-        hits = [t for t, defs in pages.values() if rx.search(defs)]
-    return sorted(set(hits)) or ["Research notes only"]
-rows = []
-for k, items in groups.items():
-    for d, key, first, body in items:
-        if "url" in d:
-            url = d["url"]
-        else:
-            repo, path_, commit = d.get("repo", ""), d.get("path", ""), d.get("commit", "")
-            single = re.fullmatch(r"[0-9a-f]{7,40}", commit or "")
-            url = (f"https://github.com/{repo}/{'tree' if path_.endswith('/') else 'blob'}/{commit}/{path_}"
-                   if single and re.fullmatch(r"[\w./-]+", path_ or "") else f"https://github.com/{repo}")
-        year = re.search(r"\b(19|20)\d{2}\b", d.get("published", ""))
-        title = clean(d.get("title", "")) or key
-        author = re.sub(r"\s*\([^()]*(\([^()]*\)[^()]*)*\)\s*$", "", display_author(d, key)) or display_author(d, key)
-        row = {"t": title, "a": author, "y": year.group(0) if year else "undated", "l": LEVEL_NAME[k],
-               "k": source_kind(d), "qs": questions(body), "p": cited_on(d), "u": url}
-        row["q"] = " ".join([title, author, row["y"], row["l"], row["k"], " ".join(row["qs"]), " ".join(row["p"]), first]).lower()
-        rows.append(row)
 os.makedirs("docs/assets/data", exist_ok=True)
 with open("docs/assets/data/sources.json", "w", encoding="utf-8") as f:
     json.dump(rows, f, ensure_ascii=False, separators=(",", ":"))
     f.write("\n")
 print(len(rows), "browse rows;", os.path.getsize("docs/assets/data/sources.json"), "bytes")
-print(len(seen), "sources;", os.path.getsize("docs/sources.md"), "bytes")
+print(len(entries), "sources from", nnotes, "notes;", os.path.getsize("docs/sources.md"), "bytes;", len(set(unmatched)), "footnotes with no note")

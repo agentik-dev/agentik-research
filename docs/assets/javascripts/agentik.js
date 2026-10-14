@@ -11,6 +11,10 @@
   if (!window.GlassBrowse) return;
 
   var LEVELS = ["measured", "documented", "reported", "our use"];
+  /* Years sort as years; a source that states no date ("undated") sinks below
+   * the dated ones when the newest come first. */
+  var YEARS = ["undated"];
+  for (var yr = 1900; yr <= 2100; yr++) YEARS.push(String(yr));
 
   GlassBrowse.register({
     sources: {
@@ -24,7 +28,7 @@
       cols: [
         { key: "t", label: "Source", link: "u", wrap: true },
         { key: "a", label: "Author", wrap: true },
-        { key: "y", label: "Year" },
+        { key: "y", label: "Year", ordinal: YEARS },
         { key: "l", label: "Evidence", badge: "ev", ordinal: LEVELS },
         { key: "k", label: "Kind" },
         { key: "p", label: "Cited on", wrap: true }
