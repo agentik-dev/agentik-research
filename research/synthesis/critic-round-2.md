@@ -44,3 +44,17 @@ New, worst first:
 3. Length, memory and unattended, 390, both schemes: the same rule makes every column 160 px wide, so Result is no wider than Study. Length's first table runs 2196 px tall, and the Evidence pills sit off-screen. A min-width on the whole table would read better.
 4. Many-agents, Sources, all widths: footnote 14 shows literal backslashes, `isolation: \"worktree\"` (many-agents.md:89).
 5. Many-agents limits card: its first bullet is notes, not a sentence (many-agents.md:55).
+
+## Practices, method, glossary, sources: FAIL
+
+Round 1: 1-4 and 6-9 fixed (cards below 960 px; the stamp 12 px at 4.6:1; 48 glossary anchors, pin and wall defined); 5 fixed on the first screen (the Status section is brought current at the end); 10 unchanged (axe clean; no broken internal link).
+
+New, worst first:
+1. Method, 390, both schemes. The two phase tables (method.md:48 and :65) have three columns, so agentik-site.css:214 `:has(tr > :nth-child(4))` skips them. "The record shows" shrinks to 119 px, off-screen. The first table is 3175 px tall, and the visible columns show rows of about 470 px of blank space.
+2. Sources, 390, both schemes. All 421 cards draw at once and the page is 68,100 px tall. The "Show the full list as text" button, the footnote and the footer sit 67,600 px down, and nothing pages the cards (agentik.js:84-87).
+3. Sources text. Summaries cut by scripts/sources-page leave an open parenthesis and end on a period, for example "(CPU, memory, disk and network, singly and combined." (sources.md:31, 43, 110, 133, 178, 329, 346, 391). Three citations link to Europe PMC REST JSON, not a readable page (sources.md:23, 27, 96).
+4. Sources footnote (sources.md:462): "on the main branch once the pull request merges" reads as process notes.
+5. Practices, 1280. Column widths change from table to table: Evidence starts anywhere from 701 to 737 px.
+6. Glossary and practices. Code padding leaves a gap before punctuation, as in "bounded 's" and ".git ,".
+7. Glossary. Readers can't find the anchors: terms have no permalink, and the TOC has only two entries. "Part 1" (glossary.md:10) is never explained.
+8. Method. Footnote clusters run out of order, "5,4" and "12,4" (method.md:82).
