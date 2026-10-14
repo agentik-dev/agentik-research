@@ -4,7 +4,7 @@ date:
 categories:
   - Open
   - Did not work
-description: A subscription meters use in five-hour windows under a weekly limit. We built two answers, a band that projects the window and advises how many helpers fit, and a pause that waits for the reset. Neither has run long enough to say if it works.
+description: A subscription meters use in five-hour windows under a weekly limit. We built two answers, a band that projects the window and advises how many helpers fit, and a pause that waits for the reset. The band has run live only in observe mode, where it refuses nothing. The pause has run only in tests, on fakes.
 ---
 
 # Living inside a usage window
