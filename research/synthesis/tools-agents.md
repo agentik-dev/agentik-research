@@ -41,7 +41,7 @@ The tool set meets four problems: delegated work bills in two different currenci
 ### 1.3 One endpoint per session, and a local model that needs care
 
 - Claude Code allows one API endpoint per session, so "main thread on the seat, subagents on a local model" cannot be written in agent frontmatter. The design cites an open Claude Code issue on per-agent provider routing (dated 2026-03-25). It therefore puts a proxy on loopback that routes by the request body's model name. [agentik-agents design/01-local-agent-lane.md section 0 @ 78ce312; agentik-agents-design-01-local-lane; our use]
-- Measured problems with the local model, all on 2026-09-04 on one Apple an Apple Silicon laptop with 128 GB, Qwen 3.8 27B q8_0, Claude Code 2.1.261:
+- Measured problems with the local model, all on 2026-09-04 on one Apple Silicon laptop with 128 GB, Qwen 3.8 27B q8_0, Claude Code 2.1.261:
 
 | Problem | Figure | Evidence |
 |---|---|---|
@@ -139,7 +139,7 @@ flowchart LR
 
   [agentik-agents design/02-local-rig.md section 3.6d @ 78ce312; agentik-agents-design-02-local-rig; our use] (two cache-hit lines in this table's MLX row were found in the committed logs: agentik-agents design/02-local-rig/ honest-rerun logs @ 78ce312; agentik-agents-design-02-evidence; our use)
 - Decision (D1, 2026-09-05): keep the Ollama GGUF runner as `local/default`. An earlier recommendation to make the MLX build the default had come from a late-divergence prompt shape and was withdrawn. The doc's own summary: prefill bandwidth, not caching, governs latency for a new agent shape, so the levers are fewer distinct agent shapes, smaller agent prompts, output discipline, and only then the backend. [agentik-agents design/02-local-rig.md sections 3.4, 3.6d @ 78ce312; agentik-agents-design-02-local-rig; our use]
-- Sizing the repo states for the local model (Apple an Apple Silicon laptop with 128 GB of unified memory, Ollama 0.33.2): prefill about 87 to 230 tok/s; a 3-tool agent turn about 5.4k tokens; keep `tools:` under about 8 and turns under about 15k tokens. [agentik-agents README.md "Lane 3" @ 78ce312; agentik-agents-readme; our use]
+- Sizing the repo states for the local model (an Apple Silicon laptop with 128 GB of unified memory, Ollama 0.33.2): prefill about 87 to 230 tok/s; a 3-tool agent turn about 5.4k tokens; keep `tools:` under about 8 and turns under about 15k tokens. [agentik-agents README.md "Lane 3" @ 78ce312; agentik-agents-readme; our use]
 
 ### 2.6 The delegate agents, commands and skills
 
@@ -173,7 +173,7 @@ Every delegate prompt carries a rule: a finding is a lead, not a fact, and the c
 | Claude Code and Ollama versions | Claude Code 2.1.261 measured; Claude Code 2.1 or later for `--bare`; Ollama 0.33.0 or later required, 0.33.2 measured; sops 3.13 or later | 2026-09-04 | design/01 section 14; README "Requirements" [agentik-agents-design-01-local-lane; agentik-agents-readme] |
 | Claude Code constants the design relies on | 300-second stream watchdog; `API_TIMEOUT_MS` default 600000 (launcher sets 1800000); 20 concurrent subagents; spawn depth 3 | 2026-09-04 | design/01 section 2.3, 5.2 [agentik-agents-design-01-local-lane] |
 | Local model | Qwen 3.8 27B, released 2026-08-14, Apache-2.0; q8_0 31.5 GB resident; model-card figures SWE-bench Pro 61.7% and Terminal Bench 2.1 73.0% (as the doc reports them) | 2026-09-04 | design/01 sections 2.5, 6 [agentik-agents-design-01-local-lane] |
-| Machine | Apple an Apple Silicon laptop with 128 GB of unified memory, Metal budget 107.5 GiB | 2026-09-04 | design/01 section 6 [agentik-agents-design-01-local-lane] |
+| Machine | an Apple Silicon laptop with 128 GB of unified memory, Metal budget 107.5 GiB | 2026-09-04 | design/01 section 6 [agentik-agents-design-01-local-lane] |
 | Router | version 0.4.0; ping after 20 s then every 15 s; timeout 1800 s; `max_tokens` clamp 8192; default effort low, ceiling medium | commit 78ce312 | bin/ router constants [agentik-agents-bin] |
 | Plugin | version 1.2.0, MIT, marketplace source `./plugin` | commit 78ce312 | plugin/.claude-plugin/plugin.json [agentik-agents-plugin] |
 
@@ -235,7 +235,7 @@ Gaps in the record: no "one lane only" alternative, no hosted routing service, n
 
 ### 4.3 What is one owner's experience
 
-- Every measurement comes from one owner's machine (an Apple an Apple Silicon laptop with 128 GB), one model family, one Claude Code version per section, and small tasks whose answers were a word or a file name (`gamma`, `beta`, `alpha`). There is no quality comparison between local and hosted output, no count of how often a local agent's answer was wrong, and one recorded poor answer (the forced Explore run). [agentik-agents design/01-local-agent-lane.md section 14 @ 78ce312; agentik-agents-design-01-local-lane; our use]
+- Every measurement comes from one owner's machine (an Apple Silicon laptop with 128 GB), one model family, one Claude Code version per section, and small tasks whose answers were a word or a file name (`gamma`, `beta`, `alpha`). There is no quality comparison between local and hosted output, no count of how often a local agent's answer was wrong, and one recorded poor answer (the forced Explore run). [agentik-agents design/01-local-agent-lane.md section 14 @ 78ce312; agentik-agents-design-01-local-lane; our use]
 - The "Sonnet 5 list" figure for the local lane sizes tokens; no run records that the lane kept the seat under a window limit. The repo states no incident of hitting a usage window. [agentik-agents README.md "Lane 3", "Token efficiency" @ 78ce312; agentik-agents-readme; our use]
 - The $3.13 against $155.78 ratio and the fan-out efficiency table are single measurements with no date; the 8-shard fan-out is a sample of one over one 849-line file. [agentik-agents README.md @ 78ce312; agentik-agents-readme; our use]
 - The interim orchestrator demo (`queue-mvp`) targets a private job-queue service; the files read record `--dry-run` with canned responses at zero spend, and no live run result. [agentik-agents README.md "queue-mvp" @ 78ce312; agentik-agents-readme; our use]
@@ -360,4 +360,4 @@ The repo was rewritten for public release on 2026-10-13 (the sitting record), an
 - The owner's public age recipient key, a password manager, and a home-relative path for the age private key.
 - Private note titles (wiki-style links) from the owner's memory, cited as rules.
 - A hook-context string in a committed JSON dump that embeds a home path.
-- One machine class (an Apple an Apple Silicon laptop with 128 GB) is kept as a measurement condition. Strip it if the owner counts the chip as identifying.
+- One machine class (an Apple Silicon laptop with 128 GB) is kept as a measurement condition. Strip it if the owner counts the chip as identifying.
