@@ -1,0 +1,8 @@
+# agentik-commons hygiene exceptions: `<path-glob>: <group>`, `*` inside one segment.
+# This repo is research about the agentik tools, so it names them throughout.
+*: sibling
+*/*: sibling
+*/*/*: sibling
+*/*/*/*: sibling
+LICENSE: person          # the copyright line names the owner, as in every agentik-dev repo
+scripts/check: home      # the check's own home-path pattern

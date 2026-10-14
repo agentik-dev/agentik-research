@@ -1,0 +1,146 @@
+#!/usr/bin/python3
+"""check: the site's structural checks, stdlib only.
+
+  scripts/check            every check; one line per failure, exit 1 on any
+
+Checks:
+  nav        every page under docs/ is in mkdocs.yml's nav, and every nav entry exists
+  footnotes  every [^key] has a definition and every definition is used; each page
+             but the glossary has one; definitions sit under `## Sources` and carry a URL
+  drafts     no TODO, TBD, FIXME or XXX in docs/ or README.md, outside code
+  hygiene    no home-directory path, private IPv4 address or e-mail address in
+             docs/, research/ or README.md (the owner's private-term scan runs apart)
+  notes      each research/sources/*.md opens with front matter naming url or repo,
+             accessed and kind
+  charter    the newest history/sittings/*-research.md is under 4 KB
+"""
+import glob
+import os
+import re
+import sys
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+os.chdir(ROOT)
+fails = []
+
+
+def fail(path, line, check, msg):
+    fails.append(f"{path}:{line}: {check}: {msg}")
+
+
+def prose_lines(path):
+    """(lineno, text) for each line outside fenced code, inline code blanked."""
+    fence = None
+    with open(path, encoding="utf-8") as f:
+        for n, line in enumerate(f, 1):
+            m = re.match(r"\s*(`{3,}|~{3,})", line)
+            if m:
+                if fence is None:
+                    fence = m.group(1)[0] * len(m.group(1))
+                elif m.group(1).startswith(fence):
+                    fence = None
+                continue
+            if fence is None:
+                yield n, re.sub(r"`[^`]*`", "``", line.rstrip("\n"))
+
+
+def nav_pages():
+    pages = []
+    with open("mkdocs.yml", encoding="utf-8") as f:
+        in_nav = False
+        for line in f:
+            if re.match(r"^nav:\s*$", line):
+                in_nav = True
+                continue
+            if in_nav and re.match(r"^\S", line):
+                break
+            if in_nav:
+                m = re.search(r"([\w./-]+\.md)\s*$", line.split("#")[0])
+                if m:
+                    pages.append(m.group(1))
+    return pages
+
+
+docs = sorted(os.path.relpath(p, "docs") for p in glob.glob("docs/**/*.md", recursive=True))
+nav = nav_pages()
+for p in docs:
+    if p not in nav:
+        fail(f"docs/{p}", 1, "nav", "page is not in mkdocs.yml nav")
+for p in nav:
+    if p not in docs:
+        fail("mkdocs.yml", 1, "nav", f"nav names {p}, which does not exist")
+
+REF = re.compile(r"\[\^([^\]\s]+)\](?!:)")
+DEF = re.compile(r"^\[\^([^\]\s]+)\]:\s*(.*)$")
+for p in docs:
+    path = f"docs/{p}"
+    refs, defs, sources_at = {}, {}, None
+    for n, line in prose_lines(path):
+        if re.match(r"^##\s+Sources\s*$", line):
+            sources_at = n
+        d = DEF.match(line)
+        if d:
+            defs[d.group(1)] = (n, d.group(2))
+            continue
+        for k in REF.findall(line):
+            refs.setdefault(k, n)
+    for k, n in refs.items():
+        if k not in defs:
+            fail(path, n, "footnotes", f"[^{k}] has no definition")
+    for k, (n, body) in defs.items():
+        if k not in refs:
+            fail(path, n, "footnotes", f"[^{k}] is defined but never cited")
+        if sources_at is None or n < sources_at:
+            fail(path, n, "footnotes", f"[^{k}] is defined above `## Sources`")
+        if not re.search(r"https?://", body):
+            fail(path, n, "footnotes", f"[^{k}] carries no URL")
+    if not defs and os.path.basename(p) != "glossary.md":
+        fail(path, 1, "footnotes", "page cites no source")
+
+DRAFT = re.compile(r"\b(TODO|TBD|FIXME|XXX)\b")
+for path in [f"docs/{p}" for p in docs] + ["README.md"]:
+    for n, line in prose_lines(path):
+        m = DRAFT.search(line)
+        if m:
+            fail(path, n, "drafts", f"draft marker {m.group(1)}")
+
+PRIVATE = [
+    ("home path", re.compile(r"(/Users/[A-Za-z]|/home/[a-z][\w-]*/|~/code/)")),
+    ("private IPv4", re.compile(r"\b(10\.\d{1,3}|192\.168|172\.(1[6-9]|2\d|3[01]))\.\d{1,3}\.\d{1,3}\b")),
+    ("e-mail address", re.compile(r"\b[\w.+-]+@(?!users\.noreply\.github\.com\b|noreply\.)[\w-]+\.[\w.-]+\b")),
+]
+scan = [f"docs/{p}" for p in docs] + ["README.md"]
+scan += sorted(glob.glob("research/**/*.md", recursive=True))
+for path in scan:
+    with open(path, encoding="utf-8") as f:
+        for n, line in enumerate(f, 1):
+            for name, rx in PRIVATE:
+                if rx.search(line):
+                    fail(path, n, "hygiene", name)
+
+for path in sorted(glob.glob("research/sources/*.md")):
+    if os.path.basename(path) == "README.md":
+        continue
+    with open(path, encoding="utf-8") as f:
+        text = f.read()
+    m = re.match(r"---\n(.*?)\n---\n", text, re.S)
+    keys = set(re.findall(r"^(\w+):", m.group(1), re.M)) if m else set()
+    if not m:
+        fail(path, 1, "notes", "no front matter")
+        continue
+    if not keys & {"url", "repo"}:
+        fail(path, 1, "notes", "front matter names neither url nor repo")
+    for k in ("accessed", "kind"):
+        if k not in keys:
+            fail(path, 1, "notes", f"front matter has no {k}")
+
+charters = sorted(glob.glob("history/sittings/*-research.md"),
+                  key=lambda p: [int(x) if x.isdigit() else x for x in re.split(r"[-.]", os.path.basename(p))])
+if charters and os.path.getsize(charters[-1]) >= 4096:
+    fail(charters[-1], 1, "charter", f"{os.path.getsize(charters[-1])} bytes; keep it under 4096")
+
+for line in fails:
+    print(line)
+notes = len([p for p in glob.glob("research/sources/*.md") if not p.endswith("README.md")])
+print(f"check: {len(docs)} pages, {notes} source notes, {len(fails)} failures")
+sys.exit(1 if fails else 0)

@@ -1,0 +1,45 @@
+#!/bin/bash
+# sources: put a read-only checkout of each agentik-dev repo under .sources/<repo>.
+#
+# A repo attached to the session (a sibling checkout whose origin names
+# agentik-dev/<repo>) is linked; any other is cloned shallow from GitHub. A
+# repo already under .sources/ is kept. Prints one line per repo; exits 1 if
+# any repo could not be had.
+set -u
+root="$(git rev-parse --show-toplevel)" || exit 1
+dest="$root/.sources"
+mkdir -p "$dest"
+repos="agentik-commons agentik-relay agentik-session agentik-decisions agentik-respeak agentik-agents .github"
+bad=0
+
+find_attached() {
+  local r="$1" base d url
+  for base in "$root/.." "$HOME" "$HOME/code" /workspace /workspaces /home/user /code; do
+    [ -d "$base" ] || continue
+    for d in "$base"/* "$base"/.[!.]*; do
+      [ -d "$d/.git" ] || [ -f "$d/.git" ] || continue
+      [ "$(cd "$d" && pwd -P)" = "$(cd "$root" && pwd -P)" ] && continue
+      url="$(git -C "$d" remote get-url origin 2>/dev/null)" || continue
+      case "$url" in
+        *agentik-dev/"$r"|*agentik-dev/"$r".git|*agentik-dev/"$r"/) (cd "$d" && pwd -P); return 0 ;;
+      esac
+    done
+  done
+  return 1
+}
+
+for r in $repos; do
+  if [ -e "$dest/$r" ]; then
+    echo "have   $r @ $(git -C "$dest/$r" rev-parse --short HEAD 2>/dev/null || echo '?')"
+    continue
+  fi
+  if d="$(find_attached "$r")"; then
+    ln -s "$d" "$dest/$r" && echo "linked $r -> $d @ $(git -C "$d" rev-parse --short HEAD)"
+  elif git clone -q --depth 200 "https://github.com/agentik-dev/$r.git" "$dest/$r" 2>/dev/null; then
+    echo "cloned $r @ $(git -C "$dest/$r" rev-parse --short HEAD)"
+  else
+    echo "MISSING $r: not attached, and the clone failed (attach it to the session, or widen the network level)" >&2
+    bad=1
+  fi
+done
+exit "$bad"

@@ -1,0 +1,7 @@
+.sources/
+site/
+.venv/
+__pycache__/
+.cache/
+.claude/respeak/config.local.yaml
+.claude/settings.local.json
