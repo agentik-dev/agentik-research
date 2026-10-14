@@ -14,7 +14,7 @@ kind: documented
 
 ## Limits
 - I read the page only through the fetch tool's extract, which would not reproduce the full text; the wording above is the extract's, not verbatim. The two banners and the linked article do not obviously agree on whether `claude -p` is covered by the credits; the linked article is more specific. As of October 2026.
-- Third-party pages (not opened by me) describe a 2026-06-15 change as in force; this Anthropic page says it was paused. See the disputes in research/synthesis/field-10.md.
+- A third-party guide (buildthisnow-max-vs-api) describes the 2026-06-15 change as in force; this Anthropic page says it was paused. See the disputes in research/synthesis/field-10.md.
 
 ## Used in
 - research/synthesis/field-10.md
