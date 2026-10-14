@@ -8,15 +8,15 @@ What loads on every turn should be short, and what must hold on every turn shoul
 - McMillan ran 1,650 Claude Code sessions in a factorial design. File size from 25 to 500 lines, position, extra files and a conflicting rule did not change compliance with one trivial rule: 60.0, 65.2, 67.7 and 64.0 percent by size. With no file, 0 of 524 functions complied.[^mcmillan]
 - Jaroslawicz et al. measured instruction following against instruction count. Claude Sonnet 4 scored 94.4 percent at 100 simultaneous keyword instructions and 42.9 percent at 500.[^ifscale]
 
-One vendor evaluation is reported rather than measured, because its model and case count are not stated. An AGENTS.md docs index passed 100 percent of cases; a skill passed 53 percent by default and 79 percent when the prompt told the agent to use it, and the skill was never invoked in 56 percent of cases.[^vercel]
+One vendor evaluation is reported rather than measured, because its model and case count are not stated. An AGENTS.md docs index passed 100 percent of cases; a skill passed 53 percent by default and 79 percent when AGENTS.md told the agent to use it, and the skill was never invoked in 56 percent of cases.[^vercel]
 
 ## What the vendor documents, as of October 2026
 
-- CLAUDE.md files in the working directory and in every parent directory load at launch, root first. A CLAUDE.md in a subdirectory loads when Claude touches a file there. `claudeMdExcludes` skips a file.[^largecodebases]
-- CLAUDE.md is sent as a user message after the system prompt, with no compliance guarantee. `@` imports load at launch, nest to four hops, and save no context. The page advises under 200 lines. After compaction the root file returns and nested files do not.[^memory]
+- CLAUDE.md files in the working directory and in every parent directory load at launch, root first; a CLAUDE.md in a subdirectory loads when Claude touches a file there; `claudeMdExcludes` skips a file.[^memory][^largecodebases]
+- CLAUDE.md is sent as a user message after the system prompt, with no compliance guarantee. `@` imports load at launch, nest to four hops, and save no context. The page advises under 200 lines. After compaction the root file returns, and nested files load again on demand.[^memory]
 - Auto memory loads the first 200 lines or 25KB of `MEMORY.md` each session; topic files load on demand.[^memory]
 - Skills: every skill's name is listed at session start, each description is cut at 1,536 characters, and the listing budget is 1 percent of the window. The body enters on use and stays in context. The page advises under 500 lines.[^skills]
-- Prompt caching prices a cache write at 1.25 times the base input price for the five-minute lifetime and 2 times for the one-hour lifetime; a cache read costs 0.1 times, and 0.05 times on Sonnet 5.5 and Opus 5.5.[^caching]
+- Prompt caching prices a cache write at 1.25 times the base input price for the five-minute lifetime and 2 times for the one-hour lifetime; a cache read costs 0.1 times, 0.05 times on Sonnet 5.5 and Opus 5.5, and 0.025 times on Fable 5.1.[^caching]
 - A PreToolUse hook that times out does not block. Setting `onFailure` to `"block"` (version 2.1.295) makes it block.[^hooks]
 - AskUserQuestion takes 1 to 4 questions per call with 2 to 4 options each and a header of up to 12 characters.[^userinput]
 
@@ -32,8 +32,8 @@ One vendor evaluation is reported rather than measured, because its model and ca
 | A rule that must hold on every turn | A hook, plus one short CLAUDE.md line | CLAUDE.md is advisory; a file lifted one rule from 0 to 67.7 percent, and a hook can block | Documented;[^bestpractices][^hooks] measured[^mcmillan] |
 | A decision ledger | A short index loaded; entries read by pointer | The vendor caps its own index; the ledger's caps are untested | Documented;[^memory] conjecture for the caps |
 | A handoff charter | A small file, read first | A new session reads a progress file, the git log and a feature list first | Reported[^harnesses] |
-| Reference documents | A pointer with a trigger that says when to read it | Pointers without a trigger get skipped | Reported[^vercel] |
-| Skills | The description always; the body on use | The listing costs on every turn; the body costs once | Documented[^skills] |
+| Reference documents | An always-loaded index, or a pointer the instructions say when to follow | A skill that waited to be invoked went unused in 56 percent of cases; an always-loaded index did not | Reported[^vercel] |
+| Skills | The description always; the body on use | The listing costs on every turn; the body enters on use and stays | Documented[^skills] |
 | Tool output | Not kept | Reads fill the window | Documented[^bestpractices] |
 
 ## Where sources disagree
@@ -45,15 +45,15 @@ One vendor evaluation is reported rather than measured, because its model and ca
 
 ## What this means for the agentik tools
 
-agentik-decisions rests on seven claims about this question, and the documentation supports most of them. `@` imports expand at launch.[^memory] A parent CLAUDE.md loads in every repository beneath it.[^largecodebases] A skill loads its description at start and its body on use, and the 500-line figure is advice, not a limit.[^skills] AskUserQuestion's limits of 1 to 4 questions and 2 to 4 options are documented, though the page names no version.[^userinput] A timed-out hook fails open unless `onFailure` reverses it.[^hooks]
+agentik-decisions' design files make several claims about this question,[^decisionsdesign][^d18][^reviewr6] and the documentation supports most of them. `@` imports expand at launch.[^memory] A parent CLAUDE.md loads in every repository beneath it.[^largecodebases] A skill loads its description at start and its body on use, and the 500-line figure is advice, not a limit.[^skills] AskUserQuestion's limits of 1 to 4 questions and 2 to 4 options are documented, though the page names no version.[^userinput] A timed-out PreToolUse hook fails open unless `onFailure` reverses it.[^hooks]
 
-Two claims are weaker. The repo's model says inline text wins below a few hundred tokens because an always-loaded file costs its size on every turn while a retrieval costs an extra turn; the model gives 667 tokens from assumed values.[^decisionsdesign] Cache reads at 0.1 times discount both sides alike, so the threshold likely holds to first order, but that is conjecture. The cost of a growing file is measured;[^gloaguen] the adherence loss is not, and the caps of 25 entries in force and 7 loaded every session are in no source.[^decisionsreadme]
+Two claims are weaker. The repo's model says inline text wins below a few hundred tokens because an always-loaded file costs its size on every turn while a retrieval costs an extra turn; the model gives 667 tokens from assumed values.[^decisionsdesign] Cache reads at 0.1 times discount both sides alike, so the threshold likely holds to first order, but that is conjecture. The cost of a context file against none is measured, and its length was not varied;[^gloaguen] the adherence loss is not measured, and the caps of 25 entries in force and 7 loaded every session are in no source.[^decisionsreadme]
 
 ## Practices this evidence supports
 
 - Cut any CLAUDE.md line whose removal would cause no mistake, and stay under 200 lines. Documented.[^bestpractices][^memory]
 - Put a rule that must hold in a hook, and set `onFailure` to block where failing open is unsafe. Documented.[^hooks]
-- Keep a short index and say when to read each pointer. Reported.[^vercel]
+- Keep a short always-loaded index rather than a pointer that waits to be invoked. Reported.[^vercel]
 - Write handoff state to files and read them first. Reported.[^harnesses]
 
 ## Sources
@@ -73,5 +73,7 @@ Two claims are weaker. The repo's model says inline text wins below a few hundre
 [^bestpractices]: Anthropic, "Best practices for Claude Code", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/best-practices>.
 [^harnesses]: Justin Young, Anthropic, "Effective harnesses for long-running agents", 26 November 2025, <https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents>.
 [^claudemdblog]: Anthropic, "Using CLAUDE.md files: Customizing Claude Code for your codebase", 25 November 2025, <https://claude.com/blog/using-claude-md-files>.
-[^decisionsdesign]: agentik-dev/agentik-decisions, "history/design/decisions-r1.md", section 8.3, commit 80d59eb, <https://github.com/agentik-dev/agentik-decisions/blob/80d59eb/history/design/decisions-r1.md>.
+[^decisionsdesign]: agentik-dev/agentik-decisions, "history/design/decisions-r1.md", sections 4.2, 8.3 and 9, commit 80d59eb, <https://github.com/agentik-dev/agentik-decisions/blob/80d59eb/history/design/decisions-r1.md>.
+[^d18]: agentik-dev/agentik-decisions, "design/d18-one-flow.md", section 1.1, commit 80d59eb, <https://github.com/agentik-dev/agentik-decisions/blob/80d59eb/design/d18-one-flow.md>.
+[^reviewr6]: agentik-dev/agentik-decisions, "history/design/review-r6.md", section 3, commit 80d59eb, <https://github.com/agentik-dev/agentik-decisions/blob/80d59eb/history/design/review-r6.md>.
 [^decisionsreadme]: agentik-dev/agentik-decisions, "README.md", commit 80d59eb, <https://github.com/agentik-dev/agentik-decisions/blob/80d59eb/README.md>.

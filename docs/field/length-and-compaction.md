@@ -9,17 +9,17 @@ Two results decide how you run a long session. The longer the context, the worse
 | Study | What it measured | Result | Limits |
 |---|---|---|---|
 | Levy, Jacoby and Goldberg, 2024[^levy] | Reasoning accuracy as padding grows | 0.92 to 0.68 at 3,000 tokens, averaged over five models | 2023 models, no Claude |
-| Liu et al., 2023[^liu] | Where the answer sits in the context | Accuracy peaks at the first or last position; GPT-3.5-Turbo fell more than 20 points mid-context, below its 56.1 percent no-document score | 2023 models |
+| Liu et al., 2023[^liu] | Where the answer sits in the context | Accuracy peaks at the first or last position; mid-context, GPT-3.5-Turbo's accuracy could fall more than 20 points, below its 56.1 percent no-document score in the 20- and 30-document settings | 2023 models |
 | Hsieh et al., 2024 (RULER)[^ruler] | Effective length against the claimed length | GPT-4 averaged 96.6 percent at 4K tokens and 81.2 at 128K; its effective length was 64K; almost all of 17 models fell below the threshold before their claimed length | No Claude |
 | Modarressi et al., 2025 (NoLiMa)[^modarressi] | Retrieval with little word overlap | 11 of 13 models scored half their base or less at 32K tokens; Claude 3.5 Sonnet fell from 87.5 percent to 77.6 at 4K and 29.8 at 32K | Retrieval task, not coding |
 | Du et al., 2025[^du] | Length alone, with perfect retrieval | Accuracy fell 13.9 to 85 percent as input grew, even with blank or masked padding | Benchmark tasks |
 | Hong, Troynikov and Huber, 2025 (Chroma)[^chroma] | 18 models, five of them Claude | Prompts of about 113K tokens scored below the same question in about 300 tokens; Claude's gap was the largest and tied to abstention; no notable position effect on a simple task | Vendor research lab; simple tasks |
 | Jaroslawicz et al., 2025 (IFScale)[^ifscale] | How many instructions a model follows at once | At 500 instructions the best model scored 68.9 percent; Claude Opus 4 scored 44.6 and Sonnet 4 42.9; omission was the main error | Keyword instructions, not rules |
-| Laban et al., 2025[^laban] | Multi-turn against one full message | Multi-turn scored 39 percent lower; one consolidated message recovered 95.1 percent of the single-turn score | No tools, not coding |
+| Laban et al., 2025[^laban] | Multi-turn against one full message | Multi-turn scored 39 percent lower; one consolidated message recovered 95.1 percent of the single-turn score | No tools; one of six tasks is code |
 | Lindenbauer et al., 2025[^masking] | Tool output in a coding agent's context | Tool output was about 84 percent of a turn's tokens; masking old output cut cost 50 percent or more in four of five setups; solve rate moved from -2.0 to +2.8 points in three and fell 4.0 in the fourth | SWE-agent, five configurations |
-| Gloaguen et al., 2026[^gloaguen] | Repository context files for coding agents | Resolution fell 0.5 to 2 percent and cost rose 20 to 23 percent with an agent-generated file | Does not vary file length |
+| Gloaguen et al., 2026[^gloaguen] | Repository context files for coding agents | Resolution changed by -0.5 to -2 points, neither change significant, and cost rose 20 to 23 percent with an agent-generated file | Compares a file with none; does not vary file length |
 
-Three things stand out. Length hurts on its own, not only through retrieval failure.[^du] Instruction count hurts in the same way as context length, and the main failure is omission, not contradiction.[^ifscale] Most of a coding agent's context is tool output, and dropping the old output costs little or nothing in solve rate.[^masking]
+Three things stand out. Length hurts on its own, not only through retrieval failure.[^du] Instruction count hurts too, separately from token count, and the main failure is omission, not contradiction.[^ifscale] Most of a coding agent's context is tool output, and dropping the old output costs little or nothing in solve rate.[^masking]
 
 ### What the vendor documents, as of October 2026
 
@@ -40,13 +40,13 @@ Factory scored three compressors with a model judge over 36,611 production messa
 
 Anthropic's cookbook ran one research agent once with compaction at 180K tokens. The summary was about 2,783 tokens. It kept 3 of 3 high-level facts and lost 3 of 3 obscure appendix-table values.[^cookbook]
 
-Two results from question 1 bear on the choice. Putting the information into one fresh instruction recovered most of the multi-turn loss,[^laban] and masking old observations matched LLM summarisation's solve rate at about half the cost.[^masking] The first has no tools and the second compares masking with summarisation, not with a restart.
+Two results from question 1 bear on the choice. Putting the information into one fresh instruction recovered most of the multi-turn loss,[^laban] and masking old observations matched LLM summarisation's solve rate at a similar cost, both about half the raw agent's.[^masking] The first has no tools and the second compares masking with summarisation, not with a restart.
 
 ### What the vendor documents, as of October 2026
 
 - Automatic compaction runs at the model's limit: the 200K boundary for Sonnet 4.6 and Opus 4.6 without extended context, and about 967K tokens for a native 1M-window model. The window is settable from 100K to 1M tokens.[^thresholds]
 - After compaction the root CLAUDE.md, memory and the plan return from disk; up to five recent files are re-read, or only the path if a file is over 5,000 tokens; invoked skills return capped at 5,000 tokens each and 25,000 in total; path-scoped rules and early instructions are summarised away.[^ctxwindow]
-- `/compact` with a focus keeps what you name. `/clear` starts an empty conversation, and the old one stays reachable with `/resume`.[^ctxwindow]
+- `/compact` with a focus keeps what you name, and `/clear` starts an empty conversation;[^ctxwindow] the old one stays reachable with `/resume`.[^commands]
 - Idle compaction is on by default and runs after about 54 idle minutes above 200,000 tokens, in interactive sessions on the one-hour cache, on version 2.1.290 or later. Setting `autoCompactEnabled` to false also stops it.[^settings]
 - A PreCompact hook blocks with exit code 2. Blocking a proactive pass skips it. Blocking a recovery pass surfaces the API error, and the request fails.[^precompact]
 - On the API, threshold compaction defaults to 150,000 tokens with a minimum of 50,000.[^apithreshold] Anthropic announced context editing with 84 percent fewer tokens in one 100-turn evaluation; the benchmark is unnamed.[^ctxmgmt]
@@ -56,7 +56,7 @@ Two results from question 1 bear on the choice. Putting the information into one
 - In March 2026 an Anthropic engineer reported that Sonnet 4.5 needed resets with a structured handoff, and that for Opus 4.5 the resets were dropped and automatic compaction sufficed.[^harnessdesign]
 - In November 2025 another Anthropic post found compaction insufficient on its own: a progress file, a feature list and the git history carried work between sessions.[^harnesses]
 - A Claude Code engineer calls the summary lossy, says the model is least capable at the moment it compacts, and advises a clear with a written brief.[^sessionmgmt]
-- Two practitioners prefer handoffs. One compacts by hand near 50 percent of the window. Neither measures.[^kaiser][^khorana]
+- Two practitioners weigh handoffs against compaction. One compacts when returning the same day and hands off otherwise, near 50 percent of the window. Neither measures.[^kaiser][^khorana]
 
 ### What each option keeps and loses
 
@@ -64,7 +64,7 @@ Two results from question 1 bear on the choice. Putting the information into one
 |---|---|---|---|
 | Auto-compaction | The re-injected CLAUDE.md, memory and plan; five files; a summary | Early instructions, exact values, the artifact trail | Documented;[^ctxwindow] measured on other compressors[^factory] |
 | Manual `/compact` with a focus | The same, plus what the focus names | The same classes; that a focus loses less is conjecture | Documented;[^ctxwindow] reported[^sessionmgmt] |
-| A summary the agent writes | State, next steps, learnings | Images and documents in range; obscure values | Documented;[^apithreshold] measured once[^cookbook] |
+| A summary the agent writes | State, next steps, learnings | Images and documents in range;[^apiondemand] obscure values | Documented;[^apithreshold] measured once[^cookbook] |
 | A restart from a handoff file | Only what the file and the repository hold; a clean window | The reasoning behind decisions; that it beats compaction is conjecture | Reported;[^kaiser] a lab result with no tools[^laban] |
 
 ### Where the evidence stops
@@ -75,9 +75,9 @@ Two results from question 1 bear on the choice. Putting the information into one
 
 ## What this means for the agentik tools
 
-agentik-session rests on the premise that a fresh context per sitting beats a long one. The direction has support: a consolidated single message recovered most of the multi-turn loss,[^laban] and Claude Code's own advice is a clean session over accumulated corrections.[^bestpractices] The strength is unmeasured, and the same page says to let context accumulate sometimes. The repo records the rule as an owner's ruling, not a finding.[^packets] Its profile table lists opus, sonnet and haiku at 200,000 tokens and gives 1M only to fable, mythos and `opus[1m]`;[^profiles] the October 2026 documentation gives 1M to Opus 5.5, Sonnet 5.5 and Haiku 5.5, so the table is stale or cautious, and the checkpoint at 80 percent rests on it.[^ctxdoc][^modelconfig]
+agentik-session rests on the premise that a fresh context per sitting beats a long one. The direction has support: a consolidated single message recovered most of the multi-turn loss,[^laban] and Claude Code's own advice is a clean session over accumulated corrections.[^bestpractices] The strength is unmeasured, and the same page says to let context accumulate sometimes. The repo records the rule as an owner's ruling, not a finding.[^packets] Its profile table lists opus, sonnet and haiku at 200,000 tokens and gives 1M only to fable, mythos and `opus[1m]`;[^profiles] the October 2026 documentation gives 1M to Opus 5.5, Sonnet 5.5 and Haiku 5.5, so the table is stale or cautious.[^ctxdoc][^modelconfig]
 
-agentik-decisions caps its ledger at 25 entries in force because a growing always-loaded file is assumed to hurt. Adherence does fall as instruction count grows,[^ifscale] and the docs say longer CLAUDE.md files reduce adherence,[^memory] but no source gives the number 25, and the cap counts entries rather than bytes.[^d17]
+agentik-decisions caps its ledger at 25 entries in force and gives no reason for the number.[^d17] Adherence does fall as instruction count grows,[^ifscale] and the docs say longer CLAUDE.md files reduce adherence,[^memory] but no source gives the number 25, and the cap counts entries rather than bytes.[^d17]
 
 ## Practices this evidence supports
 
@@ -110,9 +110,11 @@ agentik-decisions caps its ledger at 25 entries in force because a growing alway
 [^cookbook]: Isabella He, Anthropic, "Context engineering: memory, compaction, and tool clearing", 20 March 2026, <https://platform.claude.com/cookbook/tool-use-context-engineering-context-engineering-tools>.
 [^thresholds]: Anthropic, "Model configuration", Claude Code documentation read 2026-10-14, section on compaction thresholds, <https://code.claude.com/docs/en/model-config>.
 [^ctxwindow]: Anthropic, "Explore the context window", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/context-window>.
+[^commands]: Anthropic, "Commands", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/commands>.
 [^settings]: Anthropic, "Settings reference", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/settings-reference>.
 [^precompact]: Anthropic, "Hooks reference", Claude Code documentation read 2026-10-14, the PreCompact event, <https://code.claude.com/docs/en/hooks>.
 [^apithreshold]: Anthropic, "Compaction at a token threshold", documentation read 2026-10-14, <https://platform.claude.com/docs/en/build-with-claude/compaction-threshold>.
+[^apiondemand]: Anthropic, "Compaction on demand", documentation read 2026-10-14, <https://platform.claude.com/docs/en/build-with-claude/compaction-on-demand>.
 [^ctxmgmt]: Anthropic, "Managing context on the Claude Developer Platform", 29 September 2025, <https://claude.com/blog/context-management>.
 [^harnessdesign]: Prithvi Rajasekaran, Anthropic, "Harness design for long-running application development", 24 March 2026, <https://www.anthropic.com/engineering/harness-design-long-running-apps>.
 [^harnesses]: Justin Young, Anthropic, "Effective harnesses for long-running agents", 26 November 2025, <https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents>.
