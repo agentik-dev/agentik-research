@@ -9,25 +9,25 @@ description: Instead of compacting a full context, a sitting writes a charter un
 
 # Restart, don't compact
 
-When a Claude Code sitting fills its context, the built-in answer is compaction: the conversation is replaced by a summary the model writes. agentik-session stopped doing that, by the owner's ruling.[^s17] A sitting now writes a charter of under 4 KB, exits, and a fresh session starts from the charter. On one night that carried the work across three restarts. We have no comparison that shows it beats compaction.
+When a Claude Code sitting fills its context, the built-in answer is compaction: Claude Code frees up context by summarizing the conversation so far.[^commands] agentik-session stopped doing that, by the owner's ruling.[^s17] A sitting now writes a charter of under 4 KB, exits, and a fresh session starts from the charter. On one night that carried the work across three restarts. We have no comparison that shows it beats compaction.
 
 <!-- more -->
 
 ## The problem
 
-A sitting that runs for hours fills its window. Compaction keeps it going, but the model decides what to keep, and in an unattended run nobody reads the summary before the next turn builds on it. 
+A sitting that runs for hours fills its window. Compaction keeps it going: earlier parts of the conversation are summarized in place, so the same agent carries on with a shortened history. It "preserves continuity", but it "doesn't give the agent a clean slate".[^harnessdesign] In agentik-session's design record, the owner "learns of an auto-compaction after it".[^mod]
 
 ## A human example: a plan for an unfinished task
 
 E. J. Masicampo and Roy Baumeister asked students to write about two important tasks due in the next few days. One group then wrote out how, when and where they would do them. While the students read a passage of a novel, the tasks kept intruding on those without a plan: their distraction averaged 3.00 on a 7-point scale, against 1.77 for those who had written the plan and 1.82 for a control group whose tasks were already done.[^masicampo] In a later study, students with a plan solved 9.55 anagrams on average, against 6.55 for those who had only the goal.[^masicampo]
 
-The tasks were still undone. Writing down the next step was enough to set them aside. The study is about a person's attention, not a model's context, so the step to software is our analogy: a charter names the next act, so the next session can start clean.
+The tasks were still undone. A plan of how, when and where was enough to stop the intrusions: in the authors' words, "planned (rather than actual) progress was sufficient".[^masicampo] The study is about a person's attention, not a model's context, so the step to software is our analogy: a charter is the written plan, with what is done, the handover and one Next act, so the next session can start clean.
 
 ## What the research teaches
 
-The [length and compaction chapter](../../field/length-and-compaction.md) holds the evidence, and it cuts both ways. In Factory's test of compressors, the artifact trail, which files were touched and how, scored lowest for every compressor, 2.19 to 2.45 out of 5.[^factory] In one run of Anthropic's own cookbook, a compaction kept all three high-level facts and none of three obscure values.[^cookbook] Anthropic's harness for long-running agents carried its state between context windows in a progress file the agent writes and in git history.[^harnesses]
+The [length and compaction chapter](../../field/length-and-compaction.md) holds the evidence, and it cuts both ways. In Factory's test of compressors, the artifact trail, which files were touched and how, scored lowest for every compressor, 2.19 to 2.45 out of 5.[^factory] In one run of Anthropic's own cookbook, a compaction kept all three high-level facts and none of three obscure values.[^cookbook] Anthropic's post on harnesses for long-running agents says "compaction isn't sufficient": out of the box, even Opus 4.5, in a loop across context windows and given only a high-level prompt, falls short of a production-quality web app. Its harness carried state between context windows in a progress file the agent writes and in git history.[^harnesses]
 
-In those tests, a summary kept the gist and lost specifics, and Anthropic's harness carried state in a written file. The evidence also runs the other way: Anthropic's later harness work dropped context resets on a newer model, Opus 4.5, where automatic compaction was enough.[^harnessdesign] No source we found compares a restart from a written handoff with compaction in a coding session, under control.
+In those tests, a summary kept the gist and lost specifics, and that harness carried state in a written file. A later Anthropic post runs the other way. It says that in Anthropic's earlier testing, Sonnet 4.5 wrapped up work early as it neared what it believed was its context limit, so context resets became essential. Opus 4.5 "largely removed that behavior on its own", so the author dropped context resets from the post's harness and ran the build as one session, with the Agent SDK's automatic compaction handling context growth.[^harnessdesign] No source we found compares a restart from a written handoff with compaction in a coding session, under control.
 
 ## What we built
 
@@ -43,7 +43,7 @@ So agentik-session gained a launcher, `agentik session run`. It starts `claude` 
 
 <div class="ak-verdict" markdown>
 
-<span class="ev ev-our-use">our use</span> One night's record, kept by hand before the launcher existed, and one launcher chain that reached five restarts before it stalled. No comparison with compaction.
+<span class="ev ev-our-use">our use</span> One night's record from an observer session's log, with each restart done by hand before the launcher existed, and one launcher chain that reached five restarts before it stalled. No comparison with compaction.
 
 </div>
 
@@ -69,6 +69,7 @@ And the main question is open. We believe a fresh start from a short charter los
 
 ## Sources
 
+[^commands]: Anthropic, "Commands", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/commands>.
 [^masicampo]: E. J. Masicampo and Roy F. Baumeister, "Consider It Done! Plan Making Can Eliminate the Cognitive Effects of Unfulfilled Goals", Journal of Personality and Social Psychology 101(4):667-683, 2011, <https://users.wfu.edu/masicaej/MasicampoBaumeister2011JPSP.pdf>.
 [^factory]: Factory Research, "Evaluating Context Compression for AI Agents", 16 December 2025, <https://factory.com/news/evaluating-compression>.
 [^cookbook]: Isabella He, Anthropic, "Context engineering: memory, compaction, and tool clearing", 20 March 2026, <https://platform.claude.com/cookbook/tool-use-context-engineering-context-engineering-tools>.

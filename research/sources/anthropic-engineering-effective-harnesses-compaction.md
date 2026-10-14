@@ -21,3 +21,4 @@ kind: reported
 ## Used in
 - research/synthesis/field-2.md
 - journal-restart
+- docs/journal/posts/2026-10-05-restart-dont-compact.md
