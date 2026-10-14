@@ -1,0 +1,87 @@
+/* example-skin.css: one consuming site's skin, kept as a worked example of a
+ * token-only skin. Not loaded by this site; write skins/agentik.css instead.
+ */
+
+/* --- Self-hosted Inter (variable, latin + latin-ext) ----------------
+ * The site sets theme.font: false — no Google Fonts request ever leaves
+ * this private site. Files vendored alongside this skin in ../fonts/. */
+@font-face {
+  font-family: "InterVariable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("../fonts/inter-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "InterVariable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("../fonts/inter-latin-ext-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+:root {
+  --md-text-font: "InterVariable";
+  --md-text-font-family: "InterVariable", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --glass-r-card: 14px;
+  --glass-r-panel: 14px;
+  --glass-r-input: 10px;
+}
+
+/* --- Token overrides: light ---------------------------------------- */
+:root,
+[data-md-color-scheme="default"] {
+  --glass-canvas:
+    radial-gradient(1100px 750px at 85% -10%, rgba(233, 243, 214, 0.85), transparent 60%),
+    radial-gradient(900px 700px at -10% 110%, rgba(162, 91, 51, 0.10), transparent 55%),
+    linear-gradient(165deg, #f0f2e4 0%, #e9ecda 55%, #e1e5cf 100%);
+
+  --glass-accent: #3e6b2a;  /* fern — ≥4.5:1 on the tinted chip fill */
+  --glass-accent-soft: rgba(62, 107, 42, 0.11);
+  --glass-accent-soft-2: rgba(62, 107, 42, 0.19);
+  --glass-accent-border: rgba(62, 107, 42, 0.36);
+  --glass-on-accent: #ffffff;
+
+  /* Clay — warm secondary for attention/water signals only. */
+  --yard-clay: #a2512e;
+
+  /* Material header/link hooks follow the accent. */
+  --md-primary-fg-color: #38602a;
+  --md-accent-fg-color: #a2512e;
+  --md-typeset-a-color: #3e6b2a;
+}
+
+/* --- Token overrides: dark ------------------------------------------ */
+[data-md-color-scheme="slate"] {
+  --glass-canvas:
+    radial-gradient(1100px 750px at 85% -10%, rgba(214, 236, 189, 0.05), transparent 60%),
+    radial-gradient(900px 700px at -10% 110%, rgba(209, 154, 107, 0.05), transparent 55%),
+    linear-gradient(165deg, #121509 0%, #161a10 55%, #1a1e13 100%);
+  --glass-1: #181b12;
+  --glass-2: #1f2318;
+
+  --glass-accent: #a5cb87;  /* moss on loam */
+  --glass-accent-soft: rgba(165, 203, 135, 0.13);
+  --glass-accent-soft-2: rgba(165, 203, 135, 0.20);
+  --glass-accent-border: rgba(165, 203, 135, 0.32);
+  --glass-on-accent: #101707;
+
+  --yard-clay: #d19a6b;
+
+  --md-primary-fg-color: #263c1a;
+  --md-accent-fg-color: #d19a6b;
+  --md-typeset-a-color: #a5cb87;
+}
+
+/* Component CSS (browse-table tinting, categorical pill palettes, the quiet
+ * glass header treatment, site map / journal / gallery styling, and the
+ * card glyph+pill palettes) lives in the yard repo's
+ * docs/assets/stylesheets/yard-site.css — skins stay token-only per
+ * site-kit D13. */

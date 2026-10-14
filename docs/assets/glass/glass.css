@@ -1,0 +1,870 @@
+/* glass.css — shared "Soft-Elevated / glass" layer for MkDocs Material.
+ *
+ * Vendored from the owner's glass design system v2.1.0, 2026-10-14.
+ * Consuming sites vendor this file into docs/assets/glass/ and list it under
+ * extra_css in mkdocs.yml, BEFORE their skin file. Do not edit vendored copies.
+ *
+ * Structure:
+ *   1. Design tokens   — --glass-* variables, keyed off Material's
+ *                        body[data-md-color-scheme] (default = light, slate = dark).
+ *                        Skins re-theme by overriding tokens only.
+ *   2. Canvas + chrome — layered gradient background, scrollbars, focus ring.
+ *   3. Components      — .glass-card / .gb-* classes used by glass-browse.js
+ *                        (filter bar, dropdown selectors, active-filter chips,
+ *                        data table, timeline) plus generic pills.
+ *   4. Material polish — restrained upgrades to .md-typeset tables/admonitions
+ *                        so ordinary content pages pick up the same voice.
+ *
+ * "Glass" here means hairline borders + layered inset-highlight/drop shadows on
+ * solid elevated fills — no backdrop-filter on panels (only optionally on the
+ * header, via skins). Everything is driven by the tokens below.
+ */
+
+/* ------------------------------------------------------------------ */
+/* 1. Design tokens                                                    */
+/* ------------------------------------------------------------------ */
+
+/* Light (Material scheme "default") — subtle cool-gray layering, not pure white. */
+:root,
+[data-md-color-scheme="default"] {
+  --glass-canvas:
+    radial-gradient(1200px 800px at 80% -10%, rgba(255, 255, 255, 0.85), transparent 60%),
+    radial-gradient(900px 700px at -10% 110%, rgba(100, 105, 118, 0.16), transparent 55%),
+    linear-gradient(160deg, #e9ebf0 0%, #e0e3e9 55%, #d9dce3 100%);
+  --glass-1: #ffffff;
+  --glass-2: #f1f3f7;
+  --glass-border: rgba(25, 30, 45, 0.12);
+  --glass-border-hover: rgba(20, 30, 70, 0.18);
+  --glass-border-faint: rgba(25, 30, 45, 0.05);
+  --glass-hover-wash: rgba(20, 30, 70, 0.04);
+  --glass-shadow-card: inset 0 1px 0 rgba(255, 255, 255, 0.85), 0 4px 20px rgba(25, 30, 50, 0.10);
+  --glass-shadow-pop: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 8px 28px rgba(25, 30, 50, 0.16);
+
+  --glass-text: #111827;
+  --glass-text-2: #374151;
+  --glass-muted: #5b6370;
+  --glass-faint: #8b92a0;
+
+  --glass-accent: #047857;          /* single interactive accent (skins override) */
+  --glass-accent-soft: rgba(4, 120, 87, 0.10);   /* tinted fills for active states */
+  --glass-accent-soft-2: rgba(4, 120, 87, 0.16); /* hover/stronger tint */
+  --glass-accent-border: rgba(4, 120, 87, 0.30);
+  --glass-on-accent: #ffffff;       /* text/check on solid accent fills */
+  --glass-danger: #b84444;
+
+  --glass-input-bg: #eef0f4;
+  --glass-scroll-track: transparent;
+  --glass-scroll-thumb: #c5c9d2;
+  --glass-scroll-thumb-hover: #8b92a0;
+
+  --glass-glyph-bg: rgba(255, 255, 255, 0.95);  /* card corner-glyph chrome */
+}
+
+/* Dark (Material scheme "slate"). */
+[data-md-color-scheme="slate"] {
+  --glass-canvas:
+    radial-gradient(1200px 800px at 80% -10%, rgba(255, 255, 255, 0.07), transparent 60%),
+    radial-gradient(900px 700px at -10% 110%, rgba(255, 255, 255, 0.05), transparent 55%),
+    linear-gradient(160deg, #0d0f12 0%, #12151a 55%, #161a21 100%);
+  --glass-1: #16171b;
+  --glass-2: #1e2025;
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-border-hover: rgba(255, 255, 255, 0.16);
+  --glass-border-faint: rgba(255, 255, 255, 0.05);
+  --glass-hover-wash: rgba(255, 255, 255, 0.04);
+  --glass-shadow-card: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 8px 24px rgba(0, 0, 0, 0.35);
+  --glass-shadow-pop: inset 0 1px 0 rgba(255, 255, 255, 0.10), 0 12px 32px rgba(0, 0, 0, 0.45);
+
+  --glass-text: #e5e7eb;
+  --glass-text-2: #a6adba;
+  --glass-muted: #8e96a3;   /* ≥4.5:1 on glass-2 — labels/counts are tiny text */
+  --glass-faint: #6b7280;
+
+  --glass-accent: #34d399;
+  --glass-accent-soft: rgba(52, 211, 153, 0.15);
+  --glass-accent-soft-2: rgba(52, 211, 153, 0.22);
+  --glass-accent-border: rgba(52, 211, 153, 0.30);
+  --glass-on-accent: #06251a;
+  --glass-danger: #f08c8c;
+
+  --glass-input-bg: #101113;
+  --glass-scroll-track: transparent;
+  --glass-scroll-thumb: #2c2e35;
+  --glass-scroll-thumb-hover: #41444d;
+
+  --glass-glyph-bg: rgba(24, 26, 22, 0.92);     /* card corner-glyph chrome */
+}
+
+/* Shared geometry — scheme-independent, skin-overridable. */
+:root {
+  --glass-r-card: 12px;
+  --glass-r-panel: 12px;
+  --glass-r-input: 8px;
+  --glass-r-pill: 999px;
+  --glass-r-photocard: 14px;   /* browse cards (the yard look, owner-approved) */
+}
+
+/* ------------------------------------------------------------------ */
+/* 2. Canvas + chrome                                                  */
+/* ------------------------------------------------------------------ */
+
+body[data-md-color-scheme] {
+  background: var(--glass-canvas);
+  background-attachment: fixed;
+}
+
+/* Custom scrollbars, matching the token layer. */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--glass-scroll-track); }
+::-webkit-scrollbar-thumb { background: var(--glass-scroll-thumb); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--glass-scroll-thumb-hover); }
+
+/* Accent-colored focus ring on glass controls (Material handles its own). */
+.gb-toolbar :focus-visible,
+.gb-pop :focus-visible,
+.gb-active :focus-visible,
+.gb-table :focus-visible,
+.gb-cards :focus-visible {
+  outline: 2px solid var(--glass-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Full-width content on browse pages (class added by glass-browse.js). */
+body.gb-wide .md-grid { max-width: none; }
+body.gb-wide .md-content__inner > h1 { margin-bottom: 0.4rem; }
+
+/* Contain browse z-indexes so sticky headers/popovers never paint over
+ * Material's own header/search overlay. */
+.gb-browse, .cs-browse { isolation: isolate; }
+
+/* Visually-hidden text for screen readers. */
+.gb-sr {
+  position: absolute;
+  clip-path: inset(50%);
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------ */
+/* 3. Components                                                       */
+/* ------------------------------------------------------------------ */
+
+/* The universal panel/table frame. */
+.glass-card {
+  background: var(--glass-1);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-r-card);
+  box-shadow: var(--glass-shadow-card);
+}
+
+/* --- Filter toolbar (row 1: facet adder pills + search + count) ---- */
+
+.gb-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.5rem 0 0.35rem;
+}
+
+/* Facet "adder" pill — the compact trigger that opens a dropdown selector. */
+.gb-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.16rem 0.55rem;
+  border-radius: var(--glass-r-pill);
+  font-size: 0.62rem;
+  font-weight: 600;
+  line-height: 1.6;
+  background: var(--glass-1);
+  color: var(--glass-text-2);
+  border: 1px solid var(--glass-border);
+  cursor: pointer;
+  transition: color 120ms ease, background 120ms ease, border-color 120ms ease;
+}
+.gb-pill-btn:hover {
+  background: var(--glass-2);
+  color: var(--glass-text);
+  border-color: var(--glass-border-hover);
+}
+/* Facet has applied values → accent-tinted, with a count bubble. */
+.gb-pill-btn.gb-on {
+  background: var(--glass-accent-soft);
+  color: var(--glass-accent);
+  border-color: var(--glass-accent-border);
+}
+.gb-pill-btn .gb-plus {
+  font-size: 0.7rem;
+  line-height: 1;
+  opacity: 0.8;
+}
+.gb-pill-btn .gb-n {
+  font-size: 0.55rem;
+  padding: 0 0.3rem;
+  border-radius: var(--glass-r-pill);
+  background: var(--glass-accent-soft-2);
+}
+
+/* Debounced free-text search, styled as a pill input. */
+.gb-q {
+  flex: 0 1 16rem;
+  min-width: 8rem;
+  padding: 0.18rem 0.65rem;
+  border-radius: var(--glass-r-pill);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-1);
+  color: var(--glass-text);
+  font-size: 0.62rem;
+  line-height: 1.6;
+}
+.gb-q::placeholder { color: var(--glass-muted); }
+.gb-q:hover { border-color: var(--glass-border-hover); }
+.gb-q:focus { border-color: var(--glass-accent); }
+
+.gb-count {
+  font-size: 0.6rem;
+  color: var(--glass-muted);
+  margin-left: auto;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Freshness stamp (data-generated on the mount) beside the count. */
+.gb-asof {
+  font-size: 0.55rem;
+  color: var(--glass-faint);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Segmented facet (control: "segmented" — always-visible radio row) --- */
+
+.gb-seg {
+  display: inline-flex;
+  align-items: stretch;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-r-pill);
+  background: var(--glass-1);
+  overflow: hidden;
+}
+.gb-seg-btn {
+  border: 0;
+  background: none;
+  padding: 0.16rem 0.6rem;
+  font-size: 0.62rem;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--glass-muted);
+  cursor: pointer;
+  transition: color 120ms ease, background 120ms ease;
+}
+.gb-seg-btn + .gb-seg-btn { border-left: 1px solid var(--glass-border-faint); }
+.gb-seg-btn:hover { color: var(--glass-text); background: var(--glass-hover-wash); }
+.gb-seg-btn.gb-on {
+  background: var(--glass-accent-soft);
+  color: var(--glass-accent);
+}
+
+/* --- Dropdown selector panel -------------------------------------- */
+
+.gb-facet { position: relative; display: inline-flex; }
+
+.gb-pop {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 50;
+  min-width: 11rem;
+  max-width: 18rem;
+  background: var(--glass-2);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-r-panel);
+  box-shadow: var(--glass-shadow-pop);
+  padding: 0.2rem 0;
+}
+.gb-pop.gb-pop-right { left: auto; right: 0; }
+
+/* Select all / Clear all header row (multi facets). */
+.gb-pop-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.2rem 0.6rem 0.3rem;
+  margin-bottom: 0.15rem;
+  border-bottom: 1px solid var(--glass-border);
+}
+.gb-pop-head button {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: 0.58rem;
+  cursor: pointer;
+  color: var(--glass-accent);
+}
+.gb-pop-head button.gb-danger { color: var(--glass-danger); }
+.gb-pop-head button:hover { text-decoration: underline; }
+.gb-pop-head button:disabled {
+  opacity: 0.4;
+  cursor: default;
+  text-decoration: none;
+}
+
+/* In-panel option search (appears when a facet has many options). */
+.gb-pop-search {
+  display: block;
+  width: calc(100% - 1.2rem);
+  margin: 0.15rem 0.6rem 0.3rem;
+  padding: 0.18rem 0.45rem;
+  border-radius: var(--glass-r-input);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-input-bg);
+  color: var(--glass-text);
+  font-size: 0.6rem;
+}
+.gb-pop-search:focus { border-color: var(--glass-accent); }
+
+.gb-opts {
+  max-height: 16rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* Option row: custom checkbox + label + match count. */
+.gb-opt {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  width: 100%;
+  padding: 0.24rem 0.6rem;
+  border: 0;
+  background: none;
+  text-align: left;
+  font-size: 0.62rem;
+  color: var(--glass-text-2);
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+.gb-opt:hover { background: var(--glass-hover-wash); }
+.gb-opt[aria-pressed="true"] { color: var(--glass-accent); }
+.gb-opt.gb-zero { opacity: 0.65; }
+
+.gb-check {
+  flex: 0 0 auto;
+  width: 0.72rem;
+  height: 0.72rem;
+  border-radius: 3px;
+  border: 1px solid var(--glass-faint);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.5rem;
+  line-height: 1;
+  color: transparent;
+}
+.gb-opt[aria-pressed="true"] .gb-check {
+  background: var(--glass-accent);
+  border-color: var(--glass-accent);
+  color: var(--glass-on-accent);
+}
+
+.gb-opt-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.gb-opt-count {
+  flex: 0 0 auto;
+  font-size: 0.55rem;
+  color: var(--glass-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- "More" overflow panel (secondary facets, accordion style) ----- */
+
+.gb-more-pop {
+  min-width: 13rem;
+  max-width: 20rem;
+  max-height: 70vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.gb-sec { border-bottom: 1px solid var(--glass-border-faint); }
+.gb-sec:last-child { border-bottom: 0; }
+
+.gb-sec-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.3rem 0.6rem;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font-size: 0.58rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--glass-muted);
+}
+.gb-sec-head:hover { color: var(--glass-text-2); background: var(--glass-hover-wash); }
+.gb-sec-head .gb-n {
+  font-size: 0.55rem;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+  padding: 0 0.3rem;
+  border-radius: var(--glass-r-pill);
+  background: var(--glass-accent-soft);
+  color: var(--glass-accent);
+}
+.gb-sec-head .gb-caret {
+  margin-left: auto;
+  font-size: 0.5rem;
+  opacity: 0.6;
+  transition: transform 150ms ease;
+}
+.gb-sec[data-open="1"] .gb-sec-head .gb-caret { transform: rotate(90deg); }
+.gb-sec-body { display: none; padding-bottom: 0.2rem; }
+.gb-sec[data-open="1"] .gb-sec-body { display: block; }
+
+/* --- Active filter chips (row 2) ----------------------------------- */
+
+.gb-active {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 0 0 0.5rem;
+}
+
+.gb-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.1rem 0.3rem 0.1rem 0.55rem;
+  border-radius: var(--glass-r-pill);
+  font-size: 0.6rem;
+  font-weight: 600;
+  background: var(--glass-accent-soft);
+  color: var(--glass-accent);
+  border: 1px solid var(--glass-accent-border);
+}
+.gb-chip .gb-chip-k { opacity: 0.75; font-weight: 400; }
+.gb-chip .gb-chip-v {
+  max-width: 10rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.gb-chip-x {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.85rem;
+  height: 0.85rem;
+  border: 0;
+  border-radius: var(--glass-r-pill);
+  background: none;
+  color: inherit;
+  font-size: 0.6rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.gb-chip-x:hover { background: var(--glass-accent-soft-2); }
+
+.gb-clear-all {
+  border: 0;
+  background: none;
+  padding: 0.1rem 0.2rem;
+  font-size: 0.6rem;
+  color: var(--glass-muted);
+  cursor: pointer;
+}
+.gb-clear-all:hover { color: var(--glass-danger); }
+
+/* --- Data table ----------------------------------------------------- */
+
+.gb-card {
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.gb-scroll {
+  overflow: auto;
+  max-height: 78vh;
+}
+
+.gb-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.62rem;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.gb-table th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--glass-2);
+  /* inset shadow, not border: collapsed borders detach from sticky cells */
+  box-shadow: inset 0 -1px 0 var(--glass-border);
+  padding: 0;
+  text-align: left;
+}
+.gb-th-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  width: 100%;
+  padding: 0.35rem 0.55rem;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font-size: 0.56rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--glass-muted);
+  user-select: none;
+  transition: color 120ms ease;
+}
+.gb-th-btn:hover { color: var(--glass-text-2); }
+.gb-th-btn .gb-arrow { font-size: 0.5rem; opacity: 0.35; }
+th[aria-sort] .gb-th-btn { color: var(--glass-text); }
+th[aria-sort] .gb-th-btn .gb-arrow { opacity: 1; color: var(--glass-accent); }
+
+.gb-table td {
+  padding: 0.3rem 0.55rem;
+  border-bottom: 1px solid var(--glass-border-faint);
+  color: var(--glass-text-2);
+  vertical-align: top;
+}
+.gb-table tbody tr { transition: background 120ms ease; }
+.gb-table tbody tr:hover { background: var(--glass-hover-wash); }
+.gb-table tbody tr:last-child td { border-bottom: 0; }
+
+.gb-table a { color: var(--glass-accent); }
+.gb-table a:hover { text-decoration: underline; }
+
+.gb-empty {
+  padding: 2.2rem 1rem;
+  text-align: center;
+  color: var(--glass-muted);
+  font-size: 0.66rem;
+}
+.gb-empty .gb-empty-hint { font-size: 0.58rem; opacity: 0.7; margin-top: 0.2rem; }
+
+/* Wrappable columns (site config can add gb-wrap to columns). */
+.gb-table td.gb-wrap { white-space: normal; min-width: 8rem; }
+
+/* --- Pills / badges ------------------------------------------------- */
+
+.gb-pill {
+  display: inline-block;
+  font-size: 0.55rem;
+  font-weight: 600;
+  padding: 0.02rem 0.42rem;
+  border-radius: var(--glass-r-pill);
+  margin-right: 0.15rem;
+  background: var(--glass-hover-wash);
+  border: 1px solid var(--glass-border);
+  color: var(--glass-text-2);
+  white-space: nowrap;
+}
+.gb-flag {
+  background: var(--glass-accent-soft);
+  border-color: var(--glass-accent-border);
+  color: var(--glass-accent);
+}
+.gb-pdf { font-weight: 700; }
+
+/* Clickable cell value that toggles a facet (col def filterParam). */
+.gb-cell-pill {
+  display: inline-block;
+  font-size: 0.55rem;
+  font-weight: 600;
+  padding: 0.02rem 0.42rem;
+  border-radius: 6px;
+  background: var(--glass-hover-wash);
+  border: 1px solid var(--glass-border);
+  color: var(--glass-text-2);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 120ms ease, border-color 120ms ease;
+}
+.gb-cell-pill:hover { color: var(--glass-accent); border-color: var(--glass-accent); }
+.gb-thumb {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 6px;
+  background: var(--glass-2);
+  border: 1px solid var(--glass-border);
+  color: var(--glass-muted);
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+a.gb-thumb:hover { color: var(--glass-accent); border-color: var(--glass-border-hover); }
+
+/* Categorical badge tinting: glass-browse.js emits gb-b-<group>-<value>;
+ * skins style known values (bg tint + hue text + tint border); unknown
+ * values keep the neutral pill look above. */
+
+/* --- Timeline ------------------------------------------------------- */
+
+.gb-tl-year {
+  margin: 1.1rem 0 0.3rem;
+  font-size: 0.9rem;
+  color: var(--glass-text);
+}
+.gb-tl-list { list-style: none; margin: 0; padding: 0; }
+.gb-tl-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.14rem 0.2rem;
+  font-size: 0.66rem;
+  border-radius: 6px;
+}
+.gb-tl-item:hover { background: var(--glass-hover-wash); }
+.gb-tl-date {
+  font-family: var(--md-code-font-family, monospace);
+  color: var(--glass-muted);
+  min-width: 5.2rem;
+  font-variant-numeric: tabular-nums;
+}
+.gb-tl-title { color: var(--glass-text-2); }
+.gb-tl-title:hover { color: var(--glass-accent); }
+
+/* --- Cards (glass-cards.js renderer — STRUCTURE only, glass-cards D6) ---
+ * Glyph/pill palettes are site editorial and live in each site's
+ * <site>-site.css (e.g. .gb-glyph-own { … }, .gb-card-pill-cand { … });
+ * skins stay token-only. Geometry transfers verbatim from the yard catalog
+ * (the owner-approved look): auto-fill 215px grid, 4:3 heroes, 14px radius. */
+
+.gb-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+  gap: 0.8rem;
+  margin: 0.4rem 0 1rem;
+}
+
+.gb-card.glass-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--glass-r-photocard);
+  overflow: hidden;
+  color: inherit;
+  text-decoration: none;
+}
+a.gb-card:hover { border-color: var(--glass-border-hover); }
+
+/* Hero: fixed 4:3 window, cover-cropped; the placeholder is quiet, not an
+ * error state. */
+.gb-card-hero {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: var(--glass-2);
+}
+.gb-card-ph {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.gb-card-ph-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 2.2rem;
+  opacity: 0.35;
+  background: linear-gradient(160deg, var(--glass-2), var(--glass-1));
+}
+
+/* Corner glyphs (top-right) + badges (top-left): circular chrome; the
+ * per-glyph fill/stroke colors are site palette, not structure. */
+.gb-glyphs, .gb-badges {
+  position: absolute;
+  top: 0.45rem;
+  display: flex;
+  gap: 0.3rem;
+}
+.gb-glyphs { right: 0.45rem; }
+.gb-badges { left: 0.45rem; }
+.gb-glyph, .gb-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 50%;
+  background: var(--glass-glyph-bg);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--glass-text-2);
+}
+.gb-glyph svg { width: 1.1rem; height: 1.1rem; }
+.gb-badge { width: 1.5rem; height: 1.5rem; font-size: 0.58rem; }
+.gb-badge-more { color: var(--glass-muted); font-weight: 600; }
+
+/* Text-forward cards (no photos in the filtered set): glyphs/badges render
+ * as a static row at the top of the body instead of hero corners. */
+.gb-card-glyphrow { display: flex; justify-content: space-between; }
+.gb-card-glyphrow .gb-glyphs, .gb-card-glyphrow .gb-badges {
+  position: static;
+}
+
+/* Body: pitch flex-grows so the pill row pins to the card bottom. */
+.gb-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.15rem;
+  padding: 0.5rem 0.6rem 0.55rem;
+}
+.gb-card-title {
+  font-size: 0.66rem;
+  font-weight: 600;
+  color: var(--glass-text);
+  line-height: 1.35;
+}
+.gb-card-sub {
+  font-size: 0.58rem;
+  font-style: italic;
+  color: var(--glass-muted);
+}
+.gb-card-pitch {
+  flex: 1;
+  font-size: 0.58rem;
+  color: var(--glass-text-2);
+  line-height: 1.45;
+}
+.gb-card-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem;
+  margin-top: 0.35rem;
+}
+.gb-card-pill {
+  display: inline-block;
+  font-size: 0.52rem;
+  font-weight: 600;
+  padding: 0.02rem 0.4rem;
+  border-radius: var(--glass-r-pill);
+  background: var(--glass-hover-wash);
+  border: 1px solid var(--glass-border);
+  color: var(--glass-text-2);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a.gb-card { transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease; }
+  a.gb-card:hover { transform: translateY(-2px); box-shadow: var(--glass-shadow-pop); }
+}
+
+/* ------------------------------------------------------------------ */
+/* 4. Material polish (content pages)                                  */
+/* ------------------------------------------------------------------ */
+
+/* Markdown tables as glass cards: hairline dividers, raised header, no zebra.
+ * No outer drop-shadow here — Material's scrollwrap would hard-clip it. */
+.md-typeset table:not([class]) {
+  background: var(--glass-1);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-r-card);
+  box-shadow: inset 0 1px 0 var(--glass-border-faint);
+  font-size: 0.62rem;
+}
+.md-typeset table:not([class]) th {
+  background: var(--glass-2);
+  color: var(--glass-muted);
+  font-size: 0.56rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--glass-border);
+}
+.md-typeset table:not([class]) td {
+  border-top: none;
+}
+.md-typeset table:not([class]) tbody tr + tr td {
+  border-top: 1px solid var(--glass-border-faint);
+}
+.md-typeset table:not([class]) tbody tr:hover {
+  background: var(--glass-hover-wash);
+  box-shadow: none;
+}
+
+/* Admonitions: glass frame; keep Material's per-type accent border color but
+ * clip the tinted title bar to the rounded corners. */
+.md-typeset .admonition,
+.md-typeset details {
+  background: var(--glass-1);
+  border-radius: var(--glass-r-card);
+  box-shadow: var(--glass-shadow-card);
+  font-size: 0.62rem;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gb-pill-btn, .gb-opt, .gb-th-btn, .gb-table tbody tr,
+  .gb-sec-head .gb-caret, .gb-seg-btn { transition: none; }
+}
+
+/* ------------------------------------------------------------------ */
+/* 5. Touch + print                                                    */
+/* ------------------------------------------------------------------ */
+
+@media (pointer: coarse) {
+  /* 16px inputs: anything smaller triggers iOS Safari's focus zoom. */
+  .gb-q, .gb-pop-search { font-size: 16px; }
+  /* fixed-attachment canvases repaint badly on mobile */
+  body[data-md-color-scheme] { background-attachment: scroll; }
+  /* bigger tap targets */
+  .gb-chip-x { width: 1.4rem; height: 1.4rem; }
+  .gb-opt { padding: 0.45rem 0.6rem; }
+  .gb-pill-btn { padding: 0.3rem 0.7rem; }
+  .gb-seg-btn { padding: 0.3rem 0.7rem; }
+}
+
+@media print {
+  /* print the full result set, not a 78vh scroll window */
+  .gb-scroll { max-height: none; overflow: visible; }
+  .gb-table th { position: static; }
+  .glass-card, .md-typeset table:not([class]), .md-typeset .admonition,
+  .md-typeset details { box-shadow: none; }
+  /* dark scheme would print near-white text on white paper */
+  body[data-md-color-scheme="slate"] {
+    background: #ffffff;
+    --glass-canvas: #ffffff;
+    --glass-1: #ffffff;
+    --glass-2: #f1f3f7;
+    --glass-border: rgba(25, 30, 45, 0.2);
+    --glass-border-faint: rgba(25, 30, 45, 0.08);
+    --glass-hover-wash: transparent;
+    --glass-text: #111827;
+    --glass-text-2: #374151;
+    --glass-muted: #4b5563;
+    --glass-faint: #6b7280;
+    --glass-accent: #1f2937;
+    --glass-accent-soft: rgba(31, 41, 55, 0.08);
+    --glass-accent-border: rgba(31, 41, 55, 0.3);
+  }
+}

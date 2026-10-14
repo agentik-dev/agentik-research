@@ -6,3 +6,8 @@
 */*/*/*: sibling
 LICENSE: person          # the copyright line names the owner, as in every agentik-dev repo
 scripts/check: home      # the check's own home-path pattern
+# Published authors (Wise and Sternadori; Liu et al.) who share the owner's first name.
+docs/field/telling-people.md: person
+docs/sources.md: person
+research/sources/liu-lost-in-the-middle.md: person
+research/sources/wise-sternadori-inverted-pyramid.md: person
