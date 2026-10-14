@@ -1,13 +1,14 @@
-{#- The three newest journal entries, as glass cards. Empty when there are none. -#}
+{#- The three newest journal entries, as glass cards. Empty when there are none.
+    The date line is one unit: no-break spaces keep "· 8 min read" whole. -#}
 {% set blog = config.plugins.get("material/blog") %}
 {% if blog and blog.blog and blog.blog.posts %}
   <div class="ak-posts">
     {% for post in blog.blog.posts[:3] %}
       <article class="ak-door ak-post">
-        <span class="ak-post-meta">
+        <p class="ak-post-meta">
           <time datetime="{{ post.config.date.created.strftime('%Y-%m-%d') }}">{{ post.config.date.created | date }}</time>
-          {%- if post.config.readtime %} · {{ post.config.readtime }} min read{% endif %}
-        </span>
+          {%- if post.config.readtime %}<span class="ak-post-time">&nbsp;·&nbsp;{{ post.config.readtime }}&nbsp;min read</span>{% endif %}
+        </p>
         <h3><a href="{{ post.url | url }}">{{ post.title }}</a></h3>
         {% if post.meta.description %}<p>{{ post.meta.description }}</p>{% endif %}
         {% if post.categories %}

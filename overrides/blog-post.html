@@ -1,0 +1,146 @@
+{#-
+  A journal entry: Material's blog-post.html (9.7), with three changes.
+  1. Below 1220 px Material moves the post sidebar under the entry, so the
+     date, categories and reading time sit at the foot. A line under the H1,
+     .ak-entry-meta, shows them at the top instead; agentik-site.css shows
+     exactly one of the two at any width.
+  2. The categories render as the site's coloured chips.
+  3. The sidebar's nav carries a name, and the metadata block is a div, so
+     the page holds no two unnamed nav landmarks (axe: landmark-unique).
+-#}
+{% extends "main.html" %}
+{% import "partials/nav-item.html" as item with context %}
+{% macro chips(categories) -%}
+  {%- for category in categories -%}
+    <a class="ak-cat ak-cat-{{ category.title | lower | replace(' ', '-') }}" href="{{ category.url | url }}">{{ category.title }}</a>
+    {%- if not loop.last %} {% endif -%}
+  {%- endfor -%}
+{%- endmacro %}
+{% block container %}
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary" aria-label="Journal entry">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="{{ page.parent.url | url }}" class="md-nav__link">
+                  {% include ".icons/material/arrow-left.svg" %}
+                  <span class="md-ellipsis">
+                    {{ lang.t("blog.index") }}
+                  </span>
+                </a>
+              </div>
+            </div>
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    {{ lang.t("blog.meta") }}
+                  </span>
+                </div>
+                <div class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        {% include ".icons/material/calendar.svg" %}
+                        <time datetime="{{ page.config.date.created }}" class="md-ellipsis">
+                          {{- page.config.date.created | date -}}
+                        </time>
+                      </div>
+                    </li>
+                    {% if page.config.date.updated %}
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          {% include ".icons/material/calendar-clock.svg" %}
+                          <time datetime="{{ page.config.date.updated }}" class="md-ellipsis">
+                            {{- page.config.date.updated | date -}}
+                          </time>
+                        </div>
+                      </li>
+                    {% endif %}
+                    {% if page.categories %}
+                      <li class="md-nav__item">
+                        <div class="md-nav__link ak-post-cats">
+                          {% include ".icons/material/bookshelf.svg" %}
+                          <span>{{ chips(page.categories) }}</span>
+                        </div>
+                      </li>
+                    {% endif %}
+                    {% if page.config.readtime %}
+                      {% set time = page.config.readtime %}
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          {% include ".icons/material/clock-outline.svg" %}
+                          <span class="md-ellipsis">
+                            {% if time == 1 %}
+                              {{ lang.t("readtime.one") }}
+                            {% else %}
+                              {{ lang.t("readtime.other") | replace("#", time) }}
+                            {% endif %}
+                          </span>
+                        </div>
+                      </li>
+                    {% endif %}
+                  </ul>
+                </div>
+              </li>
+            </ul>
+            {% if page.config.links %}
+              <ul class="md-post__meta md-nav__list">
+                <li class="md-nav__item md-nav__item--section">
+                  <div class="md-post__title">
+                    <span class="md-ellipsis">
+                      {{ lang.t("blog.references") }}
+                    </span>
+                  </div>
+                  <nav class="md-nav" aria-label="{{ lang.t('blog.references') }}">
+                    <ul class="md-nav__list">
+                      {% for nav_item in page.config.links %}
+                        {% set path = "__ref_" ~ loop.index %}
+                        {{ item.render(nav_item, path, 1) }}
+                      {% endfor %}
+                    </ul>
+                  </nav>
+                </li>
+              </ul>
+            {% endif %}
+          </nav>
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      {% block content %}
+        {% include "partials/tags.html" %}
+        {% include "partials/actions.html" %}
+        {#- The entry's own line of metadata, shown below 1220 px. -#}
+        {% set time = page.config.readtime %}
+        {% set meta -%}
+          <p class="ak-entry-meta">
+            <a class="ak-entry-back" href="{{ page.parent.url | url }}">← {{ page.parent.title | d("Journal", true) }}</a>
+            <span class="ak-entry-item"><time datetime="{{ page.config.date.created }}">{{ page.config.date.created | date }}</time></span>
+            {%- if time %}
+              <span class="ak-entry-item">{% if time == 1 %}{{ lang.t("readtime.one") }}{% else %}{{ lang.t("readtime.other") | replace("#", time) }}{% endif %}</span>
+            {%- endif %}
+            {%- if page.categories %}
+              <span class="ak-entry-item ak-entry-cats">{{ chips(page.categories) }}</span>
+            {%- endif %}
+          </p>
+        {%- endset %}
+        {% if "</h1>" in page.content %}
+          {% set parts = page.content.split("</h1>", 1) %}
+          {{ parts[0] }}</h1>
+          {{ meta }}
+          {{ parts[1] }}
+        {% else %}
+          <h1>{{ page.title | d(config.site_name, true) }}</h1>
+          {{ meta }}
+          {{ page.content }}
+        {% endif %}
+        {% include "partials/source-file.html" %}
+        {% include "partials/feedback.html" %}
+        {% include "partials/comments.html" %}
+      {% endblock %}
+    </article>
+  </div>
+{% endblock %}

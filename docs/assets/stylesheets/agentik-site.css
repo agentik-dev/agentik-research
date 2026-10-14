@@ -143,7 +143,14 @@
 .md-typeset h3 { font-weight: 650; font-size: 1.02rem; letter-spacing: -0.01em; margin-top: 1.8rem; }
 .md-typeset h4 { font-weight: 650; font-size: 0.85rem; }
 .md-typeset h1 { margin-bottom: 0.8rem; }
-.md-typeset h1 + p, .md-typeset .ak-lede { font-size: 0.95rem; color: var(--glass-text-2); line-height: 1.6; }
+.md-typeset h1 + p, .md-typeset h1 + .ak-entry-meta + p, .md-typeset .ak-lede { font-size: 0.95rem; color: var(--glass-text-2); line-height: 1.6; }
+.md-typeset h1 + p.ak-entry-meta, .md-typeset h1 + p.ak-view-lede { font-size: inherit; line-height: inherit; }
+
+/* The permalink after a heading takes no room in the line, so a hidden one
+ * never wraps onto a blank line of its own; the heading's end padding keeps
+ * it inside the heading when the last word fills the line. */
+.md-typeset :is(h1, h2, h3, h4, h5, h6):has(> .headerlink) { padding-right: 1.1em; }
+.md-typeset :is(h1, h2, h3, h4, h5, h6) > .headerlink { position: absolute; margin-left: 0.3em; }
 .md-typeset strong { font-weight: 650; }
 .md-typeset hr { border-bottom-color: var(--glass-border); }
 
@@ -160,19 +167,52 @@
 .md-typeset a.headerlink, .md-typeset .footnote-ref, .md-typeset a.footnote-backref,
 .md-typeset .md-button, .md-typeset .ak-door a, .md-typeset .md-post a, .md-typeset .ak-post a { text-decoration: none; }
 .md-typeset .footnote-ref { font-weight: 600; }
-/* Adjacent footnote marks read as 2, 3 rather than 23. */
-.md-typeset sup[id^="fnref"] + sup[id^="fnref"]::before { content: ","; color: var(--glass-muted); }
+/* Adjacent footnote marks read as 2,3 rather than 23. agentik.js marks a
+ * mark whose previous sibling node, white space aside, is another mark; a
+ * CSS sibling selector cannot see the text between two marks. */
+.md-typeset sup.ak-fn-next::before { content: ","; color: var(--glass-muted); }
+
+/* Text that must not break across lines: agentik.js wraps ISO dates and a
+ * number with its unit in prose ("2026-10-14", "4 KB"), and marks short
+ * inline code ("--max-turns", "stream-json") the same way. */
+.md-typeset .ak-nobr { white-space: nowrap; }
 
 .md-typeset code { border-radius: 5px; font-size: 0.86em; padding: 0.05em 0.3em; }
 .md-typeset pre > code { border-radius: var(--glass-r-input); padding: 0.9em 1.1em; }
 .md-typeset .highlight, .md-typeset pre {
   border-radius: var(--glass-r-input);
 }
-.md-typeset pre { border: 1px solid var(--glass-border-faint); }
+.md-typeset pre { border: 1px solid var(--glass-border-faint); background-color: var(--md-code-bg-color); }
+/* The copy button gets its own gutter at the right of a code block, so it
+ * never covers the end of a line; the code scrolls beside it. */
+.md-typeset pre:has(> .md-code__nav) > code { margin-right: 2.1rem; }
+.md-typeset pre > .md-code__nav { top: 0.35em; right: 0.3em; padding: 0.1rem; background: transparent; }
+
+/* A box that scrolls sideways fades at the edge where more content waits.
+ * agentik.js sets data-ak-scroll to left, right or both on wide tables,
+ * code blocks and diagrams, and keeps it current as the reader scrolls. */
+[data-ak-scroll="right"] {
+  -webkit-mask-image: linear-gradient(to left, transparent 0, #000 2.4rem);
+  mask-image: linear-gradient(to left, transparent 0, #000 2.4rem);
+}
+[data-ak-scroll="left"] {
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 2.4rem);
+  mask-image: linear-gradient(to right, transparent 0, #000 2.4rem);
+}
+[data-ak-scroll="both"] {
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 2.4rem, #000 calc(100% - 2.4rem), transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 2.4rem, #000 calc(100% - 2.4rem), transparent 100%);
+}
 
 .md-typeset table:not([class]) { font-size: 0.7rem; }
 .md-typeset table:not([class]) th { font-size: 0.6rem; }
 .md-typeset table:not([class]) td, .md-typeset table:not([class]) th { padding: 0.7em 1em; }
+/* On a narrow screen a table of four or more columns keeps readable columns
+ * and scrolls sideways (the fade above shows it) instead of squeezing each
+ * column to one or two words a line. */
+@media screen and (max-width: 59.984375em) {
+  .md-typeset table:not([class]):has(tr > :nth-child(4)) :is(td, th) { min-width: 8rem; }
+}
 
 .md-typeset .admonition, .md-typeset details { font-size: 0.75rem; border-width: 1px; border-left-width: 3px; }
 
@@ -188,9 +228,19 @@
 .md-typeset .footnote { font-size: 0.68rem; color: var(--glass-text-2); }
 .md-typeset .footnote > ol > li { margin-bottom: 0.35rem; }
 .md-typeset .footnote > hr { display: none; }
+/* agentik.js ties a note's first back-link to its last word, so the hidden
+ * icon never wraps onto a blank line of its own. A note cited several times
+ * has more back-links; they take no room until the note is hovered, holds
+ * focus or is the link target, and then show and wrap like text. */
+.md-typeset .ak-backrefs { white-space: nowrap; }
+.md-typeset .footnote > ol > li:not(:hover):not(:focus-within):not(:target) .ak-backrefs ~ a.footnote-backref { display: none; }
 
-/* Mermaid diagrams sit in a glass card. */
-.md-typeset .mermaid {
+/* Mermaid diagrams sit in a glass card. agentik.js wraps each one in
+ * .ak-diagram, which becomes the card and scrolls sideways: a wide diagram
+ * keeps at least 72 percent of its drawn size, so its text stays legible on
+ * a phone, and a narrow one never scrolls. */
+.md-typeset .mermaid,
+.md-typeset .ak-diagram {
   background: var(--glass-1);
   border: 1px solid var(--glass-border);
   border-radius: var(--glass-r-card);
@@ -198,6 +248,9 @@
   padding: 1rem;
   margin: 1.2rem 0;
 }
+.md-typeset .ak-diagram { overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; }
+.md-typeset .ak-diagram > .mermaid { background: none; border: 0; border-radius: 0; box-shadow: none; padding: 0; margin: 0; }
+.md-typeset .ak-diagram:focus-visible { outline: 2px solid var(--glass-accent); outline-offset: 2px; }
 
 /* Abbreviations (content.tooltips). */
 .md-typeset abbr { text-decoration: underline dotted var(--glass-faint); cursor: help; }
@@ -226,7 +279,9 @@
 
 .md-typeset .ev {
   --ev: var(--ak-ev-conjecture);
-  display: inline-block;
+  /* Inline, not inline-block: a line may not break between a pill and the
+   * full stop or footnote mark after it. */
+  display: inline;
   vertical-align: 0.08em;
   font-size: 0.62rem;
   font-weight: 650;
@@ -258,20 +313,18 @@
 .md-typeset h2 .ev, .md-typeset h3 .ev { font-size: 0.55rem; vertical-align: 0.3em; margin-left: 0.3em; }
 .md-typeset table .ev { font-size: 0.58rem; }
 
-/* The legend: the five levels in one row. */
-.md-typeset .ev-legend { display: flex; flex-wrap: wrap; gap: 0.35rem 0.5rem; margin: 0.6rem 0 1.2rem; padding: 0; list-style: none; }
-.md-typeset .ev-legend li { margin: 0; }
+/* The legend: the five levels in one row. The selectors outrank Material's
+ * `.md-typeset ul:not([hidden])` and `[dir=ltr] .md-typeset ul li`. */
+[dir] .md-typeset ul.ev-legend:not([hidden]) { display: flex; flex-wrap: wrap; gap: 0.35rem 0.5rem; margin: 0.6rem 0 1.2rem; padding: 0; list-style: none; }
+[dir] .md-typeset ul.ev-legend > li { margin: 0; }
 
 /* ------------------------------------------------------------------ */
 /* 4. Home                                                             */
 /* ------------------------------------------------------------------ */
 
-/* Home: the hero and the doors run full width; prose keeps a reading measure. */
-.md-typeset .ak-home > p,
-.md-typeset .ak-home > ul,
-.md-typeset .ak-home > ol,
-.md-typeset .ak-home > .footnote { max-width: var(--ak-measure); }
-.md-typeset .ak-home > .ak-findings { max-width: calc(var(--ak-measure) + 8rem); }
+/* Home: one centred column, so the hero, the doors, the findings, the newest
+ * entries and the prose share one left and one right edge at every width. */
+.md-typeset .ak-home { max-width: var(--ak-home-max); margin-left: auto; margin-right: auto; }
 
 .md-typeset .ak-hero {
   position: relative;
@@ -330,13 +383,17 @@
 .md-typeset .ak-hero .ak-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0; }
 .md-typeset .ak-hero .ak-actions .md-button { margin: 0; }
 
-/* Doors and cards: stretched-link glass cards in a responsive grid. */
+/* Doors and cards: stretched-link glass cards, one column on a phone and
+ * three from 720 px, never two and one. In three columns each card is a
+ * subgrid of four rows (kicker or date, title, text, link or chips), so the
+ * titles and the links line up even when one kicker wraps. */
 .md-typeset .ak-doors {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.9rem;
   margin: 0 0 2.2rem;
 }
+
 .md-typeset .ak-door {
   position: relative;
   display: flex;
@@ -440,17 +497,34 @@
 /* The newest journal entries on the home page. */
 .md-typeset .ak-posts {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.9rem;
   margin: 1rem 0 2rem;
 }
 .md-typeset .ak-post { position: relative; }
 .md-typeset .ak-post h3 a::after { content: ""; position: absolute; inset: 0; border-radius: var(--glass-r-card); }
-.md-typeset .ak-post time, .md-typeset .ak-post .ak-post-meta {
-  display: block;
+.md-typeset .ak-post .ak-post-meta {
   font-size: 0.6rem;
+  line-height: 1.5;
   color: var(--glass-muted);
-  margin-bottom: 0.45rem;
+  margin: 0 0 0.45rem;
+}
+.md-typeset .ak-post .ak-post-time { white-space: nowrap; }
+.md-typeset .ak-post h3 { margin: 0 0 0.4rem; }
+
+/* Doors and newest entries from 720 px: three columns, each card a subgrid. */
+@media screen and (min-width: 45em) {
+  .md-typeset .ak-doors, .md-typeset .ak-posts { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 0; }
+  @supports (grid-template-rows: subgrid) {
+    .md-typeset .ak-doors > .ak-door, .md-typeset .ak-posts > .ak-door {
+      display: grid;
+      grid-row: span 4;
+      grid-template-rows: subgrid;
+      row-gap: 0;
+      align-content: start;
+    }
+    .md-typeset .ak-door > .ak-door-go { align-self: end; }
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -474,26 +548,70 @@
 .md-post__meta, .md-meta { color: var(--glass-muted); }
 .md-post__action a { font-weight: 600; color: var(--glass-accent); }
 
-/* Category chips, coloured by meaning: worked, did not work, open. */
-.md-post__meta .md-meta__link, .md-typeset .ak-cat {
-  --cat: var(--glass-muted);
+/* Category chips, coloured by meaning: worked, did not work, open. The
+ * templates (overrides/) give every chip .ak-cat and .ak-cat-<slug>. */
+/* --cat alone sits in light rules, so the colour rules below always win. */
+.ak-cat { --cat: var(--glass-muted); }
+.ak-cat.ak-cat-worked { --cat: var(--ak-cat-worked); }
+.ak-cat.ak-cat-did-not-work { --cat: var(--ak-cat-failed); }
+.ak-cat.ak-cat-open { --cat: var(--ak-cat-open); }
+:root .ak-cat, :root .md-typeset .ak-cat, :root .md-typeset a.ak-cat {
   display: inline-block;
   padding: 0 0.5em;
   font-size: 0.6rem;
   font-weight: 650;
   line-height: 1.5;
+  white-space: nowrap;
   border-radius: var(--glass-r-pill);
   color: var(--cat);
   background: color-mix(in srgb, var(--cat) 11%, transparent);
   border: 1px solid color-mix(in srgb, var(--cat) 34%, transparent);
   text-decoration: none;
 }
-.md-meta__link[href*="category/worked"], .ak-cat-worked { --cat: var(--ak-cat-worked); }
-.md-meta__link[href*="category/did-not-work"], .ak-cat-did-not-work { --cat: var(--ak-cat-failed); }
-.md-meta__link[href*="category/open"], .ak-cat-open { --cat: var(--ak-cat-open); }
+:root a.ak-cat:hover, :root a.ak-cat:focus-visible { border-color: var(--cat); color: var(--cat); }
+
+/* The meta line on a list card: date, chips and reading time. Separators
+ * sit in the gap before an item and are clipped at the start of a line, so
+ * a wrap never leaves a dangling "·". */
+.md-post__meta .md-meta__list { display: flex; flex-wrap: wrap; align-items: center; column-gap: 0.85em; row-gap: 0.15rem; overflow: hidden; }
+.md-post__meta .md-meta__item { position: relative; white-space: nowrap; }
+.md-post__meta .md-meta__item:not(:last-child)::after { content: none; }
+.md-post__meta .md-meta__item + .md-meta__item::before { content: "·"; position: absolute; left: -0.6em; color: var(--glass-muted); }
+.md-post__meta .md-meta__item .ak-cat + .ak-cat { margin-left: 0.25em; }
 
 /* The post sidebar's meta block. */
 .md-sidebar--post .md-post__meta, .md-sidebar--post .md-nav__link { color: var(--glass-text-2); }
+.md-sidebar--post .ak-post-cats > span { display: inline-flex; flex-wrap: wrap; gap: 0.25rem; }
+
+/* An entry's own meta line under its H1: the way back, the date, the
+ * reading time and the chips. Material moves the sidebar under the entry
+ * below 1220 px; there this line takes its place, and above it the sidebar
+ * shows them instead, so each page shows them once. */
+.md-typeset .ak-entry-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 0.85em;
+  row-gap: 0.2rem;
+  overflow: hidden;
+  margin: -0.2rem 0 1.1rem;
+  font-size: 0.66rem;
+  line-height: 1.6;
+  color: var(--glass-muted);
+}
+.md-typeset .ak-entry-meta > * { position: relative; white-space: nowrap; }
+.md-typeset .ak-entry-meta > * + *::before { content: "·"; position: absolute; left: -0.6em; color: var(--glass-muted); }
+.md-typeset .ak-entry-meta .ak-entry-back { font-weight: 600; text-decoration: none; }
+.md-typeset .ak-entry-meta .ak-entry-cats { display: inline-flex; gap: 0.25rem; }
+@media screen and (min-width: 76.25em) {
+  .md-typeset .ak-entry-meta { display: none; }
+}
+@media screen and (max-width: 76.234375em) {
+  .md-content--post > .md-sidebar--post { display: none; }
+}
+
+/* An archive or category page: the line under its H1 says what it lists. */
+.md-typeset .ak-view-lede { color: var(--glass-text-2); margin: -0.2rem 0 1.4rem; max-width: var(--ak-measure); }
 
 /* ------------------------------------------------------------------ */
 /* 6. Story shape                                                      */
@@ -513,9 +631,10 @@
 .md-typeset .ak-verdict > :first-child { margin-top: 0; }
 .md-typeset .ak-verdict > :last-child { margin-bottom: 0; }
 
-/* Related pages, at the foot of entries and pages. */
-.md-typeset .ak-related { display: flex; flex-wrap: wrap; gap: 0.4rem; padding: 0; margin: 0.6rem 0 1.2rem; list-style: none; }
-.md-typeset .ak-related li { margin: 0; }
+/* Related pages, at the foot of entries and pages: one row of pills. The
+ * selectors outrank Material's list rules, as for the legend. */
+[dir] .md-typeset ul.ak-related:not([hidden]) { display: flex; flex-wrap: wrap; gap: 0.4rem; padding: 0; margin: 0.6rem 0 1.2rem; list-style: none; }
+[dir] .md-typeset ul.ak-related > li { margin: 0; }
 .md-typeset .ak-related a {
   display: inline-block;
   padding: 0.15rem 0.7rem;
@@ -544,6 +663,7 @@
 
 @media screen and (max-width: 44.984375em) {
   .md-typeset { font-size: 0.78rem; }
+  .md-typeset .ak-door .ak-door-go { padding-top: 0.6rem; }
   .md-typeset h1 { font-size: 1.6rem; }
   .md-typeset h2 { font-size: 1.15rem; }
   .md-typeset .ak-hero { padding: 1.6rem 1.2rem 1.4rem; margin-left: 0; margin-right: 0; }
@@ -577,16 +697,34 @@
 .md-typeset .ak-limits > :first-child { margin-top: 0.2rem; }
 .md-typeset .ak-limits > :last-child { margin-bottom: 0.2rem; }
 
-/* The sources browse: evidence badges in the table use the five level tokens. */
-.gb-pill[class*="gb-b-ev-"] {
+/* The sources browse: evidence badges in the table, and evidence pills on
+ * the cards a narrow screen shows, use the five level tokens. */
+.gb-pill[class*="gb-b-ev-"],
+.gb-card-pill[class*="gb-card-pill-ev-"] {
   --ev: var(--ak-ev-conjecture);
   color: var(--ev);
   background: color-mix(in srgb, var(--ev) 11%, transparent);
   border-color: color-mix(in srgb, var(--ev) 34%, transparent);
 }
-.gb-pill.gb-b-ev-measured { --ev: var(--ak-ev-measured); }
-.gb-pill.gb-b-ev-documented { --ev: var(--ak-ev-documented); }
-.gb-pill.gb-b-ev-reported { --ev: var(--ak-ev-reported); }
-.gb-pill.gb-b-ev-our-use { --ev: var(--ak-ev-our-use); }
+.gb-pill.gb-b-ev-measured, .gb-card-pill.gb-card-pill-ev-measured { --ev: var(--ak-ev-measured); }
+.gb-pill.gb-b-ev-documented, .gb-card-pill.gb-card-pill-ev-documented { --ev: var(--ak-ev-documented); }
+.gb-pill.gb-b-ev-reported, .gb-card-pill.gb-card-pill-ev-reported { --ev: var(--ak-ev-reported); }
+.gb-pill.gb-b-ev-our-use, .gb-card-pill.gb-card-pill-ev-our-use { --ev: var(--ak-ev-our-use); }
+.gb-cards > .gb-card { margin-bottom: 0; }
+.gb-card-pill { font-size: 0.56rem; }
+.gb-card-pill.gb-card-pill-page { font-weight: 500; color: var(--glass-muted); background: transparent; }
+.gb-card .gb-card-title { font-size: 0.7rem; }
+.gb-card .gb-card-sub { font-size: 0.6rem; font-style: normal; }
 .md-typeset .ak-static-toggle { margin: 1.4rem 0 0.4rem; }
 .gb-browse .gb-table td { vertical-align: top; }
+/* The freshness stamp beside the count: legible size; its colour is the
+ * skin's --glass-faint, which holds 4.5:1 on the canvas. */
+.gb-browse .gb-asof { font-size: 0.6rem; }
+/* Without JavaScript the browse never loads, so its "Loading" line hides;
+ * the full list below it stays. */
+.no-js .gb-browse { display: none; }
+
+/* A page that hides its table of contents (the sources page) keeps prose at
+ * the reading measure; the browse beside it still runs full width. */
+.md-sidebar--secondary[hidden] ~ .md-content > .md-content__inner > :is(p, ul, ol, blockquote, .admonition),
+.md-sidebar--secondary[hidden] ~ .md-content .ak-static-list > :is(p, ul, ol) { max-width: var(--ak-measure); }

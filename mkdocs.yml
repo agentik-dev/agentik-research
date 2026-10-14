@@ -93,12 +93,19 @@ plugins:
       cards_layout_dir: overrides/layouts
       cards_layout: agentik
 
+# Notes in reading order, also inside `<div markdown>` blocks (see the file).
+hooks:
+  - overrides/hooks/footnote_order.py
+
 markdown_extensions:
   - abbr
   - admonition
   - attr_list
   - def_list
-  - footnotes
+  # Number notes in the order the text cites them, not the order they are
+  # defined under "## Sources" (Python-Markdown 3.9 and later).
+  - footnotes:
+      USE_DEFINITION_ORDER: false
   - md_in_html
   - tables
   - toc:

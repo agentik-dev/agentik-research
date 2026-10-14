@@ -6,7 +6,11 @@
  * taken from the agentik pixel icon's greens, and a small semantic palette for
  * the five evidence levels (measured, documented, reported, our use,
  * conjecture), used the same way on every page. Every text colour here holds
- * at least 4.5:1 on the canvas and on both glass surfaces.
+ * at least 4.5:1 on the canvas and on both glass surfaces. For the evidence
+ * pills, the category chips and --glass-faint the check is made at the
+ * canvas's lowest-contrast point: in light, the bottom-left corner of a
+ * 390 by 900 px viewport, rgb(224, 226, 215), where the green wash sits on
+ * the gradient's darkest stop; a pill's own 11 percent tint is laid over it.
  */
 
 /* --- Self-hosted Inter (variable, latin + latin-ext) ----------------
@@ -43,6 +47,8 @@
   /* Reading measure for prose pages, and the site's content width. */
   --ak-measure: 38rem;
   --ak-grid-max: 68rem;
+  /* The home page's one column: the hero, doors, findings and prose share it. */
+  --ak-home-max: 42rem;
 }
 
 /* --- Light: warm paper ------------------------------------------------ */
@@ -64,7 +70,7 @@
   --glass-text: #18201b;
   --glass-text-2: #38433c;
   --glass-muted: #59645c;
-  --glass-faint: #8a928c;
+  --glass-faint: #5a655d;            /* 4.6:1 at the canvas's lowest point; 6.0:1 on glass-1 */
 
   --glass-accent: #17703a;           /* the one interactive accent: agentik green, deepened for paper */
   --glass-accent-soft: rgba(23, 112, 58, 0.10);
@@ -79,16 +85,20 @@
   --glass-glyph-bg: rgba(255, 253, 248, 0.95);
 
   /* The five evidence levels. Semantic only: never decoration. */
-  --ak-ev-measured: #1d4ed8;
+  /* As a pill (text on its own 11 percent tint) at the canvas's lowest
+   * point: measured 4.8:1, documented 4.6:1, reported 4.8:1, our use 4.6:1,
+   * conjecture 5.0:1. */
+  --ak-ev-measured: #1b48c9;
   --ak-ev-documented: #6d28d9;
-  --ak-ev-reported: #9a4a07;
-  --ak-ev-our-use: #0e6f86;
+  --ak-ev-reported: #8a4106;
+  --ak-ev-our-use: #0a6075;
   --ak-ev-conjecture: #57534e;
 
-  /* The journal's three categories. */
-  --ak-cat-worked: #17703a;
-  --ak-cat-failed: #b3362f;
-  --ak-cat-open: #9a4a07;
+  /* The journal's three categories, as chips at the same point: worked
+   * 4.7:1, did not work 4.6:1, open 4.8:1. */
+  --ak-cat-worked: #146534;
+  --ak-cat-failed: #a22f28;
+  --ak-cat-open: #8a4106;
 
   /* The header is quiet glass over the canvas, not a coloured bar. */
   --ak-header-bg: rgba(250, 248, 242, 0.82);
@@ -165,7 +175,7 @@
   --glass-text: #e7ece8;
   --glass-text-2: #b0bab3;
   --glass-muted: #939e97;
-  --glass-faint: #6c7770;
+  --glass-faint: #848f88;            /* 5.2:1 at the canvas's lightest point; 4.8:1 on glass-2 */
 
   --glass-accent: #7ddc92;           /* the icon's own green */
   --glass-accent-soft: rgba(125, 220, 146, 0.13);
