@@ -1,28 +1,30 @@
 # Memory and the always-loaded context
 
-What loads on every turn should be short, and what must hold on every turn should be a hook, not prose. The measured evidence is thin but consistent: a context file raised cost 20 percent without raising success,[^gloaguen] a file lifted compliance with one rule from zero to about two thirds and its length did not matter,[^mcmillan] and compliance falls as the number of simultaneous instructions grows.[^ifscale] The vendor's documentation says how each memory layer loads and when, and that is where the practical answers are. This chapter answers research question 3: CLAUDE.md, memory files, skills, handoff documents, and what belongs in context against what should be a pointer.
+Keep what loads on every turn short, and put what must hold on every turn in a hook, not in prose. The measured evidence is thin but consistent. A context file raised cost 20 percent without raising success.[^gloaguen] A file lifted adherence to one rule from zero to about two thirds, and its length did not matter.[^mcmillan] Adherence falls as the number of simultaneous instructions grows.[^ifscale]
+
+The practical answers are in the vendor's documentation, which says how and when each memory layer loads. This chapter answers research question 3: CLAUDE.md, memory files, skills, handoff documents, and what belongs in context against what should be a pointer.
 
 ## What is measured
 
-- Gloaguen et al. tested repository context files for coding agents. Agent-generated files raised cost 20 to 23 percent and developer-written files up to 19 percent, without raising success: the resolution changes were -0.5, -2 and +2.4 points.[^gloaguen]
-- McMillan ran 1,650 Claude Code sessions in a factorial design. File size from 25 to 500 lines, position, extra files and a conflicting rule did not change compliance with one trivial rule: 60.0, 65.2, 67.7 and 64.0 percent by size. With no file, 0 of 524 functions complied.[^mcmillan]
-- Jaroslawicz et al. measured instruction following against instruction count. Claude Sonnet 4 scored 94.4 percent at 100 simultaneous keyword instructions and 42.9 percent at 500.[^ifscale]
+- Gloaguen et al. tested repository context files for coding agents. Agent-generated files raised cost 20 to 23 percent, and developer-written files up to 19 percent. None of the resolution changes, -0.5, -2 and +2.4 points, was significant.[^gloaguen]
+- McMillan ran 1,650 Claude Code sessions in a factorial design. Adherence to one trivial rule did not change with file size from 25 to 500 lines, position, extra files or a conflicting rule. By size, adherence was 60.0, 65.2, 67.7 and 64.0 percent. With no file, 0 of 524 functions complied.[^mcmillan]
+- Jaroslawicz et al. measured adherence against the number of instructions. Claude Sonnet 4 scored 94.4 percent at 100 simultaneous keyword instructions and 42.9 percent at 500.[^ifscale]
 
-One vendor evaluation is reported rather than measured, because its model and case count are not stated. An AGENTS.md docs index passed 100 percent of cases; a skill passed 53 percent by default and 79 percent when AGENTS.md told the agent to use it, and the skill was never invoked in 56 percent of cases.[^vercel]
+Vercel's own evaluation is reported rather than measured, because it states neither its model nor its case count. An AGENTS.md docs index passed 100 percent of cases. A skill passed 53 percent by default, and 79 percent when AGENTS.md told the agent to use it. The agent never invoked the skill in 56 percent of cases.[^vercel]
 
 ## What the vendor documents, as of October 2026
 
-- CLAUDE.md files in the working directory and in every parent directory load at launch, root first; a CLAUDE.md in a subdirectory loads when Claude touches a file there; `claudeMdExcludes` skips a file.[^memory][^largecodebases]
-- CLAUDE.md is sent as a user message after the system prompt, with no compliance guarantee. `@` imports load at launch, nest to four hops, and save no context. The page advises under 200 lines. After compaction the root file returns, and nested files load again on demand.[^memory]
-- Auto memory loads the first 200 lines or 25KB of `MEMORY.md` each session; topic files load on demand.[^memory]
-- Skills: every skill's name is listed at session start, each description is cut at 1,536 characters, and the listing budget is 1 percent of the window. The body enters on use and stays in context. The page advises under 500 lines.[^skills]
-- Prompt caching prices a cache write at 1.25 times the base input price for the five-minute lifetime and 2 times for the one-hour lifetime; a cache read costs 0.1 times, 0.05 times on Sonnet 5.5 and Opus 5.5, and 0.025 times on Fable 5.1.[^caching]
-- A PreToolUse hook that times out does not block. Setting `onFailure` to `"block"` (version 2.1.295) makes it block.[^hooks]
+- CLAUDE.md files in the working directory and every parent directory load at launch, root first. A CLAUDE.md in a subdirectory loads when Claude touches a file there, and `claudeMdExcludes` skips a file.[^memory][^largecodebases]
+- CLAUDE.md is sent as a user message after the system prompt, with no guarantee of adherence. `@` imports load at launch, nest to four hops, and save no context. The documentation advises under 200 lines. After compaction the root file returns, and nested files load again on demand.[^memory]
+- Auto memory loads the first 200 lines or 25KB of `MEMORY.md` each session. Topic files load on demand.[^memory]
+- Claude Code lists every skill's name at session start and cuts each description at 1,536 characters. The listing budget is 1 percent of the window. A skill's body enters on use and stays in context. The documentation advises under 500 lines.[^skills]
+- A prompt-cache write costs 1.25 times the base input price for the five-minute lifetime and 2 times for the one-hour lifetime. A cache read costs 0.1 times, 0.05 times on Sonnet 5.5 and Opus 5.5, and 0.025 times on Fable 5.1.[^caching]
+- A PreToolUse hook that times out does not block. To make it block, set `onFailure` to `"block"` (version 2.1.295).[^hooks]
 - AskUserQuestion takes 1 to 4 questions per call with 2 to 4 options each and a header of up to 12 characters.[^userinput]
 
 ## What practitioners report
 
-- HumanLayer advises under 300 lines and counts about 50 instructions in Claude Code's own system prompt; the count is the author's own.[^humanlayer]
+- HumanLayer advises under 300 lines. By the author's own count, Claude Code's system prompt holds about 50 instructions.[^humanlayer]
 - One engineer runs a 13KB root file and sees a fresh session start near 20k tokens.[^shankar]
 
 ## What belongs in context every turn, and what should be a pointer
@@ -30,10 +32,10 @@ One vendor evaluation is reported rather than measured, because its model and ca
 | Item | Placement | Reason | Evidence |
 |---|---|---|---|
 | A rule that must hold on every turn | A hook, plus one short CLAUDE.md line | CLAUDE.md is advisory; a file lifted one rule from 0 to 67.7 percent, and a hook can block | Documented;[^bestpractices][^hooks] measured[^mcmillan] |
-| A decision ledger | A short index loaded; entries read by pointer | The vendor caps its own index; the ledger's caps are untested | Documented;[^memory] conjecture for the caps |
+| A decision ledger | A short index, always loaded; entries read by pointer | The vendor caps its own index; the ledger's caps are untested | Documented;[^memory] conjecture for the caps |
 | A handoff charter | A small file, read first | A new session reads a progress file, the git log and a feature list first | Reported[^harnesses] |
 | Reference documents | An always-loaded index, or a pointer the instructions say when to follow | A skill that waited to be invoked went unused in 56 percent of cases; an always-loaded index did not | Reported[^vercel] |
-| Skills | The description always; the body on use | The listing costs on every turn; the body enters on use and stays | Documented[^skills] |
+| Skills | The description always; the body on use | The listing costs context on every turn; the body enters on use and stays | Documented[^skills] |
 | Tool output | Not kept | Reads fill the window | Documented[^bestpractices] |
 
 ## Where sources disagree
@@ -41,13 +43,15 @@ One vendor evaluation is reported rather than measured, because its model and ca
 - Placement. A November 2025 post says CLAUDE.md joins the system prompt;[^claudemdblog] the October 2026 documentation says it is a user message.[^memory] The later page governs.
 - Length. HumanLayer's 300 lines against the documentation's 200.[^humanlayer][^memory] Neither is measured.
 - Adherence. The documentation says longer files lower adherence and cites no study. The one length experiment found no effect from 25 to 500 lines on one trivial rule.[^mcmillan] The decline with many rules is measured only for keyword lists.[^ifscale]
-- Always-loaded against on-demand. An always-loaded index beat a skill in one vendor evaluation,[^vercel] while the documentation sends situational content to skills.[^bestpractices]
+- Always-loaded against on-demand. An always-loaded index beat a skill in Vercel's evaluation,[^vercel] while the documentation sends situational content to skills.[^bestpractices]
 
 ## What this means for the agentik tools
 
-agentik-decisions' design files make several claims about this question,[^decisionsdesign][^d18][^reviewr6] and the documentation supports most of them. `@` imports expand at launch.[^memory] A parent CLAUDE.md loads in every repository beneath it.[^largecodebases] A skill loads its description at start and its body on use, and the 500-line figure is advice, not a limit.[^skills] AskUserQuestion's limits of 1 to 4 questions and 2 to 4 options are documented, though the page names no version.[^userinput] A timed-out PreToolUse hook fails open unless `onFailure` reverses it.[^hooks]
+The documentation supports most of what agentik-decisions' design files claim about this question.[^decisionsdesign][^d18][^reviewr6] `@` imports expand at launch.[^memory] A parent CLAUDE.md loads in every repository beneath it.[^largecodebases] A skill loads its description at start and its body on use, and the 500-line figure is advice, not a limit.[^skills] AskUserQuestion's limits of 1 to 4 questions and 2 to 4 options are documented, though the page names no version.[^userinput] A timed-out PreToolUse hook fails open unless `onFailure` reverses it.[^hooks]
 
-Two claims are weaker. The repo's model says inline text wins below a few hundred tokens because an always-loaded file costs its size on every turn while a retrieval costs an extra turn; the model gives 667 tokens from assumed values.[^decisionsdesign] Cache reads at 0.1 times discount both sides alike, so the threshold likely holds to first order, but that is conjecture. The cost of a context file against none is measured, and its length was not varied;[^gloaguen] the adherence loss is not measured, and the caps of 25 entries in force and 7 loaded every session are in no source.[^decisionsreadme]
+Two claims are weaker. The first is the repo's cost model, which says inline text wins below a few hundred tokens. The reason it gives: an always-loaded file costs its size on every turn, while a retrieval costs an extra turn. From assumed values, the model puts the threshold at 667 tokens.[^decisionsdesign] Conjecture: cache reads at 0.1 times discount both sides alike, so the threshold holds to first order.
+
+The second concerns file length and the ledger's caps. The cost of a context file against none is measured, but that study did not vary length.[^gloaguen] The adherence loss is not measured. No source gives the caps of 25 entries in force and 7 loaded every session.[^decisionsreadme]
 
 ## Practices this evidence supports
 

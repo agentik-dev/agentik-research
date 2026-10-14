@@ -1,6 +1,8 @@
 # Length and compaction
 
-Two results decide how you run a long session. The longer the context, the worse the model does, even when the fact it needs is in the window. That is measured across models and tasks.[^levy][^du][^modarressi] Compaction keeps the gist and drops the specifics, and no study shows that a restart from a written handoff does better. Anthropic's own harness work moved state into files and git instead of trusting the summary.[^factory][^cookbook][^harnesses] This chapter answers research questions 1 and 2: how behaviour changes as context grows, and what compaction, summaries and a restart each keep and lose.
+Two results decide how you run a long session. First, the longer the context, the worse the model does, even when the fact it needs is in the window. Studies measure this across models and tasks.[^levy][^du][^modarressi] Second, compaction keeps the gist and drops the specifics. No study shows that a restart from a written handoff does better. Anthropic's own harness work moved state into files and git instead of trusting the summary.[^factory][^cookbook][^harnesses]
+
+This chapter answers research questions 1 and 2: how behaviour changes as context grows, and what compaction, summaries and a restart each keep and lose.
 
 ## Question 1: what changes as context grows
 
@@ -19,50 +21,54 @@ Two results decide how you run a long session. The longer the context, the worse
 | Lindenbauer et al., 2025[^masking] | Tool output in a coding agent's context | Tool output was about 84 percent of a turn's tokens; masking old output cut cost 50 percent or more in four of five setups; solve rate moved from -2.0 to +2.8 points in three and fell 4.0 in the fourth | SWE-agent, five configurations |
 | Gloaguen et al., 2026[^gloaguen] | Repository context files for coding agents | Resolution changed by -0.5 to -2 points, neither change significant, and cost rose 20 to 23 percent with an agent-generated file | Compares a file with none; does not vary file length |
 
-Three things stand out. Length hurts on its own, not only through retrieval failure.[^du] Instruction count hurts too, separately from token count, and the main failure is omission, not contradiction.[^ifscale] Most of a coding agent's context is tool output, and dropping the old output costs little or nothing in solve rate.[^masking]
+Length hurts on its own, not only through retrieval failure.[^du] Instruction count hurts too, separately from token count, and the main failure is omission, not contradiction.[^ifscale] Most of a coding agent's context is tool output, and dropping the old output costs little or nothing in solve rate.[^masking]
 
 ### What the vendor documents, as of October 2026
 
-Anthropic's documentation names the effect: accuracy and recall degrade as the token count grows, and it calls this context rot.[^ctxdoc] The same page gives the windows. A 1M-token window applies to Fable and Mythos models, Opus 4.6 and later, Sonnet 4.6 and later, and Haiku 5.5; Sonnet 4.5 and older have 200K.[^ctxdoc] Pricing is the same across the 1M window except for Haiku 5.5, where prompts over 100,000 tokens cost 0.50 and 2.50 dollars per million input and output tokens against 0.10 and 0.50; the base prices are 10 and 50 for Fable 5.1, 4 and 20 for Opus 5.5, and 2 and 10 for Sonnet 5.5.[^pricing] Claude Code defaults Fable, Sonnet 5 and later, Haiku 5.5 and Opus 4.7 and later to the 1M window, needs a `[1m]` suffix for Opus 4.6 and Sonnet 4.6, and compacts at about 967K tokens on a 1M model.[^modelconfig] Its best-practices page says performance degrades as the window fills, without a measurement, and its memory page says to keep CLAUDE.md under 200 lines.[^bestpractices][^memory]
+Anthropic's documentation names the effect context rot: accuracy and recall degrade as the token count grows.[^ctxdoc] The same page gives the windows. A 1M-token window applies to Fable and Mythos models, Opus 4.6 and later, Sonnet 4.6 and later, and Haiku 5.5. Sonnet 4.5 and older have 200K.[^ctxdoc]
+
+Pricing is the same across the 1M window except for Haiku 5.5. There, prompts over 100,000 tokens cost 0.50 and 2.50 dollars per million input and output tokens, against 0.10 and 0.50. The base prices are 10 and 50 for Fable 5.1, 4 and 20 for Opus 5.5, and 2 and 10 for Sonnet 5.5.[^pricing]
+
+Claude Code defaults Fable, Sonnet 5 and later, Haiku 5.5 and Opus 4.7 and later to the 1M window. Opus 4.6 and Sonnet 4.6 need a `[1m]` suffix. On a 1M model, Claude Code compacts at about 967K tokens.[^modelconfig] Its best-practices page says performance degrades as the window fills, and gives no measurement.[^bestpractices] Its memory page says to keep CLAUDE.md under 200 lines.[^memory]
 
 ### What is anecdote, and where sources disagree
 
-- The position effect is disputed by date. The 2023 models show a U-shape;[^liu] the 2025 models in the Chroma study showed no notable variation across eleven positions on a simple task.[^chroma] Neither tests a current Claude model.
-- The newest Claude models in the length studies are Opus 4 and Sonnet 4, from mid-2025. No independent measurement of a Claude 5.x model at length appears in the sources, and the October 2026 documentation still states context rot.[^ctxdoc]
-- A practitioner taxonomy of four failures (poisoning, distraction, confusion, clash) relays other studies; its observation about one model past 100K tokens is anecdotal by its own wording.[^breunig]
+- The position effect is disputed by date. The 2023 models showed a U-shape;[^liu] the 2025 models in the Chroma study showed no notable variation across eleven positions on a simple task.[^chroma] Neither tests a current Claude model.
+- The newest Claude models in the length studies are Opus 4 and Sonnet 4, from mid-2025. The sources hold no independent measurement of a Claude 5.x model at length. The October 2026 documentation still states context rot.[^ctxdoc]
+- A practitioner taxonomy of four failures (poisoning, distraction, confusion, clash) relays other studies. Its observation about one model past 100K tokens is anecdotal by its own wording.[^breunig]
 - Nothing in the sources measures degradation inside a Claude Code session as it fills. The studies use benchmarks, and the one coding-agent study measures cost rather than quality decay.[^masking]
 
 ## Question 2: compaction or restart
 
 ### What is measured
 
-Factory scored three compressors with a model judge over 36,611 production messages: 3.70 for their own, 3.44 for Anthropic's and 3.35 for OpenAI's, out of 5. The artifact trail, meaning which files were touched and how, scored lowest for all three: 2.45, 2.33 and 2.19.[^factory] The study is vendor-run and compares compressors, not Claude Code's own compaction.
+Factory used a model judge to score three compressors over 36,611 production messages. Out of 5, its own scored 3.70, Anthropic's 3.44 and OpenAI's 3.35. The artifact trail, meaning which files were touched and how, scored lowest for all three: 2.45, 2.33 and 2.19.[^factory] The study is vendor-run and compares compressors, not Claude Code's own compaction.
 
 Anthropic's cookbook ran one research agent once with compaction at 180K tokens. The summary was about 2,783 tokens. It kept 3 of 3 high-level facts and lost 3 of 3 obscure appendix-table values.[^cookbook]
 
-Two results from question 1 bear on the choice. Putting the information into one fresh instruction recovered most of the multi-turn loss,[^laban] and masking old observations matched LLM summarisation's solve rate at a similar cost, both about half the raw agent's.[^masking] The first has no tools and the second compares masking with summarisation, not with a restart.
+Two results from question 1 bear on the choice. Putting the information into one fresh instruction recovered most of the multi-turn loss.[^laban] Masking old tool output matched LLM summarisation's solve rate at a similar cost, both about half the raw agent's.[^masking] The first has no tools. The second compares masking with summarisation, not with a restart.
 
 ### What the vendor documents, as of October 2026
 
-- Automatic compaction runs at the model's limit: the 200K boundary for Sonnet 4.6 and Opus 4.6 without extended context, and about 967K tokens for a native 1M-window model. The window is settable from 100K to 1M tokens.[^thresholds]
-- After compaction the root CLAUDE.md, memory and the plan return from disk; up to five recent files are re-read, or only the path if a file is over 5,000 tokens; invoked skills return capped at 5,000 tokens each and 25,000 in total; path-scoped rules and early instructions are summarised away.[^ctxwindow]
-- `/compact` with a focus keeps what you name, and `/clear` starts an empty conversation;[^ctxwindow] the old one stays reachable with `/resume`.[^commands]
-- Idle compaction is on by default and runs after about 54 idle minutes above 200,000 tokens, in interactive sessions on the one-hour cache, on version 2.1.290 or later. Setting `autoCompactEnabled` to false also stops it.[^settings]
+- Automatic compaction runs at the model's limit. For Sonnet 4.6 and Opus 4.6 without extended context, that is the 200K boundary; for a native 1M-window model, about 967K tokens. The window is settable from 100K to 1M tokens.[^thresholds]
+- After compaction, the root CLAUDE.md, memory and the plan return from disk. Up to five recent files are re-read, or only the path if a file is over 5,000 tokens. Invoked skills return, capped at 5,000 tokens each and 25,000 in total. Path-scoped rules and early instructions are summarised away.[^ctxwindow]
+- `/compact` with a focus keeps what you name, and `/clear` starts an empty conversation.[^ctxwindow] The old one stays reachable with `/resume`.[^commands]
+- Idle compaction is on by default. It runs after about 54 idle minutes above 200,000 tokens, in interactive sessions on the one-hour cache, on version 2.1.290 or later. Setting `autoCompactEnabled` to false also stops it.[^settings]
 - A PreCompact hook blocks with exit code 2. Blocking a proactive pass skips it. Blocking a recovery pass surfaces the API error, and the request fails.[^precompact]
-- On the API, threshold compaction defaults to 150,000 tokens with a minimum of 50,000.[^apithreshold] Anthropic announced context editing with 84 percent fewer tokens in one 100-turn evaluation; the benchmark is unnamed.[^ctxmgmt]
+- On the API, threshold compaction defaults to 150,000 tokens with a minimum of 50,000.[^apithreshold] Anthropic announced context editing with 84 percent fewer tokens in one 100-turn evaluation. The announcement does not name the benchmark.[^ctxmgmt]
 
 ### What practitioners report
 
-- In March 2026 an Anthropic engineer reported that Sonnet 4.5 needed resets with a structured handoff, and that for Opus 4.5 the resets were dropped and automatic compaction sufficed.[^harnessdesign]
-- In November 2025 another Anthropic post found compaction insufficient on its own: a progress file, a feature list and the git history carried work between sessions.[^harnesses]
-- A Claude Code engineer calls the summary lossy, says the model is least capable at the moment it compacts, and advises a clear with a written brief.[^sessionmgmt]
+- In March 2026 an Anthropic engineer reported on two models. Sonnet 4.5 needed resets with a structured handoff. For Opus 4.5 the resets were dropped, and automatic compaction sufficed.[^harnessdesign]
+- In November 2025 another Anthropic post found compaction insufficient on its own. A progress file, a feature list and the git history carried work between sessions.[^harnesses]
+- A Claude Code engineer calls the summary lossy and says the model is least capable at the moment it compacts. The engineer advises clearing and starting from a written brief.[^sessionmgmt]
 - Two practitioners weigh handoffs against compaction. One compacts when returning the same day and hands off otherwise, near 50 percent of the window. Neither measures.[^kaiser][^khorana]
 
 ### What each option keeps and loses
 
 | Option | Keeps | Loses | Evidence |
 |---|---|---|---|
-| Auto-compaction | The re-injected CLAUDE.md, memory and plan; five files; a summary | Early instructions, exact values, the artifact trail | Documented;[^ctxwindow] measured on other compressors[^factory] |
+| Automatic compaction | The re-injected CLAUDE.md, memory and plan; five files; a summary | Early instructions, exact values, the artifact trail | Documented;[^ctxwindow] measured on other compressors[^factory] |
 | Manual `/compact` with a focus | The same, plus what the focus names | The same classes; that a focus loses less is conjecture | Documented;[^ctxwindow] reported[^sessionmgmt] |
 | A summary the agent writes | State, next steps, learnings | Images and documents in range;[^apiondemand] obscure values | Documented;[^apithreshold] measured once[^cookbook] |
 | A restart from a handoff file | Only what the file and the repository hold; a clean window | The reasoning behind decisions; that it beats compaction is conjecture | Reported;[^kaiser] a lab result with no tools[^laban] |
@@ -75,9 +81,11 @@ Two results from question 1 bear on the choice. Putting the information into one
 
 ## What this means for the agentik tools
 
-agentik-session rests on the premise that a fresh context per sitting beats a long one. The direction has support: a consolidated single message recovered most of the multi-turn loss,[^laban] and Claude Code's own advice is a clean session over accumulated corrections.[^bestpractices] The strength is unmeasured, and the same page says to let context accumulate sometimes. The repo records the rule as an owner's ruling, not a finding.[^packets] Its profile table lists opus, sonnet and haiku at 200,000 tokens and gives 1M only to fable, mythos and `opus[1m]`;[^profiles] the October 2026 documentation gives 1M to Opus 5.5, Sonnet 5.5 and Haiku 5.5, so the table is stale or cautious.[^ctxdoc][^modelconfig]
+agentik-session rests on the premise that a fresh context per sitting beats a long one. The direction has support. A consolidated single message recovered most of the multi-turn loss,[^laban] and Claude Code's own advice prefers a clean session to accumulated corrections.[^bestpractices] The size of the gain is unmeasured, and the same page says to let context accumulate sometimes. The repo records the rule as an owner's ruling, not a finding.[^packets]
 
-agentik-decisions caps its ledger at 25 entries in force and gives no reason for the number.[^d17] Adherence does fall as instruction count grows,[^ifscale] and the docs say longer CLAUDE.md files reduce adherence,[^memory] but no source gives the number 25, and the cap counts entries rather than bytes.[^d17]
+agentik-session's profile table lists opus, sonnet and haiku at 200,000 tokens and gives 1M only to fable, mythos and `opus[1m]`.[^profiles] The October 2026 documentation gives 1M to Opus 5.5, Sonnet 5.5 and Haiku 5.5, so the table is stale or cautious.[^ctxdoc][^modelconfig]
+
+agentik-decisions caps its ledger at 25 entries in force and gives no reason for the number.[^d17] Adherence does fall as instruction count grows,[^ifscale] and the docs say longer CLAUDE.md files reduce adherence.[^memory] But no source gives the number 25, and the cap counts entries, not bytes.[^d17]
 
 ## Practices this evidence supports
 
