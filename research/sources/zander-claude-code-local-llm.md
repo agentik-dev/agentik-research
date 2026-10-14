@@ -16,4 +16,4 @@ kind: reported
 - By the page's own record no test method or results are given; the "around 300 tok/sec on M2 Ultra" and "faster per token" statements are claims without measurement, and the context recommendations are the author's judgment. Useful for the failure list only.
 
 ## Used in
-- research/synthesis/field-10.md
+- Read for question 10 and kept for the site pages on cost lanes; research/synthesis/field-10.md does not cite it (the synthesis has a 9,000-byte cap).

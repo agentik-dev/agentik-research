@@ -8,7 +8,7 @@ kind: documented
 ---
 
 ## What it says
-- Section "Request headers", as of October 2026: a gateway must forward `anthropic-version` and `anthropic-beta` unchanged. When the developer uses a claude.ai login with `ANTHROPIC_BASE_URL` set and no gateway credential variable, `anthropic-beta` carries an OAuth capability the upstream requires; stripping it fails those requests with HTTP 401. The headers `x-claude-code-session-id`, `x-claude-code-agent-id` and `x-claude-code-parent-agent-id` let a gateway attribute cost to a session or a subagent.
+- Section "Request headers", as of October 2026: a gateway must forward `anthropic-version` and `anthropic-beta` unchanged. When the developer uses a claude.ai login with `ANTHROPIC_BASE_URL` set and no gateway credential variable, `anthropic-beta` carries an OAuth capability the upstream requires; stripping it fails those requests with HTTP 401. Three id headers in the `x-claude-code` family (session, subagent, parent agent) let a gateway attribute cost to a session or a subagent.
 - Section "Gateway hint headers" (Claude Code v2.1.273 or later): routing hints such as `x-claude-code-request-class` (values `main`, `subagent`, `workflow`, `compaction`, `auxiliary`) are sent by default on a direct Anthropic connection, off by default on a custom base URL, and enabled there with `CLAUDE_CODE_GATEWAY_HINT_HEADERS=1`. They carry fixed vocabularies, tool names and durations, never prompt text.
 - Section "Feature pass-through": Claude Code sends an `ANTHROPIC_BASE_URL` gateway the full set of beta headers and body fields it sends to the Anthropic API. A gateway that strips one half of a header and field pair gets HTTP 400 errors. Prompt caching has no beta pairing: if the gateway drops `cache_control`, "no error" appears and the conversation bills as uncached input on every turn. Token counting is optional; without `/v1/messages/count_tokens` Claude Code falls back to a character-based estimate.
 - Section "System prompt attribution block": a gateway that reshapes the system array can break the strip of the attribution block and the cache key; `CLAUDE_CODE_ATTRIBUTION_HEADER=0` omits the block. From Claude Code v2.1.181 the block is stable for a conversation behind a custom base URL.
@@ -20,4 +20,4 @@ kind: documented
 - Written for gateway operators; it describes the protocol, not how well any local model serves it. Vendor documentation, as of October 2026.
 
 ## Used in
-- research/synthesis/field-10.md
+- Read for question 10 and kept for the site pages on cost lanes; research/synthesis/field-10.md does not cite it (the synthesis has a 9,000-byte cap).

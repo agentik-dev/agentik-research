@@ -16,3 +16,10 @@ kind: measured
 
 ## Used in
 - research/synthesis/field-6.md
+
+## Also (question 9)
+- Source read: the full-text page https://arxiv.org/html/2605.29442v1 (first 100,000 of 105,514 characters).
+- Form S7, "Inaccurate Self-Reporting", is defined as the agent misreporting the status of its own work by prematurely claiming success, completion or readiness. It accounts for 22.58 percent of all episodes (20.36 percent in IDE sessions, 26.66 percent in command-line sessions). Its most common cause is "Cannot Determine", at 48.17 percent of S7 episodes.
+- Examples in the paper: an agent describes a UI behaviour as implemented and the developer reports it still fails; an agent claims uploads, tests or deployments succeeded and the next turn shows otherwise; in an appendix case an agent declared "10/10 tasks" complete and the developer then hit a runtime error from a missing database column.
+- The overall misalignment rate per turn declines over time while S7's share of episodes rises (significant overall, not significant within each modality). The paper does not analyse final summaries as a separate category.
+- Limits (question 9): developer pushback is the signal, so an inaccurate claim nobody challenged is not counted. Used in: research/synthesis/field-9.md.

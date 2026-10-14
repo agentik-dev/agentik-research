@@ -5,7 +5,7 @@ API-billed and subscription use and local models; routing work to the lane that 
 
 ## Findings
 Measured:
-- Fresh tasks, 15 May to 1 July 2026 (111 problems): Fable 5 64.5 percent at 4.40 dollars per problem, Sonnet 5 56.8 at 1.43, Qwen3.6-27B 31.2 at 0.62. [swe-rebench-leaderboard; measured]
+- Fresh tasks, 15 May to 1 July 2026: Fable 5 64.5 percent at 4.40 dollars per problem, Sonnet 5 56.8 at 1.43, Qwen3.6-27B 31.2 at 0.62. [swe-rebench-leaderboard; measured]
 - Maker's card, self-reported: Qwen3.8-27B 61.7 on SWE-bench Pro (Claude Code harness) against 53.4 reported for Opus 4.6 Max; not on the board above. [qwen38-27b-model-card; measured, vendor-run]
 - RouteLLM sent 13.4 percent of MT Bench calls to the strong model for 95 percent of its quality, but 35.4 percent (92 percent) on MMLU and 33.6 percent (87 percent) on GSM8K. [ong-routellm; measured]
 - Across 21 datasets and 33 models, top routers gained up to 4 percent accuracy or saved up to 31.7 percent cost; several lost to the best single model, OpenRouter by 24.7 percent. [li-llmrouterbench; measured]
@@ -15,7 +15,7 @@ Documented, as of October 2026:
 - Plans: Pro 20 dollars a month, Max 100 (5x) or 200 (20x), Team seat 25 or 125. Rolling five-hour window plus weekly limits, shared with chat; no token counts. [claude-pricing-plans; documented]
 - Past a limit, Pro and Max can enable usage credits at API rates under a monthly cap. [support-claude-extra-usage; documented]
 - API, per million input/output tokens: Sonnet 5.5 2/10 dollars, Opus 5.5 4/20, Haiku 5.5 0.10/0.50; batch 50 percent off. [anthropic-pricing-doc; documented]
-- A gateway credential, key or helper replaces the login; plan limits stop applying and the credential's owner pays per token. A base URL alone keeps the login. Anthropic does not support routing Claude Code to non-Claude models. [code-docs-llm-gateway; documented]
+- A gateway credential, key or helper replaces the login: plan limits stop and the credential's owner pays per token. A base URL alone keeps the login. Anthropic does not support non-Claude models behind a gateway. [code-docs-llm-gateway; documented]
 - Remote Control is off under a non-Anthropic base URL. Voice dictation and Remote Control are off while a key, token or helper is active. [code-docs-llm-gateway-connect; documented]
 - In `-p` runs `ANTHROPIC_API_KEY` is always used when set; `--bare` never reads the login. [code-docs-authentication; code-docs-headless-unattended; documented]
 - Max and Team include API credits (100 or 200 dollars; Team up to 500 pooled) for the Agent SDK and API, not interactive Claude Code; `claude -p` counts only with a key from the linked organisation. [support-claude-api-credits-max-team; documented]
@@ -32,17 +32,17 @@ Reported:
 ## The lanes
 | Lane | Cost and limits | Fits | Cannot | Evidence |
 |---|---|---|---|---|
-| API-billed | Per token; org rate and spend limits | Unattended `-p`, `--bare`, fan-out | Remote Control, voice dictation | code-docs-llm-gateway-connect; documented |
-| Subscription | Flat fee; five-hour and weekly windows; credits beyond | Interactive work | Fable capped or credit-billed | claude-pricing-plans; documented |
+| API-billed | Per token; org spend limits | Unattended `-p`, `--bare`, fan-out | Remote Control, voice dictation | code-docs-llm-gateway-connect; documented |
+| Subscription | Flat fee; five-hour and weekly windows | Interactive work | Fable capped or credit-billed | claude-pricing-plans; documented |
 | Local model | No token charge; hardware-bound; 64k context | Small, tool-light tasks | Caching; unsupported by Anthropic | ollama-anthropic-compatibility; documented |
 
 ## Disputes
-- SDK billing: Anthropic says the June change was paused; a guide says it took effect [buildthisnow-max-vs-api; reported]. Its banner and linked article differ on `claude -p`.
+- SDK billing: Anthropic says the June change was paused; a guide says it took effect [buildthisnow-max-vs-api; reported].
 - Local quality: a self-reported card against an independent board that measured only the predecessor. No source measures tool-call accuracy for 27B-class models; the tool-name slips are anecdote.
 - Routing: RouteLLM and LLMRouterBench disagree; neither tests coding agents.
 
 ## What this says about the agentik claims
-- (a) Separate budgets: supported [code-docs-llm-gateway; documented]. Windows as the binding limit: unmeasured [conjecture].
+- (a) Separate budgets: supported [code-docs-llm-gateway; documented]. Windows as the binding limit: unmeasured [conjecture; test by logging `/usage` over a long sitting].
 - (b) Remote Control: supported. Voice dictation: not supported as stated; the page ties it to keys, not a base URL [code-docs-llm-gateway-connect; documented].
 - (c) Placeholder after full cost: not in the docs [code-docs-headless-unattended; documented]. The 3 of 4 runs are our use.
 - (d) Local speeds: same order as the reports above; the 26k-token turn has no outside check [kodam-80b-local-claude-code; reported].

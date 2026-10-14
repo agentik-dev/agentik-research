@@ -16,4 +16,4 @@ kind: measured
 - All figures are from Anthropic's internal evaluations on models of April 2026 (Sonnet 4.6, Haiku 4.5, Opus 4.6), with no independent check. The newer page anthropic-optimizing-cost-intelligence (October 2026 models) reports mixed results, including advisors that were never consulted.
 
 ## Used in
-- research/synthesis/field-10.md
+- Read for question 10 and kept for the site pages on cost lanes; research/synthesis/field-10.md does not cite it (the synthesis has a 9,000-byte cap).

@@ -16,4 +16,4 @@ kind: documented
 - Vendor documentation; the figure 64k is the vendor's floor for this use, not a measured threshold. As of October 2026.
 
 ## Used in
-- research/synthesis/field-10.md
+- Read for question 10 and kept for the site pages on cost lanes; research/synthesis/field-10.md does not cite it (the synthesis has a 9,000-byte cap).

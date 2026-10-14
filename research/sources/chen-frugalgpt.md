@@ -14,4 +14,4 @@ kind: measured
 - I read only the abstract page. Models and prices are those of 2023; the figures are the authors' on their selected datasets, and a 2026 benchmark (li-llmrouterbench) found binary routers of this family struggled to save cost without losing accuracy.
 
 ## Used in
-- research/synthesis/field-10.md
+- Read for question 10 and kept for the site pages on cost lanes; research/synthesis/field-10.md does not cite it (the synthesis has a 9,000-byte cap).

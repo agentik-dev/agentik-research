@@ -16,4 +16,4 @@ kind: measured
 - Models of spring 2025 on a code-editing benchmark, not an agent loop like Claude Code; older than every other dated source here. It shows quantization and host settings move the score by several points, not how a 2026 local model compares with a hosted Claude model.
 
 ## Used in
-- research/synthesis/field-10.md
+- Read for question 10 and kept for the site pages on cost lanes; research/synthesis/field-10.md does not cite it (the synthesis has a 9,000-byte cap).

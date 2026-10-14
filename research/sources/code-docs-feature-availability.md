@@ -18,4 +18,4 @@ kind: documented
 - Vendor documentation, as of October 2026. The page lists voice dictation under "requires a claude.ai sign-in" but does not say whether a custom base URL alone disables it (the connect page ties it to the credential variables; see code-docs-llm-gateway-connect).
 
 ## Used in
-- research/synthesis/field-10.md
+- Read for question 10 and kept for the site pages on cost lanes; research/synthesis/field-10.md does not cite it (the synthesis has a 9,000-byte cap).

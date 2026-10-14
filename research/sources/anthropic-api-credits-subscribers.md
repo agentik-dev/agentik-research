@@ -17,4 +17,4 @@ kind: documented
 - Vendor documentation, as of October 2026. It does not say how long the program lasts. The Help Center version (support-claude-api-credits-max-team) adds a statement about `claude -p`.
 
 ## Used in
-- research/synthesis/field-10.md
+- Read for question 10 and kept for the site pages on cost lanes; research/synthesis/field-10.md does not cite it (the synthesis has a 9,000-byte cap).

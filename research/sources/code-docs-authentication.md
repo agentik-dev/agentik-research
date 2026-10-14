@@ -13,7 +13,7 @@ kind: documented
 - Section "Generate a long-lived token": `claude setup-token` prints a one-year OAuth token for CI that authenticates with the subscription (Pro, Max, Team or Enterprise plan), set as `CLAUDE_CODE_OAUTH_TOKEN`. That token can only make model requests, so it cannot establish Remote Control sessions or fetch claude.ai connectors. Bare mode does not read it; a `--bare` script must use `ANTHROPIC_API_KEY` or an `apiKeyHelper`.
 - Cloud sessions always use subscription credentials; `ANTHROPIC_API_KEY` or `ANTHROPIC_AUTH_TOKEN` set in a cloud environment does not override them.
 - Section "Log in with multiple accounts": a separate `CLAUDE_CONFIG_DIR` per account keeps separate settings, history and login.
-- Section "Claude Console authentication": a Console sign-in without an API key is available from v2.1.242; Console users get a "Claude Code" workspace for cost tracking. Features that need a claude.ai login (connectors, `/schedule`) are not available when a profile or federation credential is selected.
+- Section "Claude Console authentication": a Console sign-in without an API key is available from v2.1.242; the Claude Code role can create only Claude Code API keys and the Developer role any key. Features that need a claude.ai login (connectors, `/schedule`) are not available when a profile or federation credential is selected.
 - `apiKeyHelper`, `ANTHROPIC_API_KEY` and `ANTHROPIC_AUTH_TOKEN` apply to the CLI and the surfaces that wrap it, including the Agent SDK and GitHub Actions; cloud sessions and Claude Desktop use OAuth.
 
 ## Limits
