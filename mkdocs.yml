@@ -69,3 +69,5 @@ nav:
       - tools/session.md
       - tools/relay.md
       - tools/decisions.md
+      - tools/respeak.md
+      - tools/agents.md
