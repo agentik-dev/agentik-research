@@ -1,33 +1,37 @@
 # Unattended runs and guardrails
 
-An unattended run can report success whether or not it was allowed to do all the work. In print mode a permission prompt with nobody to answer it is denied, the model is told, and the run continues; the denials appear in the result's `permission_denials` list and in stream messages, not as an error.[^headless][^sdkresult] The agentik-session runbook recorded exactly that result: a denied prompt with `subtype` of `success` and `is_error` false.[^sessionrunbook] The money cap is checked after each response, so spend can pass it by one response plus any running subagents.[^agentloop] No documented watchdog tells a main session that it has stalled.[^network] The guardrails that exist are command-text matches that miss `/bin/rm` and `bash -c`,[^permissions] hooks that fail open on a timeout unless told otherwise,[^hooks] and a sandbox that covers shell commands and nothing else.[^sandbox] This chapter answers research questions 6 and 7: headless runs, queues, gates, stop conditions and money caps, and the hooks, permission modes, sandboxes and worktrees that guard them.
+An unattended run can report success even when it was not allowed to do all the work. In print mode, a permission prompt with nobody to answer it is denied. Claude receives a rejection, and the run continues. You see the denials in the result's `permission_denials` list and in stream messages, not as an error.[^headless][^sdkresult] The agentik-session runbook records that result: a denied prompt with `subtype` of `success` and `is_error` false.[^sessionrunbook]
+
+The budget cap is checked after each response, so spend can pass it by one response plus any running subagents.[^agentloop] No documented watchdog tells a main session that it has stalled.[^network] The guardrails that exist have gaps. Deny rules match command text and miss `/bin/rm` and `bash -c`.[^permissions] Hooks fail open on a timeout unless told otherwise.[^hooks] The sandbox covers shell commands and nothing else.[^sandbox]
+
+This chapter answers research questions 6 and 7. The first covers headless runs, queues, gates, stop conditions and budget caps. The second covers the hooks, permission modes, sandboxes and worktrees that guard them.
 
 ## Question 6: unattended runs
 
 ### What is measured
 
-None of these studies runs Claude Code unattended; they measure other harnesses or the underlying failure.
+None of these studies runs Claude Code unattended. They measure other harnesses or the underlying failure.
 
-- After a first mistake, agents recovered in 30.5 percent of runs, never noticed the mistake in 38.5 percent of cases, and kept acting on it uncorrected in 72.6 percent, over 2,518 trajectories. This is a preprint, read through an extract.[^hiddenfailures]
-- Of 608 flaky tests, 46.5 percent (283) were affected by computational resources, and CPU starvation mattered most: under CPU throttling the Java suites showed 82 failures, against 10 under memory pressure.[^flaky]
-- In METR's long-task evaluation, repeating a failed action accounted for 12 of 31 failures on one model and premature abandonment for 16 of 32 on another.[^metr] In the SWE-agent study a 4-dollar budget ended 31 percent of runs.[^sweagent]
+- Across 2,518 trajectories, agents recovered after a first mistake in 30.5 percent of runs. They never noticed the mistake in 38.5 percent of cases, and kept acting on it uncorrected in 72.6 percent. This is a preprint, read through an extract.[^hiddenfailures]
+- Of 608 flaky tests, 46.5 percent (283) were affected by computational resources. CPU starvation mattered most: under CPU throttling the Java suites showed 82 failures, against 10 under memory pressure.[^flaky]
+- In METR's long-task evaluation, repeating a failed action accounted for 12 of 31 failures on one model. Premature abandonment accounted for 16 of 32 on another.[^metr] In the SWE-agent study, a 4-dollar budget ended 31 percent of runs.[^sweagent]
 
 ### What the vendor documents, as of October 2026 (changelog head 2.1.296)
 
-- Print mode. A permission prompt with no host to answer it is denied, Claude receives a rejection, and the run continues; repeated auto-mode blocks do not stop it, and an unavailable auto mode falls back to Manual.[^headless][^permissionmodes]
-- The result message. `permission_denials` is the authoritative record of denials; `terminal_reason` has 19 listed values.[^sdkresult] The five subtypes include `success`, `error_max_turns` and `error_max_budget_usd`; the listed `stop_reason` values are `end_turn`, `max_tokens` and `refusal`.[^agentloop]
-- Caps. `--max-turns` and `--max-budget-usd` have no default. The budget is checked after each response and is a client-side estimate, so spend can pass the cap by one response plus any running subagents.[^agentloop][^cli]
-- Background work. From 2.1.163 (June 2026) to 2.1.291, `claude -p` stopped background shells about five seconds after the final result; 2.1.292 (6 October 2026) waits for them, and while a background command runs the 10-minute idle cap does not end the wait. Version 2.1.281 (September 2026) fixed an endless retry that ignored `--max-turns`.[^changelog][^headless]
-- Watchdogs. On the direct API the stream watchdogs are 180 seconds to first byte, 300 seconds between events and 180 seconds between bytes.[^network] A stalled subagent in a workflow restarts after 600,000 milliseconds by default, at most five times.[^workflows][^envvars] No main-session progress watchdog is documented.
+- Print mode. A permission prompt with no host to answer it is denied. Claude receives a rejection, and the run continues. Repeated auto-mode blocks do not stop it, and an unavailable auto mode falls back to Manual.[^headless][^permissionmodes]
+- The result message. `permission_denials` is the authoritative record of denials, and `terminal_reason` has 19 listed values.[^sdkresult] The five subtypes include `success`, `error_max_turns` and `error_max_budget_usd`. The listed `stop_reason` values are `end_turn`, `max_tokens` and `refusal`.[^agentloop]
+- Caps. `--max-turns` and `--max-budget-usd` have no default. The budget is a client-side estimate checked after each response, so spend can pass the cap by one response plus any running subagents.[^agentloop][^cli]
+- Background work. From 2.1.163 (June 2026) to 2.1.291, `claude -p` stopped background shells about five seconds after the final result. From 2.1.292 (6 October 2026) it waits for them. While a background command runs, the 10-minute idle cap does not end the wait. Version 2.1.281 (September 2026) fixed an endless retry that ignored `--max-turns`.[^changelog][^headless]
+- Watchdogs. On the direct API, the stream watchdogs are 180 seconds to first byte, 300 seconds between events and 180 seconds between bytes.[^network] A stalled subagent in a workflow restarts after 600,000 milliseconds by default, at most five times.[^workflows][^envvars] No main-session progress watchdog is documented.
 - Bash. The default timeout is 120 seconds and the ceiling 600; a timed-out foreground command moves to the background.[^bash]
 - `--bare` skips hooks, skills, plugins, MCP servers, auto memory and CLAUDE.md. Without it, `-p` runs the project's hooks with no trust dialog.[^headless]
-- Transcripts live at `~/.claude/projects/<project>/<session-id>.jsonl`, and subagent transcripts under a `subagents/` directory beside them; the format is documented as unstable.[^sessions][^subagents]
+- Transcripts live at `~/.claude/projects/<project>/<session-id>.jsonl`, and subagent transcripts under a `subagents/` directory beside them. The documentation calls the format unstable.[^sessions][^subagents]
 - Claude Code sets `CLAUDECODE=1` and `CLAUDE_CODE_CHILD_SESSION=1` in the subprocesses it spawns, and a nested `-p` session persists.[^envvars]
 
 ### What practitioners report, and what git does
 
 - One author of scheduled skills reports a permission dialog that froze a run for 24 hours. It is an anecdote with no version, and the documentation says `-p` denies unanswered prompts.[^claudelab][^headless]
-- Git creates a lock file with `O_CREAT|O_EXCL` and fails at once if the file exists; its signal handler removes the lock on most signals, so only a SIGKILL leaves a stale one.[^gitlock]
+- Git creates a lock file with `O_CREAT|O_EXCL` and fails at once if the file exists. Its signal handler removes the lock on most signals, so only a SIGKILL leaves a stale one.[^gitlock]
 
 ### The failure modes and what guards them
 
@@ -44,18 +48,18 @@ None of these studies runs Claude Code unattended; they measure other harnesses 
 
 ### What is measured
 
-- Anthropic's auto-mode classifier, on vendor data from March 2026: a false-positive rate of 0.4 percent on 10,000 real calls; a miss rate of 17 percent on 52 real overeager actions and 5.7 percent on 1,000 synthetic exfiltration attempts; users approved 93 percent of manual prompts.[^automode]
-- Auto-approval rose from about 20 percent of sessions, when a user had under 50 sessions, to over 40 percent at 750 sessions; interrupts rose from about 5 to about 9 percent of turns.[^autonomy]
+- On vendor data from March 2026, Anthropic's auto-mode classifier had a false-positive rate of 0.4 percent on 10,000 real calls. Its miss rate was 17 percent on 52 real overeager actions and 5.7 percent on 1,000 synthetic exfiltration attempts. Users approved 93 percent of manual prompts.[^automode]
+- Auto-approval rose from about 20 percent of sessions, when a user had under 50 sessions, to over 40 percent at 750 sessions. Interrupts rose from about 5 to about 9 percent of turns.[^autonomy]
 - Six coding agents, Claude Code among them, gave remote code execution through tool-description and return-value injection on every tested agent and model pair.[^redteam]
-- In the AgentDojo simulator (2024, GPT-4o), attack success fell from 57.69 percent to 6.84 with a tool filter while utility rose from 69.00 to 73.13 percent, and to 7.95 percent with a detector at a utility of 41.49.[^agentdojo]
+- In the AgentDojo simulator (2024, GPT-4o), a tool filter cut attack success from 57.69 percent to 6.84 while utility rose from 69.00 to 73.13 percent. A detector cut attack success to 7.95 percent, at a utility of 41.49.[^agentdojo]
 
 ### What the vendor documents, as of October 2026
 
-- A PreToolUse hook runs before any mode check. Its deny holds in `bypassPermissions`; exit code 2 stops a call before allow rules are read; a hook's allow cannot beat a deny rule.[^hooksguide]
-- Any exit code other than 0 or 2 is a non-blocking error, and valid JSON on stdout then decides. A timed-out PreToolUse hook (default 600 seconds) does not block unless `onFailure` is `"block"` (2.1.295, October 2026), which does nothing on Stop. Claude never sees stderr from a hook that exits 0.[^hooks]
+- A PreToolUse hook runs before any mode check. Its deny holds in `bypassPermissions`. Exit code 2 stops a call before allow rules are read, and a hook's allow cannot beat a deny rule.[^hooksguide]
+- Any exit code other than 0 or 2 is a non-blocking error, and valid JSON on stdout then decides. A timed-out PreToolUse hook (default 600 seconds) does not block unless `onFailure` is `"block"` (2.1.295, October 2026). That setting does nothing on Stop. Claude never sees stderr from a hook that exits 0.[^hooks]
 - A Stop hook's exit 2 is overridden after 8 consecutive blocks with no tool call between them.[^hooksguide]
-- Bash deny rules match the command text. `Bash(rm *)` misses `/bin/rm -rf` and `bash -c 'rm -rf build/'`; `Bash(git push *)` misses `git -C . push`. The page says a rule is not a security boundary.[^permissions]
-- In `-p` runs, prompts are denied. Auto mode pauses after 3 consecutive or 20 total blocks; in `-p` the action just does not run. An `rm` of the root, the home directory or the working directory cannot be approved by a rule or a hook.[^permissionmodes][^headless]
+- Bash deny rules match the command text. `Bash(rm *)` misses `/bin/rm -rf` and `bash -c 'rm -rf build/'`, and `Bash(git push *)` misses `git -C . push`. The documentation says a rule is not a security boundary.[^permissions]
+- In `-p` runs, prompts are denied. Auto mode pauses after 3 consecutive or 20 total blocks; in `-p` the action does not run. No rule or hook can approve an `rm` of the root, the home directory or the working directory.[^permissionmodes][^headless]
 - The sandbox covers Bash, PowerShell and Monitor commands and their children. File tools, hooks and local MCP servers run outside it. It is off by default, and if it cannot start, commands run unsandboxed unless `failIfUnavailable` is set.[^sandbox]
 - Worktrees live at `.claude/worktrees/<name>/` with four isolation checks, none of which tracks files a shell command writes.[^worktrees]
 
@@ -69,17 +73,21 @@ Each incident is one account, not reproduced.
 
 ### Where the evidence stops
 
-- The classifier rates are measured but vendor-run on private data, and the 17 percent rests on 52 actions. The academic results are measured but test none of Claude Code's hooks, deny rules or sandbox, and AgentDojo is a 2024 simulator.
-- The documentation lists four worktree isolation checks; reports from April to August 2026 describe leaks, one in the guard itself.[^issue52958][^issue84685] The reports are version-dependent and unreproduced.
+- The classifier rates are measured but vendor-run on private data, and the 17 percent rests on 52 actions. The academic results are measured but test none of Claude Code's hooks, deny rules or sandbox. AgentDojo is a 2024 simulator.
+- The documentation lists four worktree isolation checks. Reports from April to August 2026 describe leaks, one in the guard itself.[^issue52958][^issue84685] The reports are version-dependent and unreproduced.
 - Every incident is one account, and closure by a stale-issue bot is not a fix.
 
 ## What this means for the agentik tools
 
-agentik-relay's design rests on several claims that the documentation supports: PreToolUse deny hooks fire in a `-p` child and prompts are denied;[^headless] `--max-budget-usd` can overshoot;[^agentloop] `--bare` would drop CLAUDE.md;[^headless] the worktree layout under `.claude/worktrees/` matches, with `<name>` rather than `<id>`;[^worktrees] and the guard evasions it found in review (a command substitution, backticks, a variable holding the command name, `pkill -f`) are of the same kind as the deny-rule bypasses the documentation lists.[^permissions][^relaynth] Three of its claims are a choice, or dated. The relay strips `CLAUDE*` variables from a child by choice; the documentation says Claude Code sets `CLAUDECODE` and `CLAUDE_CODE_CHILD_SESSION` there and neither recommends nor forbids stripping.[^envvars] The 600-second Bash cap the relay plans around is the documented ceiling, and the default is 120 seconds.[^bash] And the rule that a completed `claude -p` run stops background shells held from 2.1.163 to 2.1.291 and no longer does.[^changelog] Its outside watchdog on HEAD, file mtime and CPU fills a gap the documentation leaves, since no main-session progress watchdog exists; no stall has yet been recorded to test it against.[^relaydesign]
+The documentation supports several claims in agentik-relay's design. PreToolUse deny hooks fire in a `-p` child, and prompts are denied.[^headless] The `--max-budget-usd` cap can overshoot,[^agentloop] and the `--bare` flag would drop CLAUDE.md.[^headless] The worktree layout under `.claude/worktrees/` matches, with `<name>` rather than `<id>`.[^worktrees] In review, the relay found guard evasions: a command substitution, backticks, a variable holding the command name, and `pkill -f`. They are the same kind as the deny-rule bypasses the documentation lists.[^permissions][^relaynth]
 
-agentik-session's shim assumes a blocked Stop hook holds each turn end; it does, up to 8 consecutive blocks with no tool call between them.[^sessionplugin][^hooksguide] Its reading that hooks fail open on a timeout and that stderr on exit 0 is unseen is supported.[^sessionreviews][^hooks]
+Three of the relay's claims are a choice, or dated. The relay strips `CLAUDE*` variables from a child by choice. The documentation says Claude Code sets `CLAUDECODE` and `CLAUDE_CODE_CHILD_SESSION` there, and neither recommends nor forbids stripping.[^envvars] The 600-second Bash cap the relay plans around is the documented ceiling, and the default is 120 seconds.[^bash] The rule that a completed `claude -p` run stops background shells held from 2.1.163 to 2.1.291 and no longer does.[^changelog]
 
-agentik-agents learned from a red team that `--allowedTools` restricts nothing and replaced it with `--tools`; its review incident, a reviewer's `pkill` that killed a production process, has no documented guard, since no rule names local process kills.[^agentsreadme][^agentsreview]
+The relay's outside watchdog on HEAD, file mtime and CPU fills a gap the documentation leaves: it documents no main-session progress watchdog. This site's survey found no stall recorded yet to test it against.[^relaydesign]
+
+agentik-session's shim assumes a blocked Stop hook holds each turn end. It does, up to 8 consecutive blocks with no tool call between them.[^sessionplugin][^hooksguide] The documentation supports agentik-session's reading that hooks fail open on a timeout and that stderr on exit 0 goes unseen.[^sessionreviews][^hooks]
+
+agentik-agents learned from a red team that `--allowedTools` restricts nothing, and replaced it with `--tools`. Its review incident, a reviewer's `pkill` that killed a production process, has no documented guard: no rule names local process kills.[^agentsreadme][^agentsreview]
 
 ## Practices this evidence supports
 
