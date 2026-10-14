@@ -2,7 +2,7 @@
 repo: agentik-dev/agentik-session
 path: design/review-adv6.md
 commit: e7f0723
-title: "ADV6, ADV10 and ADV11: three adversarial reviews of claude-code-session (design/review-adv6.md, review-adv10.md, review-adv11.md)"
+title: "ADV6, ADV10 and ADV11: three adversarial reviews of agentik-session (design/review-adv6.md, review-adv10.md, review-adv11.md)"
 author: agentik-dev
 published: 2026-09-23
 accessed: 2026-10-14
@@ -18,6 +18,7 @@ kind: our-use
 - Other findings (headings only): hygiene passing secrets, symlinks and UTF-16/UTF-32 text; the whole-suite acceptance rule being a denylist that 10 of 10 variants passed (ADV10-4) and 18 new shapes passed (ADV11-4); the depth guard failing open (ADV10-10).
 
 ## Limits
+- Spelling: the file names the command line and the repository by their pre-rename spellings. This note writes the command line as `agentik session` and the repository as agentik-session, so a reader can search both sides.
 - Self-review by the same toolchain; reviewers are the owner's agents. Findings are reproduced by the reviewers, not independently.
 - Only the opening, the findings list, the verdict and four findings were read in full.
 

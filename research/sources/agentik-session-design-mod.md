@@ -2,7 +2,7 @@
 repo: agentik-dev/agentik-session
 path: design/mod-r1.md
 commit: e7f0723
-title: "claude-code-session: what becomes a mod (mod r1)"
+title: "agentik-session: what becomes a mod (mod r1)"
 author: agentik-dev
 published: 2026-10-11
 accessed: 2026-10-14
@@ -18,6 +18,7 @@ kind: our-use
 - Section 9: the three sibling plugins stopped being hard dependencies on the owner's word of 2026-10-11, that a user is never forced to install several plugins.
 
 ## Limits
+- Spelling: the file names the command line and the repository by their pre-rename spellings. This note writes the command line as `agentik session` and the repository as agentik-session, so a reader can search both sides.
 - Design record, unrefuted at its first writing; some rows were later refuted and folded (see NICE_TO_HAVE).
 - Mod API facts are for Claude Code 2.1.296 ("early access").
 
