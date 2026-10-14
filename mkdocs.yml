@@ -66,3 +66,4 @@ nav:
       - field/telling-people.md
   - The tools:
       - tools/index.md
+      - tools/session.md
