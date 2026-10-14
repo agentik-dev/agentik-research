@@ -1,8 +1,8 @@
 # Budgets, pacing and cost lanes
 
-The chapter makes three points. A turn resends the whole conversation, so a cache miss reprices the whole context at the write rate.[^caching][^pricing] The money and turn caps you set on an unattended run are client-side estimates that can overshoot.[^cli] And the three billing lanes (subscription, API-billed and local model) differ in what they turn off, not only in what they cost.[^gatewayconnect]
+The chapter makes three points. A turn resends the whole conversation, and after a gap past the cache lifetime the whole history is reprocessed as uncached input.[^caching][^pricing] The money and turn caps you set on an unattended run are client-side estimates that can overshoot.[^cli] And the three billing lanes (subscription, API-billed and local model) differ in what they turn off, not only in what they cost.[^gatewayconnect]
 
-The budgets half has no measured study. The vendor documents the ceilings, the cache lifetimes and the usage limits, and two practitioners have read their own transcripts. The cost-lanes half has benchmarks and router studies, none of them on coding agents. So the chapter is mostly documented and dated: it is true as of October 2026 and changes often. It answers research questions 4 and 10.
+The budgets half has no measured study. The vendor documents the ceilings, the cache lifetimes and the usage limits, and two practitioners have read their own transcripts. The cost-lanes half has coding benchmarks and two router studies; neither router study tests coding agents. So the chapter is mostly documented and dated: it is true as of October 2026 and changes often. It answers research questions 4 and 10.
 
 ## Question 4: budgets and pacing
 
@@ -33,13 +33,13 @@ Ceilings and timers:
 
 - Across 63,880 requests the token-weighted cache hit rate was 96.59 percent, but the median session's was 86.41 percent. In the median session, writes were 75.9 percent of the cache cost.[^primeline]
 - A per-turn cost table for Opus 4.6 gives about 0.03 dollars at turn 20 (60,000 tokens). It gives 0.15 at turn 50 (150,000) and over 0.33 at turn 80.[^zivtech]
-- One user's 119,866 calls showed one-hour cache writes until 5 March 2026, then five-minute writes (93 percent by 21 March). From 11 to 31 January the writes were five-minute only. The October 2026 documentation gives per-bucket lifetimes, so the history matters only for reading older cost data.[^issue46829]
+- One user's 119,866 calls showed one-hour cache writes until 5 March 2026, then five-minute writes (93 percent by 21 March). From 11 to 31 January the writes were five-minute only. The October 2026 documentation gives per-bucket lifetimes; one practitioner reports a further lifetime change on 10 September 2026.[^issue46829][^primeline]
 
 ### The cost model
 
 - Each turn resends the whole conversation, priced as uncached input, a cache write or a cache read, plus output.[^costs][^pricing]
 - A miss follows a gap past the lifetime, a model switch, a tool-definition change, compaction or an upgrade.[^caching]
-- Reading a warm 200,000-token context costs about 0.04 dollars on Opus 5.5, before output and new writes. A cold one-hour rewrite of the same context costs 1.60, forty times as much. A cold five-minute rewrite, the default on an API key, costs 1.00. The prices are documented; the arithmetic is ours.[^pricing]
+- Reading a warm 200,000-token context costs about 0.04 dollars on Opus 5.5, before output and new writes. A cold one-hour rewrite of the same context costs 1.60, forty times as much. A cold five-minute rewrite, the default on an API key,[^caching] costs 1.00. The prices are documented; the arithmetic is ours.[^pricing]
 - So cost scales with turns times context only while the cache is warm. That is a conjecture: test it by summing cache-creation tokens per session.
 
 ### Where the evidence stops
@@ -51,17 +51,17 @@ All the cost figures come from single-user transcripts. The aggregate 96.59 perc
 ### What is measured
 
 - On fresh tasks from 15 May to 1 July 2026, Fable 5 solved 64.5 percent at 4.40 dollars per problem. Sonnet 5 solved 56.8 percent at 1.43, and Qwen3.6-27B 31.2 percent at 0.62.[^rebench] The maker's card for Qwen3.8-27B reports 61.7 on SWE-bench Pro in the Claude Code harness, self-reported and not on that board.[^qwen]
-- RouteLLM sent 13.4 percent of MT Bench calls to the strong model for 95 percent of its quality. It needed 35.4 percent on MMLU for 92 percent, and 33.6 percent on GSM8K for 87 percent.[^routellm] Across 21 datasets and 33 models, the best routers gained up to 4 percent accuracy or saved up to 31.7 percent cost. Several lost to the best single model.[^routerbench]
+- RouteLLM sent 13.4 percent of MT Bench calls to the strong model for 95 percent of its quality. It needed 35.4 percent on MMLU for 92 percent, and 33.6 percent on GSM8K for 87 percent.[^routellm] Across 21 datasets and 33 models, the best routers gained up to 4 percent accuracy or saved up to 31.7 percent cost. Several did not reliably beat the best single model.[^routerbench]
 - In Anthropic's internal evaluations, an Opus 5.5 executor with a Fable 5.1 advisor gained 1.7 points for 2.1 times the cost. A Fable 5 orchestrator with a Sonnet worker halved cost on an easy slice. On the full set, Fable 5 alone was 22 to 30 percent cheaper. The page advises sweeping effort first.[^costintel]
 
 ### What the vendor documents, as of October 2026
 
-- Plans: Pro at 20 dollars a month, Max at 100 (5x) or 200 (20x), Team seats at 25 or 125. The rolling five-hour limit and the weekly limit are shared with chat, and Anthropic publishes no token counts.[^plans] Past a limit, Pro and Max can enable usage credits at API rates, with an optional monthly cap.[^extrausage]
+- Plans: Pro at 20 dollars a month, Max from 100 with a 20x tier, Team seats at 25 or 125. The rolling five-hour limit and the weekly limit are shared with chat, and Anthropic publishes no token counts.[^plans] Past a limit, Pro and Max can enable usage credits at API rates, with an optional monthly cap.[^extrausage]
 - API prices per million input and output tokens: Sonnet 5.5, 2 and 10 dollars; Opus 5.5, 4 and 20; Haiku 5.5, 0.10 and 0.50. Batch is 50 percent off.[^pricing]
 - A gateway credential, an API key or a helper replaces the login: plan limits stop and the credential's owner pays per token. A base URL alone keeps the login. Anthropic does not support non-Claude models behind a gateway.[^gateway] Remote Control is off under a non-Anthropic base URL; voice dictation and Remote Control are off while a key, token or helper is active.[^gatewayconnect]
 - In `-p` runs Claude Code always uses `ANTHROPIC_API_KEY` when it is set; `--bare` never reads the login.[^auth][^headless]
 - Max and Team include monthly API credits (100 or 200 dollars; Team up to 500 pooled) for the Agent SDK and the API. They do not cover interactive Claude Code, and `claude -p` counts only with a key from the linked organisation.[^apicredits] Anthropic paused the changes it had announced for 15 June 2026. On a plan login, SDK and `claude -p` usage counts against plan limits.[^sdkplan]
-- Ollama's Anthropic-compatible endpoint lacks prompt caching, `tool_choice` and `count_tokens`. Its default context is 4k on machines under 24 GiB, and the page advises 64,000 or more for agents.[^ollamacompat][^ollamactx]
+- Ollama's Anthropic-compatible endpoint lacks prompt caching, `tool_choice` and `count_tokens`. Its default context is 4k on machines with under 24 GiB of video memory, and the page advises 64,000 or more for agents.[^ollamacompat][^ollamactx]
 - A subagent's `model` takes an alias or inherits; Anthropic advises Haiku for cheap work.[^subagents]
 
 ### What practitioners report
@@ -76,7 +76,7 @@ All the cost figures come from single-user transcripts. The aggregate 96.59 perc
 |---|---|---|---|---|
 | API-billed | Per token; organisation spend limits | Unattended `-p` and `--bare` runs, fan-out | Remote Control, voice dictation | Documented[^gatewayconnect] |
 | Subscription | A flat fee; five-hour and weekly limits | Interactive work | Fable past its own limit, except on usage credits | Documented[^plans][^modelconfig] |
-| Local model | No token charge; bound by hardware; 64k context advised | Small, tool-light tasks | Prompt caching; unsupported by Anthropic | Documented[^ollamacompat] |
+| Local model | No token charge; bound by hardware; 64k context advised | Small, tool-light tasks | Prompt caching; unsupported by Anthropic | Documented[^ollamacompat][^ollamactx][^gateway] |
 
 ### Where sources disagree
 
@@ -86,11 +86,11 @@ All the cost figures come from single-user transcripts. The aggregate 96.59 perc
 
 ## What this means for the agentik tools
 
-agentik-session states cache lifetimes and read prices that are partly wrong as of October 2026.[^sessionnth] One hour for the main conversation and five minutes for subagents hold by default only on a subscription within plan usage.[^caching] The 0.1 times read rate is 0.05 on Opus 5.5 and Sonnet 5.5, and 0.025 on Fable 5.1.[^pricing] Its reading of usage limits is right: shared limits, no wait in `-p`, auto-continue on by default, Fable credits.[^subagents][^interactive][^sessionadmission] Its review puts the default hook timeout at 60 seconds; a command hook's default is 600.[^sessionreviewr6][^hooktimeouts] Its observation that a 3,600-second scheduled wake lands 36 to 48 seconds late is not in the documentation. The repo saw it in its own cache audit.[^sessionnth]
+agentik-session states cache lifetimes and read prices that are partly wrong as of October 2026.[^sessionnth] One hour for the main conversation and five minutes for subagents hold by default only on a subscription within plan usage.[^caching] The 0.1 times read rate is 0.05 on Opus 5.5 and Sonnet 5.5, and 0.025 on Fable 5.1.[^pricing] Its reading of usage limits is right: shared limits, no wait in `-p`, auto-continue on by default, Fable credits.[^subagents][^interactive][^sessionadmission][^modelconfig] Its review puts the default hook timeout at 60 seconds; a command hook's default is 600.[^sessionreviewr6][^hooktimeouts] Its observation that a 3,600-second scheduled wake lands 36 to 48 seconds late is not in the documentation. The repo saw it in its own cache audit.[^sessionnth]
 
 agentik-relay plans around a 600-second cap on the Bash tool. That is the documented ceiling; the default is 120 seconds.[^relaydesign][^bash]
 
-agentik-agents is right that subscription work and API spend are separate budgets.[^agentsreadme][^gateway] It is also right that Remote Control is off under a non-Anthropic base URL. Voice dictation is tied to keys rather than the base URL.[^agentsdesign][^gatewayconnect] Its router routes on the model name alone.[^agentsreadme] The routing studies route on query difficulty and none routes on privacy, so name-only routing is neither contradicted nor shown sufficient.[^routellm]
+agentik-agents is right that subscription work and API spend are separate budgets.[^agentsreadme][^gateway] It is also right that Remote Control is off under a non-Anthropic base URL. Its claim that a base URL also turns off voice dictation is not supported as stated: the documentation ties voice dictation to keys, not the base URL.[^agentsdesign][^gatewayconnect] Its router routes on the model name alone.[^agentsreadme] The routing studies route on query difficulty and none routes on privacy, so name-only routing is neither contradicted nor shown sufficient.[^routellm]
 
 ## Practices this evidence supports
 
