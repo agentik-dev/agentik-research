@@ -10,8 +10,9 @@ setup: sources deps
 sources:
 	bash scripts/sources
 
+# A system python may refuse a plain install (PEP 668); retry with the override.
 deps:
-	$(PY) -m pip install -q -r requirements.txt
+	$(PY) -m pip install -q -r requirements.txt || $(PY) -m pip install -q --break-system-packages -r requirements.txt
 
 check: structure style hygiene site
 
