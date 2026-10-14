@@ -1,6 +1,6 @@
 # Method
 
-This site was researched and written by one Claude Code cloud session on 2026-10-14, from a brief the owner wrote the day before, with helper agents for the surveys, the claim checks and the editorial passes.[^brief] Every source cited was opened in that session; every vendor fact is dated as of October 2026; and every contested claim carries an evidence level. The tools under study belong to the same owner as the brief, and this page says what that limits.
+One Claude Code cloud session researched and wrote this site on 2026-10-14. It worked from a brief the owner wrote the day before, with helper agents for the surveys, the claim checks and the editorial passes.[^brief] That session opened every source the site cites. Every vendor fact is dated as of October 2026, and every contested claim carries an evidence level. The tools under study belong to the same owner as the brief, and this page says what that limits.
 
 ## The phases
 
@@ -21,23 +21,23 @@ At most four helpers ran at once. The session read their reports, not their tran
 
 - **Measured.** A study or benchmark with a method you can read. Vendor-run studies are marked as such.
 - **Documented.** The vendor's documentation or changelog says so. The footnote gives the date the page was read, because these pages change without notice.
-- **Reported.** A named practitioner's write-up, or a vendor post whose sample is not stated.
+- **Reported.** A named practitioner's write-up, or a vendor post that does not state its sample.
 - **Our use.** The agentik repositories' own record: an incident, a log line, a test, named by repository, path and commit.
-- **Conjecture.** Reasoned but untested. Used rarely, with what would test it.
+- **Conjecture.** Reasoned but untested. The site uses it rarely, and names what would test it.
 
 ## The limits
 
-- **One owner.** Every tool was written and used by one person, whose organization profile and brief say so, for a few weeks before this site was written.[^profile][^brief] The sources found include no measurement that a tool beats the alternative it replaced, and the pages say so.
-- **The site and the tools share an owner.** The brief asked for the tools' limits to be named, and the surveys found them; a reader should still weigh that the research was commissioned by the tools' author.[^brief]
-- **Vendor facts are volatile.** Timeouts and hook semantics changed in the month before this site was written,[^changelog] and one user's record shows the cache lifetime changed earlier in 2026.[^issue46829] Each vendor fact is stated as of October 2026 with the page it came from.
+- **One owner.** One person wrote and used every tool for a few weeks before this site was written. The owner's organization profile and brief say so.[^profile][^brief] The sources found include no measurement that a tool beats the alternative it replaced, and the pages say so.
+- **The site and the tools share an owner.** The brief asked for the tools' limits to be named, and the surveys found them. You should still weigh that the tools' author commissioned the research.[^brief]
+- **Vendor facts are volatile.** Timeouts and hook semantics changed in the month before this site was written.[^changelog] One user's record shows the cache lifetime changed earlier in 2026.[^issue46829] The site states each vendor fact as of October 2026, with the page it came from.
 - **No measurement of a Claude Code session at length.** The length studies use benchmarks, and their newest Claude models are Opus 4 and Sonnet 4.[^chroma][^ifscale] The sources found include no study that compares a restart from a written handoff with compaction.
-- **Pages that could not be opened.** The helpers did not cite what they could not open. The notes record the ISO 24495-1 text (a catalogue entry only), the Kincaid 1975 report, Parnin's primary paper on interruptions (a secondary report was used) and Replit's own posts on the July 2025 incident (a news report was used); the helpers' reports name several more that left no note, among them third-party blog pages that returned 403.[^notes]
-- **Duplicate notes.** Parallel helpers sometimes opened the same page and wrote separate notes; the sources page lists one line per page.
-- **Private names.** The source repositories name the private product and household that first used the tools; this site describes them generically and never repeats the names. The owner runs a private-term scan before the repository goes public.[^brief]
+- **Pages that could not be opened.** The helpers did not cite what they could not open. The notes record the ISO 24495-1 text (a catalogue entry only) and the Kincaid 1975 report. They also record Parnin's primary paper on interruptions and Replit's own posts on the July 2025 incident. A secondary report and a news report, in that order, stand in for them. The helpers' reports name several more that left no note, among them third-party blog pages that returned 403.[^notes]
+- **Duplicate notes.** Parallel helpers sometimes opened the same page and wrote separate notes. The sources page lists one line per page.
+- **Private names.** The source repositories name the private product and household that first used the tools. This site describes them generically and never repeats the names. The owner runs a private-term scan before the repository goes public.[^brief]
 
 ## The checks
 
-`make check` runs four checks: a structural check (every page in the navigation, every footnote defined and used under a Sources heading with a URL, no draft markers, no private paths or addresses, every source note with its front matter, the charter under 4 KB); respeak's style gate over `docs/` and the README; the commons hygiene scan; and a strict MkDocs build.[^check]
+`make check` runs four checks: a structural check, respeak's style gate over `docs/` and the README, the commons hygiene scan, and a strict MkDocs build. The structural check requires every page in the navigation and every footnote defined and used under a Sources heading with a URL. It rejects draft markers and private paths or addresses. It requires every source note to carry its front matter and the charter to stay under 4 KB.[^check]
 
 ## Sources
 
