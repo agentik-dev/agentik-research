@@ -6,7 +6,7 @@ One meaning per term, as the agentik repositories and this site use it. Terms fr
 
 **Context window.** The tokens a model reads on one request: the system prompt, the conversation so far, tool definitions and tool output. As of October 2026 the current Claude models list 1,000,000 tokens; the 4.5 models and older list 200,000.
 
-**Context rot.** The decline in a model's accuracy and recall as the context fills, named as such in Anthropic's documentation and measured across models in the studies part 1 cites.
+**Context rot.** The decline in a model's accuracy and recall as the context fills. Anthropic's documentation uses the name, and the studies part 1 cites measure it across models.
 
 **Compaction.** Claude Code's replacement of the conversation with a summary when the context nears its limit. Automatic compaction runs at the model's limit; manual compaction is `/compact`; idle compaction runs after a long pause.
 
@@ -16,7 +16,7 @@ One meaning per term, as the agentik repositories and this site use it. Terms fr
 
 **Hook.** A command Claude Code runs at an event such as PreToolUse, PostToolUse, Stop or PreCompact. A PreToolUse hook that exits 2 denies the call, and one that times out fails open unless told to block.
 
-**Subagent.** A helper the main session starts with its own context window; it starts without the parent's history unless it is forked from it, and returns a summary. Its tokens count against the same usage limits.
+**Subagent.** A helper the main session starts with its own context window. It starts without the parent's history unless forked from it, and returns a summary. Its tokens count against the same usage limits.
 
 **Worktree.** A second checkout of the same git repository, with its own files, index and branch, sharing refs and objects with the main checkout.
 
@@ -40,17 +40,17 @@ One meaning per term, as the agentik repositories and this site use it. Terms fr
 
 **Respawn.** Ending a sitting on purpose and starting a fresh session that reads the charter, instead of compacting. The launcher does the restart; the charter's next act opens with the word RESPAWN.
 
-**Launcher.** `agentik session run`: the process that starts `claude`, waits for a respawn mark, and restarts it with a fresh session id and the same arguments, under a cap and a floor.
+**Launcher.** `agentik session run`: the process that starts `claude` and waits for a respawn mark. It then restarts Claude Code with a fresh session id and the same arguments, under a cap and a floor.
 
 **Night.** One `agentik relay run`: a plan, then a loop over the queue, ending with a stop reason. Nights run while nobody watches.
 
 **Queue and row.** The file in a repository that lists the work for a night; each row names a packet and a budget.
 
-**Packet.** A scope file under 9,216 bytes: who it is from, the pin, the wall, the paths it may touch, its acceptance lines and its budget, then six sections. A packet fits one sitting.
+**Packet.** A scope file under 9,216 bytes. It holds who it is from, the pin, the wall, the paths it may touch, its acceptance lines and its budget, then six sections. A packet fits one sitting.
 
 **Child.** The `claude -p` session the relay starts for one row, in that row's worktree, with the packet on its stdin.
 
-**Gate.** The relay's deterministic check after a child exits: a result with no error, a commit, a clean tree, an unmoved origin, no orphans, every touched path within the packet's list, the acceptance lines and the verify line re-run in a fresh clone, then the merge. A gate whose facts cannot be read is unrun, and an unrun gate is never a pass.
+**Gate.** The relay's deterministic check after a child exits. It requires a result with no error, a commit, a clean tree, an unmoved origin and no orphans. Every touched path must fall within the packet's list. It then re-runs the acceptance lines and the verify line in a fresh clone, and merges. A gate whose facts cannot be read is unrun, and an unrun gate is never a pass.
 
 **Stop reason.** One of thirty named reasons a night ends: the queue emptied, a count or budget was reached, the owner stopped it, or a sitting failed. A row's own outcome is separate: red, after which the night moves on, or failed, which stops it.
 
@@ -90,10 +90,10 @@ One meaning per term, as the agentik repositories and this site use it. Terms fr
 
 **Rig.** `agentik agents rig`: the manager for local model backends.
 
-**Delegate.** A run the main session hands off: in the API lane, a headless run with a read-only profile, a spend ceiling and a structured result; in the local lane, one of the local agents, some of which may edit files and run commands.
+**Delegate.** A run the main session hands off. In the API lane, it is a headless run with a read-only profile, a spend ceiling and a structured result. In the local lane, it is one of the local agents, some of which may edit files and run commands.
 
 **Front door.** `agentik <tool> <verb>`: the shell script in agentik-commons that finds `agentik-<tool>` on the path and runs it.
 
-**Bounded.** The commons wrapper every repository's check runs under: one lock per tree, an 840-second wall and a load check, with a refusal that reads as unrun.
+**Bounded.** The commons wrapper every repository's check runs under: one lock per tree, an 840-second wall and a load check. A refusal reads as unrun.
 
-**Hygiene.** The commons scan for private names in a public repository: home paths, private addresses, sibling tool names, secrets, emails and the tools' old names, counted and never printed.
+**Hygiene.** The commons scan for private names in a public repository: home paths, private addresses, sibling tool names, secrets, emails and the tools' old names. It counts what it finds and never prints it.

@@ -1,6 +1,6 @@
 # The field
 
-Part 1 answers ten questions about what goes wrong when a Claude Code session runs for hours or unattended, and what the evidence says helps. Measured evidence settles the direction on four of them: context length, many agents, review loops, and false success claims.[^levy][^kim][^huang][^advani] The rest rest on the vendor's documentation, which is dated and changes often, and on named practitioners' reports. The sources found include no measurement of a Claude Code session as it fills and no study that compares a restart from a written handoff with compaction; the [method](../method.md) page lists what was searched.
+Part 1 answers ten questions about what goes wrong when you run a Claude Code session for hours or unattended, and what the evidence says helps. Measured evidence settles the direction on four of them: context length, many agents, review loops, and false success claims.[^levy][^kim][^huang][^advani] The rest depend on the vendor's documentation, which is dated and changes often, and on named practitioners' reports. No source found measures a Claude Code session as it fills, and none compares a restart from a written handoff with compaction. The [method](../method.md) page lists what was searched.
 
 ## The questions and the chapters
 
@@ -21,7 +21,7 @@ Part 1 answers ten questions about what goes wrong when a Claude Code session ru
 
 Every contested claim carries one of five labels. **Measured** means a study or benchmark with a method you can read. **Documented** means the vendor's documentation or changelog says so, and the page gives the date it was read. **Reported** means a named practitioner's write-up. **Our use** means the agentik repos' own record: an incident, a log line, a test, named by repo and commit. **Conjecture** means reasoned but untested, and the page says what would test it.
 
-Two cautions apply across the part. The newest Claude models in the length studies are Opus 4 and Sonnet 4,[^chroma][^ifscale] and no independent measurement of a Claude 5.x model at length was found; one adherence study ran Sonnet 4.6 and Opus 4.6 and 4.7 on a single rule.[^mcmillan] And every vendor fact is as of October 2026: timeouts and hook semantics changed in the month before this site was written,[^changelog] and one user's record shows the cache lifetime changed earlier in the year.[^issue46829]
+Two cautions apply across the part. First, the newest Claude models in the length studies are Opus 4 and Sonnet 4.[^chroma][^ifscale] The search found no independent measurement of a Claude 5.x model at length, and one adherence study ran Sonnet 4.6 and Opus 4.6 and 4.7 on a single rule.[^mcmillan] Second, every vendor fact is as of October 2026. Timeouts and hook semantics changed in the month before this site was written.[^changelog] One user's record shows the cache lifetime changed earlier in the year.[^issue46829]
 
 ## Sources
 
