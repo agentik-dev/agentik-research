@@ -10,6 +10,7 @@ kind: measured
 ## What it says
 - Scope: 18 randomised trials of nurses working as substitutes for primary care doctors. One trial was in a middle-income country and the rest in high-income countries (the findings table lists the UK 6, the Netherlands 3, the USA 3, Canada 3, Sweden 1, Spain 1, South Africa 1). Studies where nurses supplemented rather than replaced doctors were excluded. Trial length ran from 2 weeks to 48 months, mean about 14 months.
 - Definition: substitution means tasks formerly done by one type of professional move to another, usually to cut cost or ease a workforce shortage. In many trials the nurse could get support or advice from a doctor.
+- The abstract's Main results open: "For this review, we identified 18 randomised trials evaluating the impact of nurses working as substitutes for doctors." The mortality and satisfaction results below pool 8 and 7 of them.
 - Mortality: 6.29 deaths per 1,000 with doctor-led care against 4.84 per 1,000 with nurse-led care (4 to 6), risk ratio 0.77, 95% confidence interval 0.57 to 1.03, 8 trials and 36,529 participants, low certainty. The interval spans no difference.
 - Patient satisfaction: slightly higher with nurse-led care, standardised mean difference 0.08 (95% confidence interval 0.01 to 0.15), 7 trials and 16,993 participants, moderate certainty.
 - Blood pressure: systolic mean difference -3.73 (95% confidence interval -6.02 to -1.44) and diastolic -2.54 (-4.57 to -0.52), moderate certainty. Most other clinical measures were similar.
