@@ -1,23 +1,27 @@
 # Telling people what happened
 
-Open with the outcome, keep the errors whole, and check a "done" claim against a tool result before a person reads it. Those three rules are the best supported in this question, though the first rests on standards rather than measurements. One benchmark found a false-success rate of 75.8 percent among runs that made a status claim,[^advani] and inaccurate self-reports made up 22.58 percent of the misalignment episodes in 20,574 real sessions.[^tang] The plain-language and military writing standards say to put the bottom line first,[^army][^gsa] and Claude Code's own Concise output style leads with the result and keeps errors and failing tests whole.[^outputstyles] Readability formulas are weak gates: they track rated difficulty at r = 0.10 to 0.41 on specialist text.[^zheng] This chapter answers research question 9: summarising agent work for humans, plain-language standards, bottom line up front, Diátaxis, readability measures, and separating agent shorthand from human prose.
+Open with the outcome, keep the errors whole, and check a "done" claim against a tool result before a person reads it. Of the rules in this question, these three have the best support. The first rests on standards, not measurements.
+
+One benchmark found a false-success rate of 75.8 percent among runs that made a status claim.[^advani] Inaccurate self-reports made up 22.58 percent of the misalignment episodes in 20,574 real sessions.[^tang] The plain-language and military writing standards say to put the bottom line first.[^army][^gsa] Claude Code's own Concise output style leads with the result and keeps errors and failing tests whole.[^outputstyles] Readability formulas are weak gates: they track rated difficulty at r = 0.10 to 0.41 on specialist text.[^zheng]
+
+This chapter answers research question 9. It covers summarising agent work for humans, plain-language standards, bottom line up front, Diátaxis, readability measures, and separating agent shorthand from human prose.
 
 ## What is measured
 
-- Readability formulas track readers weakly on specialist text: Flesch-Kincaid, SMOG and Gunning-Fog correlated at r = 0.10 to 0.41 with rated difficulty on 242 clinical notes and 140 articles.[^zheng] Two of four Afrikaans formulas did not correlate with cloze scores from 149 readers, and characters per word alone explained about 65 percent of the variance.[^jansen]
-- Replacing technical terms with plain words raised correct answers from 63.60 to 68.84 percent in one arm of a randomised study, 1,026 lay readers of 2,288 across both studies; adding a glossary did not raise knowledge.[^kerwer]
-- Concise web text scored 58 percent higher on usability than the control, scannable text 47 percent, objective text 27, and all three together 124, with 51 users. Conclusion-first order was never tested on its own.[^morkes] One study timed responses to a secondary signal while people read: men responded faster during inverted-pyramid news than chronological news, read as lower cognitive load, while women showed no difference.[^wise]
-- One benchmark of 1,879 coding-agent runs found a false-success rate of 75.8 percent among runs that made a status claim.[^advani] Inaccurate self-reporting was 22.58 percent of misalignment episodes in 20,574 real sessions.[^tang]
-- The word "delves" occurred 28.0 times as often as expected in 2024 biomedical abstracts.[^kobak] Lay readers told AI text from human text at 50 to 52 percent, over 4,600 people; five frequent users of a writing model, voting together, erred on 1 of 300 articles.[^jakesch][^russell]
+- Readability formulas track readers weakly on specialist text. Flesch-Kincaid, SMOG and Gunning-Fog correlated at r = 0.10 to 0.41 with rated difficulty on 242 clinical notes and 140 articles.[^zheng] Two of four Afrikaans formulas did not correlate with cloze scores from 149 readers. Characters per word alone explained about 65 percent of the variance.[^jansen]
+- Replacing technical terms with plain words raised correct answers from 63.60 to 68.84 percent. The result comes from one arm of the first of two randomised studies: 1,026 lay readers of that study's 2,288. Adding a glossary did not raise knowledge.[^kerwer]
+- With 51 users, concise web text scored 58 percent higher on usability than the control. Scannable text scored 47 percent higher, objective text 27, and all three together 124. Putting the bottom line up front was never tested on its own.[^morkes] One study timed responses to a secondary signal while people read. Men responded faster during inverted-pyramid news than during chronological news, a result read as lower cognitive load. Women showed no difference.[^wise]
+- One benchmark of 1,879 coding-agent runs found a false-success rate of 75.8 percent among runs that made a status claim.[^advani] Inaccurate self-reports made up 22.58 percent of the misalignment episodes in 20,574 real sessions.[^tang]
+- The word "delves" occurred 28.0 times as often as expected in 2024 biomedical abstracts.[^kobak] Across 4,600 people, lay readers told AI text from human text with 50 to 52 percent accuracy.[^jakesch] Five frequent users of a writing model, voting together, erred on 1 of 300 articles.[^russell]
 - Outsiders had trouble reading signs that a pair of people had evolved between themselves, in a laboratory drawing task. The subjects were people, not agents.[^garrod]
 
 ## What the standards document, as of October 2026
 
-- Army Regulation 25-50: the main point first, which the regulation calls the bottom line up front; an average sentence of about 15 words; no brevity codes or acronyms in letters to people outside the Department of Defense.[^army]
-- The Federal Plain Language Guidelines, as kept in the plainlanguage.gov repository: purpose and bottom line first; one idea per sentence; paragraphs of at most 150 words. The guidelines' support is rewrites, not data.[^gsa] The live site has since moved to a shorter guide that states none of these three rules.[^digitalgov]
-- GOV.UK's style guide: check any sentence over 25 words.[^govuk]
-- Diátaxis: four forms of documentation on two axes, argued from user needs; no outcome study is cited.[^diataxis]
-- The Institute for Safe Medication Practices lists abbreviations that were misread in harmful or potentially harmful medication errors and says to avoid them in every medication communication.[^ismp]
+- Army Regulation 25-50 asks for the main point first and calls it the bottom line up front. It sets an average sentence of about 15 words. It bars brevity codes and acronyms in letters to people outside the Department of Defense.[^army]
+- The Federal Plain Language Guidelines, as kept in the plainlanguage.gov repository, ask for the purpose and bottom line first. They also ask for one idea per sentence and paragraphs of at most 150 words. Their support is rewrites, not data.[^gsa] The live site has since moved to a shorter guide that states none of these three rules.[^digitalgov]
+- GOV.UK's style guide says to check any sentence over 25 words.[^govuk]
+- Diátaxis sorts documentation into four forms on two axes and argues for them from user needs. It cites no outcome study.[^diataxis]
+- The Institute for Safe Medication Practices lists abbreviations that were misread in harmful or potentially harmful medication errors. It says to avoid them in every medication communication.[^ismp]
 - Claude Code's Concise output style leads with the result and keeps errors and failing tests whole.[^outputstyles]
 
 ## What is reported
@@ -28,12 +32,16 @@ Open with the outcome, keep the errors whole, and check a "done" claim against a
 ## Where the evidence stops
 
 - Formulas: their agreement with readers is weak or mixed, and none of the studies tests agent prose. One surface feature (characters per word) worked in one language, so the dispute is about formulas as a gate, not as a rough proxy.[^zheng][^jansen]
-- Bottom line up front: the standards assert it, and the measured support is for packaged text and one narrow study. No experiment of a manager acting on a conclusion-first report was found.[^morkes][^wise]
+- Bottom line up front: the standards assert it, and the measured support is for packaged text and one narrow study. No experiment was found in which a manager acts on a report with the bottom line up front.[^morkes][^wise]
 - Machine tone: tells and expert detection are measured; their effect on a reader's trust is not.[^kobak][^russell]
 
 ## What this means for the agentik tools
 
-agentik-respeak splits agent traffic from human prose and gates the human lane. Its premise that agent shorthand drifts into a dialect that locks out the supervising person rests on an analogy from human pairs; no source records an agent dialect locking out a person, and a search of the repo's history, design records, changelog and backlog at the commit read found no such incident either.[^garrod][^respeakreadme][^respeakrepo] Machine-prose tells exist and expert readers see them, but no study tests a banned-phrase list or shows that tone causes dislike.[^kobak][^russell] The readability grades the tool declares per mode are a weak gate by the studies found, and its scanner computes sentence length and dash density, never a grade.[^zheng][^respeakconfig][^respeakmeasure] Bottom line up front is a standard, not a measured effect.[^army] The two-lane split matches the Army regulation's rule on brevity codes, the medication-abbreviation list and Claude Code's own output style, so it is supported as a pattern; the gate's effect on readers is unmeasured.[^army][^ismp][^outputstyles] That Diátaxis fits a site like this one is our reading, not a finding.[^diataxis]
+agentik-respeak splits agent traffic from human prose and gates the human lane. The two-lane split is supported as a pattern. It matches the Army regulation's rule on brevity codes, the medication-abbreviation list and Claude Code's own output style.[^army][^ismp][^outputstyles] The gate's effect on readers is unmeasured.
+
+The tool's premise that agent shorthand drifts into a dialect that locks out the supervising person rests on an analogy from human pairs.[^garrod][^respeakreadme] No source records an agent dialect locking out a person. A search of the repo's history, design records, changelog and backlog at the commit read found no such incident either.[^respeakrepo]
+
+Machine-prose tells exist and expert readers see them, but no study tests a banned-phrase list or shows that tone causes dislike.[^kobak][^russell] By the studies found, the readability grades the tool declares per mode are a weak gate.[^zheng][^respeakconfig] Its scanner computes sentence length and dash density, never a grade.[^respeakmeasure] Bottom line up front is a standard, not a measured effect.[^army] That Diátaxis fits a site like this one is our reading, not a finding.[^diataxis]
 
 ## Practices this evidence supports
 
