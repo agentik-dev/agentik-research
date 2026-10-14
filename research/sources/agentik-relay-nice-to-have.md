@@ -2,7 +2,7 @@
 repo: agentik-dev/agentik-relay
 path: NICE_TO_HAVE.md
 commit: a326550
-title: "agent-relay: what a review or a packet left open, none of it blocking"
+title: "relay: what a review or a packet left open, none of it blocking"
 author: agentik-dev
 published: 2026-09-30
 accessed: 2026-10-14
@@ -21,10 +21,10 @@ Read by section (546 lines, 105 KB, dated sections from 2026-09-28 to 2026-10-12
 - Environment read as code failure (line 473, night 2026-10-11): a verify failed on "no space left on device" in a Go cache, yet the report's cause quoted the log's last line, so an environment fault read as a code fault.
 - Cost shown as $0.00 (line 130, 2026-09-30): `status` printed a running row's cost as $0.00 while the real figure was $17.55 once the sitting ended; AR28 made unread costs print as "unread".
 - Reviewer agents run out of turns (lines 483 and 527, 2026-10-11): the adversary agent (`maxTurns: 80`) ended at its cap with no report three times in one day; a prompt line "report by turn 70" did not help because the agent cannot see its turn count. The attendant agent (`maxTurns: 20`) stopped at 20 turns with no report.
-- `relay plan` writes ledger lines under a night id it does not own (line 518, 2026-10-11): a plan left an empty night directory that a reader took for a real night, and an orchestrator's first run that evening was "refused as nested by a stale relay plan" (not reproduced).
+- `agentik relay plan` writes ledger lines under a night id it does not own (line 518, 2026-10-11): a plan left an empty night directory that a reader took for a real night, and an orchestrator's first run that evening was "refused as nested by a stale relay plan" (not reproduced).
 - Guards stop reviewers (line 271, 2026-10-02): the relay guard refused a copy of a worktree as "device" in a helper that was no sitting; the owner's stray-write hook refused a scratch script. None checked against the guards' tests.
 - Status and report disagreed in turn counts on a stopped night (ninth sighting, around line 298); AR51 made both read one function.
-- Version and install gaps: `relay version` printed `0.1.0-dev` with no commit (line 536); a plugin change is not tied to a version bump, so an installed plugin copy stayed old while the agents changed (line 522).
+- Version and install gaps: `agentik relay version` printed `0.1.0-dev` with no commit (line 536); a plugin change is not tied to a version bump, so an installed plugin copy stayed old while the agents changed (line 522).
 
 ## Limits
 - Written by the observer session and by reviewer agents; items are marked "not checked" or "not confirmed" where the author did not verify. Several quote ledger lines that are not in the repo (the ledger never enters a repo), so those figures cannot be re-read here.

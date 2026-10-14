@@ -14,7 +14,7 @@ Opened: `check.sh` (first 30 lines), the first 1,500 characters of `storm-run-tr
 ## What it says
 - The folder holds `Night.tla`, five configs (`Night.cfg`, `Storm.cfg`, `Storm-run.cfg`, `Storm-detached.cfg`, `Storm-path.cfg`) and four committed TLC counterexample traces for the storms.
 - `check.sh` first asserts fifteen named invariants and properties are defined in `Night.tla` (for example `NoNestedMeasure`, `OneMeasurePerRoot`, `NoSpawnWhenOpen`, `NoOrphanAfterExit`, `UnrunNeverPasses`, `NoNestedSpawn`, `OneHolder`, `StalledChildEventuallyKilled`), then runs TLC with 4 workers. `make tla` is not part of `make check`.
-- `storm-run-trace.txt` begins "Error: Invariant NoNestedSpawn is violated." with a state listing: the committed traces are the proof that, with the run guard off, a child's `relay run` can spawn its own children.
+- `storm-run-trace.txt` begins "Error: Invariant NoNestedSpawn is violated." with a state listing: the committed traces are the proof that, with the run guard off, a child's `agentik relay run` can spawn its own children.
 - The design page records the model's size and a case where the model, not the Go code, was wrong (the first real TLC run, 2026-09-23).
 
 ## Limits

@@ -2,7 +2,7 @@
 repo: agentik-dev/agentik-relay
 path: design/relay-orchestrator-r1.md
 commit: a326550
-title: "agent-relay design: orchestrator rows (r1)"
+title: "agentik-relay design: orchestrator rows (r1)"
 author: agentik-dev
 published: 2026-09-29
 accessed: 2026-10-14

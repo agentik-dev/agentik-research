@@ -2,7 +2,7 @@
 repo: agentik-dev/agentik-relay
 path: design/breaker-signal-r1.md
 commit: a326550
-title: "agent-relay design: the breakers' load signal (r1)"
+title: "agentik-relay design: the breakers' load signal (r1)"
 author: agentik-dev
 published: 2026-10-01
 accessed: 2026-10-14

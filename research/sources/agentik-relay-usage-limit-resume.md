@@ -2,7 +2,7 @@
 repo: agentik-dev/agentik-relay
 path: design/usage-limit-resume-r1.md
 commit: a326550
-title: "agent-relay design: the usage limit pauses the night (r1)"
+title: "agentik-relay design: the usage limit pauses the night (r1)"
 author: agentik-dev
 published: 2026-10-10
 accessed: 2026-10-14

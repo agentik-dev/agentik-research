@@ -2,7 +2,7 @@
 repo: agentik-dev/agentik-relay
 path: design/pin-pycache-r1.md
 commit: a326550
-title: "agent-relay design: python's own bytecode and the pinned tree (r1)"
+title: "agentik-relay design: python's own bytecode and the pinned tree (r1)"
 author: agentik-dev
 published: 2026-10-01
 accessed: 2026-10-14
