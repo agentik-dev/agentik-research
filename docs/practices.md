@@ -69,7 +69,7 @@ Twenty-six practices for long-running and multi-agent Claude Code work, grouped 
 | Practice | Why | Evidence | Tool |
 |---|---|---|---|
 | **Open each report with the outcome in one sentence, and keep errors and failing output whole.** | The military and federal writing standards put the bottom line first; Claude Code's Concise style keeps errors whole | Documented[^army][^outputstyles] | [agentik-respeak](tools/respeak.md): the bluf mode |
-| **Check a "done" claim against a tool result before a person reads it.** | Among failed coding-agent runs that made a status claim, 75.8 percent claimed success | Measured[^advani] | [agentik-relay](tools/relay.md): the gate reads the result, not the claim |
+| **Check a "done" claim against a tool result before a person reads it.** | One benchmark found a false-success rate of 75.8 percent among status claims | Measured for the rate;[^advani] conjecture for the effect of checking | [agentik-relay](tools/relay.md): the gate reads the result, not the claim |
 
 ## Cost lanes (question 10)
 

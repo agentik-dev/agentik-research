@@ -71,7 +71,7 @@ The diagram follows the README, the architecture document and the gate script.[^
 - Readability formulas are a weak gate by the studies found; the repo declares a grade per mode and computes none.[^config]
 - Bottom line up front is a standard, not a measured effect on a manager.
 - The two-lane split matches a military writing regulation, a medication-safety list of error-prone abbreviations, and Claude Code's own Concise output style, so it is supported as a pattern; the gate's effect on readers is unmeasured.
-- Among failed coding-agent runs that made a status claim, 75.8 percent claimed success, which argues for checking a "done" claim against a tool result before a person reads it. See [Telling people what happened](../field/telling-people.md).
+- One benchmark found a false-success rate of 75.8 percent among status claims, which argues for checking a "done" claim against a tool result before a person reads it. See [Telling people what happened](../field/telling-people.md).
 
 ## What is open
 
