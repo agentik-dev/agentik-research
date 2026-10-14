@@ -199,7 +199,7 @@ Kinds only, none repeated here:
 - private repository names and the placeholder-style names the repo uses for a portfolio ledger, a machine-configuration repo and a Go infrastructure product;
 - that product's module path, its network-attached-storage device, LAN addresses and domains (counted in `design/research.md`);
 - home-directory paths and a state directory on a developer's laptop;
-- the developer machines themselves ("this machine", a laptop);
+- the developer machines themselves (a laptop, "this machine" in the runbook);
 - real session identifiers (hexadecimal) and a chain named after a private project;
 - ledger and ruling numbers that point into private ledgers (the budget rulings and portfolio entries);
 - a private usage-report script and a private defect brief;
