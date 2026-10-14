@@ -8,7 +8,7 @@ Paste into a Claude Code session in the agentik-commons repository, and the last
 
 2. **The wall.** `scripts/bounded` and `GUIDE.md` give an 840-second wall; the relay's README and Makefile say 840 and its design record says 900. Fix: state in the guide that a repository may raise the wall and that the relay does, and have the relay reconcile its own two numbers.
 
-3. **The hygiene `renamed` pattern.** `scripts/hygiene` line 85 matches `claude-code-(session|decisions|respeak|agents)` with a lookbehind but no trailing boundary, so a public URL slug such as `claude-code-session-management` matches in a live file. The research site hit it in a footnote URL. Fix: add a trailing boundary that still catches the old plugin ids, or allow a URL context.
+3. **The hygiene `renamed` pattern.** `scripts/hygiene` line 85 matches the old plugin-id prefix followed by a tool name with a lookbehind but no trailing boundary, so a public URL slug that continues after the tool name (the Anthropic blog post on session management has one) matches in a live file. The research site hit it in a footnote URL. Fix: add a trailing boundary that still catches the old plugin ids, or allow a URL context.
 
 4. **The commons packet size.** `design/packets/agentik-r1-commons.md` is 9,913 bytes against the guide's 9,216-byte limit (`GUIDE.md` section 9). Fix: trim it or record the exception.
 
