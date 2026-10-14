@@ -55,3 +55,15 @@ Axe finds no violations and there are no broken internal links. The header link 
 8. Practices at 390. The tables scroll but squeeze columns to about 100 px. The Tool column is off-screen with nothing to show the table scrolls. Inline code breaks mid-word, as in "onFailur e" (practices.md:37,44). At 390 and 1280, ";20,21,22" wraps to a new line after a pill (practices.md:45,53,60).
 9. Glossary. The 46 terms have no anchors, so no single term can be linked. "Pin" and "wall" are used but never defined.
 10. Reports. axe shows no violations on these four pages, and there are no broken internal links. The header repository link (all four pages) and 16 links on method and sources go to the site's own GitHub repository and return 404 (private repo).
+
+## Tools (index and six pages): FAIL
+
+1. Four Mermaid diagrams are unreadable, at every width, in both schemes. The diagrams in relay (relay.md:52), decisions (decisions.md:45), respeak (respeak.md:48) and agents (agents.md:63) shrink to fit the column. Node text is about 2-3 px at 390 and 4-7 px at 768, 1280 and 1680. The `.md-typeset .mermaid` rule (agentik-site.css:193) has no overflow or minimum width. Fix: draw them top-down with fewer nodes, or let them scroll. The session diagram is legible.
+2. A stray comma sits before about 69 footnote marks on all six pages, at all widths, in both schemes (agentik-site.css:164).
+3. Tables clip at 390, both schemes. The tools index problem table (index.md:9) is 452 px wide and 2,039 px tall, with one or two words per line. Its version column is cut off and nothing shows that it scrolls. In agents, the "Three lanes" table is 445 px wide and its entry-point code is clipped.
+4. agents has no "From the journal" section, so its story shape is incomplete.
+5. Two ledes run long and open with commit bookkeeping. agents.md:3 is 147 words and session.md:3 is 123 words, against the brief's "one short paragraph". At 390 most of the first screen is commit hashes.
+6. decisions.md:19 reuses relay's surgical-checklist example (relay.md:20) as a second human example.
+7. Minor: footnote marks appear out of order, for example "12,14,13" and "1,11,12,10". respeak.md:34 has an empty header cell, which axe flags as `empty-table-header` (minor).
+
+Clean: verdict boxes and evidence pills use the glass tokens and read well in both schemes; diagram colours follow the skin in dark; no heading skips a level; no serious or critical axe violation; no broken internal link (the header repo link 404s: private repo).
