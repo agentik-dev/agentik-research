@@ -33,3 +33,4 @@ Read on 2026-10-14 in the attached checkout at f986500: `git log --oneline` from
 
 ## Used in
 - docs/tools/agents.md
+- docs/index.md
