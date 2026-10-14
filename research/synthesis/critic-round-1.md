@@ -42,3 +42,16 @@ All six entries have the six story parts.
 8. Chapter shape varies: many-agents has no limits card and no "From the journal"; memory has no limits card. many-agents.md:37-42 writes "Measured." in plain text instead of pills. telling-people.md:5 repeats line 14.
 
 Axe finds no violations and there are no broken internal links. The header link to the GitHub repo returns 404 on all 8 pages (private repo).
+
+## Practices, method, glossary, sources: FAIL
+
+1. Practices and method, every width, both schemes. A stray comma appears before every footnote mark after the first one in a paragraph: "work,,2", "progress.,4", "length;,14". The cause is assets/stylesheets/agentik-site.css:164 `sup[id^="fnref"] + sup[id^="fnref"]::before`. The `+` combinator ignores the text between the two marks.
+2. Sources at 390, both schemes. The browse shows only the Source and Author columns. Year, Evidence, Kind and Cited on are off-screen inside a scroll box 78vh tall, nested in the page's own scroll. agentik.js registers only the table view, so the vendored glass-cards.js goes unused. Kit defect: `.gb-scroll{max-height:78vh}`.
+3. Sources, every width. The "as of 2026-10-14" stamp is about 9 px tall and has 2.8:1 contrast in light, 3.9:1 in dark. `.gb-asof` uses `--glass-faint` (assets/glass/skins/agentik.css:67,168). axe did not flag it.
+4. Practices, every width, both schemes. The evidence legend is stacked and indented instead of one row. `.ev-legend` (agentik-site.css:262-263) loses to Material's `.md-typeset ul:not([hidden])` and `[dir=ltr] .md-typeset ul li`.
+5. Method, every width. The page reads as a status log: "still in progress", "Not yet run", "Still to come" (method.md:3,45-46,52). The first screen uses "sitting", "refute round" and "RESPAWN" without explaining them.
+6. Sources text. The page speaks in the agent's first person: "I did not open", "I extracted", "the page I read" (sources.md:37,49,99,220). Without JavaScript, "Loading the browse…" never clears (sources.md:13).
+7. Sources at 1280 and 1680, light. `hide: [toc]` lets prose lines run 130 to 170 characters.
+8. Practices at 390. The tables scroll but squeeze columns to about 100 px. The Tool column is off-screen with nothing to show the table scrolls. Inline code breaks mid-word, as in "onFailur e" (practices.md:37,44). At 390 and 1280, ";20,21,22" wraps to a new line after a pill (practices.md:45,53,60).
+9. Glossary. The 46 terms have no anchors, so no single term can be linked. "Pin" and "wall" are used but never defined.
+10. Reports. axe shows no violations on these four pages, and there are no broken internal links. The header repository link (all four pages) and 16 links on method and sources go to the site's own GitHub repository and return 404 (private repo).
