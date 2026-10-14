@@ -2,7 +2,7 @@
 repo: agentik-dev/agentik-respeak
 path: NICE_TO_HAVE.md
 commit: 319f060
-title: "claude-code-respeak: what is left open, none of it blocking (NICE_TO_HAVE)"
+title: "What is left open, none of it blocking (NICE_TO_HAVE.md of the respeak repository)"
 author: agentik-dev
 published: 2026-10-12
 accessed: 2026-10-14
@@ -19,7 +19,7 @@ kind: our-use
 
 ## Limits
 - Every item is about the tooling around the include file and `init`. None concerns the translator's accuracy or the lexicon's use; those gaps appear in the README's status section (see `agentik-respeak-readme`).
-- The title line uses the repository's earlier name; this note does not repeat it.
+- The file's own title line uses the repository's earlier name; this note does not repeat it.
 
 ## Used in
 - research/synthesis/tools-respeak.md

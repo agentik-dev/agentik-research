@@ -6,7 +6,7 @@ Evidence levels, in the brief's words. **Our use** is the repo's own record: a c
 
 ## Bottom line
 
-respeak is a Claude Code plugin that splits communication into two lanes. Agents may write shorthand to each other only if a lexicon ratifies the term. A person reads a narrative that a translator subagent writes in one of three modes, and a style gate holds that human-facing prose to rules. The strongest evidence in the repo is for the human lane's tooling: a local scanner, a hook gate, a CI check and a verifier that proves an editorial pass changed only prose. That evidence comes from one owner's field run on 2026-09-21 and from 40 working charters. The weakest evidence is for the problem and for the machine lane. The repo records no dated incident of a person misreading agent shorthand. Its lexicon holds three seed entries with zero recorded uses, and nothing in it measures token savings, readability grade or translator accuracy.
+respeak is a Claude Code plugin that splits communication into two lanes. Agents may write shorthand to each other only if a lexicon ratifies the term. A person reads a narrative that a translator subagent writes in one of three modes, and a style gate holds that human-facing prose to rules. The strongest evidence in the repo is for the human lane's tooling: a local scanner, a hook gate, a CI check and a verifier that checks an editorial pass left headings, structure counts, links, code and numbers unchanged. That evidence comes from one owner's field run on 2026-09-21 and from 40 working charters. The weakest evidence is for the problem and for the machine lane. The repo records no dated incident of a person misreading agent shorthand. Its lexicon holds three seed entries with zero recorded uses, and nothing in it measures token savings, readability grade or translator accuracy.
 
 ## 1. The problem
 
@@ -89,7 +89,7 @@ The lanes meet at one lawful point. The `author` profile at tech_level 5 may sho
 
 - Lexicon file: `plugin/corpus/lexicon.yaml`, `version: 0`, fields term, expansion, definition, scope, status (`proposed | ratified | retired`), `ratified_by`, `uses`, `legibility` (0 to 1). Append-mostly: entries are proposed, ratified or retired, never silently edited (agentik-respeak plugin/corpus/lexicon.yaml header @ 319f060; agentik-respeak-corpus).
 - Proposals: the translator tallies unratified shorthand it had to decode and writes `.claude/respeak/proposals/<term>.yaml` with `status: proposed`. It never ratifies; a human moves the file into the lexicon and runs `render-lexicon-digest.sh` (agentik-respeak plugin/agents/respeak.md:210-226 @ 319f060; agentik-respeak-translator-agent). Invariant: "the translator proposes, config disposes, the human ratifies" (docs/architecture.md:114-131).
-- The one worked example of the legibility floor: the proposed `2-lane` entry carries a comment that it was rewritten from `2L` (legibility 0.4, under the 0.5 floor) to a form closer to plain English (0.6) (lexicon.yaml). Our use, one entry, done by hand.
+- The one worked example of the legibility floor: the proposed `2-lane` entry carries a comment that it was rewritten from `2L` (legibility 0.4, under the 0.5 floor) to a form closer to plain English (0.6) (lexicon.yaml). Our use, one entry; the repo does not say whether a person or the translator made the rewrite, and no code enforces the floor.
 - Digest: `render-lexicon-digest.sh` writes `.claude/respeak/lexicon-active.md`, ratified terms only; the repo's own CLAUDE.md imports it, and it holds two terms (agentik-respeak-claude-md-dogfood). The architecture records why CLAUDE.md and not a skill: a skill loads only on invocation, but emission-time adoption needs session-start presence; and a plugin cannot ship CLAUDE.md content, so `/respeak:init` offers the import with consent (docs/architecture.md:132-195, question 2).
 - Governance in the config (project-only keys): ratification `human`; `legibility_floor` 0.5; `max_entries` 150; `min_token_edit_distance` 2; retire after 180 days unused; re-harmonize every 90 days; fresh-decoder audit every 30 days on a sample of 10; `register_marker: required`; reserved metawords CORRECTION, SAY-AGAIN, UNVERIFIED; readback for irreversible actions, security findings and escalations; eight `never_compress` classes, each with a named failure mode (agentik-respeak-config-defaults). I found no code reading these keys; the README lists the cap, edit-distance check, expiry, auto-ratification gate (5 clean uses) and fresh-decoder audit as "Declared, not yet checked or built" (README.md:320). So the governance is, at this commit, instructions the translator reads plus a human who ratifies.
 
@@ -196,7 +196,7 @@ How the repo records each one. "Rejected" means the repo says so; "deferred" mea
 | Caveman (a vendor token-efficiency product) | Different lane: a style register, no lexicon. One idea taken: savings must be verified before they count, which the design applies to ratification (a gate that is declared, not built) | caveman-so note; design-principles Q4, Principle 8 | Reported; vendor claims (about 65 percent cost cut, 27 graders, 33.2 percent fewer input tokens on a 54-run benchmark) |
 | Observability and summary products (LangSmith Insights, PagerDuty Advance, incident.io, Slack AI, Copilot PR summaries) | One lane, after the fact, one register. The researcher scored overlap with respeak between 5 and 30 percent | research/synthesis/solutions-and-media.md; landscape-and-media note §1 | Conjecture: an agent's judgement estimates, labelled so (plus or minus 10 points) |
 | Free-form style guides and bare tone scalars | Rejected: "a config field with no observable behavior is deleted"; the warmth scalar was removed because bare scalars are what models read least reliably; tone axes are behaviour tables | README.md:45; plugin/corpus/style/tone-mapping.md; research/synthesis/config-critique.md | Our use (rule); the reliability claim about scalars is Reported from the style-as-code note and untested here |
-| Prompt-only enforcement | Not the default: 0.3.0 is titled "Enforcement instead of instruction" (scanner, hook gate, a skill that scans before relaying). The prompt still guards facts, since the verifier is structural | CHANGELOG.md 0.3.0; design/review-adv6.md ADV6-4 (agentik-respeak-changelog, agentik-respeak-design-reviews) | Our use |
+| Prompt-only enforcement | Not the default: the 0.3.0 entry opens "Enforcement instead of instruction" (scanner budgets and exit codes, a hook gate, a skill that scans before relaying). The prompt still guards facts, since the verifier is structural | CHANGELOG.md 0.3.0; design/review-adv6.md ADV6-4 (agentik-respeak-changelog, agentik-respeak-design-reviews) | Our use |
 | Linters such as Vale | Deferred, not rejected: the corpus is written RE2-safe for a planned `respeak compile` that emits a Vale package; the repo wrote its own scanner. I found no sentence giving the reason for the own scanner beyond that it is local and costs no API tokens | README.md:320; docs/architecture.md, resolved question 3; scanner docstring (agentik-respeak-scripts-measure) | Our use; the Vale facts are Reported |
 | Plain-language checkers used blindly (STE checkers) | The notes carry ASD's warning that blind reliance on a checker produces poor writing, and conclude that lint gates but a judge or human owns meaning | research/sources/communication-best-practices.md §2 | Reported |
 | Detection-evasion "humanizers" and AI-detector scores | Out of scope: they optimise against classifiers, not readers; detector scores are not ground truth | research/sources/deai-language-landscape.md §5 | Reported |
@@ -287,7 +287,7 @@ Level key: **Reported** = secondhand through a model-written note; **Vendor clai
 
 ### 5.7 `sources/deai-language-landscape.md` (2026-08-31)
 - Wikipedia, "Signs of AI writing", by Wikipedia contributors (CC BY-SA 4.0), https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing .
-- Kobak, Gonzalez-Marquez, Horvat and Lause, "Delving into LLM-assisted writing" (Science Advances 11(27), 2025), https://arxiv.org/abs/2406.07016 ; data at https://github.com/berenslab/llm-excess-vocab .
+- Kobak, Gonzalez-Marquez, Horvat and Lause, "Delving into LLM-assisted writing ..." (title truncated in the note; Science Advances 11(27), 2025), https://arxiv.org/abs/2406.07016 ; data at https://github.com/berenslab/llm-excess-vocab .
 - Juzek and Ward, "Why Does ChatGPT 'Delve' So Much?" (ACL 2025 Findings), arXiv:2412.11385 ; a follow-up, arXiv:2508.01930 .
 - Reinhart et al., "Do LLMs write like humans? Variation in grammatical and rhetorical styles" (PNAS 122(8), 2025), doi:10.1073/pnas.2422455122 .
 - Russell, Karpinska and Iyyer (ACL 2025), arXiv:2501.15654 ; Yakura et al., arXiv:2409.01754 ; Kousha and Thelwall (ISSI 2025), arXiv:2509.09596 ; Ju, Blix and Williams (ACL 2025 Findings), arXiv:2505.07784 ; the RAID benchmark, arXiv:2405.07940 .
@@ -333,11 +333,11 @@ Level key: **Reported** = secondhand through a model-written note; **Vendor clai
 - Level: Agent judgement. Supports: why each config number exists.
 
 ### 5.15 `synthesis/corpus-expansion.md`
-- Cites `deai-language-landscape` and `style-as-code-tooling` by section; proposes new banned phrases and replacement pairs, plus re-scoring of seed entries (some upgraded to error, six flagged as owner preference or evidence-light).
+- Cites `deai-language-landscape` and `style-as-code-tooling` by section; proposes new banned phrases and replacement pairs, plus re-scoring of seed entries (some upgraded to error, several flagged as owner preference or evidence-light).
 - Level: Agent judgement over Reported evidence. Supports: the corpus's provenance and the `owner-preference` label.
 
 ### 5.16 `docs/references.md` (outside `research/`)
-- A 7-group list of about 40 links, dated 2026-08-31. Three Wikipedia links in it are 404 per the linguistics note (4.3). Supports: the same concepts as the notes above.
+- A list of 37 distinct URLs in 7 groups (counted in this survey), fetched 2026-08-31 per its own header. Three Wikipedia links in it are 404 per the linguistics note (4.3). Supports: the same concepts as the notes above.
 
 ### 5.17 What phase 2 can reuse
 
@@ -391,7 +391,7 @@ Kinds only; none is named in the notes or here.
 
 - The private product and set of the owner's plugins that first used the tool, described in the README's "Why it exists" and the changelog.
 - Nine of the owner's own sites, and the titles and a brand name on their pages, used as exception examples in the corpus and the changelog.
-- Other private repositories and products the owner builds, named in reviews and packets (one called "the device project"), and stand-in names the repo substituted.
+- Other private repositories and products the owner builds, named in reviews and packets (one is a project for a physical device), and the stand-in names the repo substituted for them.
 - The owner's device, referred to in charters.
 - Home-directory paths in earlier row files and an owner's account name, flagged in review ADV6-9.
 - The owner's private cross-repo ledger and a private deny-list file the hygiene scan reads.
