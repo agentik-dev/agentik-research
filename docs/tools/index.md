@@ -1,6 +1,8 @@
 # The agentik tools
 
-Six public repositories under one GitHub organization, written by one owner, with working records from late August 2026 and public histories that begin in October 2026,[^respeakchangelog][^commonsrecord] each meeting one failure of long or unattended Claude Code work. Five are Claude Code plugins, four of them with a command-line tool behind them; the sixth, agentik-commons, is the shared front door and the conventions.[^commonsrecord] The organization profile gives the one-line purpose: guardrails for long, unattended Claude Code work.[^profile] Every claim in this part is the repos' own record, labelled our use, unless a page says otherwise. The sources found include no measurement that a tool beats the alternative it replaced, and this part says so where it matters; the [method](../method.md) page gives the limits.
+Six public repos under one GitHub organization, all written by one owner, each meet one failure of long or unattended Claude Code work. Their working records start in late August 2026, and their public histories begin in October 2026.[^respeakchangelog][^commonsrecord] Five are Claude Code plugins, four of them with a command-line tool behind them. The sixth, agentik-commons, is the shared front door and the conventions.[^commonsrecord] The organization profile gives the one-line purpose: guardrails for long, unattended Claude Code work.[^profile]
+
+Every claim in this part is the repos' own record, labelled our use, unless a page says otherwise. The sources found include no measurement that a tool beats the alternative it replaced. This part says so where it matters, and the [method](../method.md) page gives the limits.
 
 ## The five tools and what each meets
 
@@ -16,9 +18,15 @@ The versions are the marketplace's entries on 2026-10-13.[^marketplace]
 
 ## Why commons exists
 
-The suite's own record opens with its problem: five tools, five naming schemes, three marketplace rules, and one tool that took its verbs as flags.[^commonsrecord] Three risks followed from the inconsistency. Guards that match a command by name fail on a new spelling, and the record's analysis found the relay's guards would.[^commonsrecord] Scripts duplicated across five repos can drift, so commons keeps one canonical copy of the hygiene scan and the check wrapper, which each repo vendors with a sha256 pin.[^commonsrecord] And public repos can leak private names: a review found the hygiene scan passing a file over 4 MiB by path only, with a home path and an email in its first line, and the scan now streams oversize files.[^commonstests]
+The suite's own record opens with its problem: five tools, five naming schemes, three marketplace rules, and one tool that took its verbs as flags.[^commonsrecord] Three risks followed from the inconsistency.
 
-Commons therefore holds the front door `agentik <tool>` (96 lines of POSIX shell that finds `agentik-<tool>` on the path and runs it), the guide every repo follows, one marketplace, the canonical scripts, and the tests. It builds no tool.[^commonsreadme][^frontdoor]
+First, guards that match a command by name fail on a new spelling, and the record's analysis found the relay's guards would.[^commonsrecord]
+
+Second, scripts duplicated across five repos can drift. So commons keeps one canonical copy of the hygiene scan and the check wrapper, and each repo vendors them with a sha256 pin.[^commonsrecord]
+
+Third, public repos can leak private names. A review found the hygiene scan passing a file over 4 MiB by path only. That file's first line held a home path and an email. The scan now streams oversize files.[^commonstests]
+
+Commons therefore holds the front door, the guide every repo follows, one marketplace, the canonical scripts, and the tests. The front door, `agentik <tool>`, is 96 lines of POSIX shell that finds `agentik-<tool>` on the path and runs it. Commons builds no tool.[^commonsreadme][^frontdoor]
 
 ## The conventions every repo follows
 
@@ -35,12 +43,12 @@ The table paraphrases the guide.[^guide] The `bounded` wrapper's idle floor of 2
 
 ## How the tools relate
 
-The tools are consistent, not dependent: each runs alone, and a cross-link turns on only when the other plugin is installed.[^guide][^profile] agentik-session is an optional provider that writes one resolved configuration per session, which the others read when its version is in range and never write. agentik-relay starts each packet as a builder session and ships adversary and attendant subagent types. agentik-respeak renders the relay's morning report and the decisions tool's owner questions. agentik-agents' status view lists the sessions that agentik-session tracks.[^profile][^commonsrecord]
+The tools are consistent, not dependent: each runs alone, and a cross-link turns on only when you install the other plugin.[^guide][^profile] agentik-session is an optional provider that writes one resolved configuration per session, which the others read when its version is in range and never write. agentik-relay starts each packet as a builder session and ships adversary and attendant subagent types. agentik-respeak renders the relay's morning report and the decisions tool's owner questions. agentik-agents' status view lists the sessions that agentik-session tracks.[^profile][^commonsrecord]
 
 ## What is open
 
-- The suite rename recorded in the commons design is only partly done at the commit read: the switch, the proofs and the cold window are written in the future tense, and the organization profile still shows the earlier install lines.[^commonsrecord][^profile]
-- The switch to the public marketplace and its proof are written in the future tense at the commit read; a local copy for the owner's machine is the plan.[^commonsrecord]
+- The suite rename recorded in the commons design is partly done at the commit read. The switch, the proofs and the cold window are written in the future tense, and the organization profile still shows the earlier install lines.[^commonsrecord][^profile]
+- The switch to the public marketplace and its proof are written in the future tense at the commit read. The plan is a local copy for the owner's machine.[^commonsrecord]
 - No build order or earlier suite history is recorded; each public history starts at one commit in October 2026.[^commonsrecord]
 - Nine items sit in the commons backlog.[^commonsnth]
 
