@@ -1,6 +1,6 @@
 # The field
 
-Part 1 answers ten questions about what goes wrong when you run a Claude Code session for hours or unattended, and what the evidence says helps. Measured evidence settles the direction on four of them: context length, many agents, review loops, and false success claims.[^levy][^kim][^huang][^advani] The rest depend on the vendor's documentation, which is dated and changes often, and on named practitioners' reports. No source found measures a Claude Code session as it fills, and none compares a restart from a written handoff with compaction. The [method](../method.md) page lists what was searched.
+Part 1 answers ten questions about what goes wrong when you run a Claude Code session for hours or unattended, and what the evidence says helps. Measured evidence settles the direction on three of them: context length, many agents and review loops; a fourth, false success claims, has one measured rate from one benchmark.[^levy][^kim][^huang][^advani] The rest depend on the vendor's documentation, which is dated and changes often, and on named practitioners' reports. No source found measures a Claude Code session as it fills, beyond one adherence study's per-function decline, and none compares a restart from a written handoff with compaction. The [method](../method.md) page lists what was searched.
 
 ## The questions and the chapters
 
@@ -8,18 +8,18 @@ Part 1 answers ten questions about what goes wrong when you run a Claude Code se
 |---|---|---|
 | 1. How behaviour changes as context grows | [Length and compaction](length-and-compaction.md) | Measured across models: length alone lowers accuracy[^levy] |
 | 2. Compaction, summaries or a restart | [Length and compaction](length-and-compaction.md) | Measured on compressors; documented for Claude Code; no restart comparison[^factory] |
-| 3. Memory and the always-loaded context | [Memory](memory.md) | Measured: a context file costs about 20 percent more without raising success,[^gloaguen] and file length from 25 to 500 lines did not change compliance with one rule[^mcmillan] |
+| 3. Memory and the always-loaded context | [Memory](memory.md) | Measured: a context file costs about 20 percent more without raising success,[^gloaguen] and file length from 25 to 500 lines had no detectable effect on compliance with one rule[^mcmillan] |
 | 4. Budgets and pacing | [Budgets, pacing and cost lanes](budgets-and-lanes.md) | Documented, as of October 2026, with two practitioners' cost records[^caching] |
 | 5. Many agents | [Many agents](many-agents.md) | Measured: +80.8 percent on decomposable work, -70 on sequential[^kim] |
 | 6. Unattended runs | [Unattended runs and guardrails](unattended-and-guardrails.md) | Documented; measured on other harnesses[^headless] |
 | 7. Guardrails | [Unattended runs and guardrails](unattended-and-guardrails.md) | Documented; vendor-measured classifier rates[^automode] |
 | 8. Review that ends | [Review that ends](review.md) | Measured: self-correction without an outside signal can make answers worse[^huang] |
-| 9. Telling people what happened | [Telling people what happened](telling-people.md) | Measured: that 75.8 percent of failed runs with an explicit status claim claimed success on one benchmark[^advani] |
-| 10. Cost lanes | [Budgets, pacing and cost lanes](budgets-and-lanes.md) | Documented; measured for routers, not coding agents[^routellm] |
+| 9. Telling people what happened | [Telling people what happened](telling-people.md) | Measured: 75.8 percent of failed runs with an explicit status claim claimed success on one benchmark[^advani] |
+| 10. Cost lanes | [Budgets, pacing and cost lanes](budgets-and-lanes.md) | Measured: coding benchmarks with cost per problem; the router studies do not test coding agents[^routellm] |
 
 ## How to read the evidence levels
 
-Every contested claim carries one of five labels. **Measured** means a study or benchmark with a method you can read. **Documented** means the vendor's documentation or changelog says so, and the page gives the date it was read. **Reported** means a named practitioner's write-up. **Our use** means the agentik repos' own record: an incident, a log line, a test, named by repo and commit. **Conjecture** means reasoned but untested, and the page says what would test it.
+Every contested claim carries one of five labels. **Measured** means a study or benchmark with a method you can read. **Documented** means the vendor's documentation or changelog says so, and the page gives the date it was read. **Reported** means a named practitioner's write-up, or a vendor post that does not state its sample. **Our use** means the agentik repos' own record: an incident, a log line, a test, named by repo and commit. **Conjecture** means reasoned but untested, and the page says what would test it.
 
 Two cautions apply across the part. First, the newest Claude models in the length studies are Opus 4 and Sonnet 4.[^chroma][^ifscale] The search found no independent measurement of a Claude 5.x model at length, and one adherence study ran Sonnet 4.6 and Opus 4.6 and 4.7 on a single rule.[^mcmillan] Second, every vendor fact is as of October 2026. Timeouts and hook semantics changed in the month before this site was written.[^changelog] One user's record shows the cache lifetime changed earlier in the year.[^issue46829]
 
