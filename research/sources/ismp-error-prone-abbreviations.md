@@ -21,3 +21,4 @@ kind: documented
 ## Used in
 - research/synthesis/field-9.md
 - research/synthesis/journal-two-lanes.md
+- docs/tools/respeak.md

@@ -22,3 +22,4 @@ kind: documented
 
 ## Used in
 - research/synthesis/field-9.md
+- docs/tools/respeak.md
