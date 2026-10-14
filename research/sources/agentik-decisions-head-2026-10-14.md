@@ -57,3 +57,4 @@ Runs at the head, by me, 2026-10-14 (system Python 3.13.16, not the pinned 3.12.
 
 ## Used in
 - docs/tools/decisions.md
+- docs/summary.md

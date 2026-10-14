@@ -23,3 +23,4 @@ kind: measured
 ## Used in
 - research/synthesis/field-2.md
 - journal-restart
+- docs/summary.md

@@ -35,3 +35,4 @@ Read at c83e9b8, the head on 2026-10-14 (`git log`: the merge "r2-keys-and-done-
 
 ## Used in
 - docs/tools/respeak.md
+- docs/summary.md

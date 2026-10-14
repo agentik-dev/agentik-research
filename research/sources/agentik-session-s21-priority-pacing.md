@@ -29,3 +29,4 @@ kind: our-use
 
 ## Used in
 - research/synthesis/journal-wake.md
+- docs/summary.md

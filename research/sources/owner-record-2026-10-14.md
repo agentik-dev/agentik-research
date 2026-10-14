@@ -23,3 +23,4 @@ kind: our-use
 
 ## Used in
 - research/synthesis/journal-ledger.md
+- docs/summary.md

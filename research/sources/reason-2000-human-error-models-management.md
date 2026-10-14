@@ -21,3 +21,4 @@ kind: documented
 
 ## Used in
 - research/synthesis/journal-probe.md
+- docs/summary.md
