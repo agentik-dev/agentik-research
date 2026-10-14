@@ -59,3 +59,4 @@ nav:
       - field/length-and-compaction.md
       - field/memory.md
       - field/budgets-and-lanes.md
+      - field/many-agents.md
