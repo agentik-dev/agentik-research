@@ -22,3 +22,9 @@ kind: documented
 
 ## Used in
 - research/synthesis/field-2.md
+
+## Also (question 4)
+Re-read on 2026-10-14, from the same page at offsets 100,000 and 200,000. As of October 2026.
+- `autoContinueAtUsageLimit`: default `true`, scope "User or managed", needs v2.1.234 or later. After a claude.ai usage limit stops the session, Claude Code waits in the open session and continues after the reset. It reads the key from user settings, `--settings` and managed settings; when none of those sets it, a project or local settings file that sets it turns the feature off rather than being ignored. `false` stops Claude Code starting the wait itself, and a wait can still be started from the options menu. The `/config` row is "Continue automatically at usage limit".
+- `promptCacheTtl` and `subagentPromptCacheTtl`: strings `"5m"` or `"1h"`, default unset (each request gets its default lifetime), v2.1.242 or later. The second covers subagents, workflows and background and helper requests such as compaction and session titles. `FORCE_PROMPT_CACHING_5M` beats everything, then the bucket's environment variable, then the key, then `ENABLE_PROMPT_CACHING_1H`.
+- Used in (question 4): research/synthesis/field-4.md

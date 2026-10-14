@@ -21,3 +21,10 @@ kind: documented
 
 ## Used in
 - research/synthesis/field-1.md
+
+## Also (question 4)
+Re-read on 2026-10-14. As of October 2026.
+- Rate limits: the JSON has `rate_limits.five_hour.used_percentage`, `rate_limits.seven_day.used_percentage` (0 to 100) and `rate_limits.five_hour.resets_at`, `rate_limits.seven_day.resets_at` (Unix epoch seconds). The field names are `used_percentage` and `resets_at`; the page uses no `percentUsed`. The object appears only for claude.ai Pro and Max subscribers, or behind a Claude apps gateway that sets a spend limit, and only after the first API response; each window may be absent, and Claude Code drops a window once its `resets_at` passes. `rate_limits.spend_limit` (gateway only) adds `used_percentage`, `resets_at`, and optionally `used_usd`, `limit_usd` and `period` (`daily`, `weekly` or `monthly`).
+- `prompt_cache` (Claude Code v2.1.251 or later; cause fields v2.1.260): `warm`, `caching_observed`, `ttl` (`"5m"` or `"1h"`), `expires_at`, `requests`, `misses` (a request that re-processed more than 5% and at least 2,000 tokens it could have read from cache, with no compaction or clearing to explain it), `expected_rebuilds`, `hit_ratio` (0 to 1), `cache_write_tokens`, `miss_recache_tokens`, `last_miss_at`, `last_miss_cause`, `miss_causes` and `recache_tokens_if_cold`. Subagent requests are not counted.
+- `refreshInterval` (minimum 1 second) re-runs the command on a timer; event-driven updates can go quiet while the main session is idle, and the script also re-runs when a rate-limit window reaches its `resets_at`. `cost.total_cost_usd` is a client-side list-price estimate that resets on `/clear` (v2.1.211).
+- Used in (question 4): research/synthesis/field-4.md

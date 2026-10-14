@@ -26,3 +26,10 @@ kind: documented
 - Handoff documents as pointers, not preloaded context: a new coding session starts with `pwd`, reads the git log and the progress file, reads the feature list and picks the highest-priority unfinished item, then runs the init script and a basic end-to-end test. The post presents these as steps the agent performs at the start of each session.
 - The feature list is JSON and only its `passes` field may be changed by coding agents; the authors chose JSON because the model was less likely to change or overwrite it than Markdown. The example list held over 200 features.
 - The same pattern appears in the memory tool's multisession section (platform-docs-memory-tool).
+
+## Also (question 4)
+Re-read on 2026-10-14 for pacing and budgets.
+- Pacing by session boundary: each session starts with no memory, so the harness bridges sessions with files; coding agents work on one feature at a time, which the authors call critical for curbing the urge to do too much in one session. Early runs failed when an agent ran out of context mid-feature and left a half-built, undocumented state.
+- Sessions end with a descriptive git commit and a progress update, and start with the git log, the progress notes and a basic end-to-end check; the authors say the init script saves tokens in each session.
+- The post specifies no turn limits, token budgets, stop conditions, session counts, hours or costs, so it supports "one bounded unit of work per session" as a practice and gives no budget numbers.
+- Used in (question 4): research/synthesis/field-4.md

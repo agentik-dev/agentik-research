@@ -20,3 +20,10 @@ kind: documented
 
 ## Used in
 - research/synthesis/field-1.md
+
+## Also (question 4)
+Re-read on 2026-10-14 for usage limits and fallback. As of October 2026.
+- Section on Fable usage: depending on plan and seat tier, Fable usage can bill to usage credits instead of the plan's included limits (the `/model` picker shows "Requires usage credits"). In interactive sessions a consent prompt precedes a Fable request that bills credits. "In non-interactive mode with the `-p` flag, and in an Agent SDK application that doesn't show the prompt, Claude Code never asks for consent." There Claude Code bills it without asking. In Remote Control, background sessions and agent-team teammates the prompt is held for five minutes by default (`dialogExpiry`), then the turn ends without sending the request.
+- The page does not mention a separate weekly limit for Fable; the Help Center page (support-claude-pro-max-usage) does, for Max plans.
+- Fallback chains: `--fallback-model` or `fallbackModel` lists up to three models tried when the primary model is overloaded or unavailable; authentication, billing, rate-limit, request-size and transport errors never trigger a switch; the switch lasts one turn; subagents use the chain.
+- Used in (question 4): research/synthesis/field-4.md

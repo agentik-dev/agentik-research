@@ -18,3 +18,13 @@ kind: documented
 
 ## Used in
 - research/synthesis/field-3.md
+
+## Also (question 4)
+Re-read on 2026-10-14 for cache lifetime and cost. As of October 2026. I read the first 100,000 of 160,435 characters.
+- Lifetime is measured from the start of the request that writes or reads the entry, not from the end of its response: if a response streams for 4 minutes, a follow-up reusing the prefix must start within about 1 minute of it finishing (five-minute cache). Each hit refreshes the entry at no extra cost; the page suggests a pre-warm request at least every 5 minutes for the default lifetime.
+- A cache entry becomes available only after the first response begins, so parallel requests that need a hit should wait for the first response.
+- What invalidates it: any change to tool definitions (tools, system and messages); a change to `tool_choice`, to images anywhere in the prompt, to thinking parameters, or to the effort setting invalidates the messages level; toggling web search, citations or the speed setting keeps tools and invalidates system and messages.
+- Up to 4 explicit breakpoints; automatic caching uses one slot; lookback is at most 20 blocks. Mixing lifetimes: 1-hour entries must come before 5-minute entries.
+- Usage fields: `cache_creation_input_tokens`, `cache_read_input_tokens`, `input_tokens`, and `cache_creation` with `ephemeral_5m_input_tokens` and `ephemeral_1h_input_tokens`; total input is the sum of read, creation and uncached input.
+- The 1-hour lifetime is available on the Claude API, Amazon Bedrock, Google Cloud, Microsoft Foundry and Claude Platform on AWS.
+- Used in (question 4): research/synthesis/field-4.md

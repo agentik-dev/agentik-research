@@ -19,3 +19,11 @@ kind: documented
 
 ## Used in
 - research/synthesis/field-2.md
+
+## Also (question 4)
+Re-read on 2026-10-14 for turn and budget ceilings. As of October 2026.
+- A turn is one round trip: Claude calls tools, the SDK runs them, the results go back. `max_turns` / `maxTurns` counts tool-use turns only, with no limit by default; `max_budget_usd` / `maxBudgetUsd` stops the loop at an estimated spend, also with no default. Hitting either returns a `ResultMessage` with subtype `error_max_turns` or `error_max_budget_usd` and no `result` text; a single-shot `query()` then raises an error after yielding the result.
+- The budget covers subagent spend. Section "Budget headroom": the response that reaches the cap still completes, so spend can pass the cap by up to the cost of that one response plus what running subagents spend before they stop. The page says "Setting a budget is a good default for production agents."
+- Every result subtype carries `total_cost_usd`, `usage`, `num_turns` and `session_id`; `usage` covers only the main loop, so use `modelUsage` for a whole tree.
+- Context accumulates across turns; large tool outputs can use thousands of tokens in one turn; static content (system prompt, tool definitions, CLAUDE.md) is prompt cached.
+- Used in (question 4): research/synthesis/field-4.md

@@ -21,3 +21,8 @@ kind: documented
 
 ## Used in
 - research/synthesis/field-1.md
+
+## Also (question 4)
+Re-read on 2026-10-14 for context size and price. As of October 2026.
+- The four current models (Fable 5.1, Opus 5.5, Sonnet 5.5, Haiku 5.5) each list a 1M-token context window and a 128K-token maximum output; default effort is `high` for Fable 5.1 and Sonnet 5.5 and `medium` for Opus 5.5 and Haiku 5.5. The legacy models still available are Fable 5, Opus 5, Opus 4.8, 4.7, 4.6, 4.5, Sonnet 5, Sonnet 4.6 and Haiku 4.5; the page's table does not list their windows (the pricing page, anthropic-pricing-doc, says Claude 4.6 and later include the full 1M window at standard pricing, except Haiku 5.5's tiered price).
+- Used in (question 4): research/synthesis/field-4.md
