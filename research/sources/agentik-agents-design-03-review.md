@@ -29,3 +29,8 @@ Read: the whole of design/03-review-2026-09.md and design/03-review-2026-09/raw-
 
 ## Used in
 - research/synthesis/tools-agents.md
+
+## Also (question 7)
+Read for question 7 at commit 78ce312: the section on the `pkill -f` finding (design/03-review-2026-09.md, lines 262 to 310) and raw-findings.md lines 49 to 83. The shell-and-cost reviewer flagged `pkill -f` as a high blast-radius hazard; while reproducing it, the reviewer ran a verification command `pkill -f` with the router's serve command line, which matched the shell command that held the same string, and it killed the production router along with the throwaway process. The fix replaced `pkill` with pidfiles plus argument-vector checks (`restart-router` verifies a pid's command line before killing), and later packets carry the rule "kill only a pid your run started, verified by `ps -o ppid,etime,args`; never `pkill -f`" (design/packets/a-s1-router-leak.md, line 7). The guard against the hazard is a written rule in a packet plus code that verifies the target; no hook or permission rule is recorded.
+
+Used in: research/synthesis/field-7.md

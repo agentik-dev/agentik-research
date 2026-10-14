@@ -21,3 +21,9 @@ kind: measured
 
 ## Used in
 - research/synthesis/field-5.md
+
+## Also (question 8)
+Re-read on 2026-10-14 from the v3 HTML (Section 4 failure-mode paragraphs; the page text was read to about 100,000 of 161,911 characters).
+- Loop and verification failure shares across the 1,642 traces, as Section 4 states them: step repetition 15.7 percent, not recognising task completion 12.4 percent, incorrect verification 9.10 percent, no or incomplete verification 8.20 percent, premature termination 6.20 percent. Summed by category, the task-verification group is 23.5 percent (6.20 + 8.20 + 9.10); the page text states the modes, not the totals.
+- A high-level task-objective verification step added to ChatDev raised success by 15.6 percent on ProgramDev (Section 4, FC3 paragraph; Section 5.3 gives it as the maximum improvement). The paper describes a verifier as helpful, not a cure.
+- Used in (question 8): research/synthesis/field-8.md

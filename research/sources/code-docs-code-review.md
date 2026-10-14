@@ -19,3 +19,12 @@ All as of October 2026. Code Review is a research preview for Team and Enterpris
 
 ## Used in
 - research/synthesis/field-5.md
+
+## Also (question 8)
+Re-opened on 2026-10-14. All as of October 2026.
+- Advisory by design: findings carry a severity (Important, Nit, Pre-existing) and "don't approve or block" the pull request. The check run "always completes with a neutral conclusion", so it never blocks merging through branch protection; a team that wants a gate must read the severity counts from the check run in its own CI.
+- Round-limit levers in `REVIEW.md` (section "What you can tune"): a verification bar ("behavior claims need a `file:line` citation"), a cap on nit volume (the example caps nits at five per review), skip rules, and a re-review convergence rule. The page's example rule: after the first review suppress new nits and post Important findings only; the page says such a rule "stops a one-line fix from reaching round seven on style alone."
+- Triggers: review once after the pull request opens, after every push, or on request; the page says reviewing on every push multiplies the cost by the number of pushes. The average is 15 to 25 US dollars per review and about 20 minutes.
+- A local `/code-review` reviews in a background subagent with its own context window and reports findings; `--fix` applies them and is opt-in. The local review does not read `REVIEW.md`.
+- Limits (question 8): vendor documentation with no false-positive or recall figures; "round seven" is an illustration, not a measured loop.
+- Used in (question 8): research/synthesis/field-8.md

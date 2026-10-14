@@ -19,3 +19,8 @@ kind: reported
 
 ## Used in
 - research/synthesis/field-5.md
+
+## Also (question 7)
+I opened the issue for question 7. Opened 2026-08-07 on Claude Code 2.1.223 (macOS); a comment reports the same on 2.1.228. The reporter says the isolation guard's believed identity drifted across three worktrees within seconds, so it rejected edits to the agent's own files and advised running commands from another agent's worktree; the failures were both false denials and, in follow-up comments, a near-miss cross-worktree `git commit` and an `amend` that rewrote another agent's branch ref. Workarounds named: serialize subagents, or a third-party hook that denies mutations after identity drift. Closed by a bot as not planned on 2026-09-11. As a guardrail record it shows the worktree isolation check can itself be wrong under concurrency, as reported on those versions.
+
+Used in: research/synthesis/field-7.md

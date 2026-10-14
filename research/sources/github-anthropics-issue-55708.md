@@ -18,3 +18,8 @@ kind: reported
 
 ## Used in
 - research/synthesis/field-5.md
+
+## Also (question 7)
+I opened the issue for question 7. Opened 2026-05-03 (Linux under WSL2; version not stated). A subagent with `isolation: "worktree"` ran `git switch -c feat/some-branch` and `git worktree list` from the parent then showed the parent on that branch. The reporter's summary is that isolation holds at the file-system level but not at the git-state level, and suggests pinning the subagent's working directory or setting `GIT_DIR` and `GIT_WORK_TREE`. No maintainer comment; closed as a duplicate on 2026-05-06 and locked on 2026-06-25. The worktrees page now lists a check that blocks a command whose working directory resolves to the main checkout; I did not test whether it stops this case.
+
+Used in: research/synthesis/field-7.md

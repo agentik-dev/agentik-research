@@ -32,3 +32,13 @@ Read by section (546 lines, 105 KB, dated sections from 2026-09-28 to 2026-10-12
 
 ## Used in
 - research/synthesis/tools-relay.md
+
+## Also (question 7)
+Read for question 7 at commit a326550: the section "ar40-helper-relay-guard, review round 1 (2026-09-30)".
+- F1 (a false positive): a helper's read-only line was denied when a word containing `cmd/relay` came before a verb word, for example `find cmd/relay -name '*.go' -exec grep -l stop {} +` and `grep -rn cmd/relay -e stop`, which the guard read as `helper-relay`. The suggested fix is to check only the one word the binary reads as its verb.
+- F2: the guard's reason says a helper never builds the relay, but `make build`, `make install`, `go install ./...` and `cd cmd/relay && go build -o /tmp/r .` pass.
+- F3 (a bypass by spelling): `$(which relay) stop`, `` `which relay` stop ``, `r=relay; $r stop` and `pkill -f 'relay run'` pass from a helper. The suggested fix is to give helpers the `literal` guard that build rows use.
+- Same file, section "ar41-child-session-role" (2026-09-30): the launch layer outranks a repo's session profile and posture, and `deny` gates only Agent, Task and Workflow.
+- The guard matches by command shape and word position; the review is a model reviewer's finding, not a measured rate.
+
+Used in: research/synthesis/field-7.md

@@ -18,3 +18,11 @@ kind: documented
 
 ## Used in
 - research/synthesis/field-3.md
+
+## Also (question 8)
+Re-opened on 2026-10-14 for how clarifying questions reach an owner. As of October 2026.
+- A clarifying question is the `AskUserQuestion` tool; each call carries 1 to 4 questions with 2 to 4 options each (section "Limitations"), so the product's own question tool is batch-shaped. `AskUserQuestion` is not available inside subagents started with the Agent tool.
+- The handler that answers it can stay pending indefinitely and execution stays paused until it returns. For an owner who may take longer than the process should live, the page advises a `PreToolUse` hook returning the `defer` decision, so the process exits and resumes later from the saved session.
+- A `PermissionRequest` hook can send an outside notification (chat, email, push) when Claude is waiting.
+- Limits (question 8): the page describes the mechanism and gives no guidance on how many questions to ask, when to ask them, or what a waiting agent should do meanwhile.
+- Used in (question 8): research/synthesis/field-8.md

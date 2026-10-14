@@ -26,3 +26,8 @@ kind: our-use
 
 ## Used in
 - research/synthesis/tools-relay.md
+
+## Also (question 7)
+Read for question 7 at commit a326550: entry 9 (2026-10-10). The owner writes the guard's zsh test table of about twenty zsh-only spellings, each shown read or denied, "because Claude Code's safety check stops a helper that composes those lines"; the table stays an open risk in design/guard-parser-r1.md. The entry does not say which check, or name a message.
+
+Used in: research/synthesis/field-7.md

@@ -38,3 +38,11 @@ The design of record: 728 lines, about 298 KB, status line dated 2026-09-22 and 
 
 ## Used in
 - research/synthesis/tools-relay.md
+
+## Also (question 7)
+Read for question 7 at commit a326550: section 7 (line 175) and section 10 (lines 241 to 255).
+- Line 175 records a measured finding: on CLI 2.1.280, print mode answers no permission prompt, so auto mode denied every Write and Bash; the design therefore pre-allows the working tools, lets auto mode decide the rest, and states that the PreToolUse deny hooks still fire in the child.
+- Line 241: PreToolUse on Bash and the file tools denies push in a sitting, amend, rebase and device verbs, `--no-verify`, a git alias, and a one-liner naming git "through every wrapper, `sh -c` and `find -exec`". The README calls these hooks redundant guards that nothing under the driver depends on (agentik-relay-readme).
+- Line 255 records a measured false positive of the Stop guard: an interactive session that ran only `pwd` in a repository with uncommitted files was blocked three times by `dirty-tree`; the guard now acts only inside a sitting.
+
+Used in: research/synthesis/field-7.md

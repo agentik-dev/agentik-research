@@ -19,3 +19,8 @@ kind: reported
 
 ## Used in
 - research/synthesis/field-5.md
+
+## Also (question 7)
+I opened the issue for question 7. Opened 2026-04-24 on Claude Code 2.1.119 (macOS); later commenters report 2.1.119 and 2.1.126 on macOS and Linux. A subagent started with `isolation: "worktree"` ran in `.claude/worktrees/agent-<id>/` and, partway through a long session, its shell directory moved to the parent checkout; the parent then ran `git stash -u` and `git checkout`, which deleted the subagent's untracked files. Commenters add four overnight leaks in one session, and orchestrator prompts holding absolute paths that sent subagents into the parent. The subagent recovered by recreating the files from memory. State: labels `bug`, `data-loss`, `area:agents`; no maintainer comment; closed as not planned by a stale-issue bot on 2026-06-01 and locked on 2026-08-04. The worktrees page now lists the four isolation checks (code-docs-worktrees).
+
+Used in: research/synthesis/field-7.md

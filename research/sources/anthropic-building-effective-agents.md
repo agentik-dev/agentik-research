@@ -21,3 +21,10 @@ kind: documented
 
 ## Used in
 - research/synthesis/field-5.md
+
+## Also (question 8)
+Re-opened on 2026-10-14. Page dated 19 December 2024; the page notes that tooling has changed since.
+- Evaluator-optimizer: suited where there are clear evaluation criteria and iterative refinement adds measurable value. The two signs of fit: a person's feedback visibly improves the model's answer, and the model can give that feedback itself. Examples: literary translation, and complex search where an evaluator decides whether another round is warranted.
+- Round limits: "it's also common to include stopping conditions (such as a maximum number of iterations) to maintain control." The page also advises pausing for human feedback at checkpoints or when the agent hits a blocker.
+- Limits (question 8): guidance, not a measurement; it gives no iteration count and no data on convergence.
+- Used in (question 8): research/synthesis/field-8.md

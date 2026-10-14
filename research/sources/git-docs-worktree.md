@@ -18,3 +18,8 @@ kind: documented
 
 ## Used in
 - research/synthesis/field-6.md
+
+## Also (question 7)
+I opened the page again for question 7. Section "add": a linked worktree shares everything except per-worktree files such as `HEAD` and `index`. Section "REFS": refs directly under the git directory are per-worktree and refs under `refs/` are shared, except `refs/bisect`, `refs/worktree` and `refs/rewritten`. Section "lock": `git worktree lock` stops administrative files being pruned and a locked worktree being moved or deleted. Section "BUGS": multiple checkout is still experimental. So separate worktrees do not share an index (and its lock file), but they do share branch refs, which is how one worktree's `git commit --amend` or branch switch can change another's branch (github-anthropics-issue-84685). The page says nothing about Claude Code.
+
+Used in: research/synthesis/field-7.md

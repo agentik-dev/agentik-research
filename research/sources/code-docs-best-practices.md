@@ -37,3 +37,14 @@ kind: documented
 - Section "Add an adversarial review step": a reviewer in a fresh subagent context sees only the diff and the criteria, not the reasoning that produced the change. A callout warns that a reviewer asked to find gaps will usually report some even when the work is sound, and that chasing every finding leads to over-engineering; tell it to flag only gaps that affect correctness or the stated requirements.
 - Section "Give Claude a way to verify its work": a verification subagent or a workflow that checks its own findings has a fresh model try to refute the result, so the agent doing the work is not the one grading it.
 - Limits: vendor guidance with no data on how much a fresh-context reviewer helps. Used in: research/synthesis/field-5.md
+
+## Also (question 8)
+Re-opened on 2026-10-14 (living page; it names Claude Code v2.1.283). Section names as the page prints them.
+- "Give Claude a way to verify its work": without a check it can run, "looks done" is the only signal and the user becomes the verification loop. The page lists four gates in rising strength: a check in the prompt, a `/goal` condition that a separate evaluator re-checks each turn, a Stop hook that blocks the turn from ending until a script passes, and a second opinion from a verification subagent or workflow that tries to refute the result.
+- "Add an adversarial review step": a reviewer in a fresh subagent context sees the diff and the criteria, not the reasoning that produced it. The page warns that a reviewer asked to find gaps "will usually report some, even when the work is sound," that chasing every finding leads to over-engineering, and advises telling the reviewer to flag only gaps that affect correctness or stated requirements.
+- Writer and reviewer in separate sessions: "A fresh context improves code review since Claude won't be biased toward code it just wrote."
+- "Avoid common failure patterns": after two failed corrections on one issue, run `/clear` and write a better prompt; a long session with accumulated corrections is outperformed by a clean one, in the page's words "almost always".
+- "Let Claude interview you": for larger features, have Claude ask questions with the `AskUserQuestion` tool, write the answers to a spec file, then start a fresh session to build from it.
+- Plan mode: separate exploration and planning from implementation; the page says to skip planning when you could describe the diff in one sentence.
+- Limits (question 8): practice advice from the vendor with no measurements; it names no round limit for review.
+- Used in (question 8): research/synthesis/field-8.md

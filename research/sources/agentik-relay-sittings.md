@@ -24,3 +24,8 @@ The folder holds 132 charter files from `2026-09-22-1.md` to `2026-10-13-1-publi
 
 ## Used in
 - research/synthesis/tools-relay.md
+
+## Also (question 7)
+Read for question 7 at commit a326550: the charter `history/sittings/2026-09-23-8.md`, section "Done-ness", the bullet "Not read". It records that the sandbox's permission classifier refused the reviewer's read of the charters' handover sections twice, with the reason "PII handling", once over batched output and once over five charters, and that the review lists the gaps this left. The charter does not say which Claude Code mode or setting was active, and the refusal text is the charter's report of it, not a captured message.
+
+Used in: research/synthesis/field-7.md

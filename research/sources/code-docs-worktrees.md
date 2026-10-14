@@ -23,3 +23,13 @@ All as of October 2026.
 
 ## Used in
 - research/synthesis/field-5.md
+
+## Also (question 7)
+Read for question 7; as of October 2026; I opened the whole page (version markers run to v2.1.281 and later).
+- Layout (section "Start Claude in a worktree"): by default the worktree is created under `.claude/worktrees/<name>/` at the repository root, on a new branch `worktree-<name>`; the name is the one passed to `--worktree`, or generated (for example `bright-running-fox`); a pull-request worktree sits at `.claude/worktrees/pr-<number>`. The page says `<name>`, not an identifier. A `WorktreeCreate` hook can place worktrees elsewhere. The permissions page treats Claude's own worktrees under `.claude/worktrees/` as an exception to the protected `.claude` directory (code-docs-permission-modes-guardrails).
+- "How Claude Code enforces isolation": four checks, each blocking a tool call: a file edit aimed at the main checkout; a command whose working directory resolves to the main checkout or cannot be verified; a git redirect into the main checkout (`git -C`, `--git-dir`, `GIT_DIR`, `GIT_WORK_TREE`, or a `cd` first); and a command whose shape hides what git does (a computed command name, unparseable syntax, an expansion such as `${!name}`). For the last the page says "You can't turn this check off." None tracks which files a shell command writes, so `cp` or a redirect into the main checkout is not refused and falls to permissions and the sandbox.
+- "Claude Code refuses to use a worktree": Claude Code refuses a directory as an isolation worktree if its git metadata resolves into the main checkout (for example a `.git` file pointing at the main `.git` directory, or a `core.worktree` redirect), because `git reset --hard` there would act on the main checkout.
+- `EnterWorktree` into a path outside `.claude/worktrees/` asks for approval; a rule or "don't ask again" does not suppress it, only `bypassPermissions` does. In `-p` runs with `--worktree` the trust check is skipped, there is no exit prompt, the worktree is left in place with its lock until a later sweep, and a resume that cannot re-enter its worktree stops with a stderr error instead of continuing without isolation.
+- "What worktrees share": the `.git` directory (so commits from a worktree write to shared storage and the sandbox allows it), plugins, and saved permission approvals (a "don't ask again" in a worktree is saved to the main checkout's local settings file, applying to every worktree). The page says nothing about the git index lock.
+
+Used in: research/synthesis/field-7.md

@@ -17,3 +17,8 @@ kind: documented
 
 ## Used in
 - research/synthesis/field-6.md
+
+## Also (question 7)
+I opened the page again for question 7. A caller creates `<filename>.lock` with `O_CREAT|O_EXCL`, writes into it and renames it over the destination; if another process holds the lock, the default is that the lock call returns -1, and with `LOCK_DIE_ON_ERROR` it dies with a message. Readers are never blocked. The page's example destination is `$GIT_DIR/index`. Combined with the worktree page (per-worktree index), two git commands in different worktrees do not contend on one index lock; two in the same worktree can.
+
+Used in: research/synthesis/field-7.md

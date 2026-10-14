@@ -30,3 +30,11 @@ kind: documented
 
 ## Used in
 - research/synthesis/field-6.md
+
+## Also (question 7)
+Read for question 7 (guardrails); as of October 2026; I opened the whole page.
+- Section "Start faster with bare mode": without `--bare`, a `-p` session runs the hooks in a project's `.claude/settings.json` and connects the servers in its `.mcp.json`, "even in a folder you've never trusted", with no trust dialog. With `--bare`, hooks, skills, plugins, MCP servers and CLAUDE.md are not discovered. The page says `--bare` "is the recommended mode for scripted and SDK calls, and will become the default for `-p` in a future release", which would stop project hook guards firing in `-p` unless they are passed with `--settings`.
+- "Auto-approve tools" and "Turn off permission prompts": `dontAsk` denies every call that would otherwise prompt and is described as useful for locked-down CI; in a `-p` run with no permission host, prompts are denied either way; denials appear as `permission_denied` system messages and in `permission_denials` of the final result.
+- Section "Stop a run with SIGTERM": on SIGTERM Claude Code terminates the process tree of any running Bash command, then runs only `SessionEnd` hooks.
+
+Used in: research/synthesis/field-7.md

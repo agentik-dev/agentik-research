@@ -16,3 +16,9 @@ kind: measured
 
 ## Used in
 - research/synthesis/field-5.md
+
+## Also (question 8)
+Re-read on 2026-10-14 from the arXiv abstract page (v1 12 February 2025; v3 21 June 2025).
+- Restated: 5 multi-agent debate methods, 9 benchmarks, 4 foundation models; debate often fails to beat single-agent chain-of-thought and self-consistency despite far more inference compute. The authors present model heterogeneity as a "universal antidote" that consistently improves current debate frameworks. The abstract names no methods, benchmarks or figures.
+- For review: agreement among copies of one model is weak evidence; a reviewer from a different model is the direction the paper supports.
+- Used in (question 8): research/synthesis/field-8.md

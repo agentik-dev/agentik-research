@@ -17,3 +17,9 @@ kind: measured
 
 ## Used in
 - research/synthesis/field-5.md
+
+## Also (question 8)
+Re-read on 2026-10-14 from the arXiv abstract page (submitted 15 April 2024; Panickssery, Bowman and Feng).
+- Restated: a model used as an evaluator rates its own outputs higher than others' although human annotators judge them equal in quality. The authors ask whether self-recognition, the ability to tell its own text from others', drives this; without fine-tuning, GPT-4 and Llama 2 showed "non-trivial accuracy" at telling themselves from other models and humans. Fine-tuning showed a linear link between self-recognition and strength of self-preference, and controlled experiments suggest a causal link.
+- For review: a reviewer drawn from the same model family as the author may favour the author's output. The abstract does not test this for code or for two instances of one model.
+- Used in (question 8): research/synthesis/field-8.md
