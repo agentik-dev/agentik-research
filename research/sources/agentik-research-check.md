@@ -1,16 +1,24 @@
 ---
 repo: agentik-dev/agentik-research
-path: scripts/check
-commit: 4703b79
-title: "The site's structural check"
+path: scripts/check, Makefile, .claude/respeak/config.yaml
+commit: 6b5e5b0
+title: "The site's structural check and its Makefile"
 author: agentik-dev
 published: undated
 accessed: 2026-10-14
 kind: our-use
 ---
 
+Read at 6b5e5b0: scripts/check whole, Makefile lines 1-48, config.yaml lines 17-22. Neither scripts/check nor the Makefile changed between 49fcc10 and 5852ebc (`git diff --stat` empty).
+
 ## What it says
-- It requires every page in the navigation, every footnote defined and used under a Sources heading with a URL, no draft markers, no private paths or addresses, front matter on every source note, and a charter under 4 KB. The Makefile runs it with respeak's style gate, the commons hygiene scan and a strict MkDocs build.
+- Makefile line 22: `check: structure style hygiene site a11y links`. `structure` runs `scripts/check`; `style` runs respeak's gate, `respeak-check.sh`; `hygiene` runs the commons hygiene scan; `site` runs `mkdocs build --strict --quiet`; `a11y` runs axe on every page, light and dark, and fails on a serious or critical violation (lines 36-38); `links` runs linkinator over `site/`, fails on a broken internal link and lists external failures in `.cache/links.txt` (lines 40-43).
+- The seed's Makefile, 4703b79 line 16, read `check: structure style hygiene site`; 66dd372 ("phase 0: npm checks (shots, a11y, links)") made it the six above, and 49fcc10 ("phase 1") added the journal rules to scripts/check (`git show --stat` on each).
+- config.yaml line 21: the gate includes `docs/**/*.md` and `README.md`.
+- scripts/check, docstring lines 7-19: `nav` (every page under docs/ is in the nav, every nav entry exists, journal posts never in the nav); `journal` (each post opens with front matter holding a date and at least one category from `categories_allowed`); `footnotes` (every reference defined and every definition used; each page but the glossary and the journal index has one; definitions under `## Sources` and carrying a URL); `drafts` (no TODO, TBD, FIXME or XXX); `hygiene` (no home-directory path, private IPv4 address or e-mail address in docs/, research/ or README.md); `notes` (front matter naming url or repo, accessed and kind); `charter` (the newest charter under 4 KB).
+
+## Limits
+- This repo's own build file and script; they show what the check runs, not how often it ran.
 
 ## How this site uses it
 - The method page describes the checks from it.

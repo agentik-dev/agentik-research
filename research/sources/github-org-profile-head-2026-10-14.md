@@ -20,3 +20,4 @@ Read on 2026-10-14 in the attached checkout at 8a0a188 ("merge agentik-r1-profil
 
 ## Used in
 - docs/index.md
+- docs/method.md
