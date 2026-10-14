@@ -29,3 +29,16 @@ Site CSS means docs/assets/stylesheets/agentik-site.css.
 9. Axe and links: no serious or critical violations. All 11 pages have a moderate landmark-unique violation (`.md-post > .md-nav--primary.md-nav` and `nav[aria-labelledby="__nav_5_label"]`). No broken internal links. The external GitHub links to agentik-dev/agentik-research return 404 on every page (private repo).
 
 All six entries have the six story parts.
+
+## Field (index and seven chapters): FAIL
+
+1. All 8 pages, all widths, both schemes: a stray comma appears before about 92 footnote marks ("rule.,⁶", "summary.,¹⁷"). Cause: `sup[id^="fnref"] + sup[id^="fnref"]::before` (agentik-site.css:164). The `+` selector skips the text between two marks.
+2. Length, memory and unattended at 390, both schemes: four-column tables shrink to columns about 90 px wide. The screen edge cuts the Evidence pills ("doc", "mea"). The tables scroll, but nothing tells the reader. `.md-typeset table:not([class])` needs a min-width.
+3. Index, all widths and schemes: the evidence legend shows as an indented column, not one row. `.ev-legend` (agentik-site.css:262-263) loses on specificity to Material's `ul:not([hidden]){display:flow-root}` and `[dir=ltr] .md-typeset ul li{margin-left}`.
+4. Unattended at 1280 and 390, both schemes: inline code breaks at hyphens ("-"/"p", "--"/"bare", "--max-"/"turns"). `.md-typeset code` (agentik-site.css:166) needs `white-space: nowrap`.
+5. Review at 1280, both schemes: ". ¹,³" wraps onto its own line after a pill (review.md:50-51). The same happens at unattended-and-guardrails.md:99.
+6. Light scheme: the "our use" pill measures 4.0-4.25:1 on the lower part of the background gradient, and "reported" 4.4:1. Both are under 4.5:1. The colour is `--ak-ev-our-use` (skin agentik.css:85). Axe cannot check text on a gradient, so it misses this.
+7. Memory h1 at 1280; length h1 and the "Question 4" and "Practices" h2s at 390: the hidden ¶ link wraps onto a blank second line, which leaves an uneven gap. Footnote back-links do the same in Sources.
+8. Chapter shape varies: many-agents has no limits card and no "From the journal"; memory has no limits card. many-agents.md:37-42 writes "Measured." in plain text instead of pills. telling-people.md:5 repeats line 14.
+
+Axe finds no violations and there are no broken internal links. The header link to the GitHub repo returns 404 on all 8 pages (private repo).
