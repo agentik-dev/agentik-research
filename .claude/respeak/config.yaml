@@ -22,9 +22,11 @@ gate:
   exclude: []
   fail_on: error
   block_on: introduced
-  # One corpus rule is skipped: a cited paper's title carries the word it bans
-  # (Zhong et al., 2026, in docs/field/review.md). A quoted title is never reworded.
-  allow: ['synerg']
+  # Two corpus rules are skipped: cited paper titles carry the words they ban
+  # (Zhong et al., 2026, in docs/field/review.md; Kobak et al., 2025, in
+  # docs/field/telling-people.md, where the word is also the measured finding).
+  # A quoted title is never reworded.
+  allow: ['synerg', 'delve']
 
 # The landing page and the summary are read by people deciding whether to read
 # on: bottom line up front.
