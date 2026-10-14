@@ -87,6 +87,20 @@
   .md-sidebar--secondary .md-nav__link--active { background: transparent; }
 }
 .md-nav__title { color: var(--glass-muted); }
+/* From 1220 px Material gives a sidebar's sticky title ("Table of contents",
+ * the journal's "Back to index", a tab's section label such as "The tools")
+ * a flat page-colour band and a halo. The title paints the canvas itself
+ * instead, fixed to the viewport as the body's is, so it shows no band and
+ * still covers links that scroll under it. */
+@media screen and (min-width: 76.25em) {
+  .md-nav--primary .md-nav__title,
+  .md-nav--secondary .md-nav__title,
+  .md-nav--lifted > .md-nav__list > .md-nav__item--active > .md-nav__link {
+    background: var(--glass-canvas);
+    background-attachment: fixed;
+    box-shadow: none;
+  }
+}
 .md-nav__link--passed { color: var(--glass-muted); }
 
 /* Drawer on narrow screens: a glass panel. */
@@ -167,17 +181,26 @@
 .md-typeset a.headerlink, .md-typeset .footnote-ref, .md-typeset a.footnote-backref,
 .md-typeset .md-button, .md-typeset .ak-door a, .md-typeset .md-post a, .md-typeset .ak-post a { text-decoration: none; }
 .md-typeset .footnote-ref { font-weight: 600; }
-/* Adjacent footnote marks read as 2,3 rather than 23. agentik.js marks a
- * mark whose previous sibling node, white space aside, is another mark; a
- * CSS sibling selector cannot see the text between two marks. */
-.md-typeset sup.ak-fn-next::before { content: ","; color: var(--glass-muted); }
+/* Adjacent footnote marks read as 2,3 rather than 23: the footnote hook
+ * (overrides/hooks/footnote_order.py) sorts each run of marks and puts this
+ * comma between them in the HTML, so it holds without JavaScript. It sits at
+ * the marks' size and on their raised baseline. */
+.md-typeset .ak-fn-sep { vertical-align: super; font-size: 0.62em; line-height: 1em; font-weight: 600; color: var(--glass-muted); }
 
 /* Text that must not break across lines: agentik.js wraps ISO dates and a
  * number with its unit in prose ("2026-10-14", "4 KB"), and marks short
  * inline code ("--max-turns", "stream-json") the same way. */
 .md-typeset .ak-nobr { white-space: nowrap; }
 
-.md-typeset code { border-radius: 5px; font-size: 0.86em; padding: 0.05em 0.3em; }
+/* Inline code is a chip: a faint tint and a hairline edge, both from the
+ * skin (--ak-code-chip-*), so it shows on the canvas and on every glass
+ * surface; the padding stays inside the chip, so it never reads as a space
+ * before the next word or mark ("`bounded`'s", "`.git`,"). */
+.md-typeset code { border-radius: 4px; font-size: 0.86em; padding: 0.05em 0.22em; }
+.md-typeset :not(pre) > code {
+  background-color: var(--ak-code-chip-bg);
+  box-shadow: inset 0 0 0 1px var(--ak-code-chip-border);
+}
 .md-typeset pre > code { border-radius: var(--glass-r-input); padding: 0.9em 1.1em; }
 .md-typeset .highlight, .md-typeset pre {
   border-radius: var(--glass-r-input);
@@ -207,11 +230,26 @@
 .md-typeset table:not([class]) { font-size: 0.7rem; }
 .md-typeset table:not([class]) th { font-size: 0.6rem; }
 .md-typeset table:not([class]) td, .md-typeset table:not([class]) th { padding: 0.7em 1em; }
-/* On a narrow screen a table of four or more columns keeps readable columns
- * and scrolls sideways (the fade above shows it) instead of squeezing each
- * column to one or two words a line. */
-@media screen and (max-width: 59.984375em) {
-  .md-typeset table:not([class]):has(tr > :nth-child(4)) :is(td, th) { min-width: 8rem; }
+/* On a phone a table of three or more columns keeps a minimum width by its
+ * column count, about 9 to 10rem a column, and scrolls sideways (the fade
+ * above shows it) instead of squeezing each column to one word a line. From
+ * 720 px a table takes the column's width, as a five-column table fits at
+ * 768 px, and the fade shows only on a table that still overflows. */
+@media screen and (max-width: 44.984375em) {
+  .md-typeset table:not([class]):has(tr > :nth-child(3)) { min-width: 28rem; }
+  .md-typeset table:not([class]):has(tr > :nth-child(4)) { min-width: 34rem; }
+  .md-typeset table:not([class]):has(tr > :nth-child(5)) { min-width: 40rem; }
+}
+/* The practices page's tables share one set of column widths from 720 px,
+ * so Practice, Why, Evidence and Tool start at the same place in each. */
+@media screen and (min-width: 45em) {
+  .md-typeset:has(> h1#practices) .md-typeset__table { display: block; }
+  .md-typeset:has(> h1#practices) table:not([class]):has(tr > :nth-child(4)) { table-layout: fixed; width: 100%; }
+  .md-typeset:has(> h1#practices) table:not([class]) th:nth-child(1) { width: 25%; }
+  .md-typeset:has(> h1#practices) table:not([class]) th:nth-child(2) { width: 34%; }
+  .md-typeset:has(> h1#practices) table:not([class]) th:nth-child(3) { width: 18%; }
+  .md-typeset:has(> h1#practices) table:not([class]) th:nth-child(4) { width: 23%; }
+  .md-typeset:has(> h1#practices) table:not([class]) td:nth-child(4) a { white-space: nowrap; }
 }
 
 .md-typeset .admonition, .md-typeset details { font-size: 0.75rem; border-width: 1px; border-left-width: 3px; }
@@ -235,10 +273,11 @@
 .md-typeset .ak-backrefs { white-space: nowrap; }
 .md-typeset .footnote > ol > li:not(:hover):not(:focus-within):not(:target) .ak-backrefs ~ a.footnote-backref { display: none; }
 
-/* Mermaid diagrams sit in a glass card. agentik.js wraps each one in
- * .ak-diagram, which becomes the card and scrolls sideways: a wide diagram
- * keeps at least 72 percent of its drawn size, so its text stays legible on
- * a phone, and a narrow one never scrolls. */
+/* Mermaid diagrams sit in a glass card. agentik.js wraps each one in a card,
+ * .ak-diagram, around a scroller, .ak-diagram-scroll, so the edge fade stays
+ * inside the card's border: a wide diagram keeps at least 68 percent of its
+ * drawn size, so its text stays legible on a phone, and one that fits is
+ * centred in the card. */
 .md-typeset .mermaid,
 .md-typeset .ak-diagram {
   background: var(--glass-1);
@@ -248,9 +287,23 @@
   padding: 1rem;
   margin: 1.2rem 0;
 }
-.md-typeset .ak-diagram { overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; }
-.md-typeset .ak-diagram > .mermaid { background: none; border: 0; border-radius: 0; box-shadow: none; padding: 0; margin: 0; }
-.md-typeset .ak-diagram:focus-visible { outline: 2px solid var(--glass-accent); outline-offset: 2px; }
+.md-typeset .ak-diagram-scroll { overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; border-radius: 6px; }
+.md-typeset .ak-diagram-scroll > .mermaid {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: none; border: 0; border-radius: 0; box-shadow: none; padding: 0; margin: 0;
+}
+.md-typeset .ak-diagram-scroll:focus-visible { outline: 2px solid var(--glass-accent); outline-offset: 2px; }
+@media screen and (max-width: 44.984375em) {
+  .md-typeset .mermaid, .md-typeset .ak-diagram { padding: 0.75rem; }
+}
+
+/* A glossary term's permalink (overrides/hooks/term_links.py): Material's
+ * headerlink, shown on hover, focus or target, set in the left margin beside
+ * the term so it takes no room in the line. */
+.md-typeset p:has(> .ak-termlink) { position: relative; }
+[dir] .md-typeset p > .ak-termlink { position: absolute; left: -0.95em; top: 0; margin: 0; }
 
 /* Abbreviations (content.tooltips). */
 .md-typeset abbr { text-decoration: underline dotted var(--glass-faint); cursor: help; }
@@ -384,9 +437,11 @@
 .md-typeset .ak-hero .ak-actions .md-button { margin: 0; }
 
 /* Doors and cards: stretched-link glass cards, one column on a phone and
- * three from 720 px, never two and one. In three columns each card is a
- * subgrid of four rows (kicker or date, title, text, link or chips), so the
- * titles and the links line up even when one kicker wraps. */
+ * three from 720 px, never two and one. In three columns each door is a
+ * subgrid of four rows (kicker, title, text, link) and each newest-entry card
+ * one of three (date, title with text, chips), so titles and links line up.
+ * A kicker sits at the foot of its row, against its title; a short entry's
+ * spare room falls above its chips, never between its title and its text. */
 .md-typeset .ak-doors {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -511,6 +566,7 @@
 }
 .md-typeset .ak-post .ak-post-time { white-space: nowrap; }
 .md-typeset .ak-post h3 { margin: 0 0 0.4rem; }
+.md-typeset .ak-post .ak-post-body > :last-child { margin-bottom: 0; }
 
 /* Doors and newest entries from 720 px: three columns, each card a subgrid. */
 @media screen and (min-width: 45em) {
@@ -523,6 +579,8 @@
       row-gap: 0;
       align-content: start;
     }
+    .md-typeset .ak-posts > .ak-door { grid-row: span 3; }
+    .md-typeset .ak-door > .ak-door-kicker { align-self: end; }
     .md-typeset .ak-door > .ak-door-go { align-self: end; }
   }
 }
@@ -602,7 +660,10 @@
 .md-typeset .ak-entry-meta > * { position: relative; white-space: nowrap; }
 .md-typeset .ak-entry-meta > * + *::before { content: "·"; position: absolute; left: -0.6em; color: var(--glass-muted); }
 .md-typeset .ak-entry-meta .ak-entry-back { font-weight: 600; text-decoration: none; }
-.md-typeset .ak-entry-meta .ak-entry-cats { display: inline-flex; gap: 0.25rem; }
+/* The chips' wrapper is inline, as the other items are, so the dot before
+ * it sits on the same baseline ("7 min read · Worked"); the template puts a
+ * space between two chips. */
+.md-typeset .ak-entry-meta .ak-entry-cats { display: inline; }
 @media screen and (min-width: 76.25em) {
   .md-typeset .ak-entry-meta { display: none; }
 }
@@ -716,6 +777,11 @@
 .gb-card .gb-card-title { font-size: 0.7rem; }
 .gb-card .gb-card-sub { font-size: 0.6rem; font-style: normal; }
 .md-typeset .ak-static-toggle { margin: 1.4rem 0 0.4rem; }
+/* The sources cards come 30 at a time (agentik.js); the button for the next
+ * ones sits under the grid, with the count beside it. */
+.gb-browse .ak-more { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 0.9rem; margin: 1rem 0 0.4rem; }
+.gb-browse .ak-more .md-button { margin: 0; }
+.gb-browse .ak-more-count { font-size: 0.66rem; color: var(--glass-muted); }
 .gb-browse .gb-table td { vertical-align: top; }
 /* The freshness stamp beside the count: legible size; its colour is the
  * skin's --glass-faint, which holds 4.5:1 on the canvas. */

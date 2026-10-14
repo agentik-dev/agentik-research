@@ -30,7 +30,7 @@ What goes wrong in long sessions and unattended runs, and what studies, vendor d
 </div>
 
 <div class="ak-door" markdown>
-<p class="ak-door-kicker">Part 2 · five tools and a front door</p>
+<p class="ak-door-kicker">Part 2 · five tools</p>
 
 ## [The tools](tools/index.md)
 

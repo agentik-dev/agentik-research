@@ -3,19 +3,19 @@
  *
  * It registers the sources browse (docs/sources.md mounts it; the rows are
  * docs/assets/data/sources.json, written by scripts/sources-page): a table on
- * a wide screen, glass-cards' cards below 960 px. Once the browse has drawn,
- * the static list below it folds away behind a button; without JavaScript,
- * or if the rows fail to load, the list stays.
+ * a wide screen, glass-cards' cards below 960 px, 30 at a time behind a
+ * "Show more" button (search and the facets still run over every row). Once
+ * the browse has drawn, the static list below it folds away behind a button;
+ * without JavaScript, or if the rows fail to load, the list stays.
  *
  * On every page (Material's document$ under navigation.instant, else
  * DOMContentLoaded) it also tidies the typeset text:
- *   - marks a footnote mark that directly follows another, for the comma
- *     agentik-site.css puts between them;
  *   - ties a note's first back-link to its last word;
  *   - keeps ISO dates, a number with its unit, and short inline code on one
- *     line;
- *   - wraps each Mermaid diagram in a scroller and gives it a minimum width,
- *     so a wide diagram stays legible and scrolls on a narrow screen;
+ *     line, and lets long inline code break only after a slash or a bar;
+ *   - wraps each Mermaid diagram in a card and a scroller and gives it a
+ *     minimum width, so a wide diagram stays legible and scrolls on a narrow
+ *     screen, starting with its first node in view;
  *   - marks wide tables, code blocks and diagrams that scroll sideways, for
  *     the edge fade in agentik-site.css, and gives them a tab stop.
  */
@@ -26,6 +26,50 @@
 
   /* Cards below 960 px, where the table's six columns do not fit. */
   var NARROW = window.matchMedia ? window.matchMedia("(max-width: 59.984375em)") : null;
+
+  /* glass-cards draws every matching row at once: 421 sources made a phone
+   * page 68,000 px tall. This renderer hands glass-cards the first PAGE rows
+   * of the filtered, sorted set and adds a button for the next PAGE. The kit
+   * still filters, searches and counts over every row, and calls the
+   * renderer again on each change, which starts from the first PAGE. */
+  var PAGE = 30;
+
+  function pagedCards(ctx) {
+    var cards = window.GlassBrowse.renderers.cards;
+    var all = ctx.out, shown = 0;
+    function draw(upto) {
+      var part = {};
+      for (var k in ctx) part[k] = ctx[k];
+      part.out = all.slice(0, upto);
+      cards(part);
+      shown = Math.min(upto, all.length);
+      if (shown < all.length) {
+        var p = document.createElement("p");
+        p.className = "ak-more";
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "md-button";
+        var next = Math.min(PAGE, all.length - shown);
+        b.textContent = "Show " + next + " more";
+        b.setAttribute("aria-label", "Show " + next + " more sources; " + shown + " of " + all.length + " shown");
+        b.addEventListener("click", function () {
+          var from = shown;
+          draw(shown + PAGE);
+          /* Focus moves to the first card the click added. */
+          var added = ctx.host.querySelectorAll(".gb-cards > *")[from];
+          var target = added && (added.matches("a[href], [tabindex]") ? added : added.querySelector("a[href]"));
+          if (target) target.focus();
+        });
+        var count = document.createElement("span");
+        count.className = "ak-more-count";
+        count.textContent = shown + " of " + all.length + " shown";
+        p.appendChild(b);
+        p.appendChild(count);
+        ctx.host.appendChild(p);
+      }
+    }
+    draw(PAGE);
+  }
 
   function registerBrowse() {
     if (!window.GlassBrowse) return;
@@ -81,9 +125,11 @@
       emptyHint: "Clear a filter or shorten the search."
     };
     /* The kit reads cfg.view at every render, so the view follows the width. */
+    if (GlassBrowse.renderers && GlassBrowse.renderers.cards) GlassBrowse.renderers["ak-cards"] = pagedCards;
+    var CARDS = GlassBrowse.renderers && GlassBrowse.renderers["ak-cards"] ? "ak-cards" : "cards";
     Object.defineProperty(sources, "view", {
       enumerable: true,
-      get: function () { return NARROW && NARROW.matches ? "cards" : "table"; }
+      get: function () { return NARROW && NARROW.matches ? CARDS : "table"; }
     });
 
     GlassBrowse.register({ sources: sources }, { order: { level: LEVELS, year: YEAR_OPTIONS } });
@@ -148,22 +194,10 @@
 
   /* ---- Footnotes ----------------------------------------------------- */
 
-  function isMark(node) {
-    return node && node.nodeType === 1 && node.tagName === "SUP" && /^fnref/.test(node.id);
-  }
-
-  /* A mark whose previous sibling node, white space aside, is another mark
-   * gets .ak-fn-next, and the stylesheet puts a comma before it. Marks with
-   * text between them are left alone. */
-  function markAdjacentFootnotes(root) {
-    root.querySelectorAll('sup[id^="fnref"]').forEach(function (sup) {
-      var prev = sup.previousSibling;
-      while (prev && prev.nodeType === 3 && !prev.nodeValue.trim()) prev = prev.previousSibling;
-      sup.classList.toggle("ak-fn-next", isMark(prev));
-    });
-  }
-
-  /* A note's first back-link in one unbreakable run with the note's last
+  /* Adjacent marks are sorted, and get the comma between them, in the HTML
+   * (overrides/hooks/footnote_order.py), so they need nothing here.
+   *
+   * A note's first back-link in one unbreakable run with the note's last
    * word, so the hidden icon never wraps onto a blank line of its own: the
    * no-break space Python-Markdown puts before it does not hold, since a line
    * may still break before an inline-block. The stylesheet hides the further
@@ -221,29 +255,48 @@
   }
 
   /* Inline code breaks after every hyphen. Code of at most 40 characters
-   * with no space stays whole; in code with spaces, each word of at most 40
-   * characters that holds a hyphen ("-c", "--max-turns") stays whole, and
-   * the spaces still break. */
+   * with no space stays whole. In longer code, each word (the text between
+   * spaces) of at most 40 characters that holds a hyphen ("-c",
+   * "--max-turns") stays whole; a longer word breaks only after a slash or a
+   * bar, each piece between them whole ("~/.claude/" "projects/" ...). The
+   * spaces still break. */
+  var LONG = 40;
+
+  function nobr(text) {
+    var span = document.createElement("span");
+    span.className = "ak-nobr";
+    span.textContent = text;
+    return span;
+  }
+
+  function glueWord(frag, word) {
+    if (word.length <= LONG) {
+      frag.appendChild(word.length > 1 && word.indexOf("-") >= 0 ? nobr(word) : document.createTextNode(word));
+      return;
+    }
+    var pieces = word.replace(/([\/|])(?![\/|])/g, "$1\u0000").split("\u0000").filter(Boolean);
+    pieces.forEach(function (piece, i) {
+      frag.appendChild(pieces.length > 1 && piece.length <= LONG ? nobr(piece) : document.createTextNode(piece));
+      if (i < pieces.length - 1) frag.appendChild(document.createElement("wbr"));
+    });
+  }
+
   function glueCode(root) {
     root.querySelectorAll("code").forEach(function (code) {
       if (code.dataset.akGlued || code.closest("pre") || code.children.length) return;
       code.dataset.akGlued = "1";
       var text = code.textContent;
-      if (!/\s/.test(text)) {
-        if (text.length <= 40) code.classList.add("ak-nobr");
+      if (!/\s/.test(text) && text.length <= LONG) {
+        code.classList.add("ak-nobr");
         return;
       }
-      if (text.indexOf("-") < 0) return;
+      var parts = text.split(/(\s+)/);
+      if (!parts.some(function (w) { return w.indexOf("-") >= 0 || w.length > LONG; })) return;
       var frag = document.createDocumentFragment();
-      text.split(/(\s+)/).forEach(function (part) {
-        if (part.length > 1 && part.length <= 40 && part.indexOf("-") >= 0 && /\S/.test(part)) {
-          var span = document.createElement("span");
-          span.className = "ak-nobr";
-          span.textContent = part;
-          frag.appendChild(span);
-        } else if (part.length) {
-          frag.appendChild(document.createTextNode(part));
-        }
+      parts.forEach(function (part) {
+        if (!part) return;
+        if (/^\s+$/.test(part)) frag.appendChild(document.createTextNode(part));
+        else glueWord(frag, part);
       });
       code.textContent = "";
       code.appendChild(frag);
@@ -252,7 +305,7 @@
 
   /* ---- Sideways scrolling ------------------------------------------- */
 
-  var SCROLLERS = ".md-typeset__scrollwrap, .md-typeset pre > code, .ak-diagram";
+  var SCROLLERS = ".md-typeset__scrollwrap, .md-typeset pre > code, .ak-diagram-scroll";
 
   function scrollState(el) {
     var max = el.scrollWidth - el.clientWidth;
@@ -290,7 +343,7 @@
   var pending = 0;
   function rewatch() {
     if (pending) return;
-    pending = window.requestAnimationFrame(function () { pending = 0; watchScrollers(); });
+    pending = window.requestAnimationFrame(function () { pending = 0; sizePending(); watchScrollers(); });
   }
   window.addEventListener("resize", rewatch, { passive: true });
 
@@ -298,60 +351,131 @@
 
   /* Material renders each diagram into a closed shadow root as an SVG with
    * width 100% and max-width at its drawn width, so it shrinks to fit the
-   * column. From outside, the drawn width follows from three heights: the
-   * box's height grows with its width at the SVG's aspect ratio until the
-   * width reaches the drawn width. The diagram then gets a minimum width of
-   * 72 percent of its drawn width (16 px text stays above 11 px), and its
-   * wrapper scrolls past that. */
-  var MIN_SCALE = 0.72;
+   * column. The script keeps a reference to each diagram's root as Material
+   * attaches it (the root stays closed to every other script), to read the
+   * drawn width from the SVG's viewBox and to find the diagram's first node.
+   *
+   * Each diagram goes in a card (.ak-diagram) holding a scroller
+   * (.ak-diagram-scroll), so the edge fade stays inside the card's border.
+   * The diagram gets a minimum width of 68 percent of its drawn width: its
+   * 16 px text shrinks to no less than 10.9 px, and the scroller scrolls past
+   * that. A diagram up to about 1.47 times its column's width scales down to
+   * fit. When a diagram scrolls, it starts with its first node centred, not
+   * at its left edge, where a side branch may sit. */
+  var MIN_SCALE = 0.68;
+  var ROOTS = window.WeakMap ? new WeakMap() : null;
 
-  function sizeDiagram(wrap) {
-    var host = wrap.querySelector(":scope > div.mermaid");
-    if (!host) return false;
-    if (!wrap.clientWidth) return false;
+  if (ROOTS && window.Element && Element.prototype.attachShadow) {
+    var attachShadow = Element.prototype.attachShadow;
+    Element.prototype.attachShadow = function (init) {
+      var root = attachShadow.call(this, init);
+      if (this.tagName === "DIV" && this.classList.contains("mermaid")) ROOTS.set(this, root);
+      return root;
+    };
+  }
+
+  /* The drawn width: the SVG's viewBox through the kept root; without it,
+   * from three heights, since the box's height grows with its width at the
+   * SVG's aspect ratio until the width reaches the drawn width. */
+  function drawnWidth(host) {
+    var root = ROOTS && ROOTS.get(host);
+    var svg = root && root.querySelector("svg");
+    if (svg) {
+      var vb = svg.viewBox && svg.viewBox.baseVal;
+      var max = parseFloat(svg.style.maxWidth);
+      if (max > 0) return max;
+      if (vb && vb.width > 0) return vb.width;
+    }
     var hostStyle = host.style;
-    hostStyle.minWidth = "";
     var w1 = host.clientWidth, h1 = host.clientHeight;
-    if (!w1 || !h1) return false;
+    if (!w1 || !h1) return 0;
     hostStyle.width = Math.round(w1 * 0.5) + "px";
     var w2 = host.clientWidth, h2 = host.clientHeight;
     hostStyle.width = "6000px";
     var h3 = host.clientHeight;
     hostStyle.width = "";
     var ratio = (h1 - h2) / (w1 - w2);
-    if (!(ratio > 0) || h3 <= h1 + 1) {
-      wrap.dataset.akSized = "1";
-      return true;   /* the diagram already shows at its drawn width */
-    }
-    var gap = h1 - w1 * ratio;
-    var drawn = (h3 - gap) / ratio;
-    var min = Math.round(Math.min(drawn, 6000) * MIN_SCALE);
-    if (min > w1) hostStyle.minWidth = min + "px";
+    if (!(ratio > 0) || h3 <= h1 + 1) return w1;
+    return Math.min((h3 - (h1 - w1 * ratio)) / ratio, 6000);
+  }
+
+  /* The first node the source names: Mermaid numbers node ids in source
+   * order ("...-flowchart-fork-0"). */
+  function firstNode(host) {
+    var root = ROOTS && ROOTS.get(host);
+    if (!root) return null;
+    var best = null, bestN = Infinity;
+    root.querySelectorAll("g.node").forEach(function (g) {
+      var m = /-(\d+)$/.exec(g.id || "");
+      var n = m ? Number(m[1]) : Infinity;
+      if (!best || n < bestN) { best = g; bestN = n; }
+    });
+    return best;
+  }
+
+  function startAtFirstNode(scroller, host) {
+    var max = scroller.scrollWidth - scroller.clientWidth;
+    if (max <= 1 || scroller.dataset.akStarted) return;
+    scroller.dataset.akStarted = "1";
+    var node = firstNode(host);
+    if (!node) return;
+    var r = node.getBoundingClientRect(), box = scroller.getBoundingClientRect();
+    var centre = r.left + r.width / 2 - box.left + scroller.scrollLeft;
+    scroller.scrollLeft = Math.max(0, Math.min(max, Math.round(centre - scroller.clientWidth / 2)));
+  }
+
+  function sizeDiagram(wrap) {
+    var scroller = wrap.querySelector(":scope > .ak-diagram-scroll");
+    var host = scroller && scroller.querySelector(":scope > div.mermaid");
+    if (!host || !scroller.clientWidth) return false;
+    host.style.minWidth = "";
+    var drawn = drawnWidth(host);
+    if (!drawn) return false;
+    /* Set at every width: where the column is wider, it has no effect, and
+     * it still holds when the window narrows. */
+    host.style.minWidth = Math.round(drawn * MIN_SCALE) + "px";
     wrap.dataset.akSized = "1";
-    scrollState(wrap);
+    startAtFirstNode(scroller, host);
+    scrollState(scroller);
     return true;
   }
 
   /* Material removes the class from each <pre class="mermaid"> while it
-   * loads Mermaid, then swaps in a drawn <div class="mermaid">; the wrapper
-   * goes round that div when it arrives. */
+   * loads Mermaid, then swaps in a drawn <div class="mermaid">; the card and
+   * the scroller go round that div when it arrives. */
   function adoptDiagram(host) {
-    var wrap = host.parentNode;
-    if (!wrap || !wrap.closest || !wrap.closest(".md-typeset")) return;
-    if (!wrap.classList.contains("ak-diagram")) {
+    var parent = host.parentNode;
+    if (!parent || !parent.closest || !parent.closest(".md-typeset")) return;
+    var wrap;
+    if (parent.classList.contains("ak-diagram-scroll")) {
+      wrap = parent.parentNode;
+    } else {
       wrap = document.createElement("div");
       wrap.className = "ak-diagram";
       wrap.setAttribute("role", "group");
       wrap.setAttribute("aria-label", "Diagram");
-      host.parentNode.insertBefore(wrap, host);
-      wrap.appendChild(host);
+      var scroller = document.createElement("div");
+      scroller.className = "ak-diagram-scroll";
+      parent.insertBefore(wrap, host);
+      wrap.appendChild(scroller);
+      scroller.appendChild(host);
     }
     if (!wrap.dataset.akSized) sizeDiagram(wrap);
-    if (!wrap.dataset.akWatch) watchScrollers();
+    watchScrollers();
   }
 
   function wrapDiagrams(root) {
     root.querySelectorAll("div.mermaid").forEach(adoptDiagram);
+  }
+
+  /* After a resize: a diagram that was hidden when it arrived is sized, and
+   * one that starts to scroll starts at its first node. */
+  function sizePending() {
+    document.querySelectorAll(".ak-diagram:not([data-ak-sized])").forEach(sizeDiagram);
+    document.querySelectorAll(".ak-diagram-scroll:not([data-ak-started])").forEach(function (s) {
+      var host = s.querySelector(":scope > div.mermaid");
+      if (host) startAtFirstNode(s, host);
+    });
   }
 
   if (window.MutationObserver) {
@@ -369,7 +493,6 @@
   function onPage() {
     setTimeout(function () {
       var root = document.querySelector(".md-content") || document.body;
-      markAdjacentFootnotes(root);
       groupBackrefs(root);
       glueCode(root);
       glueText(root);

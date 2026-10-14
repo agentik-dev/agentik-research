@@ -93,9 +93,12 @@ plugins:
       cards_layout_dir: overrides/layouts
       cards_layout: agentik
 
-# Notes in reading order, also inside `<div markdown>` blocks (see the file).
+# Notes in reading order, also inside `<div markdown>` blocks, with adjacent
+# marks sorted and a comma between them; and a permalink for each glossary
+# term (see each file).
 hooks:
   - overrides/hooks/footnote_order.py
+  - overrides/hooks/term_links.py
 
 markdown_extensions:
   - abbr

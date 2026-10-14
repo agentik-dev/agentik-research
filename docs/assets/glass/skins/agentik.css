@@ -122,6 +122,11 @@
   --md-typeset-a-color: #17703a;
   --md-code-bg-color: #f1eee6;
   --md-code-fg-color: #2b332d;
+  /* Inline code as a chip: the tint is 1.11:1 on the canvas and the edge
+   * 1.63:1 at its lowest point (1.67:1 on glass-1); the code text holds
+   * 8.9:1 on the chip there. */
+  --ak-code-chip-bg: rgba(40, 46, 36, 0.06);
+  --ak-code-chip-border: rgba(40, 46, 36, 0.26);
   --md-footer-bg-color: #e6e3d9;
   --md-footer-bg-color--dark: #dedad0;
   --md-footer-fg-color: #18201b;
@@ -222,6 +227,10 @@
   --md-typeset-a-color: #7ddc92;
   --md-code-bg-color: #1a201d;
   --md-code-fg-color: #d4dbd6;
+  /* Inline code as a chip: tint 1.16:1 and edge 1.83:1 on the canvas; the
+   * code text holds 9.5:1 on the chip at its lightest, on glass-2. */
+  --ak-code-chip-bg: rgba(214, 240, 220, 0.07);
+  --ak-code-chip-border: rgba(214, 240, 220, 0.22);
   --md-footer-bg-color: #0b0e0c;
   --md-footer-bg-color--dark: #080a09;
   --md-footer-fg-color: #e7ece8;

@@ -26,9 +26,9 @@ make shots   # every page at 390, 768, 1280 and 1680 px, light and dark, into .c
 | `docs/` | The site: `index.md`, `summary.md`, `field/` (part 1), `tools/` (part 2), `practices.md` (part 3), `journal/` (the dated entries), `method.md`, `glossary.md`, `sources.md` |
 | `docs/assets/glass/` | The vendored glass kit (`glass.css`, `glass-browse.js`, `glass-cards.js`, the Inter fonts) and the agentik skin in `skins/agentik.css` |
 | `docs/assets/stylesheets/`, `docs/assets/javascripts/` | The site's own components and its config script, which registers the sources browse |
-| `overrides/` | The home page and 404 templates, the newest-entries partial and the social card layout |
+| `overrides/` | The home page, 404 and blog templates, the newest-entries partial, the social card layout, and two MkDocs hooks: one numbers footnotes in reading order, one gives glossary terms their links |
 | `research/sources/` | One note per source: what was opened, when, and what it says |
-| `research/synthesis/` | The internal survey per tool, the external survey per question, and the journal outlines |
+| `research/synthesis/` | The internal survey per tool, the external survey per question, the journal outlines, and the site sitting's briefs for fixers and the critics' reports |
 | `research/OUTLINE.md` | Each page's claims in order, with sources and evidence levels, from the first sitting |
 | `research/prompts/` | One prompt per agentik repository, listing the numbers and claims the survey found wrong or unsourced |
 | `history/` | The briefs and the sitting charters |
