@@ -89,7 +89,7 @@ agentik-session rests on the premise that a fresh context per sitting beats a lo
 
 agentik-session's profile table lists opus, sonnet and haiku at 200,000 tokens and gives 1M only to fable, mythos and `opus[1m]`.[^profiles] The October 2026 documentation gives 1M to Opus 5.5, Sonnet 5.5 and Haiku 5.5, so the table is stale or cautious.[^ctxdoc][^modelconfig]
 
-agentik-decisions caps its ledger at 25 entries in force and gives no reason for the number.[^d17] Adherence does fall as instruction count grows,[^ifscale] and the docs say longer CLAUDE.md files reduce adherence.[^memory] But no source gives the number 25, and the cap counts entries, not bytes.[^d17]
+agentik-decisions caps its ledger at 25 entries in force. Its design records the cap as the owner's ruling, not a measurement, and says no outside source gives the number. Commit `ba78699` added that record on 2026-10-14; this page had said the repo gave no reason.[^d17] Adherence does fall as instruction count grows,[^ifscale] and the docs say longer CLAUDE.md files reduce adherence.[^memory] The design names both as the nearest evidence, the first by this site's reading. But no source gives the number 25, and the cap counts entries, not bytes.[^d17]
 
 ## Practices this evidence supports
 
@@ -139,4 +139,4 @@ agentik-decisions caps its ledger at 25 entries in force and gives no reason for
 [^khorana]: Gautam Khorana, "Claude Code Context Window: When to Compact, Clear or Split", 8 September 2026, <https://gautamkhorana.com/blog/claude-code-context-window-large-repos/>.
 [^packets]: agentik-dev/agentik-session, "design/packets/s17-exit-rule-respawns.md", commit e7f0723, <https://github.com/agentik-dev/agentik-session/blob/e7f0723/design/packets/s17-exit-rule-respawns.md>.
 [^profiles]: agentik-dev/agentik-session, "claude_session/profiles.yaml", commit e7f0723, <https://github.com/agentik-dev/agentik-session/blob/e7f0723/claude_session/profiles.yaml>.
-[^d17]: agentik-dev/agentik-decisions, "design/d17-four-verbs.md", commit 80d59eb, <https://github.com/agentik-dev/agentik-decisions/blob/80d59eb/design/d17-four-verbs.md>.
+[^d17]: agentik-dev/agentik-decisions, "design/d17-four-verbs.md", commit 569a120, <https://github.com/agentik-dev/agentik-decisions/blob/569a120/design/d17-four-verbs.md>.

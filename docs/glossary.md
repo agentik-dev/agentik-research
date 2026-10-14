@@ -1,6 +1,6 @@
 # Glossary
 
-One meaning per term, as the agentik repositories and this site use it. Terms from Claude Code and the field come first, then the tools' own. Command forms are the suite's planned `agentik <tool> <verb>` names; at the commits read, the installed commands still carry their earlier names.
+One meaning per term, as the agentik repositories and this site use it. Terms from Claude Code and the field come first, then the tools' own. Command forms are the suite's `agentik <tool> <verb>` names, which the front door runs; each tool page gives the installed names at the commit it read.
 
 ## The field
 
@@ -78,7 +78,7 @@ One meaning per term, as the agentik repositories and this site use it. Terms fr
 
 **Gate (respeak).** The hook and the check that scan a human-lane file for banned phrases and length budgets and block an error-severity hit.
 
-**Verifier.** The script that proves an editorial pass changed prose only: headings, link targets and fenced code unchanged, block counts equal, and inline code and numbers the same multiset before and after.
+**Verifier.** The script that checks an editorial pass changed prose only: headings, link targets and fenced code unchanged, block counts equal, and inline code and numbers the same multiset before and after. It does not check facts: an appended false paragraph passes.
 
 **Include file.** A static file of at most 1,500 bytes that renders the writing rules for CLAUDE.md to import, so a reader without the plugin gets them.
 

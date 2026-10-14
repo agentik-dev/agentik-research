@@ -45,7 +45,7 @@ agentik-respeak splits agent traffic from human prose and offers an opt-in gate 
 
 The tool's premise that agent shorthand drifts into a dialect that locks out the supervising person rests on an analogy from human pairs.[^garrod][^respeakreadme] No source records an agent dialect locking out a person. A search of the repo's history, design records, changelog and backlog at the commit read found no such incident either.[^respeakrepo]
 
-Machine-prose tells exist and expert readers see them; the sources found include no study of a banned-phrase list or of tone causing dislike.[^kobak][^russell] By the studies found, the readability grades the tool declares per mode are a weak gate.[^zheng][^respeakconfig] Its scanner computes sentence length and dash density, never a grade.[^respeakmeasure] Bottom line up front is a standard, not a measured effect.[^army] That Diátaxis fits a site like this one is our reading, not a finding.[^diataxis]
+Machine-prose tells exist and expert readers see them; the sources found include no study of a banned-phrase list or of tone causing dislike.[^kobak][^russell] The tool declares a readability grade per mode, and by the studies found a grade is a weak gate.[^zheng] Since 2026-10-14 (commit `8dda5c9`), its configuration calls each grade a register cue that no script computes, cites the same study, and keeps the sentence and paragraph budgets as the checks.[^respeakconfig] Its scanner computes sentence length and dash density, never a grade.[^respeakmeasure] Bottom line up front is a standard, not a measured effect.[^army] That Diátaxis fits a site like this one is our reading, not a finding.[^diataxis]
 
 ## Practices this evidence supports
 
@@ -80,7 +80,7 @@ Machine-prose tells exist and expert readers see them; the sources found include
 [^ismp]: Institute for Safe Medication Practices, "List of Error-Prone Abbreviations", 2024, <https://home.ecri.org/blogs/ismp-resources/list-of-error-prone-abbreviations>.
 [^willison]: Simon Willison, "Anti-patterns: things to avoid", agentic engineering patterns, read 2026-10-14, <https://simonwillison.net/guides/agentic-engineering-patterns/anti-patterns>.
 [^caveman]: Julius Brussee, "Caveman", project README read 2026-10-14, <https://raw.githubusercontent.com/JuliusBrussee/caveman/main/README.md>.
-[^respeakreadme]: agentik-dev/agentik-respeak, "README.md", commit 319f060, <https://github.com/agentik-dev/agentik-respeak/blob/319f060/README.md>.
-[^respeakconfig]: agentik-dev/agentik-respeak, "plugin/config/respeak.config.yaml", commit 319f060, <https://github.com/agentik-dev/agentik-respeak/blob/319f060/plugin/config/respeak.config.yaml>.
-[^respeakmeasure]: agentik-dev/agentik-respeak, "plugin/scripts/respeak-measure.py", commit 319f060, <https://github.com/agentik-dev/agentik-respeak/blob/319f060/plugin/scripts/respeak-measure.py>.
-[^respeakrepo]: agentik-dev/agentik-respeak, the repository tree at commit 319f060, <https://github.com/agentik-dev/agentik-respeak/tree/319f060>.
+[^respeakreadme]: agentik-dev/agentik-respeak, "README.md", commit c83e9b8, <https://github.com/agentik-dev/agentik-respeak/blob/c83e9b8/README.md>.
+[^respeakconfig]: agentik-dev/agentik-respeak, "plugin/config/respeak.config.yaml", commit c83e9b8, <https://github.com/agentik-dev/agentik-respeak/blob/c83e9b8/plugin/config/respeak.config.yaml>.
+[^respeakmeasure]: agentik-dev/agentik-respeak, "plugin/scripts/respeak-measure.py", commit c83e9b8, <https://github.com/agentik-dev/agentik-respeak/blob/c83e9b8/plugin/scripts/respeak-measure.py>.
+[^respeakrepo]: agentik-dev/agentik-respeak, the repository at commit c83e9b8, searched in "history/", "design/", "CHANGELOG.md", "NICE_TO_HAVE.md" and the commit messages, <https://github.com/agentik-dev/agentik-respeak/tree/c83e9b8>.

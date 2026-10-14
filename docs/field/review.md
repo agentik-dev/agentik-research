@@ -39,7 +39,7 @@ Decision records are the other half of the answer. An unrecorded decision invite
 
 ## What this means for the agentik tools
 
-agentik-decisions' first design ties rulings that get re-cut to rulings with no consumer, and makes a named consumer the cure.[^decisionsr1] Its README says to ask the owner once, in one batch, and caps the ledger at 25 entries in force.[^decisionsreadme] The named-consumer rule is in no outside source, though the loops that did not end are on record. No source compares batching with asking as questions arise. The measured result: an interruption at a boundary is cheaper than a random one.[^iqbal] The ledger's compact entries and supersession rule match ADR practice; its cap has no source.[^nygard][^azure]
+agentik-decisions' first design ties rulings that get re-cut to rulings with no consumer, and makes a named consumer the cure.[^decisionsr1] Its README says to ask the owner once, in one batch, and caps the ledger at 25 entries in force.[^decisionsreadme] The named-consumer rule is in no outside source, though the loops that did not end are on record. No source compares batching with asking as questions arise. The measured result: an interruption at a boundary is cheaper than a random one.[^iqbal] The ledger's compact entries and supersession rule match ADR practice, and neither ADR source sets its cap.[^nygard][^azure] Since 2026-10-14 the repo's design records the cap as the owner's ruling, with no outside source for the number.[^d17]
 
 agentik-relay ships a read-only adversary agent.[^relayadversary] An outside signal beats self-correction. A ground-truth gate lifted accuracy where self-correction lowered it, and the survey finds reliable external feedback is what works.[^huang][^kamoi] No study compares a report-only agent with self-review, and a reviewer asked to find gaps will usually report some gaps.[^bestpractices]
 
@@ -78,8 +78,9 @@ In the relay, a sign-off is a check that must pass, and an unrun gate is never a
 [^aiwatch]: Issue reporter, "Review loop keeps adopting agents' suggested rewrites", bentleypark/aiwatch issue 1298, 31 August 2026, <https://github.com/bentleypark/aiwatch/issues/1298>.
 [^agentinfra]: Issue reporter, "Review loops never converge when the fix pass adds the text the reviewers read", daniel-ospina/agent-infra issue 1089, 15 September 2026, <https://github.com/daniel-ospina/agent-infra/issues/1089>.
 [^meridian]: Pull request author, "Review loop passes on no blocking findings; nits no longer spend fix rounds", meridianlabs-ai/agents pull request 58, 4 September 2026, <https://github.com/meridianlabs-ai/agents/pull/58>.
-[^decisionsreadme]: agentik-dev/agentik-decisions, "README.md", commit 80d59eb, <https://github.com/agentik-dev/agentik-decisions/blob/80d59eb/README.md>.
-[^decisionsr1]: agentik-dev/agentik-decisions, "history/design/decisions-r1.md", section 7, decision 4, commit 80d59eb, <https://github.com/agentik-dev/agentik-decisions/blob/80d59eb/history/design/decisions-r1.md>.
+[^decisionsreadme]: agentik-dev/agentik-decisions, "README.md", commit 569a120, <https://github.com/agentik-dev/agentik-decisions/blob/569a120/README.md>.
+[^decisionsr1]: agentik-dev/agentik-decisions, "history/design/decisions-r1.md", section 7, decision 4, commit 569a120, <https://github.com/agentik-dev/agentik-decisions/blob/569a120/history/design/decisions-r1.md>.
+[^d17]: agentik-dev/agentik-decisions, "design/d17-four-verbs.md", commit 569a120, <https://github.com/agentik-dev/agentik-decisions/blob/569a120/design/d17-four-verbs.md>.
 [^relayadversary]: agentik-dev/agentik-relay, "plugin/agents/adversary.md", commit a326550, <https://github.com/agentik-dev/agentik-relay/blob/a326550/plugin/agents/adversary.md>.
 [^commonsguide]: agentik-dev/agentik-commons, "GUIDE.md", section 5, commit e456f4b, <https://github.com/agentik-dev/agentik-commons/blob/e456f4b/GUIDE.md>.
 [^relaydesign]: agentik-dev/agentik-relay, "design/relay-r1.md", commit a326550, <https://github.com/agentik-dev/agentik-relay/blob/a326550/design/relay-r1.md>.

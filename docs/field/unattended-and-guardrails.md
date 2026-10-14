@@ -105,7 +105,7 @@ agentik-agents learned from a red team that `--allowedTools` restricts nothing, 
 
 ## From the journal
 
-- [The probe that stopped a night](../journal/posts/2026-09-30-the-probe-that-stopped-a-night.md): a review agent's hand-built binary stopped a running night.
+- [The probe that stopped a night](../journal/posts/2026-09-30-the-probe-that-stopped-a-night.md): a review agent's hand-built relay overwrote, then removed, a running night's pid file, and the night stopped though its port lock held.
 
 ## Sources
 
