@@ -15,19 +15,19 @@ A sitting that waits should not pay for the wait. Ours did: in one count, 581 of
 
 ## The problem
 
-A long Claude Code sitting spends much of its time waiting: for a helper, a test run, a usage window. It can schedule its own wakeup and end its turn. Each wake is a new request, and every request reads the conversation's history again.[^costs] When the wait outlasts the prompt cache, that turn writes the whole history to the cache again, at a premium.[^pricing] A sitting that wakes every few minutes to look at a job that has not finished pays that price each time and learns nothing.
+A long Claude Code sitting spends much of its time waiting: for a helper, a test run, a usage window. It can schedule its own wakeup and end its turn. Each wake is a new request, and every request reads the conversation's history again.[^costs] While the cache is warm, that reread bills at the cached token rate.[^costs] After a break longer than the cache lifetime, the request misses the cache, reprocesses the whole history and writes it to the cache again, at a premium.[^costs][^pricing] A sitting that wakes just past the lifetime to look at a job that has not finished pays that premium and finds nothing to do.
 
 ## A human example: the cost of coming back
 
-Chris Parnin and Spencer Rugaber logged 85 programmers across 9,899 work sessions. In about one session in ten, the programmer was editing code within a minute of coming back to the task. In about three in ten, the first edit came more than 30 minutes later.[^parnin] The study measures a return after any break, not after a known interruption, so it shows the cost of coming back, not its cause.
+Chris Parnin and Spencer Rugaber studied 9,899 recorded programming sessions of 85 programmers. The logs came from two sets collected in 2005: one by Murphy and colleagues in Eclipse, one by Parnin and Görg in Visual Studio. A session ends at a break of 15 minutes or more. Among the 5,175 sessions with editing, 10 percent had the first edit within a minute of the return, and about 30 percent had it more than 30 minutes later.[^parnin] The authors do not know why a session broke off, so the study times the return after a break, not after a known interruption.
 
-A second study made the interruptions on purpose. Gloria Mark and her colleagues interrupted 48 people every two minutes while they answered email. The interrupted people finished faster, with no more errors, and their rated stress rose from 6.92 to 9.46 or 9.13 on a 20-point scale, by the kind of interruption.[^mark] Coming back costs something even when the work comes out fine.
+A second study made the interruptions on purpose. Gloria Mark and her colleagues interrupted 48 people every two minutes while they answered email. The interrupted people finished faster, with no more errors, and their rated stress rose from 6.92 to 9.46 or 9.13 on a 20-point scale, by the kind of interruption.[^mark] The cost they found was in stress, frustration and effort, not in time or quality. They did not measure speed in the moments right after an interruption, while a person reorients.[^mark]
 
-A model pays the same cost in a form you can count: on every return, it reads the whole conversation again.
+A model pays its own cost of coming back, and you can count it: on every return, it reads the whole conversation again.[^costs]
 
 ## What the research teaches
 
-The [budgets chapter](../../field/budgets-and-lanes.md) holds the evidence. Claude Code's own cost guide warns that a scheduled task "fires on its interval even while the session is idle, sending your full context each time".[^costs] As of October 2026, the main conversation gets a one-hour cache by default only on a subscription within plan usage; otherwise the default is five minutes. A cache write costs 1.25 times the base input price for five minutes and 2 times for one hour. A read costs 0.1 times the base price on many models, and less on some newer ones: 0.05 times on Opus 5.5 and Sonnet 5.5.[^caching][^pricing] A self-paced `/loop` waits between one minute and one hour.[^scheduled]
+The [budgets chapter](../../field/budgets-and-lanes.md) holds the evidence. Claude Code's own cost guide warns that a scheduled task "fires on its interval even while the session is idle, sending your full context each time".[^costs] As of October 2026, the main conversation gets a one-hour cache by default only on a subscription within plan usage; otherwise the default is five minutes. A cache write costs 1.25 times the base input price for five minutes and 2 times for one hour. A read costs 0.1 times the base price, except 0.05 times on Opus 5.5 and Sonnet 5.5 and 0.025 times on Fable 5.1 and Mythos 5.1.[^caching][^pricing] A self-paced `/loop` waits between one minute and one hour.[^scheduled]
 
 So a wake inside the cache lifetime is cheap, and a wake past it rewrites the cache. No source we found measures what a self-paced loop costs against a scheduled task, so the chapter stops there.
 
@@ -46,21 +46,25 @@ The rules live in the sitting's prompt, not in a hook. The packet's ruling 4 say
 
 <div class="ak-verdict" markdown>
 
-<span class="ev ev-our-use">our use</span> One owner, one tool, no count after the change. We do not know whether the rules lowered the 581.
+<span class="ev ev-our-use">our use</span> One owner, one tool, no count after either change. We do not know whether the rules lowered the 581 or the cache misses.
 
 </div>
 
 The build has 50 tests, all red before the change and green after.[^sitting] They prove that the rules are written, parsed and sent, not that sittings pace better. The count itself has no method on record: 581 plus 77 is 658, more than 614, so either the two figures count different things or some wakes count in both.[^s21]
 
-A later look found a second cost. A prompt-cache audit on 2026-10-12 read 649 transcripts from three days. A wake scheduled for 3,600 seconds landed 36 to 48 seconds late, past the one-hour cache lifetime, so 26 idle wakes rewrote about 4.8 million tokens.[^nth] The proposed fix, a cap of 3,300 seconds on an idle wake, is not built.
+A later look found a second cost. A prompt-cache audit on 2026-10-12 read 649 transcripts from three days. A wake scheduled for 3,600 seconds landed 36 to 48 seconds late, past the one-hour cache lifetime, so 26 idle wakes rewrote about 4.8 million tokens.[^nth] The pacing rule said "a long delay" and set no cap.[^s30]
+
+On 2026-10-14, merge `dac92b5` (packet S30) built the fix. agentik-session now reads the cache lifetime in Claude Code's own order, from environment variables, settings files and the last usage reading, and does not assume it. On the one-hour cache, an idle wait wakes at most 3,300 seconds apart, whatever the fallback, which leaves 300 seconds under the hour for a late fire. On the five-minute cache, any wait past about 270 seconds misses anyway, so an idle wait takes the long fallback and never wakes early to keep the cache warm. The SessionStart line names the lifetime when it is known and fits, `agentik session rules` prints it as pacing item 6, and the prompt hook shows it as one line.[^s30][^rules] Its tests were red on the code before it.[^s30] Like the other pacing rules, it is advice: the hooks show it, and no hook enforces it.[^s30][^rules] It is built, not proven. No run since the merge is on record, so we do not know whether it stopped the misses.
 
 ## What has not worked, and what is open
 
 Rule 4 stopped a loop it should have left running. On 2026-10-13 an orchestrator waited three times on the usage meter, saw no room, and stopped at the third `WAITING` at 20:48. Room opened at 21:47 and the window reset at 00:30. The loop sat idle about four hours, until the owner restarted it.[^nth] A fifth rule followed: waiting on the meter is not `WAITING`. The act stays the act, and the wake is the window's reset or one fallback, whichever comes first.[^s29][^rules]
 
-Three things are open. No hook enforces the pacing rules; the nudge is filed and not built.[^s21][^nth] The 3,300-second cap waits. And the count of 581 has not been re-run since S21; the cache audit measured something else.
+Two things are open. No hook enforces the pacing rules; the nudge is filed and not built.[^s21][^rules][^nth] And the count of 581 has not been re-run since S21; the cache audit measured something else.
 
-<p class="ak-written">Written 2026-10-14 from agentik-session at commit 89c69a8.</p>
+One gap has a fix that is not yet proven. Idle wakes asked for at 3,600 seconds fired past the one-hour cache and rewrote the whole context.[^nth] On 2026-10-14, merge `dac92b5` (packet S30) made an idle wait on that cache wake at most 3,300 seconds apart.[^s30][^rules] No run since is on record.
+
+<p class="ak-written">Written 2026-10-14 from agentik-session at commits 89c69a8 and e8477a7 (its head that day).</p>
 
 <ul class="ak-related" markdown>
 <li markdown>[Budgets, pacing and cost lanes](../../field/budgets-and-lanes.md)</li>
@@ -76,7 +80,8 @@ Three things are open. No hook enforces the pacing rules; the nudge is filed and
 [^parnin]: Chris Parnin and Spencer Rugaber, "Resumption Strategies for Interrupted Programming Tasks", undated paper (data collected 2005), <https://sites.cc.gatech.edu/reverse/repository/resumptionstrategies.pdf>.
 [^mark]: Gloria Mark, Daniela Gudith and Ulrich Klocke, "The Cost of Interrupted Work: More Speed and Stress", CHI 2008, April 2008, <https://www.interruptions.net/literature/Mark-CHI08.pdf>.
 [^s21]: agentik-dev/agentik-session, "design/packets/s21-priority-default.md", commit 89c69a8, <https://github.com/agentik-dev/agentik-session/blob/89c69a8/design/packets/s21-priority-default.md>.
-[^rules]: agentik-dev/agentik-session, "claude_session/rules.py", commit 89c69a8, <https://github.com/agentik-dev/agentik-session/blob/89c69a8/claude_session/rules.py>.
+[^rules]: agentik-dev/agentik-session, "claude_session/rules.py", commit e8477a7, <https://github.com/agentik-dev/agentik-session/blob/e8477a7/claude_session/rules.py>.
 [^sitting]: agentik-dev/agentik-session, "history/sittings/2026-10-10-4-s21-priority-default.md", commit 89c69a8, <https://github.com/agentik-dev/agentik-session/blob/89c69a8/history/sittings/2026-10-10-4-s21-priority-default.md>.
-[^nth]: agentik-dev/agentik-session, "NICE_TO_HAVE.md", commit 89c69a8, <https://github.com/agentik-dev/agentik-session/blob/89c69a8/NICE_TO_HAVE.md>.
+[^nth]: agentik-dev/agentik-session, "NICE_TO_HAVE.md", commit e8477a7, <https://github.com/agentik-dev/agentik-session/blob/e8477a7/NICE_TO_HAVE.md>.
 [^s29]: agentik-dev/agentik-session, "design/packets/s29-meter-wait.md", commit 89c69a8, <https://github.com/agentik-dev/agentik-session/blob/89c69a8/design/packets/s29-meter-wait.md>.
+[^s30]: agentik-dev/agentik-session, "design/packets/s30-cache-lifetime.md", commit e8477a7, <https://github.com/agentik-dev/agentik-session/blob/e8477a7/design/packets/s30-cache-lifetime.md>.
