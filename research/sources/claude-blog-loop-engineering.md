@@ -17,3 +17,11 @@ kind: documented
 
 ## Used in
 - research/synthesis/field-4.md
+
+## Also (question 6)
+Re-read on 2026-10-14 for stop conditions and unattended runs.
+- Stop conditions should be explicit; deterministic ones (a test count, a score threshold) work best. The post says that without a defined end Claude has to decide for itself when a result is good enough, and it warns to be specific enough that Claude finishes sooner, "but not too soon".
+- Verification: the more quantitative the checks, the easier self-verification is; a second agent with fresh context should review code and is "less biased" than the author agent. The post says Claude's belief that work is correct is not proof.
+- For unattended or scheduled routines it advises piloting on a small slice, watching the first runs to find where a loop stalls or over-reaches, setting explicit turn caps, and noting that large multi-agent runs "can spawn hundreds of agents".
+- Limits for question 6: the post has no failure section and no measurements; runaway loops and drift are not named as such.
+- Used in (question 6): research/synthesis/field-6.md

@@ -18,3 +18,17 @@ kind: reported
 
 ## Used in
 - research/synthesis/field-2.md
+
+## Also (question 5)
+Read for the multi-agent argument (the page's date is printed 06.12.25).
+- Two principles: share context, meaning full agent traces and not only individual messages; and actions carry implicit decisions. In the author's words: "Actions carry implicit decisions, and conflicting decisions carry bad results."
+- Worked example: a task to build a Flappy Bird clone is split into a background subtask and a bird subtask. One subagent builds a Super Mario Bros.-style background and the other builds a bird that does not look or move like a Flappy Bird asset, and the final agent must reconcile them. Passing only the original task to each does not fix it, because in a multi-turn system the tool calls and earlier decisions shape the meaning of the task; even with shared context the two can differ in style because assumptions were not set first.
+- Recommended baseline: a single-threaded linear agent, which keeps context continuous but may overflow the window on very large tasks.
+- On Claude Code subagents as of June 2025: the author says they do not work in parallel with the main agent and are usually limited to answering a well-defined question, not writing code, because they lack the main agent's context; their gain is keeping investigative work out of the main history so traces can run longer.
+- The page contains no measurement, benchmark or quantitative evaluation.
+
+### Limits (question 5)
+- Opinion from a vendor that sells a coding agent, with no data. The description of Claude Code subagents is stale: the October 2026 docs describe background subagents that run concurrently, up to 20 by default (code-docs-sub-agents-many-agents), and the author's own April 2026 follow-up softens the position (cognition-multi-agents-working).
+
+### Used in (question 5)
+- research/synthesis/field-5.md

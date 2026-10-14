@@ -22,3 +22,11 @@ kind: documented
 
 ## Used in
 - research/synthesis/field-4.md
+
+## Also (question 6)
+Re-read on 2026-10-14 for unattended use. As of October 2026.
+- Section "Seven-day expiry": recurring session tasks expire 7 days after creation (they fire one last time, then delete themselves); the page says this bounds how long a forgotten loop can run. A session holds at most 50 scheduled tasks.
+- Section "Limitations": tasks fire only while Claude Code is running and idle; there is no catch-up for missed fires (a task missed while Claude is busy fires once when it becomes idle); a self-paced `/loop` is not restored on resume; background Bash and monitor tasks are never restored.
+- The scheduler checks every second and enqueues due prompts at low priority; a scheduled prompt fires between turns, not mid-response.
+- For cron-driven work that must run unattended the page points to cloud routines, a GitHub Actions `schedule` trigger, or desktop scheduled tasks (see code-docs-routines-unattended and code-docs-github-actions-unattended).
+- Used in (question 6): research/synthesis/field-6.md

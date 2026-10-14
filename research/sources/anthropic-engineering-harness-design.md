@@ -19,3 +19,12 @@ kind: reported
 
 ## Used in
 - research/synthesis/field-2.md
+
+## Also (question 5)
+Read for the generator and evaluator roles.
+- The harness splits work between a generator (builds the output) and an evaluator (grades it and returns critiques), a structure the post calls GAN-inspired, with a planner that expands a one-to-four sentence prompt into a product spec.
+- Why separate them: agents asked to judge their own work tend to praise it, most clearly on subjective tasks such as design. The evaluator is still an LLM that leans generous toward LLM output, but the post says tuning a standalone evaluator to be skeptical is far more tractable than making a generator critical of its own work.
+- The evaluator drives the live app with the Playwright MCP server, grading against criteria with hard thresholds (full-stack criteria were product depth, functionality, visual design and code quality; falling below any one failed the sprint). Before each sprint the generator and evaluator agreed a contract through files; sprint 3 alone had 27 criteria.
+- Evaluator failures: it found real issues and then talked itself into approving; it tested obvious paths and missed subtler bugs; even after tuning it missed small layout problems and bugs in deeply nested features. The author read its logs and tuned the prompt over several rounds.
+- Cost (Opus 4.5, retro game maker): solo 20 minutes and 9 dollars against the full harness 6 hours and 200 dollars; the solo run's core game feature did not work and the harness's did. On Opus 4.6 the sprint construct was dropped and the post says the evaluator earns its cost only when the task sits beyond what the current model does reliably alone; for tasks inside the model's solo reach it became overhead.
+- Limits: single runs by one author, no count of runs per configuration, model-specific (Opus 4.5 and 4.6, as of March 2026). Used in: research/synthesis/field-5.md

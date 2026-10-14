@@ -29,3 +29,9 @@ kind: documented
 - Progressive disclosure: agents discover context step by step, using file names, sizes and timestamps as signals, and hold in working memory only what is needed. The post gives no token threshold for what to pre-load.
 - Structured note-taking and the memory tool: notes kept outside the window (a to-do list, a NOTES.md file) are pulled back in later; the post says a file-based memory tool entered public beta alongside Claude Sonnet 4.5.
 - System prompt "right altitude": the post warns against both hard-coded brittle logic and vague guidance and says to start minimal and add instructions against observed failure.
+
+## Also (question 5)
+- Sub-agent architectures (the post's section on them): a main agent keeps a high-level plan while specialized sub-agents work on focused tasks in their own fresh context windows. A sub-agent may use tens of thousands of tokens or more exploring, and returns a condensed summary the post says is often 1,000 to 2,000 tokens, which the lead synthesizes. The post calls this a clear separation of concerns: detailed search context stays in the sub-agents.
+- It cites Anthropic's multi-agent research system post as evidence, saying the pattern "showed a substantial improvement over single-agent systems on complex research tasks" (anthropic-engineering-multi-agent-research).
+- Choosing: multi-agent architectures for complex research and analysis where parallel exploration pays off; compaction for long back-and-forth; note-taking for iterative work with milestones.
+- Limits: advice with no measurement of its own; the 1,000 to 2,000 token figure is described as typical ("often"), not a guarantee. Used in: research/synthesis/field-5.md

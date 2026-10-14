@@ -19,3 +19,11 @@ kind: documented
 
 ## Used in
 - research/synthesis/field-4.md
+
+## Also (question 6)
+Re-read on 2026-10-14 for unattended use. As of October 2026.
+- A repo claim that the Bash tool "caps a command at 600 s by default" does not match the page: the default is 120 seconds (`BASH_DEFAULT_TIMEOUT_MS`), the ceiling Claude can request is 600 seconds (`BASH_MAX_TIMEOUT_MS`), and a foreground command that reaches its timeout is moved to the background rather than killed (except a command starting with `sleep`, and except in bare mode or with `CLAUDE_CODE_DISABLE_BACKGROUND_TASKS=1`, where it stops).
+- Unattended sessions (`-p`, Agent SDK, CI, cloud): a background command gets 30 minutes (10 minutes in a `-p` run whose prompt is passed as text), up to a 2-hour maximum, from v2.1.285; the page says the limit applied in every session before v2.1.288. When it expires Claude Code stops the command and tells Claude, which can restart it with a longer `timeout`.
+- Memory: on Linux and WSL, `CLAUDE_CODE_TOOL_MEMORY_LIMIT` (for example `4G`, v2.1.233 or later) caps the memory of Bash, PowerShell and Monitor commands "so one runaway build can't take the memory the rest of the session needs".
+- A command whose output passes 5 GB is killed.
+- Used in (question 6): research/synthesis/field-6.md

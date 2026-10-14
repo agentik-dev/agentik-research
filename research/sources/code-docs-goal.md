@@ -20,3 +20,11 @@ kind: documented
 
 ## Used in
 - research/synthesis/field-4.md
+
+## Also (question 6)
+Re-read on 2026-10-14 for unattended use. As of October 2026.
+- `/goal` works in non-interactive mode: `claude -p "/goal <condition>"` runs the loop to completion in one invocation, and Ctrl+C stops it. With default text output the final response prints only when the loop ends, "so a goal that runs many turns can look stuck"; the page advises `--output-format stream-json --verbose` to see each message.
+- The evaluator "does not call tools": it judges only what Claude has already surfaced in the conversation, so a goal condition has to be something Claude's own output can demonstrate (a test result in the transcript).
+- Stall handling inside a goal: if Claude keeps answering the evaluator with no tool use for several turns in a row, Claude Code stops the loop, prints a warning and returns control with the goal still set. Four kinds of failure clear the goal (authentication failure when Claude Code manages its credentials, exhausted credit balance, context overflow auto-compaction could not clear, unavailable model); other errors leave it set, with automatic retries (three, then pause) in interactive sessions.
+- In a non-interactive session the background-work check-in (first at 30 minutes, then 1 hour, then every 2 hours by default) is delivered only at the end of a turn that finishes with work still running; idle check-ins need an interactive session.
+- Used in (question 6): research/synthesis/field-6.md

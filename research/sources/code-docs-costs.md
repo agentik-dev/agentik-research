@@ -29,3 +29,9 @@ Re-read in full for question 4 on 2026-10-14. All as of October 2026 unless a ve
 - Rate-limit recommendations for API organisations, tokens per minute per user: 1 to 5 users 200k to 300k; 5 to 20 users 100k to 150k; 20 to 50 users 50k to 75k; 50 to 100 users 25k to 35k; 100 to 500 users 15k to 20k; 500+ users 10k to 15k. The limits apply at organisation level.
 - The `/usage` dollar figure is computed locally from token counts at list price; for a response billed at the 1.1x data-residency rate Claude Code multiplies it by 1.1, and the multiplied figure counts toward `--max-budget-usd`. Since v2.1.211 the totals reset on `/clear`.
 - Used in (question 4): research/synthesis/field-4.md
+
+## Also (question 5)
+- Section "Agent team token costs": usage scales with the number of active teammates and how long each runs; the page advises Sonnet for teammates, small teams, focused spawn prompts, and shutting teammates down when done, because each active teammate keeps consuming tokens. Token use is roughly proportional to team size.
+- Section "Delegate verbose operations to subagents": the verbose output stays in the subagent's context and only a summary returns, but the subagent's own requests still draw on usage; a smaller model for simple subagents cuts the cost.
+- Section "Why usage climbs in a long session": every subagent, and every agent a dynamic workflow spawns, sends its own requests on top of the main conversation's, and `/usage` attributes a share to subagents. The cache hit line in `/usage` covers the main conversation only, not subagents.
+- Limits: the 7 times figure has no method on the page (the existing note says so). Used in: research/synthesis/field-5.md

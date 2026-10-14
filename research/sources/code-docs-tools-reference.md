@@ -17,3 +17,8 @@ kind: documented
 
 ## Used in
 - research/synthesis/field-3.md
+
+## Also (question 5)
+- Section "Agent tool behavior": the Agent tool spawns a subagent in a separate context window; the parent does not see its intermediate tool calls or outputs, only the final result. `maxTurns` in the subagent definition caps its turns, and at the limit the result is marked partial and Claude can resume the subagent. Launching a subagent does not itself prompt for permission (the tools table lists `Agent` as needing no permission); its own tool calls are checked against the permission rules as it runs. Foreground subagents show prompts where the user is; background subagents surface them in the main session.
+- Tools table, `Workflow`: runs a dynamic workflow, a script that orchestrates many subagents in the background and returns one consolidated result; permission required: yes.
+- Limits: documentation, as of October 2026. Used in: research/synthesis/field-5.md

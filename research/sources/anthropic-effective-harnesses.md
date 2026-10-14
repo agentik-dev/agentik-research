@@ -33,3 +33,11 @@ Re-read on 2026-10-14 for pacing and budgets.
 - Sessions end with a descriptive git commit and a progress update, and start with the git log, the progress notes and a basic end-to-end check; the authors say the init script saves tokens in each session.
 - The post specifies no turn limits, token budgets, stop conditions, session counts, hours or costs, so it supports "one bounded unit of work per session" as a practice and gives no budget numbers.
 - Used in (question 4): research/synthesis/field-4.md
+
+## Also (question 6)
+Re-read on 2026-10-14 for stop and resume in long unattended runs.
+- The post names no explicit end condition for the whole run. A session ends when its context window runs out or the agent finishes a feature, commits and updates the progress file. Completion is tracked in the feature list, where every item starts failing and coding agents change only the `passes` field.
+- Guardrail by wording: "It is unacceptable to remove or edit tests because this could lead to missing or buggy functionality." The post chose JSON for the feature list because the model was less likely to overwrite it than Markdown.
+- Failure modes its table lists: declaring the whole project done too early, leaving undocumented or buggy state, marking a feature done before careful testing, and setup overhead; the fixes are a feature list, one feature at a time, a git repo with progress notes, a startup end-to-end test, and an `init.sh`.
+- Not covered by the post: timeouts, cost budgets, loop limits, maximum run duration, and detection of a stalled session.
+- Used in (question 6): research/synthesis/field-6.md

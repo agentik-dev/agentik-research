@@ -20,3 +20,11 @@ kind: documented
 
 ## Used in
 - research/synthesis/field-3.md
+
+## Also (question 5)
+Read for the Stop, SubagentStop and common input sections (the later part of the page, characters 180,500 onward, plus a download of the page's markdown to check exact wording).
+- Section "Stop": runs when the main Claude Code agent has finished responding. It does not run if the stoppage was a user interrupt; API errors fire `StopFailure` instead. Input adds `stop_hook_active` (true when Claude Code is already continuing because of a stop hook), `last_assistant_message`, `background_tasks` and `session_crons`. After eight consecutive continuations from stop hooks Claude Code overrides the next block and ends the turn (`CLAUDE_CODE_STOP_HOOK_BLOCK_CAP` changes the cap).
+- Section "SubagentStop": runs when a Claude Code subagent has finished responding. Input adds `stop_hook_active`, `agent_id`, `agent_type`, `agent_transcript_path` and `last_assistant_message`. It also fires for Claude Code's own internal agents (prompt suggestions, `/btw` side questions), with `agent_type` set to the session's agent name or an empty string.
+- Section "Common input fields": `agent_id` identifies the subagent or in-process teammate the hook fires in; `agent_type` is present when the session uses `--agent` or the hook fires inside a subagent. Hooks from settings, plugins and managed policy run inside subagents too, and tool events such as `PreToolUse` and `PostToolUse` carry `agent_id` and `agent_type` there. The page does not state outright that `agent_id` is absent on the main thread.
+- A `Stop` hook written in a subagent's front matter is converted to `SubagentStop`.
+- Limits: documentation, as of October 2026. Used in: research/synthesis/field-5.md
