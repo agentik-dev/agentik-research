@@ -1,0 +1,31 @@
+# respeak project configuration for agentik-research (seeded 2026-10-13).
+#
+# One layer of respeak's stack: it overrides the plugin defaults and the user
+# file, and is overridden by .claude/respeak/config.local.yaml (gitignored) and
+# by the scopes below. The include file .claude/respeak/include.md is rendered
+# from this file plus respeak's defaults; re-render it after an edit with
+#   .sources/agentik-respeak/plugin/scripts/py respeak-include.py write
+version: 3
+
+# The reader of this site is an engineer who runs Claude Code and has not seen
+# these tools: the peer-engineer profile, technical mode, depth 3 of 5.
+narrative:
+  profile: peer-engineer
+  default_mode: technical
+  tech_level: 3
+
+# The style gate. In a session with the respeak plugin it blocks a Write that
+# adds a banned phrase; without the plugin, `make style` runs the same verdict.
+gate:
+  enabled: true
+  include: ["docs/**/*.md", "README.md"]
+  exclude: []
+  fail_on: error
+  block_on: introduced
+  allow: []
+
+# The landing page and the summary are read by people deciding whether to read
+# on: bottom line up front.
+scopes:
+  - paths: ["docs/index.md", "docs/summary.md"]
+    narrative: { profile: exec, default_mode: bluf }
