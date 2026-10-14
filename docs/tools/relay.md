@@ -4,14 +4,14 @@ agentik-relay runs a night of queued packets while nobody watches. Each queue ro
 
 ## The problem
 
-You queue work, start a night and walk away. Whatever goes wrong next has no person to catch it. A child can start more children, a crash can leave a lock held, a test can fail only under load, a child can stall without knowing it, a child can reach past its branch, and every row costs money. The night has to decide alone whether to stop or move on.
+You queue work, start a night and walk away. Whatever goes wrong next has no person to catch it. A child can start more children, a crash can leave a lock held, a test can fail only under load, a child can stall, an agent can run out of turns before it reports, a child can reach past its branch, and every row costs money. The night has to decide alone whether to stop or move on.
 
 The relay's reviews record the cycles by which a night could fork past its means, and its ledger records what writing packets inside a night cost.[^reviews][^decisions] The repo's record, failure by failure:
 
-- **Runaway recursion.** On 2026-09-23 a night was bounded against a fork storm. A design review counted nine cycles by which the relay could re-invoke itself. Eight were bounded; one was not: a child running `agentik relay run` would spawn grandchildren under its own worktree with the same environment. An adversarial review reproduced it, and a killed relay left two spawned processes alive. The response was a TLA+ model of the night. It keeps fork storms as violations the checker must find, four of them at the commit read.[^reviews][^packetsdir][^tla]
-- **Lock contention.** The stage lock never checked its holder's pid, so a crashed relay left its row refused until a person removed the lock. The live-process probe had no timeout and took minutes under load. A shell shim held a rehash lock for 60 seconds. The one-relay-per-account guard went from a pid file to a loopback TCP port. Reviews found a child could get past the earlier forms by changing its environment, detaching, or unlinking the pid file.[^reviews][^designr1]
+- **Runaway recursion.** On 2026-09-23 a night was bounded against a fork storm. A design review counted nine cycles by which the relay could re-invoke itself. Eight were bounded; one was not: a child running `agentik relay run` would spawn grandchildren under its own worktree with the same environment. An adversarial review reproduced it, and a killed relay left two spawned processes alive.[^reviews][^packetsdir] The design review's fix for that cycle was a refusal in the binary and a guard in the child's hook. Packet AR10, cut after the storm, made a plan started inside a measured line measure nothing. Packet AR11 built the review's fix: `agentik relay run` exits 2 under a measurement or a sitting, and the child's hook denies it in a row. AR11 also built a TLA+ model of the night, one of the review's five recommendations to the owner.[^head] The model keeps fork storms as violations the checker must find, four of them at the commit read.[^tla]
+- **Lock contention.** The stage lock never checked its holder's pid, so a crashed relay left its row refused until a person removed the lock. The live-process probe had no timeout and took minutes under load. Inside the verify line, the doc and hygiene scripts ran through a pyenv shim. The design review cites an earlier defect brief, item D5, that saw 60 seconds per shell on the rehash lock; that brief is not in the repo.[^reviews][^head] The one-relay-per-account guard went from a pid file to a loopback TCP port. Reviews found a child could get past the earlier forms by changing its environment, detaching, or unlinking the pid file.[^reviews][^designr1]
 - **Flaky tests under load.** A test of the orphan probe failed 20 of 20 runs with its timeout cut to 3 milliseconds. The test's clock raced a fake process's start-up. The full check went red under a load of 20 on 16 cores when a hand gate started four minutes in. One package alone took 316 seconds, over half of Go's default test timeout. The load signal itself misled on a Mac with efficiency cores. A plan baseline read a load of 40.23 with 59 to 73 percent idle, and marked 8 of 9 checks unrun as loaded. The breaker proper never opened in 166 plans across five ledgers.[^sittings][^nth][^breaker]
-- **A child that cannot tell it has stalled.** The design watches from outside, because the child cannot. This site's survey found no real stall recorded in the repo, so the stall rule has no tuning data. Agents also cannot count their own turns. On 2026-10-11 the adversary agent ended at its cap with no report, three times. A prompt line asking for a report by turn 70 did not help.[^designr1][^nth]
+- **Stalls, and agents out of turns.** The design watches the child from outside, with a watchdog on its worktree and process group (see The watchdog, below). This site's survey found no real stall recorded in the repo, so the stall rule has no tuning data. Agents also cannot count their own turns. On 2026-10-11 the adversary agent ended at its cap with no report, three times. A prompt line asking for a report by turn 70 did not help.[^designr1][^nth]
 - **Cost.** One run of 183 sittings cost 653 dollars, of which 58 packet-writer sittings cost 261. Builders ran the verify line about 2.7 times a row, which took 46 percent of a night's time. A row whose gate read unrun after a bytecode file moved cost 6.79 dollars, with five acts unjudged. Two nights lost stacks of 9 and 7 dependent rows when a parent row hit its soft context ceiling one act short.[^decisions][^packetsdir][^nth][^pycache]
 - **What a child can reach.** Reviewers reproduced a child moving `main` with `update-ref` and hiding touched paths behind a tag. They also reproduced a child passing a helper `claude` line that disabled hooks or set an unbounded turn count. These are reproductions on the relay's own code, not misbehaviour seen in a night.[^reviews][^designr1]
 
@@ -43,7 +43,7 @@ Part 1 backs the relay's two outside checks, the watchdog and the gate. It also 
 
 ## The approach
 
-The README states the aim: a night that fails early, never pushes, amends or rebases, and leaves a door back into every stopped sitting.[^readme] Commands on this page use the suite's planned form, `agentik relay <verb>`; at commit a326550 the Makefile still builds the binary under the bare tool name.[^makefile][^commonsrecord]
+The README states the aim: a night that fails early, never pushes, amends or rebases, and leaves a door back into every stopped sitting.[^readme] Commands on this page use `agentik relay <verb>`, the form the README uses throughout at commit 405d1e0, where the Makefile builds `bin/agentik-relay`.[^head]
 
 ### A night, row by row
 
@@ -96,11 +96,11 @@ The repo records eight choices against a named alternative, each with its reason
 
 <div class="ak-verdict" markdown>
 
-<span class="ev ev-our-use">our use</span> One owner's nights on one Mac, from 2026-09-22 to 2026-10-13: 132 sitting charters and 87 packets. Treat it as a record of use, not a test; nothing on this page compares the relay with another way to run a night.
+<span class="ev ev-our-use">our use</span> One owner's nights on one Mac, from 2026-09-22 to 2026-10-13: 133 sitting charters and 88 packets. Treat it as a record of use, not a test; nothing on this page compares the relay with another way to run a night.
 
 </div>
 
-The repo's record is the longest in the suite. At commit a326550 it holds the 132 sitting charters and 87 packets, and a count of the test files finds 706 test functions, against the README's 699.[^sittings][^packetsdir][^readme][^nth] Beside the tests, the record holds adversarial reviews that reproduce attacks on the relay's own code, and a TLA+ model of the night.[^reviews][^tla]
+The relay holds more sitting charters than any other agentik repo. At each repo's head on 2026-10-14, the relay has 133, agentik-session 61, agentik-decisions 53, agentik-respeak 41, agentik-agents 2 and agentik-commons 1.[^charters] At commit 405d1e0 the relay also holds 88 packets, and a count of the test files finds 723 test functions, against the README's 699.[^head] Beside the tests, the record holds adversarial reviews that reproduce attacks on the relay's own code, and a TLA+ model of the night.[^reviews][^tla]
 
 What it does not measure:
 
@@ -114,10 +114,11 @@ The failures the record holds are listed under the problem, above. The journal t
 
 - The relay has no sandbox. The design says a line can do anything the owner's account can until it runs in one, and the hooks stay advisory.[^designr1]
 - The zsh test table for the guard parser is owed and recorded as an open risk.[^decisions]
-- The 120 percent kill waits on recorded nights to tune it.[^designr1] The 25 percent idle floor is a judgment until a load sweep confirms it, and the breaker page disagrees with itself on whether that sweep has run.[^breaker]
+- The 120 percent kill waits on recorded nights to tune it.[^designr1] The idle floor that shipped is 25 percent. The design's load sweep ran on 2026-10-01 and points to 50 percent, a number the design calls coarse. The change is one constant, and it waits for the owner's word.[^head]
 - Usage-limit handling rests on stream fields the repo calls unpublished, and all 46 model-limit messages it measured named no reset.[^usagelimit]
 - This site's survey found no real stall recorded, so the 2,700-second default has no tuning data.[^designr1]
 - The README and the Makefile say the check wall is 840 seconds; the design record says 900.[^readme][^designr1]
+- Fixed since this site's first read: at commit a326550 the Makefile built the binary under the bare tool name.[^makefile] On 2026-10-13, commit `72c0fe0` moved the build to `bin/agentik-relay`; at commit 405d1e0 the README writes every command as `agentik relay <verb>`, and the install keeps the old name as a link until 2026-12-31.[^head] This is a rename, not evidence that the tool works.
 - The child runs under `caffeinate`, a macOS command, and the load floor was tuned on a Mac with efficiency cores. The load and idle readers also have Linux paths, untested in the record.[^designr1][^breaker]
 
 ## From the journal
@@ -142,7 +143,8 @@ The failures the record holds are listed under the problem, above. The journal t
 [^queue]: agentik-dev/agentik-relay, "relay/queue.yaml", commit a326550, <https://github.com/agentik-dev/agentik-relay/blob/a326550/relay/queue.yaml>.
 [^usagelimit]: agentik-dev/agentik-relay, "design/usage-limit-resume-r1.md", commit a326550, <https://github.com/agentik-dev/agentik-relay/blob/a326550/design/usage-limit-resume-r1.md>.
 [^makefile]: agentik-dev/agentik-relay, "Makefile", commit a326550, <https://github.com/agentik-dev/agentik-relay/blob/a326550/Makefile>.
-[^commonsrecord]: agentik-dev/agentik-commons, "design/agentik-r1.md", the suite record, commit e456f4b, <https://github.com/agentik-dev/agentik-commons/blob/e456f4b/design/agentik-r1.md>.
+[^head]: agentik-dev/agentik-relay, "design/review-r6.md", "design/packets/ar11-tla-night.md", "design/breaker-signal-r1.md", "Makefile", "README.md", "history/sittings/" and "design/packets/", commit 405d1e0, <https://github.com/agentik-dev/agentik-relay/tree/405d1e0>.
+[^charters]: agentik-dev, "history/sittings/" in agentik-relay (405d1e0), agentik-session (e8477a7), agentik-decisions (569a120), agentik-respeak (c83e9b8), agentik-agents (f986500) and agentik-commons (588530f), counted 2026-10-14, <https://github.com/agentik-dev>.
 [^changelog]: Anthropic, "Claude Code changelog", documentation page read 2026-10-14, entries to 9 October 2026, <https://code.claude.com/docs/en/changelog>.
 [^envvars]: Anthropic, "Environment variables", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/env-vars>.
 [^bash]: Anthropic, "Tools reference", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/tools-reference>.
