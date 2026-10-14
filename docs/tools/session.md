@@ -113,7 +113,7 @@ The tool has failed quietly, and its premise is untested.
 
 - [Restart, don't compact](../journal/posts/2026-10-05-restart-dont-compact.md): a charter under 4 KB and a fresh session, instead of a summary.
 - [A wake that cost a turn](../journal/posts/2026-10-10-a-wake-that-cost-a-turn.md): in one count, 581 of 614 self-paced wakeups took a turn of their own, and four pacing rules followed.
-- [Living inside a usage window](../journal/posts/2026-10-14-living-inside-a-usage-window.md): pacing helpers to a five-hour window, and pausing a night at the limit.
+- [Living inside a usage window](../journal/posts/2026-10-14-living-inside-a-usage-window.md): a band that advises how many helpers fit a five-hour window, and a pause that waits out the limit.
 - [The ledger that ran away](../journal/posts/2026-10-10-the-ledger-that-ran-away.md): a decision ledger grew past 400 entries, and a cap, a sign-off bar and four priority levels followed.
 
 ## Sources

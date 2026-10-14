@@ -32,3 +32,4 @@ kind: our-use
 
 ## Used in
 - research/synthesis/journal-usage-window.md
+- docs/journal/posts/2026-10-14-living-inside-a-usage-window.md

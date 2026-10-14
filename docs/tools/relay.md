@@ -124,7 +124,7 @@ The failures the record holds are listed under the problem, above. The journal t
 ## From the journal
 
 - [The probe that stopped a night](../journal/posts/2026-09-30-the-probe-that-stopped-a-night.md): a review agent's hand-built binary stopped a running night.
-- [Living inside a usage window](../journal/posts/2026-10-14-living-inside-a-usage-window.md): pacing helpers to a five-hour window, and pausing a night at the limit.
+- [Living inside a usage window](../journal/posts/2026-10-14-living-inside-a-usage-window.md): a band that advises how many helpers fit a five-hour window, and a pause that waits out the limit.
 
 ## Sources
 

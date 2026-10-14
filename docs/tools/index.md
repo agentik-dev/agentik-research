@@ -100,7 +100,7 @@ What stays open:
 - [Restart, don't compact](../journal/posts/2026-10-05-restart-dont-compact.md): instead of compacting a full context, a sitting writes a charter under 4 KB and a fresh session starts from it. It carried one night across three restarts. No source we found compares it with compaction.
 - [A wake that cost a turn](../journal/posts/2026-10-10-a-wake-that-cost-a-turn.md): 581 of 614 self-paced wakeups in one count took a turn of their own. Four pacing rules followed. The count has not been re-run.
 - [The ledger that ran away](../journal/posts/2026-10-10-the-ledger-that-ran-away.md): a decision ledger grew past 400 entries, and nothing in it said which of them mattered. A cap, a sign-off bar and four priority levels followed. The old 401 entries still bind.
-- [Living inside a usage window](../journal/posts/2026-10-14-living-inside-a-usage-window.md): a subscription meters use in five-hour windows under a weekly limit. We built two answers, a band that paces helpers and a pause that waits for the reset. Neither has run long enough to say if it works.
+- [Living inside a usage window](../journal/posts/2026-10-14-living-inside-a-usage-window.md): a subscription meters use in five-hour windows under a weekly limit. We built two answers, a band that projects the window and advises how many helpers fit, and a pause that waits for the reset. Neither has run long enough to say if it works.
 
 ## Sources
 

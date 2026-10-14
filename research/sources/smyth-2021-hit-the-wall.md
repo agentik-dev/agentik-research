@@ -14,6 +14,7 @@ The open-access full text was opened; WebFetch read the first 100,000 of about 1
 - Definition from pacing alone: a runner "hit the wall" if, after the 20 km mark, pace slowed by at least 25% against the runner's own base pace (the 5 to 20 km average) for at least 5 km. At those thresholds 34% of runners in the original dataset hit the wall.
 - Cost: measured against the runner's recent personal best (the fastest finish within three years), hitting the wall cost a mean of 31.50 minutes for men and 33.20 minutes for women. The paper's example is a 275-minute finish against a 235-minute personal best, a cost of 40 minutes or 17%.
 - Who: 28% of men and 17% of women hit the wall (odds ratio 1.43). The share was 36% in the three years before and after a recent personal best against 23% in other years (40% of men and 28% of women in the one to three years before one).
+- Which data each figure uses (a second read on 2026-10-14, by WebFetch of the same page): the "Sensitivity analysis" gives the 34% for "the original dataset"; the "Research questions" section says "Using the repeaters dataset, we compare runners based on their sex, age range, and ability level", so the 28% and 17% split (its test reports N = 1,928,813) and the 31.50 and 33.20 minute costs by sex are comparisons in the repeaters data.
 - Shape of a collapse: the mean slowdown began near 29.6 km for men and 29.3 km for women, lasted 10.72 km and 9.61 km, and cut pace by a relative 0.40 and 0.37.
 
 ## Limits
@@ -22,3 +23,4 @@ The open-access full text was opened; WebFetch read the first 100,000 of about 1
 
 ## Used in
 - research/synthesis/journal-usage-window.md
+- docs/journal/posts/2026-10-14-living-inside-a-usage-window.md
