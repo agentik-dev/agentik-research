@@ -4,29 +4,29 @@ Long Claude Code work fails from context length, compaction that loses specifics
 
 ## Part 1: the field, in ten lines
 
-1. **Length.** Accuracy falls as the context grows, even with perfect retrieval. Instruction-following falls as the instruction count grows. Most of a coding agent's context is tool output you can drop at little cost.[^du][^ifscale][^masking]
-2. **Compaction or restart.** Compaction keeps re-injected files and a summary, summarises early instructions, and loses exact values and the artifact trail. No study compares it with a restart from a handoff. Anthropic's harness work carried state in files and git.[^factory][^ctxwindow][^harnesses]
-3. **Memory.** A context file costs about 20 percent more and did not raise success. File length did not change compliance with one rule. Hooks hold where prose does not.[^gloaguen][^mcmillan][^hooks]
+1. **Length.** Accuracy can fall as the context grows, even with perfect retrieval. Instruction-following falls as the instruction count grows. Most of a coding agent's context is tool output you can drop at little cost.[^du][^ifscale][^masking]
+2. **Compaction or restart.** Compaction keeps re-injected files and a summary, summarises early instructions, and scores lowest on the artifact trail; one run lost every obscure value. No study compares it with a restart from a handoff. Anthropic's harness work carried state in files and git.[^factory][^ctxwindow][^harnesses]
+3. **Memory.** A context file costs about 20 percent more and did not raise success. File length did not change compliance with one rule. A hook can block where a CLAUDE.md line can only advise.[^gloaguen][^mcmillan][^hooks]
 4. **Budgets.** Cost scales with turns times context while the cache is warm; the chapter states this as a conjecture. By default, the one-hour cache applies only on a subscription within plan usage. The money cap can overshoot by a response.[^caching][^agentloop]
-5. **Many agents.** Fan-out changes performance by up to +80.8 percent on decomposable work and by -39 to -70 on sequential work, at matched token budgets.[^kim] Vendor guidance expects 3 to 10 times the tokens.[^multiagentblog]
-6. **Unattended runs.** An unanswered permission prompt is denied, the model is told, and the run continues. Only the result lists the denials. Agents never notice their first error in 38.5 percent of cases. No main-session watchdog is documented.[^headless][^hiddenfailures]
-7. **Guardrails.** Deny rules match command text and miss alternate spellings. Hooks fail open on a timeout unless told to block. The sandbox covers shell commands only, not file tools or hooks. On vendor data, the auto-mode classifier misses 17 percent of overeager actions.[^permissions][^sandbox][^automode]
-8. **Review.** Self-correction without an outside signal makes answers worse. The gain per round falls fast;[^huang][^wang] four public loops did not end on their own.[^fullsend][^aiwatch][^agentinfra][^meridian] Architecture decision record (ADR) practice supersedes records and sets no cap.[^nygard]
+5. **Many agents.** Fan-out changes performance by up to +80.8 percent on decomposable work and by -39 to -70 percent on one sequential-planning benchmark, at matched token budgets.[^kim] Vendor guidance expects 3 to 10 times the tokens.[^multiagentblog]
+6. **Unattended runs.** An unanswered permission prompt is denied, the model is told, and the run continues. The denials appear in stream messages and in the result, not as an error. Agents never notice their first error in 38.5 percent of cases. No main-session watchdog is documented.[^headless][^hiddenfailures]
+7. **Guardrails.** Deny rules match command text and miss alternate spellings. A PreToolUse hook fails open on a timeout unless told to block.[^hooks] The sandbox covers shell commands only, not file tools or hooks. On vendor data, the auto-mode classifier misses 17 percent of overeager actions.[^permissions][^sandbox][^automode]
+8. **Review.** Self-correction without an outside signal can make answers worse. The gain per round falls fast;[^huang][^wang] three public loops did not end on their own, and a fourth spent extra rounds on nits.[^fullsend][^aiwatch][^agentinfra][^meridian] Architecture decision record (ADR) practice supersedes records and sets no cap.[^nygard]
 9. **Telling people.** Put the outcome first and keep errors whole.[^army][^outputstyles] Readability formulas are weak gates.[^zheng] One benchmark found that 75.8 percent of failed runs with an explicit status claim claimed success.[^advani]
 10. **Cost lanes.** A key replaces the login and its limits, and turns off Remote Control. Routers route on difficulty, and several lose to the best single model. Sweep effort first.[^gatewayconnect][^routerbench][^costintel]
 
 ## Part 2: the tools, in six lines
 
-- **agentik-session**: a meter on the transcript, a charter at 80 percent, a restart from the charter, compaction blocked. Its premise has support in direction but no measured strength. Its model-window table is stale or cautious, and three of its vendor numbers are wrong or conditional as of October 2026.[^sessionreadme]
+- **agentik-session**: a meter on the transcript, a charter at 80 percent, a restart from the charter, automatic compaction blocked. Its premise has support in direction but no measured strength. Its model-window table is stale or cautious, and three of its vendor numbers are wrong or conditional as of October 2026.[^sessionreadme]
 - **agentik-relay**: nights of packets, one worktree and one child per row, a deterministic gate, thirty stop reasons, two money caps, an outside watchdog. Its record covers one owner's nights. It has no sandbox, and no stall is recorded yet.[^relayreadme][^relaydesign][^relaycode]
 - **agentik-decisions**: one ledger per repository, capped at 25 and 7, rendered into CLAUDE.md, with batched owner questions. The mechanics are documented. The benefit is unmeasured, and the caps have no source.[^decisionsreadme]
 - **agentik-respeak**: two lanes, a gate and a prose-only verifier. The human-lane tooling has field evidence. The machine lane and the readability grades are unmeasured.[^respeakreadme]
-- **agentik-agents**: three billing lanes, a router by model name, a pooled fan-out. Its record covers one machine and one model family, and no window hit is recorded.[^agentsreadme]
+- **agentik-agents**: three billing lanes, a router by model name, a pooled fan-out. Its local-lane record covers one machine and one model family, and no window hit is recorded.[^agentsreadme]
 - **agentik-commons**: the front door and the conventions, after five tools had five naming schemes.[^commonsrecord]
 
 ## Part 3: the practice
 
-Twenty-six practices are grouped by question, each with its evidence and the tool that automates it. Three have measured evidence that settles the direction: start long work from a short brief in a fresh context; fan out only decomposable work; and put sign-off in a check outside the reviewer. A fourth, checking a "done" claim against a tool result, rests on a measured false-success rate. Twelve carry measured evidence in all. The rest follow the documentation or a report, and four are marked conjecture. See [Practices](practices.md).
+Twenty-six practices are grouped by question, each with its evidence and the tool that automates it. Three have measured evidence that settles the direction: start long work from a short brief in a fresh context; fan out only decomposable work; and put sign-off in a check outside the reviewer. A fourth, checking a "done" claim against a tool result, rests on a measured false-success rate. Thirteen carry measured evidence in all. The rest follow the documentation or a report, and five carry a conjecture. See [Practices](practices.md).
 
 ## Method and date
 
