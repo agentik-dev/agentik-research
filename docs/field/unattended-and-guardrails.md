@@ -134,7 +134,7 @@ agentik-agents learned from a red team that `--allowedTools` restricts nothing, 
 [^sessionrunbook]: agentik-dev/agentik-session, "RUNBOOK.md", lines 130 to 131, commit e7f0723, <https://github.com/agentik-dev/agentik-session/blob/e7f0723/RUNBOOK.md>.
 [^sessionplugin]: agentik-dev/agentik-session, "plugin/hooks/run", commit e7f0723, <https://github.com/agentik-dev/agentik-session/blob/e7f0723/plugin/hooks/run>.
 [^sessionreviews]: agentik-dev/agentik-session, "design/review-adv11.md", finding ADV11-5, and "design/mod-r1.md", section 8, commit e7f0723, <https://github.com/agentik-dev/agentik-session/blob/e7f0723/design/mod-r1.md>.
-[^issue52958]: Issue reporter, "Agent `isolation: \"worktree\"` leaks cwd into parent checkout mid-session, destroying untracked files", anthropics/claude-code issue 52958, 24 April 2026, <https://github.com/anthropics/claude-code/issues/52958>.
+[^issue52958]: Issue reporter, "Agent `isolation: "worktree"` leaks cwd into parent checkout mid-session, destroying untracked files", anthropics/claude-code issue 52958, 24 April 2026, <https://github.com/anthropics/claude-code/issues/52958>.
 [^automode]: Anthropic Engineering, "How we built Claude Code auto mode: a safer way to skip permissions", 25 March 2026, <https://www.anthropic.com/engineering/claude-code-auto-mode>.
 [^autonomy]: Anthropic, "Measuring AI agent autonomy in practice", 18 February 2026, <https://www.anthropic.com/research/measuring-agent-autonomy>.
 [^redteam]: Xie et al., "Red-Teaming Coding Agents from a Tool-Invocation Perspective: An Empirical Security Assessment", 6 September 2025, <https://arxiv.org/abs/2509.05755>.

@@ -29,14 +29,25 @@ def fm(text):
                 val = re.sub(r"\s+#.*$", "", val).strip()
             d[k] = val.replace('\\"', '"')
     return d, m.group(2)
+def open_paren(s):
+    # The index of the first "(" that s leaves unclosed, or -1.
+    stack = []
+    for i, c in enumerate(s):
+        if c == "(": stack.append(i)
+        elif c == ")" and stack: stack.pop()
+    return stack[0] if stack else -1
 def shorten(s, n=220):
-    # Cut at the last clause end before n characters; else at a word, never between a number and its unit.
+    # Cut at the last clause end before n characters that leaves no parenthesis open; else at a word, never between
+    # a number and its unit, and before a parenthesis the cut would leave open.
     if len(s) <= n: return s
-    cut = max(s.rfind("; ", 0, n), s.rfind(". ", 0, n))
-    if cut >= 100: return s[:cut]
+    for cut in sorted((m.start() for m in re.finditer(r"[.;] ", s) if m.start() + 2 <= n), reverse=True):
+        if cut < 100: break
+        if open_paren(s[:cut]) < 0: return s[:cut]
     words = s[:n].rsplit(" ", 1)[0].split(" ")
     while words and re.fullmatch(r"[\d.,%$()-]+", words[-1]): words.pop()
-    return " ".join(words).rstrip(",;:") + " …"
+    out = " ".join(words).rstrip(",;:")
+    if open_paren(out) >= 20: out = out[:open_paren(out)].rstrip(" ,;:")
+    return out + " …"
 def display_author(d, key):
     author = clean(d.get("author", "")) or "Unsigned"
     al = author.lower()
@@ -349,7 +360,7 @@ out.append("</div>")
 out.append("")
 out.append("## Sources")
 out.append("")
-out.append("[^notes]: agentik-dev/agentik-research, \"research/sources/\", the source notes, on the main branch once the pull request merges, <https://github.com/agentik-dev/agentik-research/tree/main/research/sources>.")
+out.append("[^notes]: agentik-dev/agentik-research, \"research/sources/\", the source notes in this site's repository, <https://github.com/agentik-dev/agentik-research/tree/main/research/sources>.")
 open("docs/sources.md", "w", encoding="utf-8").write("\n".join(out) + "\n")
 
 os.makedirs("docs/assets/data", exist_ok=True)

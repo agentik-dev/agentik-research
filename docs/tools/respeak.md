@@ -1,6 +1,6 @@
 # agentik-respeak
 
-agentik-respeak is a Claude Code plugin that splits communication into two lanes. Agents may write shorthand to each other, but only for terms a lexicon ratifies. You read a narrative that a translator subagent writes in one of three modes; a style gate checks that narrative, and a verifier checks that an editorial pass kept the structure.[^readme] It is for you if you supervise agents that hand work to each other. The evidence is our use on one owner's repos and sites, and it covers the human lane's tooling, not the problem or the machine lane. Repo facts on this page are the record at commit c83e9b8, the repo's head on 2026-10-14, unless marked otherwise.
+agentik-respeak is a Claude Code plugin that splits communication into two lanes. Agents may write shorthand to each other, but only for terms a lexicon ratifies. You read a translator subagent's narrative in one of three modes; a style gate checks it, and a verifier checks that an editorial pass kept the structure.[^readme] It is for you if you supervise agents that hand work to each other. The evidence is our use on one owner's repos and sites. It covers the human lane's tooling, not the problem or the machine lane.
 
 ## The problem
 
@@ -50,6 +50,7 @@ flowchart TD
   subgraph Machine["Machine lane: agent to agent"]
     A1["Agent session"] -->|"ratified shorthand,<br>else full words"| A2["Agent session"]
   end
+  W["Hook: a Write or Edit<br>of a human-lane file"] -->|"blocks hits<br>the write added"| A1
   Lex[("lexicon:<br>3 seed entries")] -->|"digest imported<br>by CLAUDE.md"| A1
   A1 -.->|"traffic is read,<br>never intercepted"| T["Translator subagent"]
   T -->|"a proposal for<br>an unratified term"| Prop[("proposals")]
@@ -57,7 +58,8 @@ flowchart TD
   T -->|"a narrative in eli5,<br>bluf or technical"| S{"Scanner"}
   S -->|"fail: a report,<br>at most 2 rounds"| T
   S -->|"pass"| P["Person"]
-  W["Hook: a Write or Edit<br>of a human-lane file"] -->|"blocks hits<br>the write added"| A1
+  %% The invisible link ranks the hook below the lane, so its arrow misses the lane's title.
+  A2 ~~~ W
 ```
 
 The diagram follows the README, the architecture document, the gate script and the skill. The skill allows the scan loop at most two rounds, then relays the narrative with the report attached.[^readme][^architecture][^gate][^skill]
@@ -84,6 +86,8 @@ The repo rejects both ends, forced prose and free drift, and builds a proposal p
 <span class="ev ev-our-use">our use</span> One field test (n=1), one field run over about 2,000 files, and the repo's own charters, all on one owner's repos and sites. They test the human lane's tooling, not the problem, the machine lane or a reader.
 
 </div>
+
+Unless marked otherwise, repo facts on this page are the record at commit c83e9b8, the repo's head on 2026-10-14.
 
 The firmest evidence is for the human lane's tooling. A field run over about 2,000 files on 2026-09-21 drove a round of fixes. Three charters record the verifier refusing a model's render of the README.[^changelog][^sittings] The journal entry [Two lanes](../journal/posts/2026-08-31-two-lanes.md) covers the 2026-08-31 field test.
 

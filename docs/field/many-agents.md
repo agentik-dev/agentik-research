@@ -52,7 +52,7 @@ Each side's limits are under [Where the evidence stops](#where-the-evidence-stop
 
 <div class="ak-limits" markdown>
 
-- Measured: Kim and MAST. Anecdote: Cognition and the issues.
+- Kim's study and MAST are measured. Cognition's post and the two issues are anecdote.
 - The case for many agents rests on one task family, and on an internal evaluation beside a benchmark where tokens explained 80 percent of the variance.[^kim][^anthropicresearch]
 - The case against them rests on 50 to 100 instances on the planning benchmark and 20 per coding cell, on a taxonomy with no single-agent control, and on an argument with no data.[^kim][^mast][^cognition]
 - The two isolation leaks are version-dependent and not reproduced.[^issue52958][^issue84685]
@@ -86,7 +86,7 @@ agentik-agents found that three of four delegates that hit a denied tool returne
 [^gitlayout]: Git project, "gitrepository-layout documentation", read 2026-10-14, <https://git-scm.com/docs/gitrepository-layout>.
 [^multiagentblog]: Cara Phillips, Anthropic, "Building multi-agent systems: When and how to use them", 23 January 2026, <https://www.claude.com/blog/building-multi-agent-systems-when-and-how-to-use-them>.
 [^cognition]: Walden Yan, Cognition, "Don't Build Multi-Agents", 12 June 2025, <https://cognition.com/blog/dont-build-multi-agents>.
-[^issue52958]: Issue reporter, "Agent `isolation: \"worktree\"` leaks cwd into parent checkout mid-session, destroying untracked files", anthropics/claude-code issue 52958, 24 April 2026, <https://github.com/anthropics/claude-code/issues/52958>.
+[^issue52958]: Issue reporter, "Agent `isolation: "worktree"` leaks cwd into parent checkout mid-session, destroying untracked files", anthropics/claude-code issue 52958, 24 April 2026, <https://github.com/anthropics/claude-code/issues/52958>.
 [^issue84685]: Issue reporter, "EnterWorktree/isolation state is session-global", anthropics/claude-code issue 84685, 7 August 2026, <https://github.com/anthropics/claude-code/issues/84685>.
 [^relayorch]: agentik-dev/agentik-relay, "design/relay-orchestrator-r1.md", commit a326550, <https://github.com/agentik-dev/agentik-relay/blob/a326550/design/relay-orchestrator-r1.md>.
 [^relaydesign]: agentik-dev/agentik-relay, "design/relay-r1.md", line 201, commit a326550, <https://github.com/agentik-dev/agentik-relay/blob/a326550/design/relay-r1.md>.

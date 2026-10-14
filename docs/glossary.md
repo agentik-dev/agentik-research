@@ -7,7 +7,7 @@ One meaning per term, as the agentik repositories and this site use it. Terms fr
 **Context window.** The tokens a model works with on one request: the system prompt, the conversation so far, tool definitions, tool output, and the output it writes, thinking included. As of October 2026 the current Claude models list 1,000,000 tokens; the 4.5 models and older list 200,000. See [Length and compaction](field/length-and-compaction.md).
 { #context-window }
 
-**Context rot.** The decline in a model's accuracy and recall as the context fills. Anthropic's documentation uses the name, and the studies part 1 cites measure it across models.
+**Context rot.** The decline in a model's accuracy and recall as the context fills. Anthropic's documentation uses the name, and the studies cited in [the field](field/index.md), the site's first part, measure it across models.
 { #context-rot }
 
 **Compaction.** Claude Code's replacement of the conversation with a summary. Automatic compaction runs as the context nears the model's limit; manual compaction is `/compact`, at any time; idle compaction runs after a long pause above a token threshold.

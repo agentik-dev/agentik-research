@@ -117,7 +117,7 @@ The five evidence levels; the [method](method.md#the-evidence-levels) defines ea
 [^sessionreadme]: agentik-dev/agentik-session, "README.md", commit e7f0723, <https://github.com/agentik-dev/agentik-session/blob/e7f0723/README.md>.
 [^worktrees]: Anthropic, "Run parallel sessions with worktrees", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/worktrees>.
 [^issue84685]: Issue reporter, "EnterWorktree/isolation state is session-global", anthropics/claude-code issue 84685, 7 August 2026, <https://github.com/anthropics/claude-code/issues/84685>.
-[^issue52958]: Issue reporter, "Agent `isolation: \"worktree\"` leaks cwd into parent checkout mid-session, destroying untracked files", anthropics/claude-code issue 52958, 24 April 2026, <https://github.com/anthropics/claude-code/issues/52958>.
+[^issue52958]: Issue reporter, "Agent `isolation: "worktree"` leaks cwd into parent checkout mid-session, destroying untracked files", anthropics/claude-code issue 52958, 24 April 2026, <https://github.com/anthropics/claude-code/issues/52958>.
 [^gitlayout]: Git project, "gitrepository-layout documentation", read 2026-10-14, <https://git-scm.com/docs/gitrepository-layout>.
 [^network]: Anthropic, "Enterprise network configuration", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/network-config>.
 [^gsa]: General Services Administration, "Federal Plain Language Guidelines", the plainlanguage.gov repository copy, read 2026-10-14, <https://raw.githubusercontent.com/GSA/plainlanguage.gov/master/_pages/guidelines/index.md>.

@@ -1,3 +1,7 @@
+---
+description: A two-page summary of how long Claude Code work fails, the five agentik tools and their front door, and the practices, each with its evidence.
+---
+
 # Summary
 
 Long Claude Code work fails from context length, compaction that loses specifics, fan-out on work that does not split, review loops with no outside signal, and unattended runs that report unearned success. Measured evidence settles the direction on the first, third and fourth. For false success, one benchmark gives one measured rate.[^advani] The vendor's documentation, dated October 2026, and practitioners' reports cover the rest. The five agentik tools answer each failure with a mechanism, and agentik-commons gives them one front door. Their own record shows where each mechanism is untested. This page gives you the three parts in two pages.
@@ -10,10 +14,10 @@ You hand Claude Code a task that takes hours, or a queue that runs overnight. Th
 
 James Reason pictured an organisation's defences against error as layers, each with holes: "In reality, however, they are more like slices of Swiss cheese, having many holes".[^reason] Harm gets through only when holes in many layers line up. His remedy was more effective defences, and draining the swamps where errors breed. The swamps are the latent conditions built in by design, which can be found and fixed before an adverse event.[^reason] The practices on this site are layers in that sense: a fresh context, a cap, an outside check, a plain report. Each has holes, and the pages say where.
 
-## Part 1: the field, in ten lines
+## Part 1: the field, in ten points
 
 1. **Length.** Accuracy can fall as the context grows, even with perfect retrieval. Instruction-following falls as the instruction count grows. Most of a coding agent's context is tool output you can drop at little cost.[^du][^ifscale][^masking]
-2. **Compaction or restart.** Compaction keeps re-injected files and a summary, and summarises early instructions.[^ctxwindow] On three vendors' compressors, not Claude Code's, the artifact trail scored lowest.[^factory] One cookbook run on the API lost 3 of 3 obscure values.[^cookbook] No study compares compaction with a restart from a handoff. Anthropic's harness work carried state in files and git.[^harnesses]
+2. **Compaction or restart.** Compaction keeps re-injected files and a summary, and summarizes early instructions.[^ctxwindow] On three vendors' compressors, not Claude Code's, the artifact trail scored lowest.[^factory] One cookbook run on the API lost 3 of 3 obscure values.[^cookbook] No study compares compaction with a restart from a handoff. Anthropic's harness work carried state in files and git.[^harnesses]
 3. **Memory.** A context file costs about 20 percent more and did not raise success. File length did not change compliance with one rule. A hook can block where a CLAUDE.md line can only advise.[^gloaguen][^mcmillan][^hooks]
 4. **Budgets.** Cost scales with turns times context while the cache is warm. The chapter states this as a conjecture. By default, the one-hour cache applies only on a subscription within plan usage. The money cap can overshoot by one response, plus what any subagents still running spend before they stop.[^caching][^agentloop]
 5. **Many agents.** Fan-out changes performance by up to +80.8 percent on decomposable work and by -39 to -70 percent on one sequential-planning benchmark, at matched token budgets.[^kim] Vendor guidance expects 3 to 10 times the tokens.[^multiagentblog]
@@ -21,7 +25,7 @@ James Reason pictured an organisation's defences against error as layers, each w
 7. **Guardrails.** Deny rules match command text and miss alternate spellings. A PreToolUse hook fails open on a timeout unless told to block.[^hooks] The sandbox covers shell commands only, not file tools or hooks. On vendor data, the auto-mode classifier misses 17 percent of overeager actions.[^permissions][^sandbox][^automode]
 8. **Review.** Self-correction without an outside signal can make answers worse.[^huang] In one coding study, a model reviewed and revised its own patches. Over five samples, it resolved 34.8, 40.6, 43.0, 43.4 and 44.0 percent of issues.[^wang] Three public loops did not end on their own, and a fourth spent extra rounds on nits.[^fullsend][^aiwatch][^agentinfra][^meridian] Architecture decision record (ADR) practice supersedes records and sets no cap.[^nygard]
 9. **Telling people.** Put the outcome first and keep errors whole.[^army][^outputstyles] Readability formulas are weak gates.[^zheng] In one benchmark, 75.8 percent of failed runs with an explicit status claim claimed success.[^advani]
-10. **Cost lanes.** A key replaces the login, and the plan's limits no longer apply.[^gateway] It also turns off Remote Control.[^gatewayconnect] Several routers did not reliably beat the best single model.[^routerbench] Sweep effort on your current model before you add a second.[^costintel]
+10. **Cost lanes.** With an API key set, Claude Code sends the key in place of your subscription login, and the plan's usage limits no longer apply.[^gateway] The key also turns off Remote Control.[^gatewayconnect] Several routers did not reliably beat the best single model.[^routerbench] Sweep effort on your current model before you add a second.[^costintel]
 
 ## Part 2: five tools and a front door
 
@@ -29,7 +33,7 @@ James Reason pictured an organisation's defences against error as layers, each w
 - **agentik-relay**: nights of packets, one worktree and one child per row, a deterministic gate, thirty stop reasons, two money caps, an outside watchdog. Its record covers one owner's nights. It has no sandbox, and its record shows no stall yet.[^relayreadme][^relaydesign][^relaycode]
 - **agentik-decisions**: one ledger per repository, capped at 25 and 7, rendered into CLAUDE.md, with batched owner questions. The mechanics are documented; the benefit is unmeasured.[^decisionsreadme] The caps are the owner's rulings of 2026-09-25, and the design says no outside source gives either number.[^decisionsd17]
 - **agentik-respeak**: two lanes, a gate, and a verifier that checks structure; an appended false paragraph passes it. The machine lane and the readability grades are unmeasured.[^respeakreadme] The human-lane tooling rests on our use: one field test (n=1) and one field run over about 2,000 files.[^respeakreadme][^respeakchangelog]
-- **agentik-agents**: three billing lanes, a router by model name, a pooled fan-out. Its local-lane record covers one machine and one model family, and it shows no window hit.[^agentsreadme]
+- **agentik-agents**: three billing lanes, a router by model name, a pooled fan-out. Its local-lane record covers one machine and one model family, and it records no run that reached the subscription's five-hour or weekly usage limit.[^agentsreadme]
 - **agentik-commons**: the front door and the conventions, after five tools had five naming schemes.[^commonsrecord]
 
 ## Part 3: the practice
@@ -44,7 +48,7 @@ In five of the twenty-six, part of the reason is a conjecture. See [Practices](p
 
 ## From the journal
 
-The [journal](journal/index.md) tells the owner's record as dated stories, each with what failed:
+The [journal](journal/index.md) tells the owner's record as dated stories, each with what went wrong or what was built:
 
 - [The ledger that ran away](journal/posts/2026-10-10-the-ledger-that-ran-away.md): a decision ledger whose old part held 401 entries by 2026-10-14, and the cap, sign-off bar and levels that followed.[^record]
 - [Restart, don't compact](journal/posts/2026-10-05-restart-dont-compact.md): a charter under 4 KB and a fresh session, instead of a summary.

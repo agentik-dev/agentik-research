@@ -2,8 +2,8 @@
 date:
   created: 2026-10-14
 categories:
-  - Open
   - Did not work
+  - Open
 description: A subscription meters use in five-hour windows under a weekly limit. We built two answers, a band that projects the window and advises how many helpers fit, and a pause that waits for the reset. The band has run live only in observe mode, where it refuses nothing. The pause has run only in tests, on fakes.
 ---
 
@@ -37,7 +37,7 @@ The [budgets chapter](../../field/budgets-and-lanes.md) found no measured study 
 5h 72% → 91% · ceiling 97 · resets 14:05 (1h12) · 3 helpers, room for 2 · 1 deferred · 7d 41% · observe
 ```
 
-At the head, the band observes and advises; it decides nothing. `observe` is its only mode: each verdict is one line in the debug log, and "the spawn goes ahead whatever it says". The band is drawn from one file, and "nothing that decides reads the file".[^runbook] A setting of `enforce` reads as `observe`, with the note that enforce "is not built yet (S27a)".[^rules]
+At the head, the band observes and advises; it decides nothing. `observe` is its only mode: each verdict is one line in the debug log, and "the spawn goes ahead whatever it says". The band is drawn from one file, and "nothing that decides reads the file".[^runbook] A setting of `enforce` reads as `observe`, with the note that enforce "is not built yet (S27a)": S27a is the planned packet that builds the refusals.[^rules][^admission]
 
 The verdicts are designed, not enforced. A spawn is to be admitted while its projected peak plus a margin stays at or under a ceiling. In observe mode the ceiling is 97 and the margin 3; in enforce "the margin is a function of T", the minutes to the reset. Past the ceiling, an interactive spawn is deferred until it fits. On a stale reading, one spawn at a time may start until a fresh reading lands, and a seven-day reading past its own ceiling denies spawns.[^admission] A report marks each window `held` when a spawn waited in it ("in observe: would have") or `idle`, and flags any window under 90.[^runbook]
 
@@ -63,9 +63,9 @@ The relay's pause has 42 tests, all on fakes.[^pause] The evidence it was built 
 
 The band does not yet act. `enforce` is "not built yet", and nothing that decides reads the band.[^rules][^runbook] The design lists six proofs it owes, among them whether the engine drops a reading past its reset and whether a helper that fails at the limit resumes. None is recorded as done.[^band]
 
-The band mixed two accounts. It takes the newest five-hour reading across every session in the ledger, with no account key, so two logins on one machine share one band. On 2026-10-14 the ledger held two accounts at once: each session's line showed whichever wrote last, and the projection and the room were fitted across both. The status line gives no account id; agentik-session proposes keying readings by the pair of reset times. At the head it is filed at level S3, not fixed.[^nth]
+The band mixed two accounts. It takes the newest five-hour reading across every session in the ledger, with no account key, so two logins on one machine share one band. On 2026-10-14 the ledger held two accounts at once: each session's line showed whichever wrote last, and the projection and the room were fitted across both. The status line gives no account id; agentik-session proposes keying readings by the pair of reset times. At the head it is filed, not fixed, at level S3 ("the build order"), the third of agentik-session's four priority levels.[^nth][^rules]
 
-Idle waits missed the prompt cache. An audit of 2026-10-12 found that a wake asked for at 3600 s fired at 3636 to 3648 s, past the main loop's 1h cache, so each such wake rewrote the whole context: 26 misses over three days wrote about 4.8M tokens.[^nth] On 2026-10-14, merge `dac92b5` (packet S30) added the rule that an idle wait on the 1h cache wakes at most 3300 s apart.[^s30][^rules] That is a code change with tests; the files we read record no live count since.
+Idle waits missed the prompt cache. An audit of 2026-10-12 found that a wake asked for at 3600 s fired at 3636 to 3648 s, past the main loop's 1h cache, so each such wake rewrote the whole context: 26 misses over three days wrote about 4.8M tokens.[^nth] On 2026-10-14, merge `dac92b5` (packet S30, the change that ties the idle wake to the cache lifetime) added the rule that an idle wait on the 1h cache wakes at most 3300 s apart.[^s30][^rules] That is a code change with tests; the files we read record no live count since.
 
 The relay has the data and does not read it. The stream it consumes carries the five-hour and seven-day use as fractions, and no relay code reads those fields.[^pause] A paused night also keeps its lock until the wake, for up to six hours or to its `--until` time, and the lock refuses the owner's own commands meanwhile.[^resume]
 
