@@ -1,14 +1,73 @@
+---
+title: Home
+template: home.html
+hide: [navigation, toc]
+description: What goes wrong when Claude Code runs for hours, for days or unattended, what the evidence says helps, and the agentik tools.
+---
+
+<div class="ak-hero" markdown>
+
+<p class="ak-eyebrow"><img src="assets/images/agentik.svg" alt=""> Research notes from agentik-dev</p>
+
 # Long-running Claude Code
+
+<p class="ak-lede">What goes wrong when a Claude Code session runs for hours, for days or with nobody watching, what the published evidence says helps, and the small tools one owner built in answer. It is written for engineers who use Claude Code and want that evidence, with its limits, before they change how they work.</p>
+
+<p class="ak-actions" markdown>[The five findings](#five-findings-that-matter-most){ .md-button .md-button--primary } [The two-page summary](summary.md){ .md-button }</p>
+
+</div>
+
+<div class="ak-doors" markdown>
+
+<div class="ak-door" markdown>
+<p class="ak-door-kicker">Part 1 · seven chapters</p>
+
+## [The field](field/index.md)
+
+What goes wrong in long sessions and unattended runs, and what studies, vendor documentation and practitioners say helps.
+
+<p class="ak-door-go">Read the field →</p>
+</div>
+
+<div class="ak-door" markdown>
+<p class="ak-door-kicker">Part 2 · five tools and a front door</p>
+
+## [The tools](tools/index.md)
+
+Why each agentik tool exists: the problem, the design, the alternatives it rejected, and what is still unproven.
+
+<p class="ak-door-go">Meet the tools →</p>
+</div>
+
+<div class="ak-door" markdown>
+<p class="ak-door-kicker">Dated entries</p>
+
+## [The journal](journal/index.md)
+
+What we tried, what worked, what did not, and what changed because of it. The site evolves here.
+
+<p class="ak-door-go">Read the journal →</p>
+</div>
+
+</div>
+
+## Five findings that matter most
 
 Long Claude Code sessions fail in ways that studies have measured on benchmarks, if not yet on Claude Code itself. This site reports the evidence on sessions that run for hours, for days, or unattended. It explains why five small open-source tools from agentik-dev and their shared front door exist. It sets out twenty-six practices, each with its evidence level. Every page cites its sources, every vendor fact is dated as of October 2026, and every tool's limits are named. The tools are young and used by one owner.[^profile] The sources found include no measurement that they beat the alternatives, and this site does not claim it; the [method](method.md) page gives the limits.
 
-## Five findings that matter most
+<div class="ak-findings" markdown>
 
 1. **Length alone lowers accuracy, even when the fact the model needs is in the window, and so does the number of instructions.** Reasoning accuracy fell from 0.92 to 0.68 when inputs were padded to 3,000 tokens, and Claude 3.5 Sonnet fell from 87.5 to 29.8 percent at 32K tokens on low-overlap retrieval.[^levy][^modarressi] Given 500 simultaneous instructions, Claude Opus 4 followed 44.6 percent.[^ifscale] Anthropic's documentation names the effect: context rot.[^ctxdoc] So start long work from a short written brief in a fresh context, and keep the always-loaded instructions short. See [Length and compaction](field/length-and-compaction.md).
 2. **Compaction keeps the gist and loses the specifics, and nothing shows a restart does better.** The artifact trail, which files were touched and how, scored lowest for every compressor tested, 2.19 to 2.45 of 5; one compaction kept 3 of 3 high-level facts and lost 3 of 3 obscure values.[^factory][^cookbook] Anthropic's own harness work carried state in files and git, not in the summary.[^harnesses] No source found holds a controlled comparison of a restart from a written handoff with compaction in a coding session. The nearest evidence is Anthropic's report that resets were needed on one model and dropped on the next.[^harnessdesign] So write the handoff to a file before the window fills, and keep exact values in files.
 3. **Many agents help decomposable work and hurt sequential work.** With matched token budgets, multi-agent designs gained up to 80.8 percent on decomposable tasks and lost 39 to 70 percent on sequential planning.[^kim] Anthropic's own guidance is to expect 3 to 10 times the tokens.[^multiagentblog] So fan out decomposable work, keep sequential work in one agent, and give each parallel writer its own worktree. See [Many agents](field/many-agents.md).
 4. **Review needs an outside signal and a cap.** A model correcting its own reasoning with no outside signal fell from 95.5 to 89.0 percent over two rounds; review rounds on one small model returned +5.8, +2.4, +0.4 and +0.6 points; Claude Code overrides a Stop hook after eight consecutive blocks with no tool call between them.[^huang][^wang][^hooks] So put sign-off in a check the reviewer does not control, and cap the rounds. See [Review that ends](field/review.md).
 5. **An unattended run's success is unproven until you read the denials, cap the money and the turns, and watch from outside.** In print mode, an unanswered permission prompt is denied and the run continues; the budget cap can overshoot by a response; no main-session progress watchdog is documented; and one benchmark found that 75.8 percent of failed runs with an explicit status claim claimed success.[^headless][^agentloop][^advani] See [Unattended runs and guardrails](field/unattended-and-guardrails.md) and [Telling people what happened](field/telling-people.md).
+
+</div>
+
+## From the journal
+
+<!-- journal: newest -->
 
 ## The tools, in one line each
 

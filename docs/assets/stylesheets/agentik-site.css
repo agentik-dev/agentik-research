@@ -1,0 +1,559 @@
+/* agentik-site.css: the research site's own components, on the glass kit.
+ *
+ * Layer order (mkdocs.yml): glass.css, then skins/agentik.css (tokens only),
+ * then this file. Colours come only from tokens; nothing here names a hex
+ * value that the skin does not own.
+ *
+ *   1. Frame        header, tabs, sidebars, footer, page width
+ *   2. Typeset      headings, links, tables, code, footnotes, diagrams
+ *   3. Evidence     the five evidence-level pills, .ev .ev-<level>
+ *   4. Home         hero, doors, findings, newest journal entries
+ *   5. Journal      post list, post header, category chips
+ *   6. Story        the story-shape blocks on tool pages and entries
+ *   7. 404, print
+ */
+
+/* ------------------------------------------------------------------ */
+/* 1. Frame                                                            */
+/* ------------------------------------------------------------------ */
+
+.md-grid { max-width: var(--ak-grid-max); }
+
+/* Quiet glass header: canvas-tinted, blurred, hairline below. */
+.md-header {
+  background-color: var(--ak-header-bg);
+  color: var(--glass-text);
+  border-bottom: 1px solid var(--glass-border-faint);
+  -webkit-backdrop-filter: saturate(160%) blur(14px);
+  backdrop-filter: saturate(160%) blur(14px);
+  box-shadow: none;
+}
+.md-header--shadow { box-shadow: 0 1px 0 var(--glass-border-faint), 0 6px 24px rgba(0, 0, 0, 0.05); }
+.md-header__button.md-logo { padding: 0.35rem; margin-right: 0.1rem; }
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg { height: 1.7rem; width: auto; image-rendering: pixelated; }
+.md-header__topic:first-child { font-weight: 650; letter-spacing: -0.01em; }
+.md-header__title { margin-left: 0.4rem; }
+
+.md-search__form {
+  background: var(--glass-input-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-r-input);
+}
+.md-search__form:hover { background: var(--glass-input-bg); border-color: var(--glass-border-hover); }
+.md-search__input { color: var(--glass-text); }
+.md-search__input::placeholder,
+.md-search__icon { color: var(--glass-muted); }
+[data-md-toggle="search"]:checked ~ .md-header .md-search__form { border-radius: var(--glass-r-input) var(--glass-r-input) 0 0; }
+.md-search__output { border-radius: 0 0 var(--glass-r-input) var(--glass-r-input); }
+.md-search-result__meta { background: var(--glass-2); color: var(--glass-muted); }
+
+/* Tabs sit on the canvas; the current tab carries the accent. */
+.md-tabs {
+  background: transparent;
+  color: var(--glass-text-2);
+  border-bottom: 1px solid var(--glass-border-faint);
+}
+.md-tabs__link { font-size: 0.68rem; font-weight: 500; opacity: 1; color: var(--glass-muted); margin-top: 0.7rem; }
+.md-tabs__link:hover, .md-tabs__link:focus { color: var(--glass-text); }
+.md-tabs__item--active .md-tabs__link { color: var(--glass-text); }
+.md-tabs__item--active .md-tabs__link::after {
+  content: "";
+  display: block;
+  height: 2px;
+  margin-top: 0.45rem;
+  border-radius: 2px;
+  background: var(--glass-accent);
+}
+
+/* Breadcrumbs (navigation.path). */
+.md-path { font-size: 0.62rem; color: var(--glass-muted); }
+.md-path__link { color: var(--glass-muted); }
+.md-path__link:hover { color: var(--glass-accent); }
+
+/* Sidebars: grouped, tiny-caps section labels, a soft tinted active item. */
+@media screen and (min-width: 76.25em) {
+  .md-nav--primary > .md-nav__list > .md-nav__item--section > .md-nav__link {
+    font-size: 0.56rem;
+    font-weight: 650;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--glass-muted);
+  }
+  .md-nav__link { border-radius: 8px; padding: 0.12rem 0.4rem; margin-left: -0.4rem; margin-right: 0.2rem; }
+  .md-nav__link:hover { background: var(--glass-hover-wash); }
+  .md-nav__link--active,
+  .md-nav__item .md-nav__link--active { background: var(--glass-accent-soft); color: var(--glass-accent); font-weight: 550; }
+  .md-sidebar--secondary .md-nav__link--active { background: transparent; }
+}
+.md-nav__title { color: var(--glass-muted); }
+.md-nav__link--passed { color: var(--glass-muted); }
+
+/* Drawer on narrow screens: a glass panel. */
+@media screen and (max-width: 76.234375em) {
+  .md-nav--primary .md-nav__title { background: var(--glass-2); color: var(--glass-text); }
+  .md-nav--primary .md-nav__title[for="__drawer"] { background: var(--glass-1); color: var(--glass-text); }
+  .md-sidebar--primary { background: var(--glass-1); }
+  .md-nav--primary .md-nav__item { border-top-color: var(--glass-border-faint); }
+}
+
+.md-footer { background: var(--md-footer-bg-color); border-top: 1px solid var(--glass-border-faint); }
+.md-footer-meta { background: var(--md-footer-bg-color--dark); }
+.md-footer__link { color: var(--glass-text); }
+.md-footer__title { color: var(--glass-text); }
+.md-footer__direction { color: var(--glass-muted); opacity: 1; }
+.md-copyright { color: var(--glass-muted); }
+.md-copyright__highlight { color: var(--glass-text-2); }
+.md-social__link { color: var(--glass-muted); }
+.md-social__link:hover { color: var(--glass-accent); }
+
+.md-top {
+  background: var(--glass-1);
+  color: var(--glass-text-2);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow-card);
+}
+.md-top:hover { background: var(--glass-accent); color: var(--glass-on-accent); }
+
+/* Focus: one visible ring everywhere. */
+:focus-visible { outline-color: var(--glass-accent); }
+
+/* ------------------------------------------------------------------ */
+/* 2. Typeset                                                          */
+/* ------------------------------------------------------------------ */
+
+.md-typeset { font-size: 0.8rem; line-height: 1.7; font-feature-settings: "cv11", "ss01"; }
+.md-typeset h1 {
+  color: var(--glass-text);
+  font-weight: 720;
+  font-size: 2rem;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin-bottom: 1rem;
+}
+.md-typeset h2 {
+  font-weight: 680;
+  font-size: 1.3rem;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+  margin-top: 2.4rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--glass-border-faint);
+}
+.md-typeset h3 { font-weight: 650; font-size: 1.02rem; letter-spacing: -0.01em; margin-top: 1.8rem; }
+.md-typeset h4 { font-weight: 650; font-size: 0.85rem; }
+.md-typeset h1 { margin-bottom: 0.8rem; }
+.md-typeset h1 + p, .md-typeset .ak-lede { font-size: 0.95rem; color: var(--glass-text-2); line-height: 1.6; }
+.md-typeset strong { font-weight: 650; }
+.md-typeset hr { border-bottom-color: var(--glass-border); }
+
+/* Links in running text carry an underline, so they never rely on colour. */
+.md-typeset a {
+  color: var(--md-typeset-a-color);
+  text-decoration: underline;
+  text-decoration-color: var(--glass-accent-border);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  transition: color 120ms ease, text-decoration-color 120ms ease;
+}
+.md-typeset a:hover, .md-typeset a:focus { color: var(--md-accent-fg-color); text-decoration-color: currentColor; }
+.md-typeset a.headerlink, .md-typeset .footnote-ref, .md-typeset a.footnote-backref,
+.md-typeset .md-button, .md-typeset .ak-door a, .md-typeset .md-post a, .md-typeset .ak-post a { text-decoration: none; }
+.md-typeset .footnote-ref { font-weight: 600; }
+/* Adjacent footnote marks read as 2, 3 rather than 23. */
+.md-typeset sup[id^="fnref"] + sup[id^="fnref"]::before { content: ","; color: var(--glass-muted); }
+
+.md-typeset code { border-radius: 5px; font-size: 0.86em; padding: 0.05em 0.3em; }
+.md-typeset pre > code { border-radius: var(--glass-r-input); padding: 0.9em 1.1em; }
+.md-typeset .highlight, .md-typeset pre {
+  border-radius: var(--glass-r-input);
+}
+.md-typeset pre { border: 1px solid var(--glass-border-faint); }
+
+.md-typeset table:not([class]) { font-size: 0.7rem; }
+.md-typeset table:not([class]) th { font-size: 0.6rem; }
+.md-typeset table:not([class]) td, .md-typeset table:not([class]) th { padding: 0.7em 1em; }
+
+.md-typeset .admonition, .md-typeset details { font-size: 0.75rem; border-width: 1px; border-left-width: 3px; }
+
+.md-typeset blockquote {
+  border-left: 3px solid var(--glass-accent-border);
+  color: var(--glass-text-2);
+  background: var(--glass-hover-wash);
+  border-radius: 0 var(--glass-r-input) var(--glass-r-input) 0;
+  padding: 0.2rem 1rem;
+}
+
+/* Footnotes under "Sources": smaller, quieter, still readable. */
+.md-typeset .footnote { font-size: 0.68rem; color: var(--glass-text-2); }
+.md-typeset .footnote > ol > li { margin-bottom: 0.35rem; }
+.md-typeset .footnote > hr { display: none; }
+
+/* Mermaid diagrams sit in a glass card. */
+.md-typeset .mermaid {
+  background: var(--glass-1);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-r-card);
+  box-shadow: var(--glass-shadow-card);
+  padding: 1rem;
+  margin: 1.2rem 0;
+}
+
+/* Abbreviations (content.tooltips). */
+.md-typeset abbr { text-decoration: underline dotted var(--glass-faint); cursor: help; }
+
+/* Material buttons follow the one accent. */
+.md-typeset .md-button {
+  border-radius: var(--glass-r-pill);
+  border: 1px solid var(--glass-accent-border);
+  color: var(--glass-accent);
+  font-weight: 600;
+  padding: 0.5em 1.3em;
+}
+.md-typeset .md-button:hover, .md-typeset .md-button:focus {
+  background: var(--glass-accent-soft);
+  border-color: var(--glass-accent);
+  color: var(--glass-accent);
+}
+.md-typeset .md-button--primary { background: var(--glass-accent); border-color: var(--glass-accent); color: var(--glass-on-accent); }
+.md-typeset .md-button--primary:hover, .md-typeset .md-button--primary:focus {
+  background: var(--md-accent-fg-color); border-color: var(--md-accent-fg-color); color: var(--glass-on-accent);
+}
+
+/* ------------------------------------------------------------------ */
+/* 3. Evidence levels: <span class="ev ev-measured">measured</span>    */
+/* ------------------------------------------------------------------ */
+
+.md-typeset .ev {
+  --ev: var(--ak-ev-conjecture);
+  display: inline-block;
+  vertical-align: 0.08em;
+  font-size: 0.62rem;
+  font-weight: 650;
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  padding: 0 0.5em;
+  border-radius: var(--glass-r-pill);
+  color: var(--ev);
+  background: color-mix(in srgb, var(--ev) 11%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ev) 34%, transparent);
+}
+.md-typeset .ev::before {
+  content: "";
+  display: inline-block;
+  width: 0.42em;
+  height: 0.42em;
+  margin-right: 0.38em;
+  vertical-align: 0.12em;
+  border-radius: 1px;
+  background: currentColor;
+}
+.md-typeset .ev-measured { --ev: var(--ak-ev-measured); }
+.md-typeset .ev-documented { --ev: var(--ak-ev-documented); }
+.md-typeset .ev-reported { --ev: var(--ak-ev-reported); }
+.md-typeset .ev-our-use { --ev: var(--ak-ev-our-use); }
+.md-typeset .ev-conjecture { --ev: var(--ak-ev-conjecture); border-style: dashed; }
+.md-typeset .ev-conjecture::before { background: transparent; border: 1px solid currentColor; }
+.md-typeset h2 .ev, .md-typeset h3 .ev { font-size: 0.55rem; vertical-align: 0.3em; margin-left: 0.3em; }
+.md-typeset table .ev { font-size: 0.58rem; }
+
+/* The legend: the five levels in one row. */
+.md-typeset .ev-legend { display: flex; flex-wrap: wrap; gap: 0.35rem 0.5rem; margin: 0.6rem 0 1.2rem; padding: 0; list-style: none; }
+.md-typeset .ev-legend li { margin: 0; }
+
+/* ------------------------------------------------------------------ */
+/* 4. Home                                                             */
+/* ------------------------------------------------------------------ */
+
+/* Home: the hero and the doors run full width; prose keeps a reading measure. */
+.md-typeset .ak-home > p,
+.md-typeset .ak-home > ul,
+.md-typeset .ak-home > ol,
+.md-typeset .ak-home > .footnote { max-width: var(--ak-measure); }
+.md-typeset .ak-home > .ak-findings { max-width: calc(var(--ak-measure) + 8rem); }
+
+.md-typeset .ak-hero {
+  position: relative;
+  margin: 0 0 2rem;
+  padding: 2.4rem 2.2rem 2.2rem;
+  border-radius: calc(var(--glass-r-card) + 4px);
+  background:
+    radial-gradient(600px 300px at 100% 0%, var(--glass-accent-soft), transparent 70%),
+    var(--glass-1);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow-card);
+  overflow: hidden;
+}
+/* The pixel motif: the icon's grid, faded into the hero's corner. */
+.md-typeset .ak-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto auto;
+  width: 46%;
+  height: 100%;
+  background-image: radial-gradient(circle, var(--glass-accent-border) 1.1px, transparent 1.3px);
+  background-size: 14px 14px;
+  -webkit-mask-image: linear-gradient(250deg, #000 0%, transparent 65%);
+  mask-image: linear-gradient(250deg, #000 0%, transparent 65%);
+  opacity: 0.55;
+  pointer-events: none;
+}
+.md-typeset .ak-hero > * { position: relative; z-index: 1; }
+.md-typeset .ak-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0 0 0.9rem;
+  font-family: var(--md-code-font-family);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--glass-accent);
+}
+.md-typeset .ak-eyebrow img { width: 1.3rem; height: 1.3rem; image-rendering: pixelated; }
+.md-typeset .ak-hero h1 {
+  display: block;
+  font-size: clamp(1.7rem, 4.2vw, 2.6rem);
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  margin: 0 0 0.9rem;
+  max-width: 20ch;
+}
+.md-typeset .ak-hero .ak-lede {
+  font-size: clamp(0.85rem, 1.6vw, 1rem);
+  max-width: 40rem;
+  margin: 0 0 1.4rem;
+  color: var(--glass-text-2);
+}
+.md-typeset .ak-hero .ak-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0; }
+.md-typeset .ak-hero .ak-actions .md-button { margin: 0; }
+
+/* Doors and cards: stretched-link glass cards in a responsive grid. */
+.md-typeset .ak-doors {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 0.9rem;
+  margin: 0 0 2.2rem;
+}
+.md-typeset .ak-door {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 1.15rem 1.2rem 1.1rem;
+  background: var(--glass-1);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-r-card);
+  box-shadow: var(--glass-shadow-card);
+}
+.md-typeset .ak-door > :first-child { margin-top: 0; }
+.md-typeset .ak-door > :last-child { margin-bottom: 0; }
+.md-typeset .ak-door h2,
+.md-typeset .ak-door h3 {
+  margin: 0 0 0.4rem;
+  font-size: 0.95rem;
+  padding: 0;
+  border: 0;
+}
+.md-typeset .ak-door :is(h2, h3) a { color: var(--glass-text); }
+.md-typeset .ak-door :is(h2, h3) a::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.md-typeset .ak-door :is(h2, h3) a:focus-visible { outline: none; }
+.md-typeset .ak-door:has(a:focus-visible) { outline: 2px solid var(--glass-accent); outline-offset: 2px; }
+.md-typeset .ak-door p { margin: 0; font-size: 0.72rem; line-height: 1.6; color: var(--glass-text-2); }
+.md-typeset .ak-door .ak-door-kicker {
+  font-family: var(--md-code-font-family);
+  font-size: 0.56rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--glass-muted);
+  margin-bottom: 0.55rem;
+}
+.md-typeset .ak-door .ak-door-go {
+  margin-top: auto;
+  padding-top: 0.8rem;
+  font-size: 0.66rem;
+  font-weight: 600;
+  color: var(--glass-accent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .md-typeset .ak-door { transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease; }
+  .md-typeset .ak-door:hover { transform: translateY(-2px); box-shadow: var(--glass-shadow-pop); border-color: var(--glass-border-hover); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .md-typeset .ak-door:hover { border-color: var(--glass-border-hover); }
+}
+
+/* Section labels on the home page. */
+.md-typeset .ak-section-label {
+  font-family: var(--md-code-font-family);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--glass-muted);
+  margin: 2.4rem 0 0.2rem;
+}
+.md-typeset .ak-section-label + h2 { margin-top: 0.2rem; padding-top: 0; border-top: 0; }
+
+/* The five findings: numbered glass rows. */
+.md-typeset ol.ak-findings, .md-typeset .ak-findings > ol {
+  counter-reset: finding;
+  list-style: none;
+  margin: 1rem 0 2rem;
+  padding: 0;
+  display: grid;
+  gap: 0.7rem;
+}
+.md-typeset .ak-findings > ol > li {
+  counter-increment: finding;
+  position: relative;
+  margin: 0;
+  padding: 1rem 1.2rem 1rem 3.4rem;
+  background: var(--glass-1);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-r-card);
+  box-shadow: var(--glass-shadow-card);
+  font-size: 0.75rem;
+}
+.md-typeset .ak-findings > ol > li::before {
+  content: counter(finding);
+  position: absolute;
+  left: 1.1rem;
+  top: 1rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  font-family: var(--md-code-font-family);
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: var(--glass-accent);
+  background: var(--glass-accent-soft);
+  border: 1px solid var(--glass-accent-border);
+}
+.md-typeset .ak-findings > ol > li > p:first-child { margin-top: 0; }
+.md-typeset .ak-findings > ol > li > p:last-child { margin-bottom: 0; }
+
+/* The newest journal entries on the home page. */
+.md-typeset .ak-posts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 0.9rem;
+  margin: 1rem 0 2rem;
+}
+.md-typeset .ak-post { position: relative; }
+.md-typeset .ak-post h3 a::after { content: ""; position: absolute; inset: 0; border-radius: var(--glass-r-card); }
+.md-typeset .ak-post time, .md-typeset .ak-post .ak-post-meta {
+  display: block;
+  font-size: 0.6rem;
+  color: var(--glass-muted);
+  margin-bottom: 0.45rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* 5. Journal (Material's blog plugin)                                 */
+/* ------------------------------------------------------------------ */
+
+.md-typeset .md-post--excerpt {
+  margin: 0 0 1.2rem;
+  padding: 1.2rem 1.4rem 0.6rem;
+  background: var(--glass-1);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-r-card);
+  box-shadow: var(--glass-shadow-card);
+}
+.md-typeset .md-post--excerpt .md-post__header { margin-bottom: 0.4rem; }
+.md-typeset .md-post--excerpt h2 { margin-top: 0.2rem; padding-top: 0; border-top: 0; font-size: 1.1rem; }
+.md-typeset .md-post--excerpt h2 a { color: var(--glass-text); }
+.md-typeset .md-post--excerpt h2 a:hover { color: var(--glass-accent); }
+.md-post__meta, .md-meta { color: var(--glass-muted); }
+.md-typeset .md-post__action a { font-weight: 600; color: var(--glass-accent); }
+
+/* Category chips, coloured by meaning: worked, did not work, open. */
+.md-post__meta .md-meta__link, .md-typeset .ak-cat {
+  --cat: var(--glass-muted);
+  display: inline-block;
+  padding: 0 0.5em;
+  font-size: 0.6rem;
+  font-weight: 650;
+  line-height: 1.5;
+  border-radius: var(--glass-r-pill);
+  color: var(--cat);
+  background: color-mix(in srgb, var(--cat) 11%, transparent);
+  border: 1px solid color-mix(in srgb, var(--cat) 34%, transparent);
+  text-decoration: none;
+}
+.md-meta__link[href*="category/worked"], .ak-cat-worked { --cat: var(--ak-cat-worked); }
+.md-meta__link[href*="category/did-not-work"], .ak-cat-did-not-work { --cat: var(--ak-cat-failed); }
+.md-meta__link[href*="category/open"], .ak-cat-open { --cat: var(--ak-cat-open); }
+
+/* The post sidebar's meta block. */
+.md-sidebar--post .md-post__meta, .md-sidebar--post .md-nav__link { color: var(--glass-text-2); }
+
+/* ------------------------------------------------------------------ */
+/* 6. Story shape                                                      */
+/* ------------------------------------------------------------------ */
+
+/* "Does it work?" verdict box on tool pages and entries. */
+.md-typeset .ak-verdict {
+  padding: 0.9rem 1.1rem;
+  margin: 1rem 0 1.4rem;
+  background: var(--glass-1);
+  border: 1px solid var(--glass-border);
+  border-left: 3px solid var(--glass-accent);
+  border-radius: var(--glass-r-input);
+  box-shadow: var(--glass-shadow-card);
+  font-size: 0.75rem;
+}
+.md-typeset .ak-verdict > :first-child { margin-top: 0; }
+.md-typeset .ak-verdict > :last-child { margin-bottom: 0; }
+
+/* Related pages, at the foot of entries and pages. */
+.md-typeset .ak-related { display: flex; flex-wrap: wrap; gap: 0.4rem; padding: 0; margin: 0.6rem 0 1.2rem; list-style: none; }
+.md-typeset .ak-related li { margin: 0; }
+.md-typeset .ak-related a {
+  display: inline-block;
+  padding: 0.15rem 0.7rem;
+  font-size: 0.66rem;
+  font-weight: 550;
+  border-radius: var(--glass-r-pill);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-1);
+  color: var(--glass-text-2);
+  text-decoration: none;
+}
+.md-typeset .ak-related a:hover { border-color: var(--glass-accent-border); color: var(--glass-accent); }
+
+/* ------------------------------------------------------------------ */
+/* 7. 404, small screens, print                                        */
+/* ------------------------------------------------------------------ */
+
+.md-typeset .ak-404 { text-align: left; max-width: 34rem; margin: 2rem 0 3rem; }
+.md-typeset .ak-404 .ak-404-code {
+  font-family: var(--md-code-font-family);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  color: var(--glass-accent);
+  margin: 0 0 0.6rem;
+}
+
+@media screen and (max-width: 44.984375em) {
+  .md-typeset { font-size: 0.78rem; }
+  .md-typeset h1 { font-size: 1.6rem; }
+  .md-typeset h2 { font-size: 1.15rem; }
+  .md-typeset .ak-hero { padding: 1.6rem 1.2rem 1.4rem; margin-left: 0; margin-right: 0; }
+  .md-typeset .ak-hero::after { width: 70%; opacity: 0.35; }
+  .md-typeset .ak-findings > ol > li { padding: 0.9rem 0.9rem 0.9rem 2.9rem; }
+  .md-typeset .ak-findings > ol > li::before { left: 0.8rem; top: 0.9rem; }
+}
+
+@media print {
+  .md-header, .md-tabs, .md-footer, .md-sidebar { display: none; }
+  .md-typeset .ak-hero, .md-typeset .ak-door, .md-typeset .ak-findings > ol > li,
+  .md-typeset .md-post--excerpt, .md-typeset .mermaid { box-shadow: none; }
+  .md-typeset .ak-hero::after { display: none; }
+}
+.md-typeset .ak-door .headerlink { display: none; }

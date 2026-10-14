@@ -26,12 +26,16 @@ for (const scheme of SCHEMES) {
       await page.evaluate(() => document.fonts.ready);
       // Mermaid draws after load; wait for each diagram's SVG.
       await page.waitForFunction(() => [...document.querySelectorAll('.mermaid')].every((m) => m.querySelector('svg') || m.shadowRoot), null, { timeout: 10000 }).catch(() => {});
-      const height = await page.evaluate(() => document.documentElement.scrollHeight);
+      // Grow the viewport to the page, so the fixed canvas paints all of it
+      // as it does while a reader scrolls; then shoot the viewport.
+      const height = Math.min(MAX, await page.evaluate(() => document.documentElement.scrollHeight));
+      await page.setViewportSize({ width, height });
+      await page.waitForTimeout(150);
       await page.screenshot({
         path: join(out, `${slug(p)}.${width}.${scheme}.jpg`),
-        type: 'jpeg', quality: 72, fullPage: true,
-        clip: { x: 0, y: 0, width, height: Math.min(height, MAX) },
+        type: 'jpeg', quality: 72, animations: 'disabled',
       });
+      await page.setViewportSize({ width, height: 900 });
       n++;
     }
     await ctx.close();

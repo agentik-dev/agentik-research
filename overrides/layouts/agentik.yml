@@ -1,0 +1,86 @@
+# The agentik social card: the night-shift canvas, the pixel agent, the page
+# title in Inter. Colours are the skin's dark tokens (docs/assets/glass/skins/agentik.css).
+definitions:
+  - &page_title >-
+    {%- if page.file.src_uri == "index.md" -%}
+      Long sessions: what goes wrong, and what helps
+    {%- else -%}
+      {{ page.meta.get("title", page.title) }}
+    {%- endif -%}
+  - &page_description >-
+    {{ page.meta.get("description", config.site_description) | x }}
+  - &kicker >-
+    {%- if page.file.src_uri.startswith("journal/") -%}
+      Long-running Claude Code · journal
+    {%- elif page.file.src_uri.startswith("field/") -%}
+      Long-running Claude Code · the field
+    {%- elif page.file.src_uri.startswith("tools/") -%}
+      Long-running Claude Code · the tools
+    {%- else -%}
+      Long-running Claude Code
+    {%- endif -%}
+
+tags:
+  og:type: website
+  og:title: >-
+    {{ page.meta.get("title", page.title) }} - {{ config.site_name }}
+  og:description: *page_description
+  og:image: "{{ image.url }}"
+  og:image:type: "{{ image.type }}"
+  og:image:width: "{{ image.width }}"
+  og:image:height: "{{ image.height }}"
+  og:url: "{{ page.canonical_url }}"
+  twitter:card: summary_large_image
+  twitter:title: >-
+    {{ page.meta.get("title", page.title) }} - {{ config.site_name }}
+  twitter:description: *page_description
+  twitter:image: "{{ image.url }}"
+
+size: { width: 1200, height: 630 }
+layers:
+  - background:
+      color: "#0f1311"
+  # The accent rule along the top.
+  - size: { width: 1200, height: 10 }
+    offset: { x: 0, y: 0 }
+    background:
+      color: "#7ddc92"
+  - size: { width: 220, height: 220 }
+    offset: { x: 920, y: 60 }
+    background:
+      image: docs/assets/images/agentik.svg
+  - size: { width: 820, height: 40 }
+    offset: { x: 72, y: 78 }
+    typography:
+      content: *kicker
+      color: "#7ddc92"
+      font:
+        family: Inter
+        variant: 18pt
+        style: SemiBold
+  - size: { width: 820, height: 300 }
+    offset: { x: 70, y: 160 }
+    typography:
+      content: *page_title
+      align: start
+      color: "#e7ece8"
+      line:
+        amount: 3
+        height: 1.2
+      font:
+        family: Inter
+        variant: 28pt
+        style: Bold
+  - size: { width: 1000, height: 80 }
+    offset: { x: 72, y: 490 }
+    typography:
+      content: *page_description
+      align: start
+      color: "#b0bab3"
+      line:
+        amount: 2
+        height: 1.45
+      font:
+        family: Inter
+        variant: 18pt
+        style: Regular
