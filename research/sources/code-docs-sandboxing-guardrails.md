@@ -1,0 +1,26 @@
+---
+url: https://code.claude.com/docs/en/sandboxing
+title: "Configure the sandboxed Bash tool"
+author: Anthropic (Claude Code documentation)
+published: undated (living documentation; read October 2026; version markers run to v2.1.285)
+accessed: 2026-10-14
+kind: documented
+---
+
+All items are as of October 2026. Section names are the page's own.
+
+## What it says
+- Opening and "What the sandbox restricts": the Bash sandbox is an operating-system boundary around shell commands and the processes they start (Bash, PowerShell and Monitor commands). It runs on macOS (Seatbelt), Linux and WSL2 (`bubblewrap` and `socat`); on native Windows commands run unsandboxed. The sandbox is off by default. Default writes: the working directory, a per-user temp directory and added directories. Default reads: most of the machine, including credential files such as `~/.ssh` and `~/.aws/credentials`. Network: no direct route out; connections go through a local proxy that checks hosts against allowed domains, which start empty. Environment variables, including secrets, are inherited.
+- "What runs outside the sandbox": the file tools (Read, Edit, Write), WebFetch and WebSearch follow permission rules, not the sandbox (a `denyRead` entry does not stop the Read tool); command hooks, local MCP servers, LSP servers, and helper commands such as the status line and `apiKeyHelper` run with the user's full access; a command typed at the `!` prompt runs unsandboxed in most sessions. The page recommends a container, VM or the sandbox runtime around the whole Claude Code process to put these behind one boundary.
+- Warning at "Get started": by default, if the sandbox cannot start (missing dependency, unsupported platform), Claude Code runs commands without sandboxing; `sandbox.failIfUnavailable: true` makes it exit instead.
+- "Sandbox modes": auto-allow mode approves a sandboxed command without a prompt; regular-permissions mode keeps prompts. In auto-allow mode explicit deny rules, content-scoped ask rules such as `Bash(git push *)`, and `rm` or `rmdir` on a critical path still apply. Commands such as `FOO=bar npm test`, `make CC=clang` and `eval "ls"` still go through the permission flow.
+- "The unsandboxed retry escape hatch": when a command fails in the sandbox Claude may retry with the `dangerouslyDisableSandbox` parameter. In `bypassPermissions` the retry runs without a prompt; in Manual and `acceptEdits` the user is prompted; in `auto` a separate classifier evaluates the underlying command; in `dontAsk` it is denied. A matching allow rule such as `Bash(curl *)` also approves the retry. Setting `"allowUnsandboxedCommands": false` ("strict sandbox mode") makes Claude Code ignore the parameter; an ask rule `Bash(dangerouslyDisableSandbox:true)` prompts on retries even in auto and bypass modes.
+- "Network isolation" and "Limitations, Security limitations": the proxy decides from the client-supplied hostname and by default does not terminate or inspect TLS, so a broad domain such as `github.com` can open exfiltration paths and the page names domain fronting as possible. Allowing a Unix socket such as the Docker socket can grant host access. Overly broad write access (for example to a directory holding executables on `$PATH`, or `.bashrc`) can allow privilege escalation. `enableWeakerNestedSandbox` "considerably weakens security". `allowAppleEvents` removes code-execution isolation on macOS.
+- "Scope": subagents run in the same process and use the same sandbox configuration; a background session is sandboxed if its settings enable it; computer use runs on the real desktop. The closing warning says effective sandboxing needs both filesystem and network isolation: without network isolation an agent could exfiltrate files such as SSH keys, and without filesystem isolation it could backdoor system resources to gain network access. The page opens "Limitations" with "Sandboxing reduces risk but is not a complete isolation boundary."
+- Built on the open-source `@anthropic-ai/sandbox-runtime` package. The page does not say whether the Linux sandbox uses a separate process-ID namespace or whether a sandboxed command can see or signal processes outside it.
+
+## Limits
+- Documentation of intended behaviour. The page reports no escape rate and no prompt-reduction figure (see anthropic-engineering-sandboxing for the vendor's one number). Read from a saved fetch of about 94 KB; the troubleshooting and managed-settings sections were skimmed.
+
+## Used in
+- research/synthesis/field-7.md
