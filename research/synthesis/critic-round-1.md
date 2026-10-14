@@ -13,3 +13,19 @@ Machine lane. The critics' reports, verbatim, read from the shots of commit a221
 7. Copy. Two sentences read badly on first pass: "No independent study found measures" (docs/index.md:56) and "first review found numbers two repositories stated wrongly" (docs/index.md:81). The tool count disagrees: the home page says "five tools and a front door" (docs/index.md:33), the summary says "six agentik tools" (docs/summary.md:3). The Part 3 counts at docs/summary.md:37 are hard to follow.
 8. 390. Bad line breaks in "2026-10-/14", "4/KB" and `stream-/json`.
 9. Links and axe. No broken internal links. The repository link https://github.com/agentik-dev/agentik-research returns 404 on all three pages (the repo is private until the owner publishes it), and so does the summary's blob/25e72df link. Axe finds nothing on index, summary or 404 in light or dark.
+
+## Journal (index, six entries, archive, categories): FAIL
+
+Site CSS means docs/assets/stylesheets/agentik-site.css.
+
+1. All six entries, at 390 and 768 in both schemes: no date, categories, reading time or "Back to index" is shown. They sit only in `.md-sidebar--post`, which Material hides below 1220 px.
+2. Every entry, and the Restart card on the list pages, at all widths: a stray comma appears before footnote marks ("ruling.,7", "facts.,10,1"). The cause is site CSS:164, `sup[id^="fnref"] + sup[id^="fnref"]`, which also matches two marks with text between them.
+3. Every entry, at all widths: the related-page pills stack in an indented column instead of a row. `.md-typeset .ak-related` (site CSS:517-518) loses to Material's `.md-typeset ul:not([hidden])` (flow-root) and to `[dir=ltr] .md-typeset ul li` (margin-left).
+4. living-inside-a-usage-window: the status-line example (posts/2026-10-14-living-inside-a-usage-window.md:37) is cut at "(1h12" at 390. At 1280 the copy button covers "· 7d". Nothing shows that it scrolls.
+5. Archive and all three category pages, at all widths: the first screen is a bare H1 ("2026", "Worked") over cards. Nothing says what the page lists. Their meta description is the site default.
+6. Sources lists in the probe entry (after note 6) and the wake entry (after note 7), at 1280: there is an empty line where hidden `a.footnote-backref` icons wrap.
+7. Restart entry, posts/2026-10-05-restart-dont-compact.md:12: notes are numbered in definition order, so the opening paragraph and its card read ¹ then ⁷.
+8. Minor: entry sidebars show categories as plain text, not chips (site CSS:496). Cards at 390 leave a "·" dangling at a line end.
+9. Axe and links: no serious or critical violations. All 11 pages have a moderate landmark-unique violation (`.md-post > .md-nav--primary.md-nav` and `nav[aria-labelledby="__nav_5_label"]`). No broken internal links. The external GitHub links to agentik-dev/agentik-research return 404 on every page (private repo).
+
+All six entries have the six story parts.
