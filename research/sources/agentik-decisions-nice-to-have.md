@@ -32,3 +32,4 @@ At fabb212 the file is 69 lines and holds 56 bullet items (counted by `grep -c '
 ## Used in
 - research/synthesis/tools-decisions.md
 - research/synthesis/journal-ledger.md
+- docs/tools/decisions.md

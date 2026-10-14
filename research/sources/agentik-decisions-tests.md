@@ -27,3 +27,4 @@ Opened: the test names in `test_ledger.py`, `test_answer.py`, `test_ask.py`, `te
 
 ## Used in
 - research/synthesis/tools-decisions.md
+- docs/tools/decisions.md

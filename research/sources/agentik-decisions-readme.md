@@ -32,3 +32,4 @@ Line numbers are at fabb212. The earlier survey of this file was at 80d59eb; the
 ## Used in
 - research/synthesis/tools-decisions.md
 - research/synthesis/journal-ledger.md
+- docs/tools/decisions.md

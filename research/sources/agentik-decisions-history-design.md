@@ -31,3 +31,4 @@ Opened: `decisions-r1.md` (sections 1, 3.5, 4.2, 6 to 9; the heading list), `dec
 ## Used in
 - research/synthesis/tools-decisions.md
 - research/synthesis/journal-ledger.md
+- docs/tools/decisions.md

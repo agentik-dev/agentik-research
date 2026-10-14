@@ -26,3 +26,4 @@ Opened in full: `INTAKE-2026-09-29-<consumer>-portfolio-ledger.md`, `INTAKE-2026
 ## Used in
 - research/synthesis/tools-decisions.md
 - research/synthesis/journal-ledger.md
+- docs/tools/decisions.md

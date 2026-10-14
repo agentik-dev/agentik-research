@@ -24,3 +24,4 @@ Opened: `plugin/skills/decisions/SKILL.md`, `plugin/skills/ask/SKILL.md`, all si
 
 ## Used in
 - research/synthesis/tools-decisions.md
+- docs/tools/decisions.md

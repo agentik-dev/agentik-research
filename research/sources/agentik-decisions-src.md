@@ -28,3 +28,4 @@ Opened only far enough to confirm the mechanism: the module docstrings, `render.
 ## Used in
 - research/synthesis/tools-decisions.md
 - research/synthesis/journal-ledger.md
+- docs/tools/decisions.md
