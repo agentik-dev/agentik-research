@@ -2,7 +2,7 @@
 url: https://code.claude.com/docs/en/best-practices
 title: "Best practices for Claude Code"
 author: Anthropic (Claude Code documentation)
-published: undated (living documentation; the older engineering-blog URL anthropic.com/engineering/claude-code-best-practices answered with a permanent redirect to this page on 2026-10-14)
+published: undated (living documentation; the older engineering-blog page for the same guide answered with a permanent redirect to this page on 2026-10-14)
 accessed: 2026-10-14
 kind: documented
 ---

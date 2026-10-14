@@ -17,6 +17,7 @@ kind: reported
 - When to choose: compaction for tasks with extensive back-and-forth; note-taking for iterative development with clear milestones; multi-agent architectures for parallel research and analysis.
 
 ## Limits
+- Small disagreement with the docs: the post says the five most recently accessed files come back; the context-window docs page (as of October 2026) says up to five files, most recently modified first.
 - A design essay with no measurement of what compaction loses. The Pokemon account is an illustration, not a controlled comparison. Vendor writing about its own product.
 
 ## Used in
