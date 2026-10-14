@@ -24,7 +24,7 @@ Each tool, with its version on 2026-10-13:
     - **The failure it meets:** delegated work bills in three currencies, fails quietly, and a session reaches one API endpoint.
     - **What it does:** three lanes (API-billed, subscription, local model), a loopback router that routes on the model name, a pooled fan-out and a cost log.[^agentsreadme]
 
-The versions are the marketplace's entries. The file is unchanged from 2026-10-13 to commons' head on 2026-10-14, commit 588530f.[^marketplace]
+The versions are the entries in the marketplace file, which is unchanged from 2026-10-13 to commons' head on 2026-10-14, commit 588530f.[^marketplace]
 
 The suite had a problem of its own. Its record opens with it: five tools, five naming schemes, three marketplace rules, and one tool that took its verbs as flags.[^commonsrecord]
 
@@ -34,13 +34,13 @@ The shipping container's sizes were fixed before it went international, not befo
 
 The paper then estimates what containerisation did to trade. It follows product-level trade between 157 countries from 1962 to 1990. It times the effect from the year both countries of a pair first handled cargo through container ports or rail. For trade among rich countries, the abstract puts the cumulative average effect over 20 years at "about 700%". The body's benchmark estimates sum to 790 percent <span class="ev ev-measured">measured</span>. A free trade agreement raised trade 45 percent cumulatively, and joint GATT membership 285 percent.[^bernhofen]
 
-The figures are the working paper's; the abstract of the 2016 journal version states no percentage. The abstract and the body give different figures for one effect. Both hold for North-North trade only, and the paper reports smaller effects for other country pairs. Above all, the paper measures containerisation as a whole, container technology and its intermodal system, not the size standard alone. It describes the standard as a precondition and gives it no estimate of its own.[^bernhofen] The paper measures trade, not software. The suite borrows the shape, not the number. The commons record's status of 2026-10-14 says four of the tools are installed behind one front door command, `agentik <tool>`, and that `agentik` lists them; respeak has no command-line tool in this round.[^commonsrecord] All five follow one guide for names, verbs and exit codes.[^guide]
+The figures are the working paper's; the abstract of the 2016 journal version states no percentage. The abstract and the body give different figures for one effect. Both hold for North-North trade only, and the paper reports smaller effects for other country pairs. Above all, the paper measures containerisation as a whole, container technology and its intermodal system, not the size standard alone. It describes the standard as a precondition and gives it no estimate of its own.[^bernhofen] The paper measures trade, not software. The suite borrows the shape, not the number. The commons record's status of 2026-10-14 says four of the tools are installed behind one front door command, `agentik <tool>`, and that `agentik` lists them. The fifth, respeak, has no command-line tool in this round.[^commonsrecord] All five follow one guide for names, verbs and exit codes.[^guide]
 
 ## What the research teaches
 
 Part 1 supports the causes behind two of commons' rules, and sets a third beside a finding of another kind. It measures none of the rules themselves.
 
-- **Guards that match text miss other spellings.** <span class="ev ev-documented">documented</span> [Unattended runs and guardrails](../field/unattended-and-guardrails.md) finds that Claude Code's deny rules match command text, so `Bash(rm *)` misses `/bin/rm -rf`. It advises testing each guard with the absolute-path, `sh -c` and `git -C` spellings. The commons record found a weakness of the same kind in the relay's guards, below.
+- **Guards that match text miss other spellings.** <span class="ev ev-documented">documented</span> [Unattended runs and guardrails](../field/unattended-and-guardrails.md) finds that Claude Code's deny rules match command text, so `Bash(rm *)` misses `/bin/rm -rf`. It advises testing each guard with the absolute-path, `sh -c` and `git -C` spellings. The commons record finds a weakness of the same kind in the relay's guards, below.
 - **Tests fail under load.** <span class="ev ev-measured">measured</span> The same chapter cites a study in which 46.5 percent of 608 flaky tests were affected by computational resources, with CPU starvation worst. A load check is the relay's own rule, and the [Practices](../practices.md) page pairs the finding with the `bounded` wrapper.
 - **A refusal is unrun, never red.** <span class="ev ev-our-use">our use</span> The rule is the owner's.[^guide] [Review that ends](../field/review.md) sets it beside the measured finding that an outside signal beats self-correction. That study measured language models revising their own reasoning, not checks that refused to run.
 
@@ -52,7 +52,7 @@ Each tool page reads its own premise against the field chapters that bear on it.
 
 Three risks shaped what commons holds.
 
-- **A new spelling defeats a guard that matches by name.** Guards that match a command by name fail on a new spelling, and the record's analysis found the relay's guards would.[^commonsrecord]
+- **A new spelling defeats a guard that matches by name.** Guards that match a command by name fail on a new spelling, and the record's analysis finds the relay's guards would.[^commonsrecord]
 - **Copies drift.** Scripts copied into five repos can drift. So commons keeps one canonical copy of the hygiene scan and the check wrapper, and each repo vendors them with a sha256 pin.[^commonsrecord]
 - **Public repos can leak private names.** The hygiene scan guards against that, and it has had a gap of its own, recorded below.
 
@@ -95,12 +95,12 @@ Not measured: whether a tool beats the alternative it replaced, and whether one 
 Two pieces of the shared tooling have failed.
 
 - **The hygiene scan passed a large file unread.** A review found the hygiene scan passing a file over 4 MiB by path only. That file's first line held a home path and an email. The scan now streams oversize files.[^commonstests]
-- **The load floor missed a red check.** The load floor does not catch every case. The relay's backlog records a full check that went red under a load of 20 on 16 cores, below 4 per core, and proposes a test timeout or a split of the slow package.[^relaynth]
+- **The load floor missed a red check.** The load floor does not catch every case. The relay's backlog records a full check that went red under a load of 20 on 16 cores, below 4 per core. The backlog proposes a test timeout or a split of the slow package.[^relaynth]
 
 What stays open:
 
-- The suite rename recorded in the commons design is partly done. At e456f4b, on 2026-10-13, the record wrote the switch, the proofs and the cold window as steps to run. On 2026-10-14, commit `3378994` added a status: the switch has landed, the five tool packets and the profile packet are merged, the four command-line tools are installed and `agentik` lists them, and the five `@agentik` plugins are enabled with the five old ones disabled. The status is the record's own statement and shows no log of the run. It does not yet record proofs P1 to P3, the consumer packets or the cold window as done.[^commonsrecord] At commit 6476f3a the organization profile showed the earlier install lines.[^profile] On 2026-10-13 the five tool repos merged their rename branches within one minute of each other.[^githeads] The record allows that merge only in the switch.[^commonsrecord] The profile merged its own branch in the same minute: at 8a0a188 it installs `session@agentik` and the other four plugins from the `agentik` marketplace.[^githeads][^profiler1]
-- The switch was planned to install from a local marketplace built from each checkout, with the public marketplace as the fallback if proof P1 fails. The status says the plugins install from the `agentik` marketplace, not which copy, and P1 is among the proofs it does not yet record.[^commonsrecord]
+- The suite rename in the commons record is partly done. At e456f4b, on 2026-10-13, the record wrote the switch, the proofs and the cold window as steps to run. On 2026-10-14, commit `3378994` added a status: the switch has landed, the five tool packets and the profile packet are merged, the four command-line tools are installed and `agentik` lists them, and the five `@agentik` plugins are enabled with the five old ones disabled. The status is the record's own statement and shows no log of the run. It does not yet record proofs P1 to P3, the consumer packets or the cold window as done.[^commonsrecord] At commit 6476f3a the organization profile showed the earlier install lines.[^profile] On 2026-10-13 the five tool repos merged their rename branches within one minute of each other.[^githeads] The record allows that merge only in the switch.[^commonsrecord] The profile merged its own branch in the same minute: at 8a0a188 it installs `session@agentik` and the other four plugins from the `agentik` marketplace.[^githeads][^profiler1]
+- The record planned the switch to install from a local marketplace built from each checkout, with the public marketplace as the fallback if proof P1 fails. The status says the plugins install from the `agentik` marketplace, not which copy, and P1 is among the proofs it does not yet record.[^commonsrecord]
 - Ten items sit in the commons backlog. The tenth, added on 2026-10-14, is the vendored copies above.[^commonsnth]
 
 ## From the journal
