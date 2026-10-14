@@ -1,12 +1,20 @@
 # agentik-respeak
 
-agentik-respeak splits communication into two lanes. Agents may write shorthand to each other only for terms a lexicon ratifies; a person reads a narrative that a translator subagent writes in one of three modes, held to a style gate and to a verifier that proves an editorial pass changed prose only. The firmest evidence in the repo is for the human lane's tooling: a field run over about 2,000 files on 2026-09-21 drove a round of fixes, and two charters record the verifier refusing a model's render of the README.[^changelog][^sittings] The weakest evidence is for the problem itself and for the machine lane: a search of the repo's charters and tests found no incident of a person misreading agent shorthand, its lexicon holds three seed entries with zero recorded uses, and nothing measures token savings, a readability grade or the translator's accuracy.[^sittings][^tests][^corpus][^readme] Everything on this page is the repo's record at commit 319f060 unless marked otherwise.
+agentik-respeak splits communication into two lanes. Agents may write shorthand to each other, but only for terms a lexicon ratifies. A person reads a narrative that a translator subagent writes in one of three modes. A style gate checks that narrative, and a verifier proves that an editorial pass changed prose only.
+
+The firmest evidence in the repo is for the human lane's tooling. A field run over about 2,000 files on 2026-09-21 drove a round of fixes. Two charters record the verifier refusing a model's render of the README.[^changelog][^sittings]
+
+The weakest evidence is for the problem itself and for the machine lane. A search of the repo's charters and tests found no incident of a person misreading agent shorthand. The lexicon holds three seed entries with zero recorded uses. Nothing measures token savings, a readability grade or the translator's accuracy.[^sittings][^tests][^corpus][^readme]
+
+Everything on this page is the repo's record at commit 319f060 unless marked otherwise.
 
 ## The problem, as the repo states it
 
-Agents that write to each other spend context on every token, so the pressure to compress is structural. They drift into shorthand, and the person supervising becomes the outsider. The README names two bad responses: force prose on agents, which pays the attention cost on every message, or let the dialect drift, which gives up auditing your own automation.[^readme][^architecture] The first user was the owner's own set of plugins, run unattended with one session handing its work to the next. A second, smaller problem is that model-written prose carries recognisable tells; the corpus bans 234 phrases to meet it, six of them labelled as the owner's preference rather than research.[^corpus]
+Agents that write to each other drift into shorthand, and the person supervising becomes the outsider. The pressure to compress is structural: every token spends context. The README names two bad responses. One forces prose on agents and pays the attention cost on every message. The other lets the dialect drift and gives up auditing your own automation.[^readme][^architecture] The first user was the owner's own set of plugins, run unattended with one session handing its work to the next.
 
-The design leans on a literature the repo surveyed in August 2026: pairs of people shorten their descriptions fast and outsiders cannot read the signs they evolve; agents drift off English when nothing rewards English; word length tracks information content, so identifiers, numbers and errors are where short codes fail.[^researchsurvey] Part 1 re-opened what it could; see [Telling people what happened](../field/telling-people.md).
+A second, smaller problem is that model-written prose carries recognisable tells. To meet it, the corpus bans 234 phrases, six of them labelled as the owner's preference rather than research.[^corpus]
+
+The design draws on a literature the repo surveyed in August 2026. Pairs of people shorten their descriptions fast, and outsiders cannot read the signs they evolve. Agents drift off English when nothing rewards English. Word length tracks information content, so identifiers, numbers and errors are where short codes fail.[^researchsurvey] Part 1 re-opened what it could; see [Telling people what happened](../field/telling-people.md).
 
 ### What the repo measured
 
@@ -28,11 +36,11 @@ The design leans on a literature the repo surveyed in August 2026: pairs of peop
 | What enforces it | Instruction only | A scanner, a hook, a CI check and a verifier |
 | Evidence it works | None recorded | Tooling evidence above; no reader study |
 
-- **Modes and profiles.** `eli5` for a newcomer (one idea per sentence, at most one analogy), `bluf` for a manager (the result, decision or ask first, forwardable unedited) and `technical` for a peer engineer (the conclusion, then the evidence as a file and line, then open questions). A profile (`exec`, `peer-engineer`, `author`) sets depth and lexicon access and is orthogonal to the mode.[^config][^readme]
-- **The corpus.** 234 banned phrases in 22 categories (96 error, 138 warn), 60 replacement rules, 3 lexicon entries, and a tone map that replaces bare scalars with observable behaviours.[^corpus]
-- **The gate.** A PostToolUse hook on Write and Edit scans the written Markdown file, blocks with exit 2 on an error-severity hit the write introduced, and fails open on any setup problem. It is opt-in per project. A CI check gates every Markdown file git knows about from committed configuration only.[^gate]
-- **The verifier.** `respeak-verify-edit.py` holds headings, block structure counts, link targets, fenced code, inline code, numbers and front matter byte-identical across an editorial pass. Its invariants are structural: a review reproduced an appended false paragraph and a flipped "never" that pass, and the fix was deferred. For facts, the only guard is the translator's rule never to add, delete or correct a claim.[^verify][^reviews]
-- **The include file.** `/respeak:include write` renders a static file of at most 1,500 bytes from the configuration, with no model call, for CLAUDE.md to import; a reader without the plugin gets the rules.[^include]
+- **Modes and profiles.** `eli5` is for a newcomer: one idea per sentence, at most one analogy. `bluf` is for a manager: the result, decision or ask first, forwardable unedited. `technical` is for a peer engineer: the conclusion, then the evidence as a file and line, then open questions. A profile (`exec`, `peer-engineer`, `author`) sets depth and lexicon access and is orthogonal to the mode.[^config][^readme]
+- **The corpus.** It holds 234 banned phrases in 22 categories (96 error, 138 warn), 60 replacement rules and 3 lexicon entries. It also holds a tone map that replaces bare scalars with observable behaviours.[^corpus]
+- **The gate.** A PostToolUse hook on Write and Edit scans the written Markdown file. It blocks with exit 2 on an error-severity hit the write introduced, and fails open on any setup problem. It is opt-in per project. A CI check gates every Markdown file git knows about, using committed configuration only.[^gate]
+- **The verifier.** `respeak-verify-edit.py` holds headings, block structure counts, link targets, fenced code, inline code, numbers and front matter byte-identical across an editorial pass. Its invariants are structural. A review reproduced an appended false paragraph and a flipped "never", and both pass. The fix was deferred. For facts, the only guard is the translator's rule never to add, delete or correct a claim.[^verify][^reviews]
+- **The include file.** `/respeak:include write` renders a static file of at most 1,500 bytes from the configuration, with no model call. The file is for CLAUDE.md to import, so a reader without the plugin still gets the rules.[^include]
 
 ```mermaid
 flowchart LR
@@ -49,7 +57,7 @@ flowchart LR
   W["Hook on a Write or Edit of a human-lane file"] -->|"blocks hits the write added"| A1
 ```
 
-The diagram follows the README, the architecture document, the gate script and the skill, which allows the scan loop at most two rounds before it relays the narrative with the report attached.[^readme][^architecture][^gate][^skill]
+The diagram follows the README, the architecture document, the gate script and the skill. The skill allows the scan loop at most two rounds, then relays the narrative with the report attached.[^readme][^architecture][^gate][^skill]
 
 ## Alternatives the repo rejected
 
@@ -70,17 +78,17 @@ The diagram follows the README, the architecture document, the gate script and t
 - Machine-prose tells exist and expert readers see them; no study tests a banned-phrase list or shows that tone causes dislike.
 - Readability formulas are a weak gate by the studies found; the repo declares a grade per mode and computes none.[^config]
 - Bottom line up front is a standard, not a measured effect on a manager.
-- The two-lane split matches a military writing regulation, a medication-safety list of error-prone abbreviations, and Claude Code's own Concise output style, so it is supported as a pattern; the gate's effect on readers is unmeasured.
-- One benchmark found a false-success rate of 75.8 percent among runs that made a status claim, which argues for checking a "done" claim against a tool result before a person reads it. See [Telling people what happened](../field/telling-people.md).
+- The two-lane split is supported as a pattern. It matches a military writing regulation, a medication-safety list of error-prone abbreviations, and Claude Code's own Concise output style. The gate's effect on readers is unmeasured.
+- One benchmark found a false-success rate of 75.8 percent among runs that made a status claim. That argues for checking a "done" claim against a tool result before a person reads it. See [Telling people what happened](../field/telling-people.md).
 
 ## What is open
 
 - The machine lane is unmeasured: three seed entries, zero recorded uses, no token count.[^corpus]
-- The governance keys (a legibility floor, a cap of 150 terms, expiry, audits) are merged by the configuration resolver but enforced by no code; the translator's prompt names only the legibility floor, and the README lists the cap, the expiry and the audits as declared and not built.[^config][^readme][^tests]
+- The configuration resolver merges the governance keys (a legibility floor, a cap of 150 terms, expiry, audits), but no code enforces them. The translator's prompt names only the legibility floor. The README lists the cap, the expiry and the audits as declared and not built.[^config][^readme][^tests]
 - The verifier is structural, and the README's "meaning-preserving" is stronger than its invariants.[^reviews]
 - No reader study shows that people understand the three modes better than raw output.[^readme]
 - The translator is a model call: the renderer re-words the README on every run, so a render followed by `git status` cannot come back clean.[^sittings]
-- One owner; every recorded use is the owner's repos and unattended runs.[^readme]
+- The repo has one owner, and every recorded use is the owner's repos and unattended runs.[^readme]
 
 ## Sources
 
