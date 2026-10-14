@@ -53,7 +53,7 @@ What we tried, what worked, what did not, and what changed because of it. The si
 
 ## Five findings that matter most
 
-Long Claude Code sessions fail in ways that studies have measured on benchmarks, if not yet on Claude Code itself. This site reports the evidence on sessions that run for hours, for days, or unattended. It explains why five small open-source tools from agentik-dev and their shared front door exist. It sets out twenty-six practices, each with its evidence level. Every page cites its sources, every vendor fact is dated as of October 2026, and every tool's limits are named. The tools are young and used by one owner.[^profile] The sources found include no measurement that they beat the alternatives, and this site does not claim it; the [method](method.md) page gives the limits.
+Long Claude Code sessions fail in ways that studies have measured on benchmarks, if not yet on Claude Code itself. These five findings carry the most weight, each with its number, its source and what to do about it. Every vendor fact is dated as of October 2026. The agentik tools are young and used by one owner,[^profile] and no source found measures them against the alternatives; the [method](method.md) page gives the limits.
 
 <div class="ak-findings" markdown>
 
@@ -83,6 +83,7 @@ This site does not claim that any tool is proven. The tools' evidence is one own
 ## Where to start
 
 - If you run Claude Code, read the [practices](practices.md), then the chapter behind any practice you doubt.
+- If you want to see the practices fail and change, read the [journal](journal/index.md).
 - If you are evaluating the tools, read [the tools](tools/index.md), then each page's "what part 1 says" and "what is open" sections.
 - If you are checking the evidence, read [the field](field/index.md), the [method](method.md) and its limits, and the [sources](sources.md).
 

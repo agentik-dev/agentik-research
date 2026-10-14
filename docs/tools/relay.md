@@ -1,10 +1,12 @@
 # agentik-relay
 
-agentik-relay runs a night of queued packets while nobody watches. Each queue row gets one git worktree, one branch and one `claude -p` child. A deterministic gate decides whether the branch merges. The relay has thirty named stop reasons and two layers of money cap. Its README states the aim: a night that fails early, never pushes, amends or rebases, and leaves a door back into every stopped sitting.[^readme] Its reviews record the cycles by which a night could fork past its means, and its ledger records what writing packets inside a night cost.[^reviews][^decisions]
+agentik-relay runs a night of queued packets while nobody watches. Each queue row gets one git worktree, one branch and one `claude -p` child, and a deterministic gate decides whether the branch merges. It is for one owner who wants planned work built overnight and read in the morning. Its evidence is our use: one owner's nights on one Mac, from 2026-09-22 to 2026-10-13. Everything on this page is that record unless marked otherwise.[^sittings][^nth]
 
-The repo's record is the longest in the suite. At commit a326550 it holds 132 sitting charters and 87 packets. A count of the test files finds 706 test functions, against the README's 699. All of it comes from one owner's nights on one Mac, between 2026-09-22 and 2026-10-13.[^sittings][^packetsdir][^readme][^nth] Everything on this page is that record, labelled our use, unless marked otherwise. Commands are written in the suite's planned form, `agentik relay <verb>`; at that commit the Makefile still builds the binary under the bare tool name.[^makefile][^commonsrecord]
+## The problem
 
-## The problem, as the repo records it
+You queue work, start a night and walk away. Whatever goes wrong next has no person to catch it. A child can start more children, a crash can leave a lock held, a test can fail only under load, a child can stall without knowing it, a child can reach past its branch, and every row costs money. The night has to decide alone whether to stop or move on.
+
+The relay's reviews record the cycles by which a night could fork past its means, and its ledger records what writing packets inside a night cost.[^reviews][^decisions] The repo's record, failure by failure:
 
 - **Runaway recursion.** On 2026-09-23 a night was bounded against a fork storm. A design review counted nine cycles by which the relay could re-invoke itself. Eight were bounded; one was not: a child running `agentik relay run` would spawn grandchildren under its own worktree with the same environment. An adversarial review reproduced it, and a killed relay left two spawned processes alive. The response was a TLA+ model of the night. It keeps fork storms as violations the checker must find, four of them at the commit read.[^reviews][^packetsdir][^tla]
 - **Lock contention.** The stage lock never checked its holder's pid, so a crashed relay left its row refused until a person removed the lock. The live-process probe had no timeout and took minutes under load. A shell shim held a rehash lock for 60 seconds. The one-relay-per-account guard went from a pid file to a loopback TCP port. Reviews found a child could get past the earlier forms by changing its environment, detaching, or unlinking the pid file.[^reviews][^designr1]
@@ -13,7 +15,37 @@ The repo's record is the longest in the suite. At commit a326550 it holds 132 si
 - **Cost.** One run of 183 sittings cost 653 dollars, of which 58 packet-writer sittings cost 261. Builders ran the verify line about 2.7 times a row, which took 46 percent of a night's time. A row whose gate read unrun after a bytecode file moved cost 6.79 dollars, with five acts unjudged. Two nights lost stacks of 9 and 7 dependent rows when a parent row hit its soft context ceiling one act short.[^decisions][^packetsdir][^nth][^pycache]
 - **What a child can reach.** Reviewers reproduced a child moving `main` with `update-ref` and hiding touched paths behind a tag. They also reproduced a child passing a helper `claude` line that disabled hooks or set an unbounded turn count. These are reproductions on the relay's own code, not misbehaviour seen in a night.[^reviews][^designr1]
 
-## The design
+## A human example: a checklist before an irreversible step
+
+In 2007 and 2008, a study in the World Health Organization's Safe Surgery Saves Lives program brought a 19-item checklist to eight hospitals in eight cities, from Toronto to Ifakara. The operating team reads it aloud at three points: before anaesthesia, before the skin incision, and before the patient leaves the operating room. Its items include confirming the patient's identity and the site, the antibiotic timing, and the instrument and sponge counts.[^haynes]
+
+The study compared 3,733 patients before the checklist with 3,955 after, in the same operating rooms. Deaths in hospital fell from 1.5 to 0.8 percent, and inpatient complications from 11.0 to 7.0 percent. The study was not randomised: it compared a period before with a period after, and the authors name a secular trend and the Hawthorne effect as dangers to that design. They could not measure how closely teams kept to the briefings and debriefings. At the high-income sites the fall in deaths, from 0.9 to 0.6 percent, was not significant.[^haynes]
+
+A checklist read by people is an analogy for a deterministic gate, not evidence for one. The relay's gate is a checklist with nobody in the room: it checks each night's row before its branch may merge.
+
+## What the research teaches
+
+Part 1 backs the relay's two outside checks, the watchdog and the gate. It also marks where the relay leans on engine behaviour that has holes or has changed.
+
+**What it supports.**
+
+- No main-session progress watchdog is documented, so the relay's outside watchdog fills a real gap.[^network] The `subagents/` transcript directory is documented.[^subagents]
+- A sign-off that is a check outside the reviewer follows the <span class="ev ev-measured">measured</span> finding that external checks beat self-judgement. See [Review that ends](../field/review.md).
+- The documentation and two reported isolation leaks support one worktree per writer. The step from shared refs to lock contention is <span class="ev ev-conjecture">conjecture</span>. See [Many agents](../field/many-agents.md).
+- The relay times a builder's verify line against the Bash tool's 600-second cap, at 540 seconds, a tenth under it.[^designr1] That cap is the documented ceiling, and the default is 120 seconds.[^bash]
+
+**Where it cuts against the relay.**
+
+- The budget overshoot is <span class="ev ev-documented">documented</span>: `--max-budget-usd` is checked after each response and is a client-side estimate. See [Unattended runs and guardrails](../field/unattended-and-guardrails.md).
+- The rule that a completed `-p` run stops background work held from Claude Code 2.1.163 to 2.1.291, and not after. The relay's record names versions 2.1.263 to 2.1.296.[^changelog][^usagelimit]
+- Claude Code does not strip `CLAUDE*` variables from a child; it sets `CLAUDECODE` and `CLAUDE_CODE_CHILD_SESSION` in the child. The relay strips them itself, which is a choice, not a correction of the engine.[^envvars][^designr1]
+- Deny rules that match command text have documented bypasses (an absolute path, `bash -c`, `git -C`).[^permissions] A PreToolUse hook fails open on a timeout by default.[^hooks] The sandbox covers shell commands and their children only, and the relay runs without one.[^sandbox][^designr1] The relay's four recorded guard evasions (a command substitution, backticks, a variable holding the command name, `pkill -f`) are of the same kind.[^nth]
+
+## The approach
+
+The README states the aim: a night that fails early, never pushes, amends or rebases, and leaves a door back into every stopped sitting.[^readme] Commands on this page use the suite's planned form, `agentik relay <verb>`; at commit a326550 the Makefile still builds the binary under the bare tool name.[^makefile][^commonsrecord]
+
+### A night, row by row
 
 A night is one `agentik relay run`: a plan, then a loop over the queue. A row names a packet and a budget. The relay stages a worktree and a branch, starts one child in it, and runs the gate when the child exits. A green gate may merge. The night ends with a stop reason.
 
@@ -40,12 +72,14 @@ flowchart TD
 - **The child.** `caffeinate -i claude -p --permission-mode auto --allowedTools "Bash Edit Write MultiEdit NotebookEdit" --model <m> --max-turns <n> --max-budget-usd <x> --output-format stream-json --verbose --session-id <uuid>`, run from the worktree, with the resume line known before the first byte. Its stdin is the repo's every-session block, a rules block, one context line and the packet verbatim. Its git is fenced by a pre-push hook that refuses, a deny push URL on every remote, and PreToolUse guards. The guards read Bash through a real shell parser, adopted after three review rounds each found a shape the hand-written reader missed.[^designr1][^guardparser][^decisions]
 - **The gate.** Deterministic, zero tokens, in the driver: the same function by hand and at night. It checks, in order, for a result event with no error, HEAD moved, a clean tree, origin unmoved and no orphans. Every changed path must then fall within the may-touch list. Each acceptance line then re-runs in a fresh clone at the bound sha, under a pinned environment, with a 900-second limit. Next the verify line runs. Last comes the merge, only under the `merge-on-green` policy; it first runs the verify line on the merged tree. The queue's default policy is `branch-only`, which keeps the branch for the owner.[^queue] A gate whose facts cannot be read is unrun, and an unrun gate is never a pass.[^designr1]
 - **Stop reasons.** The code names thirty. A packet failure (a red gate, a stall, an unrun gate) is the builder's, and the night moves on to the next independent row. A sitting failure means the prompt or the driver is broken, and the night stops. A usage limit or an expired login kills every running row.[^code][^designr1]
-- **Money.** Per row, the budget becomes the child's own `--max-budget-usd`, with defaults of 15 dollars and 100 turns. Per night, the relay compares `--max-usd` with the ledger tally before each pick. When no result event read a sitting's cost, the tally holds that sitting at its own budget, never at zero. No code kills a running sitting for the night cap, so a night can overshoot by the running rows' budgets. That is our reading of the code, not a measured overshoot.[^code][^queue]
+- **Money.** Two layers cap it. Per row, the budget becomes the child's own `--max-budget-usd`, with defaults of 15 dollars and 100 turns. Per night, the relay compares `--max-usd` with the ledger tally before each pick. When no result event read a sitting's cost, the tally holds that sitting at its own budget, never at zero. No code kills a running sitting for the night cap, so a night can overshoot by the running rows' budgets. That is our reading of the code, not a measured overshoot.[^code][^queue]
 - **The watchdog.** Every 60 seconds it samples the worktree's HEAD, the newest file time outside `.git`, and the CPU seconds of the child's process group. If all three stay unchanged for 2,700 seconds, it kills the group. The row goes red with reason stalled, and a second stall stops the night. After exit, an orphan sweep kills survivors by start time, so it never kills a reused pid.[^designr1][^code]
 - **Usage limits.** The relay classifies a rate-limit event as a window, a weekly limit, a model limit or unknown. A window limit pauses the night until the reset plus two minutes. A model limit with a reset pauses only that model's rows. A weekly limit stops the night. Paused rows continue under a fresh session id rather than a resume. A row stopped by a limit had sat at 206k context, which a resume would reload with a cold cache.[^usagelimit][^decisions]
 - **The morning read.** `agentik relay report` prints merged SHAs, stops verbatim, burn per sitting, branches waiting and the resume line for every red or failed row.[^readme]
 
-## Alternatives the repo rejected
+### Alternatives the repo rejected
+
+The repo records eight choices against a named alternative, each with its reason.
 
 | Decision | Rejected alternative | The reason given |
 |---|---|---|
@@ -58,19 +92,26 @@ flowchart TD
 | The ledger stays out of the repo | Copy it into history at close | Decision D18: the report is the only repo write[^designr1] |
 | A stalled row is red, a second stall stops the night | Every stall stops the night | A stall can be the driver's as much as the packet's[^reviews] |
 
-## What part 1 says
+## Does it work?
 
-- The budget overshoot is documented: `--max-budget-usd` is checked after each response and is a client-side estimate. See [Unattended runs and guardrails](../field/unattended-and-guardrails.md).
-- The rule that a completed `-p` run stops background work held from Claude Code 2.1.163 to 2.1.291, and not after. The relay's record names versions 2.1.263 to 2.1.296.[^changelog][^usagelimit]
-- Claude Code does not strip `CLAUDE*` variables from a child; it sets `CLAUDECODE` and `CLAUDE_CODE_CHILD_SESSION` in the child. The relay strips them itself, which is a choice, not a correction of the engine.[^envvars][^designr1]
-- The relay times a builder's verify line against the Bash tool's 600-second cap, at 540 seconds, a tenth under it.[^designr1] That cap is the documented ceiling, and the default is 120 seconds.[^bash] The `subagents/` transcript directory is documented.[^subagents] No main-session progress watchdog is documented, so the relay's outside watchdog fills a real gap.[^network]
-- Deny rules that match command text have documented bypasses (an absolute path, `bash -c`, `git -C`).[^permissions] A PreToolUse hook fails open on a timeout by default.[^hooks] The sandbox covers shell commands and their children only, and the relay runs without one.[^sandbox][^designr1] The relay's four recorded guard evasions (a command substitution, backticks, a variable holding the command name, `pkill -f`) are of the same kind.[^nth]
-- The documentation and two reported isolation leaks support one worktree per writer. The step from shared refs to lock contention is conjecture. See [Many agents](../field/many-agents.md).
-- A sign-off that is a check outside the reviewer follows the measured finding that external checks beat self-judgement. See [Review that ends](../field/review.md).
+<div class="ak-verdict" markdown>
 
-## What is open
+<span class="ev ev-our-use">our use</span> One owner's nights on one Mac, from 2026-09-22 to 2026-10-13: 132 sitting charters and 87 packets. Treat it as a record of use, not a test; nothing on this page compares the relay with another way to run a night.
+
+</div>
+
+The repo's record is the longest in the suite. At commit a326550 it holds the 132 sitting charters and 87 packets, and a count of the test files finds 706 test functions, against the README's 699.[^sittings][^packetsdir][^readme][^nth] Beside the tests, the record holds adversarial reviews that reproduce attacks on the relay's own code, and a TLA+ model of the night.[^reviews][^tla]
+
+What it does not measure:
 
 - Every incident and measurement is one owner's, on one Mac. The ledger is outside the repo, so you cannot check any aggregate of nights or dollars.[^nth]
+- The night cap's overshoot is our reading of the code, not a measured overshoot (see Money, above).
+- The stall rule has no tuning data, because no real stall is recorded (see below).
+
+## What has not worked, and what is open
+
+The failures the record holds are listed under the problem, above. The journal tells of one more night that stopped: [The probe that stopped a night](../journal/posts/2026-09-30-the-probe-that-stopped-a-night.md). What stays open:
+
 - The relay has no sandbox. The design says a line can do anything the owner's account can until it runs in one, and the hooks stay advisory.[^designr1]
 - The zsh test table for the guard parser is owed and recorded as an open risk.[^decisions]
 - The 120 percent kill waits on recorded nights to tune it.[^designr1] The 25 percent idle floor is a judgment until a load sweep confirms it, and the breaker page disagrees with itself on whether that sweep has run.[^breaker]
@@ -110,3 +151,4 @@ flowchart TD
 [^permissions]: Anthropic, "Configure permissions", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/permissions>.
 [^hooks]: Anthropic, "Hooks reference", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/hooks>.
 [^sandbox]: Anthropic, "Configure the sandboxed Bash tool", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/sandboxing>.
+[^haynes]: Alex B. Haynes, Thomas G. Weiser, William R. Berry, Stuart R. Lipsitz, Atul A. Gawande and colleagues, for the Safe Surgery Saves Lives Study Group, "A Surgical Safety Checklist to Reduce Morbidity and Mortality in a Global Population", N Engl J Med 360(5):491-499, 29 January 2009, <https://dash.harvard.edu/server/api/core/bitstreams/c5287a52-75bc-4131-9262-4c598fcde8cc/content>.

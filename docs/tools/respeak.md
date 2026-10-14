@@ -1,32 +1,35 @@
 # agentik-respeak
 
-agentik-respeak splits communication into two lanes. Agents may write shorthand to each other, but only for terms a lexicon ratifies. A person reads a narrative that a translator subagent writes in one of three modes. A style gate checks that narrative, and a verifier proves that an editorial pass changed prose only.
+agentik-respeak is a Claude Code plugin that splits communication into two lanes. Agents may write shorthand to each other, but only for terms a lexicon ratifies. A person reads a narrative that a translator subagent writes in one of three modes; a style gate checks that narrative, and a verifier checks that an editorial pass changed prose only.[^readme] It is for the person who supervises agents that hand work to each other. Its evidence is our use on one owner's repos and sites, and it covers the human lane's tooling, not the problem or the machine lane. Repo facts on this page are the record at commit 319f060 unless marked otherwise.
 
-The firmest evidence in the repo is for the human lane's tooling. A field run over about 2,000 files on 2026-09-21 drove a round of fixes. Two charters record the verifier refusing a model's render of the README.[^changelog][^sittings]
+## The problem
 
-The weakest evidence is for the problem itself and for the machine lane. A search of the repo's charters and tests found no incident of a person misreading agent shorthand. The lexicon holds three seed entries with zero recorded uses. Nothing measures token savings, a readability grade or the translator's accuracy.[^sittings][^tests][^corpus][^readme]
+You run agents that hand work to each other, and you read their notes afterwards. Every token in those notes spends context, so the agents compress. Left alone, they drift into shorthand, and you become the outsider in your own run.
 
-Everything on this page is the repo's record at commit 319f060 unless marked otherwise.
+The README's case is a set of Claude Code plugins run unattended, with one session handing its work to the next.[^readme] It calls the pressure to compress structural and names two bad responses. Forcing prose on agents pays the attention cost on every message. Letting the dialect drift gives up auditing your own automation.[^readme][^architecture] The repo records no instance of the failure: a search of its charters and tests found no incident of a person misreading agent shorthand.[^sittings][^tests]
 
-## The problem, as the repo states it
+A second, smaller problem is that model-written prose carries recognisable tells. The corpus bans 234 phrases to meet it, six of them labelled as the owner's preference rather than research.[^corpus]
 
-Agents that write to each other drift into shorthand, and the person supervising becomes the outsider. The pressure to compress is structural: every token spends context. The README names two bad responses. One forces prose on agents and pays the attention cost on every message. The other lets the dialect drift and gives up auditing your own automation.[^readme][^architecture] The README's case is a set of Claude Code plugins run unattended, with one session handing its work to the next.[^readme]
+## A human example: the reference game
 
-A second, smaller problem is that model-written prose carries recognisable tells. To meet it, the corpus bans 234 phrases, six of them labelled as the owner's preference rather than research.[^corpus]
+In a 1986 study, eight pairs of students sat on either side of an opaque screen, each side holding the same 12 abstract figures. A director described the figures in order, and a matcher arranged identical cards to match. Each pair did this six times, with the same figures in new orders. Directors used an average of 41 words per figure on trial 1 and 8 on trial 6, and their speaking turns per figure fell from 3.7 to about one.[^clark] One figure began as a person ice skating with two arms stuck out in front; by trial 6 the whole reference was "The ice skater."[^clark] respeak's README gives the fall as "about forty words" to "two";[^readme] the paper's mean on trial 6 is 8 words.
 
-The design draws on a literature the repo surveyed in August 2026. Pairs of people shorten their descriptions fast, and outsiders cannot read the signs they evolve. Agents drift off English when nothing rewards English. Word length tracks information content, so identifiers, numbers and errors are where short codes fail.[^researchsurvey] Part 1 re-opened what it could; see [Telling people what happened](../field/telling-people.md).
+A 1989 study ran the same game with ten pairs, then had forty other students hear the recordings and do the matcher's task. Matchers placed 99 percent of the figures correctly. Overhearers who heard every word from trial 1 placed 88 percent, and those who joined at trial 3 placed 68 percent. In the authors' words, "addressees were more accurate at arranging the figures than overhearers even when the overhearers heard every word."[^schober]
 
-### What the repo measured
+Neither study tested agents, and [part 1](../field/telling-people.md) found that the step to agents rests on an analogy. A pair's shorthand works inside the pair and leaves an overhearer behind: agents writing to each other are the pair, and the person supervising the run is the overhearer.
 
-| Measurement | Result | Caveat |
-|---|---|---|
-| One editorial pass over a 4,000-word design document, 2026-08-31 | Error-severity banned phrases 3 to 0; em-dashes per 1,000 words 19.9 to 3.1; average sentence 32.1 to 24.5 words; headings, links, code and numbers unchanged | The README calls it sizing evidence; the source document was removed; the sentence figures predate a splitter fix[^readme][^changelog] |
-| A ten-agent pass over nine sites, about 2,000 files, 2026-09-21 | A heading hit locked a file against every later edit; one site's average sentence measured 68.9 words because the splitter read bullet lists as sentences; a scan without its config reported 36 errors against 13 real ones; a hard-wrapped line published as a heading while the verifier passed | The sites are private; the counts cannot be re-run[^changelog] |
-| The hand-edited README | 40,089 bytes; the rendered one 21,453 at that release, and 18,541 at the commit read by this site's byte count | One file[^changelog][^readme] |
-| README renders through the translator | One took 6 minutes; one was killed at the 600-second wall; in two charters the verifier refused a render that changed code spans, and the README was left untouched | A model call varies run to run[^sittings] |
-| Tests | 272 unit tests and 10 shell suites, counted at the commit | A count, not an outcome[^tests] |
+## What the research teaches
 
-## The design
+The design draws on a literature the repo surveyed in August 2026. Pairs of people shorten their descriptions fast, and outsiders cannot read the signs they evolve. Agents drift off English when nothing rewards English. Word length tracks information content, so identifiers, numbers and errors are where short codes fail.[^researchsurvey] Part 1 re-opened what it could; see [Telling people what happened](../field/telling-people.md). It finds measured support for parts of the human lane, one precedent for the split, and no record of the failure the machine lane guards against.
+
+- <span class="ev ev-measured">measured</span> One benchmark found that 75.8 percent of failed runs with an explicit status claim claimed success.[^advani] That argues for checking a "done" claim against a tool result before a person reads it. Machine-prose tells exist and expert readers see them; the sources found include no study of a banned-phrase list or of tone causing dislike.[^kobak][^russell]
+- <span class="ev ev-documented">documented</span> The split by reader has one precedent among the standards found: an Army regulation bans brevity codes in letters to people outside the department.[^army] A medication-safety list bans its abbreviations for every reader, and Claude Code's output style, as documented in October 2026, has one lane.[^ismp][^outputstyles] Bottom line up front is a standard, not a measured effect on a manager.
+- <span class="ev ev-conjecture">conjecture</span> The lock-out risk rests on an analogy from human pairs; no source records an agent dialect locking out a person.
+- Readability formulas are a weak gate by the studies found; the repo declares a grade per mode and computes none.[^config] The gate's effect on readers is unmeasured.
+
+## The approach
+
+respeak keeps the lanes apart and enforces only the human lane with code. The machine lane runs on instruction alone.
 
 | | Machine lane | Human lane |
 |---|---|---|
@@ -34,12 +37,12 @@ The design draws on a literature the repo surveyed in August 2026. Pairs of peop
 | The rule | Shorthand only for ratified terms; error messages, security findings, user quotes and numbers with units never shortened | One of three modes; a style gate over banned phrases, sentence length and dash density |
 | How it reaches the writer | A digest of the lexicon imported into CLAUDE.md; nothing intercepts traffic | The translator agent, the skill, the hook gate, the CI check |
 | What enforces it | Instruction only | A scanner, a hook, a CI check and a verifier |
-| Evidence it works | None recorded | Tooling evidence above; no reader study |
+| Evidence it works | None recorded | Tooling evidence, under "Does it work?"; no reader study |
 
 - **Modes and profiles.** `eli5` is for a newcomer: one idea per sentence, at most one analogy. `bluf` is for a manager: the result, decision or ask first, forwardable unedited. `technical` is for a peer engineer: the conclusion, then the evidence as a file and line, then open questions. A profile (`exec`, `peer-engineer`, `author`) sets depth and lexicon access and is orthogonal to the mode.[^config][^readme][^architecture]
 - **The corpus.** It holds 234 banned phrases in 22 categories (96 error, 138 warn), 60 replacement rules and 3 lexicon entries. It also holds a tone map that replaces bare scalars with observable behaviours.[^corpus]
 - **The gate.** A PostToolUse hook on Write and Edit scans the written Markdown file. It blocks with exit 2 on an error-severity hit the write introduced, and fails open on any setup problem. It is opt-in per project. A CI check gates every Markdown file git knows about, using committed configuration only.[^gate]
-- **The verifier.** `respeak-verify-edit.py` holds headings, block structure counts, link targets, fenced code and front matter unchanged across an editorial pass, and inline code and numbers as the same multiset. Its invariants are structural. A review reproduced an appended false paragraph and a flipped "never", and both pass. The fix was deferred to its own packet. For facts, the only guard is the translator's rule never to add, delete or correct a claim.[^verify][^reviews][^deferral][^agent]
+- **The verifier.** `respeak-verify-edit.py` holds headings, block structure counts, link targets, fenced code and front matter unchanged across an editorial pass, and inline code and numbers as the same multiset. Its invariants are structural.[^verify]
 - **The include file.** `/respeak:include write` renders a static file of at most 1,500 bytes from the configuration, with no model call. The file is for CLAUDE.md to import, so a reader without the plugin still gets the rules.[^include]
 
 ```mermaid
@@ -59,7 +62,9 @@ flowchart LR
 
 The diagram follows the README, the architecture document, the gate script and the skill. The skill allows the scan loop at most two rounds, then relays the narrative with the report attached.[^readme][^architecture][^gate][^skill]
 
-## Alternatives the repo rejected
+### Why this design over the alternatives
+
+The repo rejects both ends, forced prose and free drift, and builds a proposal path where a fixed vocabulary would ossify.
 
 | Alternative | What the repo says |
 |---|---|
@@ -72,22 +77,32 @@ The diagram follows the README, the architecture document, the gate script and t
 | An external linter such as Vale | Not rejected: compiling the corpus to a Vale package is the designed CI path, not yet built[^readme][^architecture] |
 | A hand-kept README | Replaced by a rendered, verified, stamped one after it reached 40,089 bytes[^changelog] |
 
-## What part 1 says
+## Does it work?
 
-- The lock-out risk rests on an analogy from human pairs; no source records an agent dialect locking out a person.
-- Machine-prose tells exist and expert readers see them; the sources found include no study of a banned-phrase list or of tone causing dislike.[^kobak][^russell]
-- Readability formulas are a weak gate by the studies found; the repo declares a grade per mode and computes none.[^config]
-- Bottom line up front is a standard, not a measured effect on a manager.
-- The split by reader has one precedent among the standards found: an Army regulation bans brevity codes in letters to people outside the department.[^army] A medication-safety list bans its abbreviations for every reader, and Claude Code's output style, as documented in October 2026, has one lane.[^ismp][^outputstyles] The gate's effect on readers is unmeasured.
-- One benchmark found that 75.8 percent of failed runs with an explicit status claim claimed success.[^advani] That argues for checking a "done" claim against a tool result before a person reads it. See [Telling people what happened](../field/telling-people.md).
+<div class="ak-verdict" markdown>
 
-## What is open
+<span class="ev ev-our-use">our use</span> One field test (n=1), one field run over about 2,000 files, and the repo's own charters, all on one owner's repos and sites. They test the human lane's tooling, not the problem, the machine lane or a reader.
 
-- The machine lane is unmeasured: three seed entries, zero recorded uses, no token count.[^corpus]
-- The configuration resolver merges the governance keys (a legibility floor, a cap of 150 terms, expiry, audits), but no code enforces them. The translator's prompt names only the legibility floor.[^agent] The README lists the cap, the expiry and the audits as declared and not built.[^config][^readme][^tests]
-- The verifier is structural, and the README's "meaning-preserving" is stronger than its invariants.[^reviews]
-- No reader study shows that people understand the three modes better than raw output.[^readme]
+</div>
+
+The firmest evidence is for the human lane's tooling. A field run over about 2,000 files on 2026-09-21 drove a round of fixes. Two charters record the verifier refusing a model's render of the README.[^changelog][^sittings] The journal entry [Two lanes](../journal/posts/2026-08-31-two-lanes.md) covers the 2026-08-31 field test.
+
+| Measurement | Result | Caveat |
+|---|---|---|
+| One editorial pass over a 4,000-word design document, 2026-08-31 | Error-severity banned phrases 3 to 0; em-dashes per 1,000 words 19.9 to 3.1; average sentence 32.1 to 24.5 words; headings, links, code and numbers unchanged | The README calls it sizing evidence; the source document was removed; the sentence figures predate a splitter fix[^readme][^changelog] |
+| A ten-agent pass over nine sites, about 2,000 files, 2026-09-21 | A heading hit locked a file against every later edit; one site's average sentence measured 68.9 words because the splitter read bullet lists as sentences; a scan without its config reported 36 errors against 13 real ones; a hard-wrapped line published as a heading while the verifier passed | The sites are private; the counts cannot be re-run[^changelog] |
+| The hand-edited README | 40,089 bytes; the rendered one 21,453 at that release, and 18,541 at the commit read by this site's byte count | One file[^changelog][^readme] |
+| README renders through the translator | One took 6 minutes; one was killed at the 600-second wall; in two charters the verifier refused a render that changed code spans, and the README was left untouched | A model call varies run to run[^sittings] |
+| Tests | 272 unit tests and 10 shell suites, counted at the commit | A count, not an outcome[^tests] |
+
+The weakest evidence is for the problem itself, which has no recorded incident, and for the machine lane. The lexicon holds three seed entries with zero recorded uses and no token count.[^corpus] Nothing measures token savings, a readability grade or the translator's accuracy.[^tests][^readme] No reader study shows that people understand the three modes better than raw output.[^readme]
+
+## What has not worked, and what is open
+
+- The verifier passes false content. A review reproduced an appended false paragraph and a flipped "never", and both pass.[^reviews] The fix was deferred to its own packet.[^deferral] For facts, the only guard is the translator's rule never to add, delete or correct a claim.[^agent] The README's "meaning-preserving" is stronger than the verifier's invariants.[^reviews]
+- The 2026-09-21 field run found the faults in the table above: a locked file, a splitter that misread lists, a scan that over-reported without its config, and a hard-wrapped line that published as a heading while the verifier passed.[^changelog]
 - The translator is a model call: the renderer re-words the README on every run, so a render followed by `git status` cannot come back clean.[^sittings]
+- The configuration resolver merges the governance keys (a legibility floor, a cap of 150 terms, expiry, audits), but no code enforces them. The translator's prompt names only the legibility floor.[^agent] The README lists the cap, the expiry and the audits as declared and not built.[^config][^readme][^tests]
 - The repo has one owner, and every recorded use is on the owner's own repos and sites.[^readme][^changelog]
 
 ## From the journal
@@ -101,6 +116,8 @@ The diagram follows the README, the architecture document, the gate script and t
 [^corpus]: agentik-dev/agentik-respeak, "plugin/corpus/", commit 319f060, <https://github.com/agentik-dev/agentik-respeak/tree/319f060/plugin/corpus>.
 [^readme]: agentik-dev/agentik-respeak, "README.md", commit 319f060, <https://github.com/agentik-dev/agentik-respeak/blob/319f060/README.md>.
 [^architecture]: agentik-dev/agentik-respeak, "docs/architecture.md", commit 319f060, <https://github.com/agentik-dev/agentik-respeak/blob/319f060/docs/architecture.md>.
+[^clark]: Herbert H. Clark and Deanna Wilkes-Gibbs, "Referring as a collaborative process", Cognition 22(1):1-39, 1986, <https://web.stanford.edu/~clark/1980s/Clark,%20H.H.%20_%20Wilkes-Gibbs,%20D.%20_Referring%20as%20a%20collaborative%20process_%201986.pdf>.
+[^schober]: Michael F. Schober and Herbert H. Clark, "Understanding by Addressees and Overhearers", Cognitive Psychology 21:211-232, 1989, <https://web.stanford.edu/~clark/1980s/Schober,%20M.F.%20_%20Clark,%20H.H.%20_Understanding%20by%20addressees%20and%20overhearers_%201989.pdf>.
 [^researchsurvey]: agentik-dev/agentik-respeak, "research/sources/" and "research/synthesis/", the August 2026 survey, commit 319f060, <https://github.com/agentik-dev/agentik-respeak/tree/319f060/research>.
 [^tests]: agentik-dev/agentik-respeak, "tests/", commit 319f060, <https://github.com/agentik-dev/agentik-respeak/tree/319f060/tests>.
 [^config]: agentik-dev/agentik-respeak, "plugin/config/respeak.config.yaml", commit 319f060, <https://github.com/agentik-dev/agentik-respeak/blob/319f060/plugin/config/respeak.config.yaml>.

@@ -31,12 +31,12 @@ Vercel's own evaluation is reported rather than measured, because it states neit
 
 | Item | Placement | Reason | Evidence |
 |---|---|---|---|
-| A rule that must hold on every turn | A hook, plus one short CLAUDE.md line | CLAUDE.md is advisory; a file lifted one rule from 0 to 67.7 percent, and a hook can block | Documented;[^bestpractices][^hooks] measured[^mcmillan] |
-| A decision ledger | A short index, always loaded; entries read by pointer | The vendor caps its own index; the ledger's caps are untested | Documented;[^memory] conjecture for the caps |
-| A handoff charter | A small file, read first | A new session reads a progress file, the git log and a feature list first | Reported[^harnesses] |
-| Reference documents | An always-loaded index, or a pointer the instructions say when to follow | A skill that waited to be invoked went unused in 56 percent of cases; an always-loaded index did not | Reported[^vercel] |
-| Skills | The description always; the body on use | The listing costs context on every turn; the body enters on use and stays | Documented[^skills] |
-| Tool output | Sent to a subagent that returns a summary, or cleared | Reads fill the window | Documented[^bestpractices] |
+| A rule that must hold on every turn | A hook, plus one short CLAUDE.md line | CLAUDE.md is advisory; a file lifted one rule from 0 to 67.7 percent, and a hook can block | <span class="ev ev-documented">documented</span>;[^bestpractices][^hooks] <span class="ev ev-measured">measured</span>[^mcmillan] |
+| A decision ledger | A short index, always loaded; entries read by pointer | The vendor caps its own index; the ledger's caps are untested | <span class="ev ev-documented">documented</span>;[^memory] <span class="ev ev-conjecture">conjecture</span> for the caps |
+| A handoff charter | A small file, read first | A new session reads a progress file, the git log and a feature list first | <span class="ev ev-reported">reported</span>[^harnesses] |
+| Reference documents | An always-loaded index, or a pointer the instructions say when to follow | A skill that waited to be invoked went unused in 56 percent of cases; an always-loaded index did not | <span class="ev ev-reported">reported</span>[^vercel] |
+| Skills | The description always; the body on use | The listing costs context on every turn; the body enters on use and stays | <span class="ev ev-documented">documented</span>[^skills] |
+| Tool output | Sent to a subagent that returns a summary, or cleared | Reads fill the window | <span class="ev ev-documented">documented</span>[^bestpractices] |
 
 ## Where sources disagree
 
@@ -55,10 +55,10 @@ The second concerns file length and the ledger's caps. The cost of a context fil
 
 ## Practices this evidence supports
 
-- Cut any CLAUDE.md line whose removal would cause no mistake, and stay under 200 lines. Documented.[^bestpractices][^memory]
-- Put a rule that must hold in a hook, and set `onFailure` to block where failing open is unsafe. Documented.[^hooks]
-- Keep a short always-loaded index rather than a pointer that waits to be invoked. Reported.[^vercel]
-- Write handoff state to files and read them first. Reported.[^harnesses]
+- Cut any CLAUDE.md line whose removal would cause no mistake, and stay under 200 lines. <span class="ev ev-documented">documented</span>.[^bestpractices][^memory]
+- Put a rule that must hold in a hook, and set `onFailure` to block where failing open is unsafe. <span class="ev ev-documented">documented</span>.[^hooks]
+- Keep a short always-loaded index rather than a pointer that waits to be invoked. <span class="ev ev-reported">reported</span>.[^vercel]
+- Write handoff state to files and read them first. <span class="ev ev-reported">reported</span>.[^harnesses]
 
 ## From the journal
 

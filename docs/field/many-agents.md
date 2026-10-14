@@ -55,9 +55,9 @@ agentik-agents found that three of four delegates that hit a denied tool returne
 
 ## Practices this evidence supports
 
-- Fan out only decomposable work; keep sequential work in one agent. Measured.[^kim]
-- One worktree and one file set per parallel writer. Documented and reported.[^worktrees][^issue84685]
-- Give a fresh-context reviewer concrete criteria. Documented.[^multiagentblog] Make its role report-only. Our use.[^relayadversary]
+- Fan out only decomposable work; keep sequential work in one agent. <span class="ev ev-measured">measured</span>.[^kim]
+- One worktree and one file set per parallel writer. <span class="ev ev-documented">documented</span> and <span class="ev ev-reported">reported</span>.[^worktrees][^issue84685]
+- Give a fresh-context reviewer concrete criteria. <span class="ev ev-documented">documented</span>.[^multiagentblog] Make its role report-only. <span class="ev ev-our-use">our use</span>.[^relayadversary]
 
 ## Sources
 

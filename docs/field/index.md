@@ -2,6 +2,16 @@
 
 Part 1 answers ten questions about what goes wrong when you run a Claude Code session for hours or unattended, and what the evidence says helps. Measured evidence settles the direction on three of them: context length, many agents and review loops; a fourth, false success claims, has one measured rate from one benchmark.[^levy][^kim][^huang][^advani] The rest depend on the vendor's documentation, which is dated and changes often, and on named practitioners' reports. No source found measures a Claude Code session as it fills, beyond one adherence study's per-function decline, and none compares a restart from a written handoff with compaction. The [method](../method.md) page lists what was searched.
 
+<ul class="ev-legend" aria-label="Evidence levels">
+<li><span class="ev ev-measured">measured</span></li>
+<li><span class="ev ev-documented">documented</span></li>
+<li><span class="ev ev-reported">reported</span></li>
+<li><span class="ev ev-our-use">our use</span></li>
+<li><span class="ev ev-conjecture">conjecture</span></li>
+</ul>
+
+The five evidence levels; the [method](../method.md#the-evidence-levels) defines each.
+
 ## The questions and the chapters
 
 | Question | Chapter | Strongest evidence |

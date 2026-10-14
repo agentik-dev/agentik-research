@@ -30,8 +30,12 @@ Decision records are the other half of the answer. An unrecorded decision invite
 
 ## Where the evidence stops
 
+<div class="ak-limits" markdown>
+
 - Self-Refine's gains and Huang's losses fit one pattern: a gain needs specific feedback or an outside signal. Self-Refine compares with one pass; Huang measures self-correction against one pass too, and uses equal-cost baselines only for debate.[^madaan][^huang]
 - The round limits in use are choices: 8 in Claude Code, 10 in one loop report, 4 in Self-Refine. The per-round figures come from three studies, each on its own benchmark; the coding one is Wang's.[^wang][^madaan][^huang] The loop reports are anecdote.
+
+</div>
 
 ## What this means for the agentik tools
 
@@ -43,11 +47,11 @@ In the relay, a sign-off is a check that must pass, and an unrun gate is never a
 
 ## Practices this evidence supports
 
-- Put sign-off in a check outside the reviewer, and cap the rounds. Measured and documented.[^huang][^hooks]
-- Block only on correctness; list nits once; demand a file and line. Documented and reported.[^codereview][^meridian]
-- Review in a fresh context, with a different model if you can. Documented and measured.[^bestpractices][^zhang]
-- Supersede decision entries; do not edit them. Documented and reported.[^azure][^nygard]
-- Ask the owner at a task boundary, not mid-task. Measured for people in the studies Iqbal and Bailey cite; conjecture for batching.[^iqbal]
+- Put sign-off in a check outside the reviewer, and cap the rounds. <span class="ev ev-measured">measured</span> and <span class="ev ev-documented">documented</span>.[^huang][^hooks]
+- Block only on correctness; list nits once; demand a file and line. <span class="ev ev-documented">documented</span> and <span class="ev ev-reported">reported</span>.[^codereview][^meridian]
+- Review in a fresh context, with a different model if you can. <span class="ev ev-documented">documented</span> and <span class="ev ev-measured">measured</span>.[^bestpractices][^zhang]
+- Supersede decision entries; do not edit them. <span class="ev ev-documented">documented</span> and <span class="ev ev-reported">reported</span>.[^azure][^nygard]
+- Ask the owner at a task boundary, not mid-task. <span class="ev ev-measured">measured</span> for people in the studies Iqbal and Bailey cite; <span class="ev ev-conjecture">conjecture</span> for batching.[^iqbal]
 
 ## From the journal
 

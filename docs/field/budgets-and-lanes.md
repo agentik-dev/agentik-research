@@ -44,7 +44,11 @@ Ceilings and timers:
 
 ### Where the evidence stops
 
+<div class="ak-limits" markdown>
+
 All the cost figures come from single-user transcripts. The aggregate 96.59 percent hides the 86.41 percent median, and no source measures a long session's cost across users.[^primeline] No source measures the cost of a self-paced loop against a scheduled task.
+
+</div>
 
 ## Question 10: cost lanes
 
@@ -74,9 +78,9 @@ All the cost figures come from single-user transcripts. The aggregate 96.59 perc
 
 | Lane | Cost and limits | Fits | Cannot | Evidence |
 |---|---|---|---|---|
-| API-billed | Per token; organisation spend limits | Unattended `-p` and `--bare` runs, fan-out | Remote Control, voice dictation | Documented[^gatewayconnect] |
-| Subscription | A flat fee; five-hour and weekly limits | Interactive work | Fable past its own limit, except on usage credits | Documented[^plans][^modelconfig] |
-| Local model | No token charge; bound by hardware; 64k context advised | Small, tool-light tasks | Prompt caching; unsupported by Anthropic | Documented[^ollamacompat][^ollamactx][^gateway] |
+| API-billed | Per token; organisation spend limits | Unattended `-p` and `--bare` runs, fan-out | Remote Control, voice dictation | <span class="ev ev-documented">documented</span>[^gatewayconnect] |
+| Subscription | A flat fee; five-hour and weekly limits | Interactive work | Fable past its own limit, except on usage credits | <span class="ev ev-documented">documented</span>[^plans][^modelconfig] |
+| Local model | No token charge; bound by hardware; 64k context advised | Small, tool-light tasks | Prompt caching; unsupported by Anthropic | <span class="ev ev-documented">documented</span>[^ollamacompat][^ollamactx][^gateway] |
 
 ### Where sources disagree
 
@@ -94,11 +98,11 @@ agentik-agents is right that subscription work and API spend are separate budget
 
 ## Practices this evidence supports
 
-- Set `--max-turns` and `--max-budget-usd` on every unattended run, with headroom for the overshoot. Documented.[^cli][^agentloop]
-- Keep a self-paced wait under the cache lifetime in force, and know which lifetime you have. Documented.[^scheduled][^caching]
-- Pick the credential per run: unset `ANTHROPIC_API_KEY` for plan work, pass a key to `--bare`, and check `/status`. Documented.[^auth]
-- Sweep effort before switching models or adding a router. Measured, vendor-run.[^costintel]
-- Give a local lane 64,000 tokens of context and check what the server holds. Documented.[^ollamactx]
+- Set `--max-turns` and `--max-budget-usd` on every unattended run, with headroom for the overshoot. <span class="ev ev-documented">documented</span>.[^cli][^agentloop]
+- Keep a self-paced wait under the cache lifetime in force, and know which lifetime you have. <span class="ev ev-documented">documented</span>.[^scheduled][^caching]
+- Pick the credential per run: unset `ANTHROPIC_API_KEY` for plan work, pass a key to `--bare`, and check `/status`. <span class="ev ev-documented">documented</span>.[^auth]
+- Sweep effort before switching models or adding a router. <span class="ev ev-measured">measured</span>, vendor-run.[^costintel]
+- Give a local lane 64,000 tokens of context and check what the server holds. <span class="ev ev-documented">documented</span>.[^ollamactx]
 
 ## From the journal
 

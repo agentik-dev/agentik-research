@@ -2,6 +2,14 @@
 
 Long Claude Code work fails from context length, compaction that loses specifics, fan-out on work that does not split, review loops with no outside signal, and unattended runs that report unearned success. The measured evidence settles the first, third and fourth, and the false-success half of the fifth. The vendor's documentation, dated October 2026, and practitioners' reports cover the rest. The six agentik tools answer each failure with a mechanism. Their own record shows where each mechanism is untested. This page gives you the three parts in two pages.
 
+## The problem
+
+You hand Claude Code a task that takes hours, or a queue that runs overnight. The session fills its context, forgets specifics, spends past its budget, or reports success it did not earn, and nobody is watching when it does. Each failure has a fix, and no single fix covers the others.
+
+## A human example: slices of Swiss cheese
+
+James Reason pictured an organisation's defences against error as layers, each with holes: "In reality, however, they are more like slices of Swiss cheese, having many holes".[^reason] Harm gets through only when holes in many layers line up. His remedy was to add layers and to find the holes built in by design before they line up.[^reason] The practices on this site are layers in that sense: a fresh context, a cap, an outside check, a plain report. Each has holes, and the pages say where.
+
 ## Part 1: the field, in ten lines
 
 1. **Length.** Accuracy can fall as the context grows, even with perfect retrieval. Instruction-following falls as the instruction count grows. Most of a coding agent's context is tool output you can drop at little cost.[^du][^ifscale][^masking]
@@ -28,9 +36,20 @@ Long Claude Code work fails from context length, compaction that loses specifics
 
 Twenty-six practices are grouped by question, each with its evidence and the tool that automates it. Three have measured evidence that settles the direction: start long work from a short brief in a fresh context; fan out only decomposable work; and put sign-off in a check outside the reviewer. A fourth, checking a "done" claim against a tool result, rests on a measured false-success rate. Thirteen carry measured evidence in all. The rest follow the documentation or a report, and five carry a conjecture. See [Practices](practices.md).
 
+## From the journal
+
+The [journal](journal/index.md) tells the owner's record as dated stories, each with what failed:
+
+- [The ledger that ran away](journal/posts/2026-10-10-the-ledger-that-ran-away.md): a decision ledger past 400 entries, and the cap, sign-off bar and levels that followed.
+- [Restart, don't compact](journal/posts/2026-10-05-restart-dont-compact.md): a charter under 4 KB and a fresh session, instead of a summary.
+- [A wake that cost a turn](journal/posts/2026-10-10-a-wake-that-cost-a-turn.md): 581 of 614 self-paced wakeups took a turn of their own.
+- [The probe that stopped a night](journal/posts/2026-09-30-the-probe-that-stopped-a-night.md): a review agent's hand-built binary stopped a running night.
+- [Two lanes](journal/posts/2026-08-31-two-lanes.md): governed shorthand for agents, gated prose for people, and one field test.
+- [Living inside a usage window](journal/posts/2026-10-14-living-inside-a-usage-window.md): pacing helpers to a five-hour window, and pausing a night at the limit.
+
 ## Method and date
 
-One Claude Code cloud session with helper agents researched and wrote this site on 2026-10-14. It worked from seven repositories at fixed commits and from the sources listed on the [sources](sources.md) page. It opened every one of those sources in the session. The [method](method.md) page gives the limits: one owner, a shared owner for the site and the tools, volatile vendor facts, and no measurement of a Claude Code session at length.
+Two Claude Code cloud sessions with helper agents researched and wrote this site on 2026-10-14. The first wrote the field, tool and practice pages; the second added the journal, the story shape and the look. They worked from seven repositories at fixed commits and from the sources listed on the [sources](sources.md) page, and each opened the sources it cites. The [method](method.md) page gives the limits: one owner, a shared owner for the site and the tools, volatile vendor facts, and no measurement of a Claude Code session at length.
 
 ## Sources
 
@@ -74,3 +93,4 @@ One Claude Code cloud session with helper agents researched and wrote this site 
 [^respeakreadme]: agentik-dev/agentik-respeak, "README.md", commit 319f060, <https://github.com/agentik-dev/agentik-respeak/blob/319f060/README.md>.
 [^agentsreadme]: agentik-dev/agentik-agents, "README.md", commit 78ce312, <https://github.com/agentik-dev/agentik-agents/blob/78ce312/README.md>.
 [^commonsrecord]: agentik-dev/agentik-commons, "design/agentik-r1.md", commit e456f4b, <https://github.com/agentik-dev/agentik-commons/blob/e456f4b/design/agentik-r1.md>.
+[^reason]: James Reason, "Human error: models and management", BMJ 320(7237):768-770, 18 March 2000, <https://pmc.ncbi.nlm.nih.gov/articles/PMC1117770/>.

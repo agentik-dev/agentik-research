@@ -31,9 +31,13 @@ This chapter answers research question 9. It covers summarising agent work for h
 
 ## Where the evidence stops
 
+<div class="ak-limits" markdown>
+
 - Formulas: their agreement with readers is weak or mixed, and none of the studies tests agent prose. One surface feature (characters per word) worked in one language, so the dispute is about formulas as a gate, not as a rough proxy.[^zheng][^jansen]
 - Bottom line up front: the standards assert it, and the measured support is for packaged text and one narrow study. No experiment was found in which a manager acts on a report with the bottom line up front.[^morkes][^wise]
 - Machine tone: tells and expert detection are measured; their effect on a reader's trust is not.[^kobak][^russell]
+
+</div>
 
 ## What this means for the agentik tools
 
@@ -45,10 +49,10 @@ Machine-prose tells exist and expert readers see them; the sources found include
 
 ## Practices this evidence supports
 
-- Open each report with the outcome in one sentence, and keep errors and failing output whole. Documented.[^army][^outputstyles]
-- Gate on sentence length, and test with a reader, not with a grade score. Documented for the sentence check;[^govuk] measured for the formulas' weakness.[^zheng]
-- Replace shorthand with plain words in human prose; a glossary alone did not raise knowledge. Measured.[^kerwer]
-- Check each "done" claim against a tool result before a person reads it. Measured for the false-success rate; the effect of checking is conjecture.[^advani]
+- Open each report with the outcome in one sentence, and keep errors and failing output whole. <span class="ev ev-documented">documented</span>.[^army][^outputstyles]
+- Gate on sentence length, and test with a reader, not with a grade score. <span class="ev ev-documented">documented</span> for the sentence check;[^govuk] <span class="ev ev-measured">measured</span> for the formulas' weakness.[^zheng]
+- Replace shorthand with plain words in human prose; a glossary alone did not raise knowledge. <span class="ev ev-measured">measured</span>.[^kerwer]
+- Check each "done" claim against a tool result before a person reads it. <span class="ev ev-measured">measured</span> for the false-success rate; the effect of checking is <span class="ev ev-conjecture">conjecture</span>.[^advani]
 
 ## From the journal
 

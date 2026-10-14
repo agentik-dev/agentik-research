@@ -68,16 +68,20 @@ Two results from question 1 bear on the choice. Putting the information into one
 
 | Option | Keeps | Loses | Evidence |
 |---|---|---|---|
-| Automatic compaction | The re-injected CLAUDE.md, memory and plan; five files; a summary | Early instructions, exact values, the artifact trail | Documented;[^ctxwindow] measured on other compressors[^factory] |
-| Manual `/compact` with a focus | The same, plus what the focus names | The same classes; that a focus loses less is conjecture | Documented;[^ctxwindow] reported[^sessionmgmt] |
-| A summary the agent writes | State, next steps, learnings | Images and documents in range;[^apiondemand] obscure values | Documented;[^apithreshold] measured once[^cookbook] |
-| A restart from a handoff file | Only what the file and the repository hold; a clean window | The reasoning behind decisions; that it beats compaction is conjecture | Reported;[^kaiser] a lab result with no tools[^laban] |
+| Automatic compaction | The re-injected CLAUDE.md, memory and plan; five files; a summary | Early instructions, exact values, the artifact trail | <span class="ev ev-documented">documented</span>;[^ctxwindow] <span class="ev ev-measured">measured</span> on other compressors[^factory] |
+| Manual `/compact` with a focus | The same, plus what the focus names | The same classes; that a focus loses less is conjecture | <span class="ev ev-documented">documented</span>;[^ctxwindow] <span class="ev ev-reported">reported</span>[^sessionmgmt] |
+| A summary the agent writes | State, next steps, learnings | Images and documents in range;[^apiondemand] obscure values | <span class="ev ev-documented">documented</span>;[^apithreshold] <span class="ev ev-measured">measured</span> once[^cookbook] |
+| A restart from a handoff file | Only what the file and the repository hold; a clean window | The reasoning behind decisions; that it beats compaction is conjecture | <span class="ev ev-reported">reported</span>;[^kaiser] a lab result with no tools[^laban] |
 
 ### Where the evidence stops
+
+<div class="ak-limits" markdown>
 
 - No controlled study compares a restart from a written handoff with compaction in a coding session. The lab result has no tools, and the compression scores are vendor-run and compare compressors.
 - The effect depends on the model. Resets were needed on Sonnet 4.5 and dropped on Opus 4.5, yet the November post still wanted artifacts on Opus 4.5. Neither post states how many runs it rests on.[^harnessdesign][^harnesses]
 - When to compact is anecdote: about 50 percent of the window from one practitioner, against the limit by default.[^kaiser][^thresholds]
+
+</div>
 
 ## What this means for the agentik tools
 
@@ -89,12 +93,12 @@ agentik-decisions caps its ledger at 25 entries in force and gives no reason for
 
 ## Practices this evidence supports
 
-- Clear context between unrelated tasks, and start a long task from a short written brief. Documented,[^bestpractices] with a lab result on fresh instructions that has no tools.[^laban]
-- Keep always-loaded instructions short, and load rare ones on demand. Documented[^memory] and measured.[^ifscale]
-- Mask or clear old tool output, and send large reads to subagents. Measured[^masking] and documented.[^bestpractices]
-- Write the handoff to a file before the window fills: the goal, the decisions, the ruled-out approaches, the next step. Reported.[^sessionmgmt][^harnesses]
-- Record exact values and file lists in files, not in summaries. Measured once.[^cookbook]
-- Read window sizes from the current documentation, dated, not from a fixed table. Documented.[^ctxdoc]
+- Clear context between unrelated tasks, and start a long task from a short written brief. <span class="ev ev-documented">documented</span>,[^bestpractices] with a lab result on fresh instructions that has no tools.[^laban]
+- Keep always-loaded instructions short, and load rare ones on demand. <span class="ev ev-documented">documented</span>[^memory] and <span class="ev ev-measured">measured</span>.[^ifscale]
+- Mask or clear old tool output, and send large reads to subagents. <span class="ev ev-measured">measured</span>[^masking] and <span class="ev ev-documented">documented</span>.[^bestpractices]
+- Write the handoff to a file before the window fills: the goal, the decisions, the ruled-out approaches, the next step. <span class="ev ev-reported">reported</span>.[^sessionmgmt][^harnesses]
+- Record exact values and file lists in files, not in summaries. <span class="ev ev-measured">measured</span> once.[^cookbook]
+- Read window sizes from the current documentation, dated, not from a fixed table. <span class="ev ev-documented">documented</span>.[^ctxdoc]
 
 ## From the journal
 

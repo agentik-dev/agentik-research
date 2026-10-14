@@ -1,6 +1,6 @@
 # Method
 
-One Claude Code cloud session researched and wrote this site on 2026-10-14. It worked from a brief the owner wrote the day before, with helper agents for the surveys, the claim checks and the editorial passes.[^brief] That session opened every source the site cites. Every vendor fact is dated as of October 2026, and every contested claim carries an evidence level. The tools under study belong to the same owner as the brief, and this page says what that limits.
+Two Claude Code cloud sessions researched and wrote this site on 2026-10-14. The first worked from a brief the owner wrote the day before, with helper agents for the surveys, the claim checks and the editorial passes.[^brief] The second worked from a second brief: it added the journal, rewrote the home page, the summary and the tool pages in a story shape, and gave the site its look.[^sitebrief] Each session opened the sources it cites. Every vendor fact is dated as of October 2026, and every contested claim carries an evidence level. The tools under study belong to the same owner as the brief, and this page says what that limits.
 
 ## The phases
 
@@ -50,3 +50,4 @@ The brief allowed at most four helpers at once, and the session read the helpers
 [^ifscale]: Jaroslawicz et al., "How Many Instructions Can LLMs Follow at Once?", July 2025, <https://arxiv.org/abs/2507.11538>.
 [^notes]: agentik-dev/agentik-research, "research/sources/", the source notes, commit 1f1c37a, <https://github.com/agentik-dev/agentik-research/tree/1f1c37a/research/sources>.
 [^check]: agentik-dev/agentik-research, "scripts/check" and "Makefile", commit 4703b79, <https://github.com/agentik-dev/agentik-research/blob/4703b79/scripts/check>.
+[^sitebrief]: agentik-dev/agentik-research, "history/sessions/PROMPT-2026-10-14-cloud-site.md", commit 25e72df, <https://github.com/agentik-dev/agentik-research/blob/25e72df/history/sessions/PROMPT-2026-10-14-cloud-site.md>.

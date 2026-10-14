@@ -562,3 +562,31 @@
 
 /* The dated line at the foot of a journal entry. */
 .md-typeset .ak-written { font-size: 0.66rem; color: var(--glass-muted); margin-top: 2rem; }
+
+/* "Where the evidence stops": the limits of a chapter, in a quiet card
+ * edged in the conjecture tone. */
+.md-typeset .ak-limits {
+  margin: 0.6rem 0 1.4rem;
+  padding: 0.7rem 1.1rem;
+  background: var(--glass-1);
+  border: 1px solid var(--glass-border);
+  border-left: 3px dashed var(--ak-ev-conjecture);
+  border-radius: var(--glass-r-input);
+  box-shadow: var(--glass-shadow-card);
+}
+.md-typeset .ak-limits > :first-child { margin-top: 0.2rem; }
+.md-typeset .ak-limits > :last-child { margin-bottom: 0.2rem; }
+
+/* The sources browse: evidence badges in the table use the five level tokens. */
+.gb-pill[class*="gb-b-ev-"] {
+  --ev: var(--ak-ev-conjecture);
+  color: var(--ev);
+  background: color-mix(in srgb, var(--ev) 11%, transparent);
+  border-color: color-mix(in srgb, var(--ev) 34%, transparent);
+}
+.gb-pill.gb-b-ev-measured { --ev: var(--ak-ev-measured); }
+.gb-pill.gb-b-ev-documented { --ev: var(--ak-ev-documented); }
+.gb-pill.gb-b-ev-reported { --ev: var(--ak-ev-reported); }
+.gb-pill.gb-b-ev-our-use { --ev: var(--ak-ev-our-use); }
+.md-typeset .ak-static-toggle { margin: 1.4rem 0 0.4rem; }
+.gb-browse .gb-table td { vertical-align: top; }

@@ -37,12 +37,12 @@ None of these studies runs Claude Code unattended. They measure other harnesses 
 
 | Failure mode | What the evidence says | What guards it, as documented | Evidence |
 |---|---|---|---|
-| Runaway loop | Repeated failed actions are a common failure; a retry loop ignored `--max-turns` until 2.1.281 | `--max-turns`; no loop detector | Measured;[^metr] documented[^changelog] |
-| Lock contention | No agent measurement; refs are shared across worktrees, and the step to a lock is conjecture | Git fails fast on an existing lock | Documented[^gitlayout][^gitlock] |
-| Flaky tests under load | 46.5 percent of flaky tests are resource-affected | Nothing documented | Measured[^flaky] |
-| A stalled session that cannot tell | Agents never notice their first error in 38.5 percent of cases | Stream and subagent watchdogs; none for main-session progress | Measured;[^hiddenfailures] documented[^network] |
-| Runaway spend | One response of overshoot; a budget ended 31 percent of runs in one study | `--max-budget-usd` | Documented;[^agentloop] measured[^sweagent] |
-| A silent denial | A rejection, not an error subtype | `permission_denials` | Documented[^sdkresult] |
+| Runaway loop | Repeated failed actions are a common failure; a retry loop ignored `--max-turns` until 2.1.281 | `--max-turns`; no loop detector | <span class="ev ev-measured">measured</span>;[^metr] <span class="ev ev-documented">documented</span>[^changelog] |
+| Lock contention | No agent measurement; refs are shared across worktrees, and the step to a lock is conjecture | Git fails fast on an existing lock | <span class="ev ev-documented">documented</span>[^gitlayout][^gitlock] |
+| Flaky tests under load | 46.5 percent of flaky tests are resource-affected | Nothing documented | <span class="ev ev-measured">measured</span>[^flaky] |
+| A stalled session that cannot tell | Agents never notice their first error in 38.5 percent of cases | Stream and subagent watchdogs; none for main-session progress | <span class="ev ev-measured">measured</span>;[^hiddenfailures] <span class="ev ev-documented">documented</span>[^network] |
+| Runaway spend | One response of overshoot; a budget ended 31 percent of runs in one study | `--max-budget-usd` | <span class="ev ev-documented">documented</span>;[^agentloop] <span class="ev ev-measured">measured</span>[^sweagent] |
+| A silent denial | A rejection, not an error subtype | `permission_denials` | <span class="ev ev-documented">documented</span>[^sdkresult] |
 
 ## Question 7: guardrails
 
@@ -73,9 +73,13 @@ Each incident is one account, not reproduced.
 
 ### Where the evidence stops
 
+<div class="ak-limits" markdown>
+
 - The classifier rates are measured but vendor-run on private data, and the 17 percent rests on 52 actions. The academic results are measured but test none of Claude Code's hooks, deny rules or sandbox. AgentDojo is a 2024 simulator.
 - The documentation lists four worktree isolation checks. Reports from April to August 2026 describe leaks, one in the guard itself.[^issue52958][^issue84685] The reports are version-dependent and unreproduced.
 - Every incident is one account, and closure by a stale-issue bot is not a fix.
+
+</div>
 
 ## What this means for the agentik tools
 
@@ -91,13 +95,13 @@ agentik-agents learned from a red team that `--allowedTools` restricts nothing, 
 
 ## Practices this evidence supports
 
-- Treat `success` as unproven: read `permission_denials` and `terminal_reason`, and gate outside the model. Documented.[^sdkresult]
-- Set `--max-turns` and `--max-budget-usd` with headroom, and record the version. Documented.[^agentloop]
-- Run the test gate once, under reduced CPU. Measured for the cause;[^flaky] a load check is the relay's own rule.[^relaynth]
-- Add an outside progress watchdog, and test it by timing detection. Measured for the failure, conjecture for the guard.[^hiddenfailures]
-- Put never-rules in a PreToolUse hook or a deny rule, not in prose, and set `onFailure` to block. Documented.[^hooks]
-- Back Bash deny rules with the sandbox or a hook that reads the whole command, and test each guard with the absolute-path, `sh -c` and `git -C` spellings. Documented.[^permissions]
-- Remove tools from unattended children instead of detecting misuse. Measured in a 2024 simulator on another model; conjecture for coding children.[^agentdojo]
+- Treat `success` as unproven: read `permission_denials` and `terminal_reason`, and gate outside the model. <span class="ev ev-documented">documented</span>.[^sdkresult]
+- Set `--max-turns` and `--max-budget-usd` with headroom, and record the version. <span class="ev ev-documented">documented</span>.[^agentloop]
+- Run the test gate once, under reduced CPU. <span class="ev ev-measured">measured</span> for the cause;[^flaky] a load check is the relay's own rule.[^relaynth]
+- Add an outside progress watchdog, and test it by timing detection. <span class="ev ev-measured">measured</span> for the failure, <span class="ev ev-conjecture">conjecture</span> for the guard.[^hiddenfailures]
+- Put never-rules in a PreToolUse hook or a deny rule, not in prose, and set `onFailure` to block. <span class="ev ev-documented">documented</span>.[^hooks]
+- Back Bash deny rules with the sandbox or a hook that reads the whole command, and test each guard with the absolute-path, `sh -c` and `git -C` spellings. <span class="ev ev-documented">documented</span>.[^permissions]
+- Remove tools from unattended children instead of detecting misuse. <span class="ev ev-measured">measured</span> in a 2024 simulator on another model; <span class="ev ev-conjecture">conjecture</span> for coding children.[^agentdojo]
 
 ## From the journal
 
