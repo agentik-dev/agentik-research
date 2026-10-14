@@ -58,3 +58,4 @@ nav:
   - The field:
       - field/length-and-compaction.md
       - field/memory.md
+      - field/budgets-and-lanes.md
