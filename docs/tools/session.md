@@ -82,6 +82,13 @@ The diagram follows the respawn design and the launcher's code.[^respawn][^chain
 - The tests run against a fake `claude`. Behaviour against the real one rests on the dated proofs in the design records.[^tests][^respawn][^mod]
 - One owner, version 2.0.0-alpha.14, a README rendered 2026-10-13, and a public history of three commits from that day.[^readme][^firstcommits]
 
+## From the journal
+
+- [Restart, don't compact](../journal/posts/2026-10-05-restart-dont-compact.md): a charter under 4 KB and a fresh session, instead of a summary.
+- [A wake that cost a turn](../journal/posts/2026-10-10-a-wake-that-cost-a-turn.md): 581 of 614 self-paced wakeups took a turn of their own, and the pacing rules that followed.
+- [Living inside a usage window](../journal/posts/2026-10-14-living-inside-a-usage-window.md): pacing helpers to a five-hour window, and pausing a night at the limit.
+- [The ledger that ran away](../journal/posts/2026-10-10-the-ledger-that-ran-away.md): a decision ledger past 400 entries, and the cap, sign-off bar and levels that followed.
+
 ## Sources
 
 [^bug]: agentik-dev/agentik-session, "bugs/2026-09-12-overnight-window.md", commit e7f0723, <https://github.com/agentik-dev/agentik-session/blob/e7f0723/bugs/2026-09-12-overnight-window.md>.

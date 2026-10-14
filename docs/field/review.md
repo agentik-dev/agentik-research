@@ -49,6 +49,10 @@ In the relay, a sign-off is a check that must pass, and an unrun gate is never a
 - Supersede decision entries; do not edit them. Documented and reported.[^azure][^nygard]
 - Ask the owner at a task boundary, not mid-task. Measured for people in the studies Iqbal and Bailey cite; conjecture for batching.[^iqbal]
 
+## From the journal
+
+- [The ledger that ran away](../journal/posts/2026-10-10-the-ledger-that-ran-away.md): a decision ledger past 400 entries, and the cap, sign-off bar and levels that followed.
+
 ## Sources
 
 [^huang]: Jie Huang et al., "Large Language Models Cannot Self-Correct Reasoning Yet", October 2023, <https://arxiv.org/abs/2310.01798>.

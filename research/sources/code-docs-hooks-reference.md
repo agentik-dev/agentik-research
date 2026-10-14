@@ -14,12 +14,14 @@ kind: documented
 - Exit codes: exit 2 is the blocking error (on events that can block, such as `PreToolUse`). Any other non-zero code, including 1, is a non-blocking error and the action proceeds. The page warns that without valid JSON on stdout, exit 1 is treated as non-blocking, and says to use exit 2 for policy enforcement.
 - `InstructionsLoaded` event: fires when a CLAUDE.md or `.claude/rules/*.md` file is loaded, at session start and for lazy loads; matchers `session_start`, `nested_traversal`, `path_glob_match`, `include`, `compact`. It is observational only; exit 2 is ignored.
 - `SessionStart` `additionalContext`: a string added to context at the start of the conversation before the first prompt, wrapped in a system reminder. Output over 10,000 characters is saved to a file and Claude receives a path and a 2,000-character preview.
+- Re-opened 2026-10-14 (site sitting): confirmed. Section "Exit code output", "Exit code 2": exit 2 blocks the action on events that can block, and a `PreToolUse` hook blocks the tool call; the hook's stderr is the message that comes with the block, and Claude receives it as the tool's error. JSON printed alongside an exit-2 block does not override it, even a `permissionDecision` of `allow`. The "Exit code 2 behavior per event" table lists `PreToolUse` as blocking the tool call. Timeouts: default 600 seconds for `command`, `http` and `mcp_tool` hooks (30 for `prompt`, 60 for `agent`; 30 on `UserPromptSubmit`, `PreModelSwitch` and `PostModelSwitch`; 10 on `MessageDisplay`). A hook that reaches its timeout is cancelled and its output discarded; a timed-out `command`, `http` or `mcp_tool` hook on `PreToolUse` does not block the call, which continues through the normal permission flow, and the page says not to count on a stalled hook as a gate. `"onFailure": "block"` (v2.1.295 or later) makes a timeout block. An Agent SDK callback hook that exceeds its timeout blocks the tool call. Read the first 100,000 of about 270,800 characters.
 
 ## Limits
 - Documentation. The fetch returned the first 100,000 of about 268,900 characters; later sections (for example per-event details) were not read. Volatile; as of October 2026 (v2.1.295 is the newest marker seen).
 
 ## Used in
 - research/synthesis/field-3.md
+- journal-probe
 
 ## Also (question 5)
 Read for the Stop, SubagentStop and common input sections (the later part of the page, characters 180,500 onward, plus a download of the page's markdown to check exact wording).

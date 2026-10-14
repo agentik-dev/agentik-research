@@ -64,6 +64,10 @@ The diagram follows the one-flow design and the code. The repo has no diagram of
 - A kill between two renames leaves the ledger and the question file disagreeing.[^nth]
 - `ask` may be slow: one unconfirmed sighting put it at about three minutes for two questions. It also rewords a carried question on every run.[^nth]
 
+## From the journal
+
+- [The ledger that ran away](../journal/posts/2026-10-10-the-ledger-that-ran-away.md): a decision ledger past 400 entries, and the cap, sign-off bar and levels that followed.
+
 ## Sources
 
 [^historydesign]: agentik-dev/agentik-decisions, "history/design/decisions-r1.md", "history/design/review-r6.md" and "history/design/ledger-conversion-r1.md", commit 80d59eb, <https://github.com/agentik-dev/agentik-decisions/tree/80d59eb/history/design>.

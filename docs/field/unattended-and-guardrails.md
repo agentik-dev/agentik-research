@@ -99,6 +99,10 @@ agentik-agents learned from a red team that `--allowedTools` restricts nothing, 
 - Back Bash deny rules with the sandbox or a hook that reads the whole command, and test each guard with the absolute-path, `sh -c` and `git -C` spellings. Documented.[^permissions]
 - Remove tools from unattended children instead of detecting misuse. Measured in a 2024 simulator on another model; conjecture for coding children.[^agentdojo]
 
+## From the journal
+
+- [The probe that stopped a night](../journal/posts/2026-09-30-the-probe-that-stopped-a-night.md): a review agent's hand-built binary stopped a running night.
+
 ## Sources
 
 [^headless]: Anthropic, "Run Claude Code programmatically", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/headless>.

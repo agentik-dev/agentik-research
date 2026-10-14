@@ -79,6 +79,11 @@ flowchart TD
 - The README and the Makefile say the check wall is 840 seconds; the design record says 900.[^readme][^designr1]
 - The child runs under `caffeinate`, a macOS command, and the load floor was tuned on a Mac with efficiency cores. The load and idle readers also have Linux paths, untested in the record.[^designr1][^breaker]
 
+## From the journal
+
+- [The probe that stopped a night](../journal/posts/2026-09-30-the-probe-that-stopped-a-night.md): a review agent's hand-built binary stopped a running night.
+- [Living inside a usage window](../journal/posts/2026-10-14-living-inside-a-usage-window.md): pacing helpers to a five-hour window, and pausing a night at the limit.
+
 ## Sources
 
 [^readme]: agentik-dev/agentik-relay, "README.md", commit a326550, <https://github.com/agentik-dev/agentik-relay/blob/a326550/README.md>.

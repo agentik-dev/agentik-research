@@ -50,6 +50,10 @@ Machine-prose tells exist and expert readers see them; the sources found include
 - Replace shorthand with plain words in human prose; a glossary alone did not raise knowledge. Measured.[^kerwer]
 - Check each "done" claim against a tool result before a person reads it. Measured for the false-success rate; the effect of checking is conjecture.[^advani]
 
+## From the journal
+
+- [Two lanes](../journal/posts/2026-08-31-two-lanes.md): governed shorthand for agents, gated prose for people, and one field test.
+
 ## Sources
 
 [^advani]: Advani, "From Confident Closing to Silent Failure: Characterizing False Success in LLM Agents", June 2026, <https://arxiv.org/abs/2606.09863>.

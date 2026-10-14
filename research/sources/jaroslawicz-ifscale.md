@@ -13,6 +13,7 @@ kind: measured
 - Three decay shapes (Section 4.4): reasoning models hold near-perfect accuracy up to a threshold density then fall; some models, including Claude 3.7 Sonnet, fall about linearly; others fall steeply then level off at a low floor.
 - Primacy bias (Section 4.6): later instructions are violated more often than earlier ones, most at middle densities (about 150 to 200 instructions), less at 300 or more.
 - Error type (Section 4.8): at high density the main error is leaving an instruction out, not altering it.
+- Re-opened 2026-10-14 (site sitting): the abs page (v1, submitted 15 July 2025; Daniel Jaroslawicz, Brendan Whiting, Parth Shah, Karime Maamari) has an abstract that says the benchmark has 500 keyword-inclusion instructions in a report-writing task, covers 20 models from seven providers, and that "even the best frontier models only achieve 68% accuracy at the max density of 500 instructions". The abs page gives no Claude figures. I read them in the arXiv HTML rendering of the same paper, Table 1 in Appendix A "Full Results" (the PDF fetch returned only binary data). Accuracy at 100 and at 500 instructions, percent: Claude Opus 4 94.6 and 44.6; Claude Sonnet 4 94.4 and 42.9; Claude 3.7 Sonnet 94.8 and 52.7; Claude 3.5 Haiku 43.4 and 8.5. The best row at 500 is gemini-2.5-pro-preview at 68.9. So the earlier figures (Opus 4 at 44.6 and Sonnet 4 at 94.4 and 42.9) are confirmed; all four Claude rows are 3.x or 4 models from mid-2025.
 
 ## Limits
 - The authors say it covers only one task type (keyword inclusion in report writing), English, business vocabulary; whether report quality itself degrades is left open.
@@ -20,6 +21,7 @@ kind: measured
 
 ## Used in
 - research/synthesis/field-1.md
+- journal-ledger
 
 ## Also (question 3)
 - Appendix A accuracy, in percent at 10, 100, 250 and 500 instructions: Claude Sonnet 4 100.0, 94.4, 77.2, 42.9; Claude Opus 4 100.0, 94.6, 67.9, 44.6; Claude 3.7 Sonnet 100.0, 94.8, 72.9, 52.7; Claude 3.5 Haiku 98.0, 43.4, 16.6, 8.5; o3 (high) 100.0, 98.2, 97.8, 62.8; Gemini 2.5 Pro 100.0, 98.4, 84.8, 68.9.

@@ -1,0 +1,36 @@
+---
+repo: agentik-dev/agentik-session
+path: plugin/skills/session/SKILL.md, claude_session/charter.py, claude_session/hooks.py, claude_session/profiles.yaml, design/respawn-r1.md, design/overhaul-r1.md, design/mod-r1.md, design/packets/s17-exit-rule-respawns.md, README.md, RUNBOOK.md, NICE_TO_HAVE.md, history/sittings/
+commit: 89c69a8
+title: "agentik-session: the charter, the respawn launcher, and the never-compact rule, read at 89c69a8"
+author: agentik-dev
+published: 2026-10-14
+accessed: 2026-10-14
+kind: our-use
+---
+
+## What it says
+- The charter (plugin/skills/session/SKILL.md:95-121; claude_session/charter.py:23, :55; scripts/doclint:52). One file per sitting under `history/sittings`, five parts: a title line, a table (goal, budget, pin, window, agents), `## Done-ness`, `## Handover`, `## Next act` of one line. It must stay under 4,096 bytes ("move text out, never widen the ceiling", SKILL.md:117). The check refuses 4,096 bytes or more (charter.py:55, matching doclint's `>=`). The repo gives no reason for the figure 4,096 itself.
+- Size at this commit: 61 charters in history/sittings, 1,606 to 3,993 bytes, median 2,937 (counted here with `wc -c`). The largest is 2026-10-12-5-s26 at 3,993. All 61 were written by builder sittings or the coordinator; none has a Next act that opens on RESPAWN, so the repo's own charters hold no respawn chain.
+- Why not compact. The owner ruled on 2026-09-29 that a sitting restarts rather than compacts, since a restart reads its brief fresh and a compaction needs the owner's hand (design/packets/s17-exit-rule-respawns.md:22). Before that the exit text said "respawn by default, compact at most once" and two profile descriptions said the first checkpoint compacts in place. The exit rule is now `EXIT: land the act in flight at a checkpoint, then exit; respawn, never compact` (claude_session/hooks.py:52-53; SKILL.md:76-77). The design brief the overhaul quotes says fresh context per sitting is the point (design/overhaul-r1.md:26). The Mod design lists the PreCompact block as "no sitting is summarised unattended" (design/mod-r1.md:17), decided to block `auto` and pass a typed `/compact` (mod-r1.md:78). The README states the hook (README.md:59). Paraphrase of the whole: the repo's reasons are fresh context and owner control; it gives no measurement of what a compaction loses.
+- What the launcher does (design/respawn-r1.md:134 and §3.1 to §3.5; README.md:107; RUNBOOK.md:297-320). `agentik session run [--chain] [--cap] [--floor] [--settle] -- <claude args>` runs an interactive `claude` under a fresh `--session-id` at every start, with the owner's arguments unchanged. When the sitting closes on RESPAWN, marks it with `checkpoint --respawn --charter FILE`, and its turn has stood for `settle` seconds with no helper call open, it ends the sitting, waits 10 s (Ctrl-C ends the chain), logs a restart line and starts the next. It never compacts, resumes, forks, goes headless, restarts after a crash, or reads a transcript. Flags that resume, fork, detach or print are refused, and so is `/compact` (RUNBOOK.md:309-310). Guards: `cap` 12 restarts in any 24 h, `floor` 600 s, `settle` 60 s (claude_session/profiles.yaml, `respawn:` in defaults); two STOP files.
+- The one record of restarts by hand (design/respawn-r1.md:11): on 2026-10-05 one orchestrator reached its checkpoint three times and the owner restarted it after gaps of 113, 181 and 83 minutes, 6 h 17 min in all. Each restart "went cleanly, because the successor read its charter and carried on" (line 11). Sittings ran 3 h 34 min, 1 h 33 min and 1 h 41 min (line 109); the cap of 12 is derived from that one night ("up to about fifteen restarts a day").
+- Counts of launcher runs: the repo holds no ledger of respawns. The nearest figures are one chain's stop line recording `"restarts":5` (NICE_TO_HAVE.md:166) and 131 end-to-successor cases in the live ledger that include resumed, cleared and respawned main threads (NICE_TO_HAVE.md:182). Neither is a count of respawns alone.
+- Failures recorded with respawn:
+  - A sitting wrote RESPAWN into its charter and stopped its loop without running `checkpoint --respawn`; the chain stalled, with `claude` idle at 309k of a 400k ceiling, until the owner looked. The launcher then logged a `no-marker` stop and the owner started a new launcher (NICE_TO_HAVE.md:166, seen once). A guard that prints the one command is proposed, not built. A second record (NICE_TO_HAVE.md:123) says the Stop hook cannot see a sitting that closes on RESPAWN and ends its turn without the verb.
+  - A floor-held respawn is silent: a sitting marked RESPAWN 9 min 16 s in, the 600 s floor held it, and it idled 47 minutes until the owner acted (NICE_TO_HAVE.md:131-132).
+  - A helper's blocked call never got a PostToolUse, so the readiness check stayed false; the fix closes such calls at PostToolBatch (history/sittings/2026-10-11-1-s-stale-calls.md:13-14). Not verified with a real `claude`; 13 of one day's sessions held call files older than 30 minutes (NICE_TO_HAVE.md:16-17). An interrupted call can still stick and hold RESPAWN (NICE_TO_HAVE.md:97).
+  - `make install` could delete the tree a live launcher ran from; the fix keeps every tree a live process names and the newest three (history/sittings/2026-10-11-1-s-frozen-tree.md:5, :14).
+  - Idle compaction on Claude Code 2.1.296 (`idleCompaction`, default on, after about 54 idle minutes above 200k tokens) compacted two sittings overnight, against the rule. A PreCompact hook cannot tell it from an auto-compact (both carry `trigger: "auto"`); `doctor` could warn (NICE_TO_HAVE.md:89, seen once, not built).
+  - A blocked `auto` compaction keeps a sitting whole to its hard limit, where the recovery compaction is refused and the request fails (design/mod-r1.md:78).
+  - A `/loop` of 60 minutes or more asks a cloud-or-session question before it arms, so a restarted sitting would wait at the dialog (NICE_TO_HAVE.md:62; RUNBOOK.md:341-343).
+- What is open in the design: P3 (SIGTERM ends `claude` cleanly), P6 (an owner typing during the settle window) and P7 (a blocked Stop) are listed as owed or unproven (design/respawn-r1.md §7). The launcher cannot see background work that outlives the main turn, a typed but unsubmitted prompt, or a `/clear` (§3.9). The repo's `CHANGELOG` does not exist at this commit; no entry there.
+
+## Limits
+- Our use, one owner, young tools (versions 2.0.0-alpha.x). There is no comparison of compaction against restart, no transcript of a compaction that lost the thread, and no count of launcher restarts. The 6 h 17 min figure is one observer's log of one night, taken before the launcher existed.
+- The private ledger entry the design cites for the never-compact rule is not in this repo; this note records only the sentences the repo copies from it.
+- Line numbers in the earlier note agentik-session-compaction-rule (commit e7f0723) have moved: idle compaction is NICE_TO_HAVE.md:89 here, and the PreCompact code comment is claude_session/hooks.py:560-561.
+- Spelling: files at this commit mix the old command name (the hyphenated form the hygiene scan flags) and `agentik session`. This note writes `agentik session`.
+
+## Used in
+- research/synthesis/journal-restart.md

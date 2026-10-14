@@ -1,7 +1,7 @@
 ---
 repo: agentik-dev/agentik-respeak
 path: history/sittings/
-commit: 319f060
+commit: eb7d642
 title: "history/sittings: 40 working-session charters, 2026-09-22 to 2026-10-13"
 author: agentik-dev
 published: "2026-09-22 to 2026-10-13 (the dates in the file names)"
@@ -16,10 +16,14 @@ kind: our-use
 - 2026-09-24-2: `make readme` passed the verifier once, and "the translator reworded four other prose sentences (proved prose-only)".
 - 2026-09-23-5-adv6 and later: the adversarial reviews' findings by severity (4 high, 5 medium, 3 low for ADV6) and the packets that fixed them (see `agentik-respeak-design-reviews`).
 - 2026-09-23-11: the README source was cut to a public document (17,740 bytes, scanner PASS, longest sentence 29 words).
+- Re-checked at eb7d642: `ls history/sittings | wc -l` reads 41, one more than the 40 above. The addition is `2026-10-13-2.md`, the rename packet agentik-r1-respeak: four commits, `make check` exit 0 in 95 s at load 6.9 with 275 tests and 10 suites, and an open item that no `make venv` target exists (lines 11-21 of that charter). The public git history is 10 commits at eb7d642 (`git rev-list --count HEAD`).
+- Searched `history/`, `design/`, `docs/`, the CHANGELOG, `NICE_TO_HAVE.md` and `plugin/docs/` at eb7d642 for an incident in which a person could not read agent shorthand (terms: unreadable, opaque, illegible, alien, cryptic, jargon, could not read, outsider, supervis). No charter, review or changelog entry records one, with a case, a count or a transcript. The only statement of the failure is a prediction in `docs/architecture.md:19-20`, and the README's "Why it exists" (README.md:14-15 and design/readme/source.md:14-15). The charter hit for "supervis" (2026-09-23-12.md:18) is a process-kill signal, not a reader.
 
 ## Limits
 - Charters are summaries written by the building session at its own exit. They name private products, a device and people in several places; this note names none. Titles use the repository's earlier name.
 - A failure count across all runs of `make readme` is not recoverable from the charters; only the sittings above state their outcome.
+- The absence is a negative result from my searches, not proof that no such case happened; the charters are builders' exit notes. My conjecture: the drift the repo cares about would show in relay transcripts, which the repo does not keep.
 
 ## Used in
 - research/synthesis/tools-respeak.md
+- research/synthesis/journal-two-lanes.md

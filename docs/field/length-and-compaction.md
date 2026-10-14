@@ -96,6 +96,10 @@ agentik-decisions caps its ledger at 25 entries in force and gives no reason for
 - Record exact values and file lists in files, not in summaries. Measured once.[^cookbook]
 - Read window sizes from the current documentation, dated, not from a fixed table. Documented.[^ctxdoc]
 
+## From the journal
+
+- [Restart, don't compact](../journal/posts/2026-10-05-restart-dont-compact.md): a charter under 4 KB and a fresh session, instead of a summary.
+
 ## Sources
 
 [^levy]: Mosh Levy, Alon Jacoby and Yoav Goldberg, "Same Task, More Tokens: the Impact of Input Length on the Reasoning Performance of Large Language Models", February 2024, <https://arxiv.org/abs/2402.14848>.

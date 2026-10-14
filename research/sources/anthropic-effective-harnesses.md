@@ -14,6 +14,7 @@ kind: documented
 - Design: an initializer session builds an init script, a progress file, a feature list (more than 200 items in the example, JSON because the model was less likely to overwrite it than Markdown) and a first git commit. Every later coding session reads the progress file and git log, picks one unfinished feature, runs the init script and a basic end-to-end test, works on that one feature, then commits and updates the notes.
 - Testing note: the agent often marked features done after unit tests or curl checks; browser automation raised accuracy, with limits (it could not see browser-native alert modals).
 - Open questions the post lists: whether one general agent beats specialised testing or cleanup agents, and whether the lessons carry beyond web development.
+- Re-opened 2026-10-14 (site sitting): confirmed, with one wording correction. Byline Justin Young, dated Nov 26, 2025. The intro and the section "Getting up to speed" say a new session starts from the `claude-progress.txt` file and the git log, and the page's key insight is that an agent starting in a fresh context window can quickly understand the state of the work this way; section "Incremental progress" has the agent commit with descriptive messages so it can revert bad changes. The page says "However, compaction isn't sufficient." and that compaction does not always pass clear instructions to the next agent. It does not say the files replace a summary or complement compaction; that relation is an inference. Correction: the progress file is itself written by the agent as summaries of its progress, so "not a summary" is true only of a compaction summary.
 
 ## Limits
 - A demonstration on one task type (a claude.ai clone), with no quantified comparison between fresh sessions and continued sessions. It supports "write state to files so a new session can pick up" and does not measure fresh versus long.
@@ -21,6 +22,7 @@ kind: documented
 
 ## Used in
 - research/synthesis/field-1.md
+- journal-restart
 
 ## Also (question 3)
 - Handoff documents as pointers, not preloaded context: a new coding session starts with `pwd`, reads the git log and the progress file, reads the feature list and picks the highest-priority unfinished item, then runs the init script and a basic end-to-end test. The post presents these as steps the agent performs at the start of each session.

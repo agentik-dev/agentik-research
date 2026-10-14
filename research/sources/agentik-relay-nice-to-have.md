@@ -42,3 +42,11 @@ Read for question 7 at commit a326550: the section "ar40-helper-relay-guard, rev
 - The guard matches by command shape and word position; the review is a model reviewer's finding, not a measured rate.
 
 Used in: research/synthesis/field-7.md
+
+## Also (journal-probe and journal-usage-window)
+Re-read at commit 405d1e0 (the front matter above keeps the earlier commit). Line numbers are at 405d1e0.
+- Lines 162 to 169, "ar36-pid-file-guard, review round 1": six non-blocking lines on the pid-file guard (a hook deny lost for a linked binary, an unreaped relay refused as live, a test that checks only the loopback port, a refused `resume` that prints nothing, a read-then-rename window, a `ps` locale hazard). Line 173, "ar36-pid-file-guard, the build": the open question whether a missing advisory file should stop a night whose port is still held. Details in agentik-relay-ar36-pid-file-guard.
+- Lines 138 to 142, "ar40-helper-relay-guard, review round 1": three findings and one observation, all still listed. Details in agentik-relay-ar40-helper-relay-guard.
+- Lines 437, 467, 477, 486 hold open gaps in the usage-limit pause (no paused state in the TLA+ model; a killed sibling's budget; the probe counted since the last fallback wake; AR71 built only after the owner's answer to question 12). Details in agentik-relay-usage-pause-built.
+
+Used in: research/synthesis/journal-probe.md, research/synthesis/journal-usage-window.md

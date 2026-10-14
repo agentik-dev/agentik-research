@@ -9,12 +9,14 @@ kind: measured
 
 ## What it says
 - The abstract studies intrinsic self-correction: a model revises its own answer using only its own ability, with no external feedback. On reasoning tasks the authors find models struggle to correct themselves this way, and performance sometimes gets worse after the attempt.
+- Re-opened 2026-10-14 (site sitting), claim check for the ledger draft: confirmed. The abstract page gives no figures; the paper does (v2 PDF text and HTML, ICLR 2024 version). Section 3.2 Results, Table 3, "Results of GPT-3.5 and GPT-4 on reasoning benchmarks with intrinsic self-correction": GPT-4 on GSM8K scores 95.5 percent with standard prompting (1 call), 91.5 after self-correct round 1 (3 calls) and 89.0 after round 2 (5 calls), a fall of 6.5 points. Intrinsic here means no labels: the model decides for itself whether to keep its answer. The same table gives GPT-3.5 on GSM8K as 75.9, 75.1 and 74.7, GPT-4 on CommonSenseQA as 82.0, 79.5 and 80.0, and GPT-4 on HotpotQA as 49.0, 49.0 and 43.0.
 
 ## Limits
 - I read the abstract page only; datasets and effect sizes are not recorded here. It concerns reasoning benchmarks in 2023-era models and says nothing on a second agent with fresh context or on a reviewer that runs tests.
 
 ## Used in
 - research/synthesis/field-5.md
+- journal-ledger (journal draft)
 
 ## Also (question 8)
 Re-read on 2026-10-14 from the v2 PDF text (14 March 2024; ICLR 2024). Table names as the paper prints them.

@@ -15,9 +15,11 @@ kind: documented
 - `/usage` shows a "Loops" row for the heaviest scheduled tasks by total tokens (v2.1.242 or later), computed from local session history on one machine.
 - Agent teams use roughly 7 times the tokens of a standard session when teammates run in plan mode (the page's figure, no method given).
 - Background token use is small: summarisation and status commands typically cost under 0.04 US dollars per session.
+- Re-opened 2026-10-14 (site sitting), claim check for the wake draft, as of October 2026: section "Why usage climbs in a long session", bullet "Scheduled tasks", says a scheduled task fires on its interval even while the session is idle and sends the full context each time; the cross-session and goal check-in bullets say a new turn on an idle session likewise sends the full context (goal check-ins: at most three per goal between prompts from v2.1.246, uncapped before). Section "Background token usage" puts idle background work (resume summaries, status commands) at typically under 0.04 US dollars per session. The page calls these scheduled tasks and does not price a wake in dollars; full detail is in the code-docs-costs note.
 
 ## Limits
 - Vendor documentation. It names controls; it does not report how often a cap stopped a runaway run. Another note on this URL (code-docs-costs) covers question 4.
 
 ## Used in
 - research/synthesis/field-6.md
+- research/synthesis/journal-wake.md (journal draft)

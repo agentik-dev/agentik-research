@@ -1,7 +1,7 @@
 ---
 repo: agentik-dev/agentik-decisions
 path: CLAUDE.md
-commit: 80d59eb
+commit: fabb212
 title: "agentik-decisions: agent contract"
 author: agentik-dev
 published: 2026-10-13
@@ -15,9 +15,11 @@ kind: our-use
 - The plugin "carries two skills ... six commands and respeak's include file, and no data: a repo owns its ledger" (paraphrased from the bullet).
 - A builder "decides inside the packet and escalates only a fork the packet cannot settle" (paraphrased from the Authority bullet).
 - A sitting charter under 4 KB is written at open (Sittings bullet).
+- Line anchors at fabb212: the ledger bullet that restates the shape and the caps ("at most 25 are in force and 7 sit under `Every session`") is CLAUDE.md:11; the Authority bullet ("this repo keeps no DECISIONS.md") is :17. The file changed since 80d59eb only in naming (the tool is now run as `agentik decisions`, with `decisions` as an alias until 2026-12-31).
 
 ## Limits
 - It is an instruction file for developing the tool. The tool's own repo does not run the tool on a ledger of its own, so the public repo shows no real, long-lived ledger; the only public ledger found in the checked-out sibling repos is the relay repo's.
 
 ## Used in
 - research/synthesis/tools-decisions.md
+- research/synthesis/journal-ledger.md

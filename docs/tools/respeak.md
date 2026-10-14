@@ -90,6 +90,10 @@ The diagram follows the README, the architecture document, the gate script and t
 - The translator is a model call: the renderer re-words the README on every run, so a render followed by `git status` cannot come back clean.[^sittings]
 - The repo has one owner, and every recorded use is on the owner's own repos and sites.[^readme][^changelog]
 
+## From the journal
+
+- [Two lanes](../journal/posts/2026-08-31-two-lanes.md): governed shorthand for agents, gated prose for people, and one field test.
+
 ## Sources
 
 [^changelog]: agentik-dev/agentik-respeak, "CHANGELOG.md", commit 319f060, <https://github.com/agentik-dev/agentik-respeak/blob/319f060/CHANGELOG.md>.

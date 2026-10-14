@@ -100,6 +100,11 @@ agentik-agents is right that subscription work and API spend are separate budget
 - Sweep effort before switching models or adding a router. Measured, vendor-run.[^costintel]
 - Give a local lane 64,000 tokens of context and check what the server holds. Documented.[^ollamactx]
 
+## From the journal
+
+- [A wake that cost a turn](../journal/posts/2026-10-10-a-wake-that-cost-a-turn.md): 581 of 614 self-paced wakeups took a turn of their own, and the pacing rules that followed.
+- [Living inside a usage window](../journal/posts/2026-10-14-living-inside-a-usage-window.md): pacing helpers to a five-hour window, and pausing a night at the limit.
+
 ## Sources
 
 [^caching]: Anthropic, "How Claude Code uses prompt caching", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/prompt-caching>.

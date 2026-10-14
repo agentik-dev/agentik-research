@@ -20,5 +20,8 @@ kind: our-use
 - Our use, one owner, young tools. The repo holds no comparison of compaction against restart, no transcript of a compaction that lost the thread, and no measurement of fidelity; the idle-compaction event was seen once and no transcript is quoted.
 - Against the Claude Code docs read on 2026-10-14: the idle conditions and the "request fails" cost are documented (anthropic-docs-settings-compaction, anthropic-docs-hooks-precompact). The docs do not say the PreCompact `trigger` for an idle pass, and they do not say a passing hook's stdout is read as instructions; the hooks reference's general stdout rule points the other way (PreCompact is not on its list of events whose stdout reaches Claude).
 
+- Re-read on 2026-10-14 at commit 89c69a8 (see agentik-session-charter-respawn): the rule, the three gaps, the launcher lines (respawn-r1.md:134, mod-r1.md:78) and the idle-compaction record still hold; their lines moved. Idle compaction is now NICE_TO_HAVE.md:89 and the hook's code comment is claude_session/hooks.py:560-561.
+
 ## Used in
 - research/synthesis/field-2.md
+- research/synthesis/journal-restart.md

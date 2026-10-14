@@ -457,20 +457,22 @@
 /* 5. Journal (Material's blog plugin)                                 */
 /* ------------------------------------------------------------------ */
 
-.md-typeset .md-post--excerpt {
+.md-post--excerpt {
   margin: 0 0 1.2rem;
-  padding: 1.2rem 1.4rem 0.6rem;
+  padding: 1.2rem 1.4rem 0.9rem;
   background: var(--glass-1);
   border: 1px solid var(--glass-border);
   border-radius: var(--glass-r-card);
   box-shadow: var(--glass-shadow-card);
 }
-.md-typeset .md-post--excerpt .md-post__header { margin-bottom: 0.4rem; }
-.md-typeset .md-post--excerpt h2 { margin-top: 0.2rem; padding-top: 0; border-top: 0; font-size: 1.1rem; }
-.md-typeset .md-post--excerpt h2 a { color: var(--glass-text); }
-.md-typeset .md-post--excerpt h2 a:hover { color: var(--glass-accent); }
+.md-post--excerpt .md-post__header { margin-bottom: 0.2rem; }
+.md-post--excerpt .md-typeset h2 { margin-top: 0.3rem; padding-top: 0; border-top: 0; font-size: 1.15rem; }
+.md-post--excerpt .md-typeset h2 a { color: var(--glass-text); text-decoration: none; }
+.md-post--excerpt .md-typeset h2 a:hover { color: var(--glass-accent); }
+.md-post--excerpt .md-post__content > p:last-of-type { margin-bottom: 0.4rem; }
+.md-post--excerpt .md-post__action { margin: 0; font-size: 0.7rem; }
 .md-post__meta, .md-meta { color: var(--glass-muted); }
-.md-typeset .md-post__action a { font-weight: 600; color: var(--glass-accent); }
+.md-post__action a { font-weight: 600; color: var(--glass-accent); }
 
 /* Category chips, coloured by meaning: worked, did not work, open. */
 .md-post__meta .md-meta__link, .md-typeset .ak-cat {
@@ -557,3 +559,6 @@
   .md-typeset .ak-hero::after { display: none; }
 }
 .md-typeset .ak-door .headerlink { display: none; }
+
+/* The dated line at the foot of a journal entry. */
+.md-typeset .ak-written { font-size: 0.66rem; color: var(--glass-muted); margin-top: 2rem; }

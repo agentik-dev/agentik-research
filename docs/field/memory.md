@@ -60,6 +60,10 @@ The second concerns file length and the ledger's caps. The cost of a context fil
 - Keep a short always-loaded index rather than a pointer that waits to be invoked. Reported.[^vercel]
 - Write handoff state to files and read them first. Reported.[^harnesses]
 
+## From the journal
+
+- [The ledger that ran away](../journal/posts/2026-10-10-the-ledger-that-ran-away.md): a decision ledger past 400 entries, and the cap, sign-off bar and levels that followed.
+
 ## Sources
 
 [^gloaguen]: Gloaguen et al., "Evaluating AGENTS.md: Are Repository-Level Context Files Helpful for Coding Agents?", February 2026, <https://arxiv.org/abs/2602.11988>.

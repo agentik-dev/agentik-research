@@ -25,3 +25,11 @@ Read sections 1, 2, 6, 7 and 8 (the problem, the decision, the open risks, choic
 
 ## Used in
 - research/synthesis/tools-relay.md
+
+## Also (journal-usage-window)
+Re-read at commit 405d1e0 (the front matter above keeps the earlier commit); sections 3 to 5 and the rest are now read, 108 lines in all.
+- Section 5 (lines 73-82) cuts the work into six packets: the facts, the machines, the pause, the wake, the guards, the readers. Section 4 (lines 63-71) lists five test groups, all on a fake spawner and a stepped clock; line 65 says no probe ran. Built and not built at this commit are in agentik-relay-usage-pause-built.
+- The design has no proactive pacing: it acts on a refused event or an `is_error` result. The words `band` and `pacing` do not occur in it.
+- Line 53 proposes an amendment (entry 23) to a ledger outside this repo, which the design says it does not edit; this repo's `DECISIONS.md:41` carries the model-scope part as entry 12.
+
+Used in: research/synthesis/journal-usage-window.md
