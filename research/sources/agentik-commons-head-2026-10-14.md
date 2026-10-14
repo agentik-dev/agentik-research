@@ -1,6 +1,6 @@
 ---
 repo: agentik-dev/agentik-commons
-path: the git history from e456f4b to 588530f; design/agentik-r1.md, GUIDE.md, NICE_TO_HAVE.md, README.md, bin/agentik, scripts/bounded, tests/test_hygiene.py, .claude-plugin/marketplace.json, docs/sibling.md; and, by sha256 only, scripts/hygiene, scripts/bounded and scripts/agentik at the heads of the five tool repos and the profile repo
+path: the git history from e456f4b to 588530f; design/agentik-r1.md, GUIDE.md, NICE_TO_HAVE.md, README.md, bin/agentik, scripts/bounded, tests/test_hygiene.py, .claude-plugin/marketplace.json, docs/sibling.md, history/sittings/; and, by sha256 only, scripts/hygiene, scripts/bounded and scripts/agentik at the heads of the five tool repos and the profile repo
 commit: 588530f
 title: "agentik-commons at its head on 2026-10-14: the rf1-research-fixes merge"
 author: agentik-dev (the suite owner)
@@ -25,6 +25,7 @@ Read on 2026-10-14 in the attached checkout at 588530f: `git log` from e456f4b t
 - tests/test_hygiene.py:327-328: "the relay's ADV11-15: a tracked file over 4 MiB whose first line holds a home path and an email passed by path only, exit 0; streamed now (S14), both counted."
 - .claude-plugin/marketplace.json: unchanged since e456f4b (an empty `git diff`); five entries, session 2.0.0-alpha.14, decisions 0.8.0, respeak 0.8.0, relay 0.1.3, agents 1.2.0.
 - My check, not the record's: `sha256sum` of `scripts/hygiene`, `scripts/bounded` and `scripts/agentik` at the heads of agentik-session, agentik-decisions, agentik-respeak, agentik-relay, agentik-agents and `.github`. In all six, hygiene (32bd5b63148e...) and bounded (4fdfdc1df943...) equal commons' copies at e456f4b, not its copies at 588530f (8ef611607c0f... and 188adff23545...). The front door (4cd780d9c66d...) equals commons' `bin/agentik` at both commits.
+- Added 2026-10-14 for docs/tools/relay.md (the charter count): `git ls-tree --name-only 588530f history/sittings/` lists one dated `.md` charter, `2026-10-13-1.md`, and no other file, as agentik-relay-head-2026-10-14 counts.
 
 ## Limits
 - The owner's own record of the owner's suite. The status is a statement in the record, with no log of the switch's run; it says the plugins install from the `agentik` marketplace, not whether from the local copy (D1) or the public one.
@@ -32,3 +33,4 @@ Read on 2026-10-14 in the attached checkout at 588530f: `git log` from e456f4b t
 
 ## Used in
 - docs/tools/index.md
+- docs/tools/relay.md (the charter count)

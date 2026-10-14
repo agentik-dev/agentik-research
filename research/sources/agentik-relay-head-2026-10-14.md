@@ -1,6 +1,6 @@
 ---
 repo: agentik-dev/agentik-relay
-path: history/sittings/, design/packets/, design/review-r6.md, design/packets/ar11-tla-night.md, design/packets/rows-2026-09-23-r3.json, design/breaker-signal-r1.md, internal/night/night.go, internal/night/bound.go, Makefile, README.md, design/review-adv13.md, design/review-adv14.md, design/relay-r1.md, internal/night/pidfile.go, internal/relay/types.go, design/review-adv10.md, NICE_TO_HAVE.md
+path: history/sittings/, design/packets/, design/review-r6.md, design/packets/ar11-tla-night.md, design/packets/rows-2026-09-23-r3.json, design/breaker-signal-r1.md, internal/night/night.go, internal/night/bound.go, Makefile, README.md, design/review-adv13.md, design/review-adv14.md, design/relay-r1.md, internal/night/pidfile.go, internal/relay/types.go, design/review-adv10.md, NICE_TO_HAVE.md, plugin/agents/builder.md, plugin/agents/adversary.md, design/usage-limit-resume-r1.md, DECISIONS.md, OPEN-QUESTIONS.md
 commit: 405d1e0
 title: "agentik-relay at its head on 2026-10-14: the record's counts, the fork-storm fix, the idle floor, the build name"
 author: agentik-dev
@@ -58,6 +58,11 @@ Read on 2026-10-14 in the attached checkout at 405d1e0 (2026-10-13 19:18:20 -070
 - `design/relay-r1.md:278` (AR27B act 2; ADV16-2): `--settings '{"disableAllHooks":true}'`, `--setting-sources project` and a `CLAUDE_CONFIG_DIR` prefix "each start a helper whose hooks never load", and `--dangerously-skip-permissions`, `--agents`, `--resume`, `exec -a zz` and `--max-turns 99999999` passed; the fix makes the helper line an allowlist.
 - `NICE_TO_HAVE.md:552`, "(agentik-r1-relay fix round, F2)": "`sh <path>/agentik relay run` and `bash scripts/agentik session start` are allowed in a row on main and the branch alike: the old hole of a shell running a script file the guards cannot read."
 
+Added 2026-10-14 for the consistency sweep (docs/journal/posts/2026-09-30-the-probe-that-stopped-a-night.md, docs/journal/posts/2026-10-14-living-inside-a-usage-window.md, docs/tools/decisions.md), read with `git show 405d1e0:<path>`; `git log 405d1e0` over the three design and prompt files names only the first public commit d5c52b4:
+- `plugin/agents/builder.md:22-25` and `plugin/agents/adversary.md:14-17` carry the same line: "Never build `relay` by hand, and never run a hand-built one." A probe goes through `make`'s test harness or links both `LockPortLink` and `PidHomeLink` at a temp dir, "because the account's pid dir is read from the user database, not HOME".
+- `design/usage-limit-resume-r1.md` (108 lines, grep over the claims): :3 quotes the owner's word, "sessions and relay runs resume by themselves after a usage limit (the 5-hour window), instead of stopping."; :7, the relay's ledger "holds five" limit stops, two weekly and three on one model with no reset; :13-15, the CLI's transcripts hold 35 session (`five_hour`), 35 weekly (`seven_day`) and 46 model-limit messages; :17, the 5-hour window "has 35 hits there and none in the relay's ledger"; :51, `relay.pid` stays held through the pause; :87, the held lock refuses `gate`, `plan`, `run` and `resume` "for up to 6 h, or to `--until`".
+- `DECISIONS.md` (8,023 bytes, 12 numbered entries under `## In force` in five areas, Packets, The orchestrator row, The guards, The gate and Usage limits, and an empty `## Proposed`) and `OPEN-QUESTIONS.md`, copied to a scratch folder: agentik-decisions at 569a120 (`PYTHONPATH` its `src/`, no bytecode written, system Python 3.13) with `--ledger` on the copy gives `render --lint` exit 0, and `render` writes a `CLAUDE.md` block of 984 bytes in 18 lines, as agentik-decisions-head-2026-10-14 records.
+
 ## Limits
 - Counts of files, not of nights: a charter is written by its own sitting, and the ledger of nights is outside the repo.
 - The fix for C4 is read from the design, the packet and one code comment; this note ran no test and no night. A fix in the repo is not proof it holds.
@@ -66,3 +71,5 @@ Read on 2026-10-14 in the attached checkout at 405d1e0 (2026-10-13 19:18:20 -070
 ## Used in
 - docs/tools/relay.md
 - docs/journal/posts/2026-09-30-the-probe-that-stopped-a-night.md
+- docs/journal/posts/2026-10-14-living-inside-a-usage-window.md
+- docs/tools/decisions.md

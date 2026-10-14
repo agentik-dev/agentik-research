@@ -1,6 +1,6 @@
 ---
 repo: agentik-dev/agentik-agents
-path: README.md, design/01-local-agent-lane.md, NICE_TO_HAVE.md, bin/ (the dispatcher bin/agentik-agents whole; the cost tool, the fan-out, the API wrapper, the router, the launcher and the rig tool's header, by diff and by the line ranges below), and the git history from 78ce312 to f986500
+path: README.md, design/01-local-agent-lane.md, NICE_TO_HAVE.md, bin/ (the dispatcher bin/agentik-agents whole; the cost tool, the fan-out, the API wrapper, the router, the launcher and the rig tool's header, by diff and by the line ranges below), history/sittings/, and the git history from 78ce312 to f986500
 commit: f986500
 title: "agentik-agents at its head on 2026-10-14: what changed since the first public commit"
 author: agentik-dev (the suite owner)
@@ -27,6 +27,7 @@ Read on 2026-10-14 in the attached checkout at f986500: `git log --oneline` from
 - Tool calls on the local model: README line 231 gives generation as 11 tokens a second for prose and about 25 for JSON and tool calls. design/01 lines 177-178 quote the model card's agentic-coding scores and "Community reports of 'zero failed tool calls across a multi-hour agentic session'". design/01 lines 395-396 list a tool-call smoke test (a `tool_use` with correct arguments) as a gate before any model swap.
 - NICE_TO_HAVE.md at the head keeps the S4 entry on the launcher orphaning a router (200 runs left 2 routers running) unchanged, and adds S4 entries dated 2026-10-14: the placeholder finding is unverified on the current CLI; the `--bare` toolset is a probe of 2026-08-19, to re-probe on the current CLI; whether `lastModelUsage` is cumulative is unchecked, so the seat figure is a lower bound; the subscription lane prices every cache write at 1.25x; Sonnet 5 stays at $3/$15; three design/01 constants rest on the 2.1.261 docs.
 - Unchanged between 78ce312 and f986500, apart from command names and state-folder paths: design/02, design/03 and the design/01 evidence folder (none is in the diff); the README's containment, spend-ceiling, usage-log and fan-out-notes passages; the router's routing and header code; design/01's options, tiering ladder, tuning and acceptance sections, except the caveats above.
+- Added 2026-10-14 for docs/tools/relay.md (the charter count): `git ls-tree --name-only f986500 history/sittings/` lists two dated `.md` charters, `2026-10-13-1.md` and `2026-10-13-2.md`, and no other file, as agentik-relay-head-2026-10-14 counts.
 
 ## Limits
 - The 2026-10-14 commits answer this site's first refute round ("rf1-research-fixes"), so part of the record now echoes this site. They change wording, comments, one cache-read rate and one test figure. None records a new run of the tools; their messages cite vendor pages read that day, which this note does not re-check.
@@ -35,3 +36,4 @@ Read on 2026-10-14 in the attached checkout at f986500: `git log --oneline` from
 ## Used in
 - docs/tools/agents.md
 - docs/index.md
+- docs/tools/relay.md (the charter count)
