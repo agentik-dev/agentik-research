@@ -11,39 +11,39 @@ A review loop ends when something outside the reviewer decides. A model asked to
 - Judges are biased. After an order swap GPT-4 stayed consistent on 65.0 percent of pairs and Claude-v1 on 23.8. A padded answer fooled Claude-v1 and GPT-3.5 in 91.3 percent of cases and GPT-4 in 8.7. GPT-4 matched human experts on 85 percent of non-tie pairs; humans matched each other on 81.[^zheng]
 - Over 278,790 review conversations in 300 open-source projects, AI reviewers' suggestions were adopted 16.6 percent of the time and human reviewers' 56.5; of the unadopted AI suggestions, 28.7 percent were incorrect.[^zhong]
 - An agentic reviewer beat single-turn review, 52.6 against 44.1 percent for one patch source, and review-revise rounds two to five added +5.8, +2.4, +0.4 and +0.6 points.[^wang]
-- Interrupting people at random moments cost up to 30 percent longer to resume and up to twice the errors, against interruptions at subtask boundaries. The study is from 2006 on desktop tasks.[^iqbal]
+- Earlier studies cited by Iqbal and Bailey found that interrupting people at random moments cost up to 30 percent longer to resume and up to twice the errors, against interruptions at subtask boundaries; their own 2006 study predicts that cost from the task's structure.[^iqbal]
 
 ## What the vendor documents, as of October 2026
 
 - A Stop hook's exit 2 is overridden after 8 consecutive continuations with no tool call between them.[^hooks]
 - Claude Code's Code Review is advisory: its check ends neutral and never blocks. A `REVIEW.md` can set a verification bar, a nit cap and a re-review rule, and the page's own example warns against reaching round seven on style alone.[^codereview]
 - The best-practices page says a reviewer asked to find gaps will usually report some, even when the work is sound, and lists gates from a prompt check to a Stop hook to a refuting subagent.[^bestpractices]
-- A maximum-iterations stop is standard for an evaluator-optimizer loop (December 2024).[^buildingagents]
 
 ## What is reported
 
+- A maximum number of iterations is a common stopping condition for an agent loop, in Anthropic's December 2024 post.[^buildingagents]
 - Agents skew positive when grading their own work; a separate evaluator still needed several tuning rounds (March 2026).[^harnessdesign]
-- Four public loops did not end on their own: 11 consecutive change requests on one pull request (18 findings, 14 of them low); 9 rounds each hitting the last fix; 8 cycles with findings going from 37 to 45 and peaking at 54; nit-only reviews triggering fixes under a cap of 10. The exits proposed (a severity floor, a report-only reviewer, blocking tags, a visible round count) are untested.[^fullsend][^aiwatch][^agentinfra][^meridian]
-- ADR practice: one to two pages per record, numbers never reused, superseded records kept, an append-only log with a status; an unrecorded decision invites repeated debate. None of the sources sets a cap on active records.[^nygard][^azure]
+- Four public loops did not end on their own: 11 consecutive change requests on one pull request (18 findings, 14 of them low); 9 rounds each hitting the last fix; 8 cycles with findings going from 37 to 45 and peaking at 54; nit-only reviews triggering fixes under a cap of 10. Of the exits proposed (a severity floor, a report-only reviewer, blocking tags, a visible round count), one report-only reviewer shipped and was checked on the next pull request; the rest are untested.[^fullsend][^aiwatch][^agentinfra][^meridian]
+- ADR practice, in a 2011 post and in Microsoft's framework documentation: one to two pages per record, numbers never reused, superseded records kept, an append-only log with a status; an unrecorded decision invites repeated debate. Neither source sets a cap on active records.[^nygard][^azure]
 
 ## Where the evidence stops
 
 - Self-Refine's gains and Huang's losses fit one pattern: a gain needs specific feedback or an outside signal. Self-Refine compares with one pass; Huang uses equal-cost baselines.
-- The round limits in use (8, 10, 4, 6) are choices. One study measures returns per round, on one benchmark.[^wang] The loop reports are anecdote.
+- The round limits in use (8 in Claude Code, 10 in one loop report, 4 in Self-Refine) are choices. One study measures returns per round, on one benchmark.[^wang] The loop reports are anecdote.
 
 ## What this means for the agentik tools
 
-agentik-decisions says that a review with no round limit re-litigates settled decisions, that a named consumer prevents it, and that asking the owner once per session in one batch beats asking as questions arise. The loops that did not end are on record, but re-litigation and the named-consumer cure are not in the sources. Batching was never compared with asking as questions arise; the one measured result is that an interruption at a boundary is cheaper than a random one.[^iqbal] Its compact entries and its supersession rule match ADR practice; its cap of 25 entries in force and its claim over ADR files have no source.[^nygard][^azure][^decisionsreadme]
+agentik-decisions' first design ties rulings that get re-cut to rulings with no consumer and makes a named consumer the cure;[^decisionsr1] its README says to ask the owner once per session in one batch and caps the ledger at 25 entries in force.[^decisionsreadme] The loops that did not end are on record, but the named-consumer rule is in no outside source. Batching was never compared with asking as questions arise; the measured result is that an interruption at a boundary is cheaper than a random one.[^iqbal] Its compact entries and its supersession rule match ADR practice; its cap has no source.[^nygard][^azure]
 
-agentik-relay and agentik-respeak run report-only adversary reviewers. Outside critics beat self-critique,[^huang][^kamoi] but no study compares a report-only agent with self-review, and a reviewer asked to find gaps reports gaps anyway.[^bestpractices] The relay's rule that a sign-off is a check that must pass, and agentik-commons' rule that an unrun check is never a pass, follow the measured finding that external checks beat self-judgement; the rules themselves are the owner's.[^huang][^relaydesign]
+agentik-relay ships a read-only adversary agent, which the respeak repo's reviews also ran.[^relayadversary][^respeakreviews] An outside signal beats self-critique: a ground-truth gate lifted accuracy where self-correction lowered it, and the survey finds reliable external feedback is what works.[^huang][^kamoi] No study compares a report-only agent with self-review, and a reviewer asked to find gaps reports gaps anyway.[^bestpractices] The relay's rule that a sign-off is a check that must pass and an unrun gate is never a pass,[^relaydesign] and agentik-commons' rule that a refused check reads unrun, never red,[^commonsguide] follow the measured finding that external checks beat self-judgement; the rules themselves are the owner's.[^huang]
 
 ## Practices this evidence supports
 
 - Put sign-off in a check outside the reviewer, and cap the rounds. Measured and documented.[^huang][^hooks]
 - Block only on correctness; list nits once; demand a file and line or a reproduction. Documented and reported.[^codereview][^meridian]
 - Review in a fresh context, with a different model if you can. Documented and measured.[^bestpractices][^zhang]
-- Supersede decision entries; do not edit them. Reported.[^azure]
-- Ask the owner at a boundary, not mid-task. Measured for people, conjecture for batching.[^iqbal]
+- Supersede decision entries; do not edit them. Documented and reported.[^azure][^nygard]
+- Ask the owner at a task boundary, not mid-task. Measured for people in the studies Iqbal and Bailey cite; conjecture for batching.[^iqbal]
 
 ## Sources
 
@@ -67,4 +67,8 @@ agentik-relay and agentik-respeak run report-only adversary reviewers. Outside c
 [^agentinfra]: Issue reporter, "Review loops never converge when the fix pass adds the text the reviewers read", daniel-ospina/agent-infra issue 1089, 15 September 2026, <https://github.com/daniel-ospina/agent-infra/issues/1089>.
 [^meridian]: Pull request author, "Review loop passes on no blocking findings; nits no longer spend fix rounds", meridianlabs-ai/agents pull request 58, 4 September 2026, <https://github.com/meridianlabs-ai/agents/pull/58>.
 [^decisionsreadme]: agentik-dev/agentik-decisions, "README.md", commit 80d59eb, <https://github.com/agentik-dev/agentik-decisions/blob/80d59eb/README.md>.
+[^decisionsr1]: agentik-dev/agentik-decisions, "history/design/decisions-r1.md", section 7, decision 4, commit 80d59eb, <https://github.com/agentik-dev/agentik-decisions/blob/80d59eb/history/design/decisions-r1.md>.
+[^relayadversary]: agentik-dev/agentik-relay, "plugin/agents/adversary.md", commit a326550, <https://github.com/agentik-dev/agentik-relay/blob/a326550/plugin/agents/adversary.md>.
+[^respeakreviews]: agentik-dev/agentik-respeak, "design/review-adv6.md", commit 319f060, <https://github.com/agentik-dev/agentik-respeak/blob/319f060/design/review-adv6.md>.
+[^commonsguide]: agentik-dev/agentik-commons, "GUIDE.md", section 5, commit e456f4b, <https://github.com/agentik-dev/agentik-commons/blob/e456f4b/GUIDE.md>.
 [^relaydesign]: agentik-dev/agentik-relay, "design/relay-r1.md", commit a326550, <https://github.com/agentik-dev/agentik-relay/blob/a326550/design/relay-r1.md>.
