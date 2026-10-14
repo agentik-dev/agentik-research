@@ -67,3 +67,4 @@ nav:
   - The tools:
       - tools/index.md
       - tools/session.md
+      - tools/relay.md
