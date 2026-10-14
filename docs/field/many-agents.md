@@ -28,7 +28,7 @@ As of October 2026 the documentation says:
 
 ## The strongest case on each side
 
-For: Kim's +80.8 percent on decomposable work, and Anthropic's +90.2 percent on research. The limits are one task family and an internal evaluation where tokens explain most of the variance.[^kim][^anthropicresearch]
+For: Kim's +80.8 percent on decomposable work, and Anthropic's +90.2 percent on research. The limits are one task family, and an internal evaluation beside a benchmark where tokens explained 80 percent of the variance.[^kim][^anthropicresearch]
 
 Against: Kim's -39 to -70 percent on sequential work, MAST's 41 to 86.7 percent failure rates, and Cognition's conflicting decisions. The limits are 50 to 100 instances on the planning benchmark and 20 per coding cell, no single-agent control, and no data.[^kim][^mast][^cognition]
 
@@ -39,17 +39,17 @@ Against: Kim's -39 to -70 percent on sequential work, MAST's 41 to 86.7 percent 
 - Hurt: sequential work and shared state. Measured.[^kim]
 - Hurt: cost, at 3 to 10 times the tokens. Documented.[^multiagentblog]
 - Hurt: parallel writers on one working tree. Reported.[^issue52958][^issue84685]
-- A review role works when the reviewer has a fresh context and concrete criteria. Documented.[^multiagentblog]
+- For a review role, the vendor's guidance is a fresh context and concrete criteria, since verifiers declare early victory without them; it offers no measurement. Documented.[^multiagentblog]
 
 ## Where sources disagree
 
 - Tokens against architecture. Anthropic's gain may be the tokens spent; Kim matched budgets and found losses on sequential work.[^anthropicresearch][^kim]
-- The documentation says worktrees stop collisions; two issues from April and August 2026 report leaks, one in the guard itself. The reports are version-dependent and not reproduced.[^worktrees][^issue84685]
+- The documentation says worktrees stop collisions; two issues from April and August 2026 report leaks, one in the guard itself. The reports are version-dependent and not reproduced.[^worktrees][^issue52958][^issue84685]
 - Measured: Kim and MAST. Anecdote: Cognition and the issues.
 
 ## What this means for the agentik tools
 
-agentik-relay runs one child per worktree and ships a report-only adversary agent.[^relaydesign][^relayadversary] Context isolation is documented, though a subagent's tokens still count against the limits.[^subagents] A foreground Agent call under `-p` is documented, and the relay measured one.[^workflows][^relayorch] `maxTurns` is documented, but the finding that an agent cannot see its turn count is the relay's own.[^relaynth] Stop fires for the main agent only, as agentik-session also found.[^hooks][^sessionrespawn] The documentation supports one worktree per writer. The relay's step from shared refs to `index.lock` contention is conjecture.[^relaydesign] The Claude Code documentation does not mention locks, and git's lockfile page says only that a second locker fails at once.[^gitlayout][^gitlock]
+agentik-relay runs one child per worktree and ships a report-only adversary agent.[^relaydesign][^relayadversary] Context isolation is documented, though a subagent's tokens still count against the limits.[^subagents] A foreground Agent call under `-p` is documented, and the relay measured one.[^subagents][^relayorch] `maxTurns` is documented, but the finding that an agent cannot see its turn count is the relay's own.[^relaynth] Stop fires for the main agent only, as agentik-session also found.[^hooks][^sessionrespawn] The documentation supports one worktree per writer, and the relay runs one child per worktree.[^worktrees][^relaydesign] That shared refs would lead to `index.lock` contention is this site's conjecture, not the relay's claim: the worktrees page documents only `git worktree lock`, and git's lockfile page says only that a second locker fails at once.[^gitlayout][^gitlock]
 
 agentik-agents found that three of four delegates that hit a denied tool returned a placeholder after full cost. The documentation says subagents continue after a denial but does not describe placeholders. The cause is conjecture.[^changelog][^agentsbin]
 
@@ -57,7 +57,7 @@ agentik-agents found that three of four delegates that hit a denied tool returne
 
 - Fan out only decomposable work; keep sequential work in one agent. Measured.[^kim]
 - One worktree and one file set per parallel writer. Documented and reported.[^worktrees][^issue84685]
-- Give a fresh-context reviewer concrete criteria and a report-only role. Documented.[^multiagentblog]
+- Give a fresh-context reviewer concrete criteria. Documented.[^multiagentblog] Make its role report-only. Our use.[^relayadversary]
 
 ## Sources
 
