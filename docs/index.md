@@ -53,7 +53,7 @@ What we tried, what worked, what did not, and what changed because of it. The si
 
 ## Five findings that matter most
 
-Long Claude Code sessions fail in ways that studies have measured, mostly on benchmarks. No independent study found measures a Claude 5.x model at length, and none measures a Claude Code session decaying as it fills. These five findings carry the most weight, each with its number, its source and what to do about it. Vendor documentation is cited as read on 2026-10-14, and each vendor post with its own date. The agentik tools are early and built for their author's own daily use,[^profile] and no source found measures them against the alternatives; the [method](method.md) page gives the limits.
+Long Claude Code sessions fail in ways that studies have measured, mostly on benchmarks. This site found no independent study that measures a Claude 5.x model at length, and none that measures a Claude Code session decaying as it fills. These five findings carry the most weight, each with its number, its source and what to do about it. Vendor documentation is cited as read on 2026-10-14, and each vendor post with its own date. The agentik tools are early and built for their author's own daily use,[^profile] and no source found measures them against the alternatives; the [method](method.md) page gives the limits.
 
 <div class="ak-findings" markdown>
 
@@ -78,7 +78,7 @@ Long Claude Code sessions fail in ways that studies have measured, mostly on ben
 - [agentik-agents](tools/agents.md) routes delegated work to the API, the subscription or a local model.
 - [agentik-commons](tools/index.md) is the front door and the conventions.
 
-This site does not claim that any tool is proven. The tools' evidence is one owner's record, read at fixed commits and labelled "our use" throughout. This site's first review found numbers two repositories stated wrongly or without their conditions: in agentik-session the default hook timeout, the cache read rate and the terms of the one-hour cache, and in agentik-agents Sonnet 5.5's cache read rate. On 2026-10-14 both repositories corrected them, in merges `86ac60a` and `f986500`; neither merge records a new run of a tool.[^sessionhead][^agentshead] One price stays on purpose: agentik-agents keeps Sonnet 5 at the 3 and 15 dollars per million tokens the account was billed, not the 2 and 10 the pricing page lists.[^agentshead]
+This site does not claim that any tool is proven. The tools' evidence is one owner's record, read at fixed commits and labelled "our use" throughout. In two repositories, this site's first review found numbers stated wrongly or without their conditions: in agentik-session the default hook timeout, the cache read rate and the terms of the one-hour cache, and in agentik-agents Sonnet 5.5's cache read rate. On 2026-10-14 both repositories corrected them, in merges `86ac60a` and `f986500`; neither merge records a new run of a tool.[^sessionhead][^agentshead] One price stays on purpose: agentik-agents keeps Sonnet 5 at the 3 and 15 dollars per million tokens the account was billed, not the 2 and 10 the pricing page lists.[^agentshead]
 
 ## Where to start
 

@@ -1,6 +1,6 @@
 # agentik-session
 
-agentik-session meters a Claude Code session against two ceilings. At 80 percent its meter prints a checkpoint line, and the session writes its handoff into a charter. Its launcher then restarts the next sitting from that charter instead of compacting.[^readme][^overhaul] It is for runs where nobody watches the terminal.[^readme] Its evidence is our use: one owner's record, and no test of a restart against compaction. Unless marked otherwise, everything on this page is the repo's own record, read at commit e7f0723, or at its head on 2026-10-14, e8477a7, where a footnote names that commit. At e7f0723 the command line tool still had its old name. This page writes each command under the current name, `agentik session`, as the README does at commit 89c69a8.[^readme][^readmenow]
+agentik-session meters a Claude Code session against two ceilings. At 80 percent its meter prints a checkpoint line, and the session writes its handoff into a charter. Its launcher then restarts the next sitting from that charter instead of compacting.[^readme][^overhaul] It is for runs where nobody watches the terminal.[^readme] Its evidence is our use: one owner's record, and no test of a restart against compaction.
 
 ## The problem
 
@@ -32,7 +32,7 @@ The design rests on one premise: a fresh context per sitting beats a compacted o
 
 ## The approach
 
-A profile names a role and its two ceilings. A meter reads the session's own transcript after every tool call. At 80 percent the sitting writes its handoff into a charter and commits. When that sitting ends, a launcher starts a fresh session that reads the charter. Automatic compaction is blocked; a typed `/compact` passes, and otherwise the sitting continues by restart.[^readme]
+A profile names a role and its two ceilings. A meter reads the session's own transcript after every tool call. At 80 percent the sitting writes its handoff into a charter and commits. When that sitting ends, a launcher starts a fresh session that reads the charter. Automatic compaction is blocked; a typed `/compact` passes, and otherwise the sitting continues by restart.[^readme] At commit e7f0723 the command line tool still had its old name. This page writes each command under the current name, `agentik session`, as the README does at commit 89c69a8.[^readme][^readmenow]
 
 ### The parts
 
@@ -89,6 +89,8 @@ The repo records why it dropped each alternative.
 <span class="ev ev-our-use">our use</span> One owner's record: one night of three restarts by hand, each of which read its charter cleanly, and two logged launcher chains, one with five restarts. Nothing compares a restart with compaction.
 
 </div>
+
+Unless marked otherwise, everything on this page is the repo's own record, read at commit e7f0723, or at its head on 2026-10-14, e8477a7, where a footnote names that commit.
 
 - **The charter carries a sitting across a restart.** On the night of 2026-10-05, each of three restarts by hand read its charter cleanly.[^respawn]
 - **The launcher has run chains.** An observer's check-in of 2026-10-13 logs a chain in which the launcher had made five restarts when it stopped, after a sitting wrote RESPAWN but never ran the verb that marks it. A note of 2026-10-12 logs another chain, in which the 600-second floor held a sitting. Neither note says whether the restarted sittings read their charters cleanly.[^nth]

@@ -1,6 +1,6 @@
 # Summary
 
-Long Claude Code work fails from context length, compaction that loses specifics, fan-out on work that does not split, review loops with no outside signal, and unattended runs that report unearned success. Measured evidence settles the direction on the first, third and fourth; for false success, one benchmark gives one measured rate.[^advani] The vendor's documentation, dated October 2026, and practitioners' reports cover the rest. The six agentik tools answer each failure with a mechanism. Their own record shows where each mechanism is untested. This page gives you the three parts in two pages.
+Long Claude Code work fails from context length, compaction that loses specifics, fan-out on work that does not split, review loops with no outside signal, and unattended runs that report unearned success. Measured evidence settles the direction on the first, third and fourth; for false success, one benchmark gives one measured rate.[^advani] The vendor's documentation, dated October 2026, and practitioners' reports cover the rest. The five agentik tools answer each failure with a mechanism, and agentik-commons gives them one front door. Their own record shows where each mechanism is untested. This page gives you the three parts in two pages.
 
 ## The problem
 
@@ -23,7 +23,7 @@ James Reason pictured an organisation's defences against error as layers, each w
 9. **Telling people.** Put the outcome first and keep errors whole.[^army][^outputstyles] Readability formulas are weak gates.[^zheng] One benchmark found that 75.8 percent of failed runs with an explicit status claim claimed success.[^advani]
 10. **Cost lanes.** A key replaces the login, and the plan's limits stop.[^gateway] It also turns off Remote Control.[^gatewayconnect] Several routers did not reliably beat the best single model.[^routerbench] Sweep effort on your current model before you add a second.[^costintel]
 
-## Part 2: the tools, in six lines
+## Part 2: five tools and a front door
 
 - **agentik-session**: a meter on the transcript, a charter at 80 percent, a restart from the charter, automatic compaction blocked.[^sessionreadme] Its premise has support in direction but no measured strength. Its window table is deliberately cautious, by its own comment. Until 2026-10-14 its record gave Claude Code's default hook timeout as 60 seconds, an unconditional one-hour cache and a 0.1 cache read rate. On 2026-10-14, commit `2aa18b3` corrected the record to Claude Code's 600-second default; its message says no constant derives from the old figure. Commit `b40baa8` gave the cache's conditions and the 0.05 and 0.025 read rates.[^sessionhead] The fixes change the record, not the evidence.
 - **agentik-relay**: nights of packets, one worktree and one child per row, a deterministic gate, thirty stop reasons, two money caps, an outside watchdog. Its record covers one owner's nights. It has no sandbox, and no stall is recorded yet.[^relayreadme][^relaydesign][^relaycode]
@@ -34,7 +34,13 @@ James Reason pictured an organisation's defences against error as layers, each w
 
 ## Part 3: the practice
 
-Twenty-six practices are grouped by question, each with its evidence and the tool that automates it. Measured evidence supports the direction of three: start long work from a short brief in a fresh context; fan out only decomposable work; and put sign-off in a check outside the reviewer. A fourth, checking a "done" claim against a tool result, rests on a measured false-success rate. Thirteen carry measured evidence in all. Of the other thirteen, twelve cite the documentation or a report, and one, metering the session's usage, rests on our use and a conjecture. Five carry a conjecture. See [Practices](practices.md).
+Twenty-six practices are grouped by question, each with its evidence and the tool that automates it. Measured evidence supports the direction of three: start long work from a short brief in a fresh context; fan out only decomposable work; and put sign-off in a check outside the reviewer. A fourth, checking a "done" claim against a tool result, rests on a measured false-success rate. By evidence, the twenty-six split this way:
+
+- 13 carry measured evidence, these four among them.
+- 12 carry no measurement and cite the documentation or a report.
+- 1, metering the session's usage, rests on our use and a conjecture.
+
+Five of the twenty-six carry a conjecture for some part of the reason. See [Practices](practices.md).
 
 ## From the journal
 

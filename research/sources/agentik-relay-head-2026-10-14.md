@@ -63,6 +63,9 @@ Added 2026-10-14 for the consistency sweep (docs/journal/posts/2026-09-30-the-pr
 - `design/usage-limit-resume-r1.md` (108 lines, grep over the claims): :3 quotes the owner's word, "sessions and relay runs resume by themselves after a usage limit (the 5-hour window), instead of stopping."; :7, the relay's ledger "holds five" limit stops, two weekly and three on one model with no reset; :13-15, the CLI's transcripts hold 35 session (`five_hour`), 35 weekly (`seven_day`) and 46 model-limit messages; :17, the 5-hour window "has 35 hits there and none in the relay's ledger"; :51, `relay.pid` stays held through the pause; :87, the held lock refuses `gate`, `plan`, `run` and `resume` "for up to 6 h, or to `--until`".
 - `DECISIONS.md` (8,023 bytes, 12 numbered entries under `## In force` in five areas, Packets, The orchestrator row, The guards, The gate and Usage limits, and an empty `## Proposed`) and `OPEN-QUESTIONS.md`, copied to a scratch folder: agentik-decisions at 569a120 (`PYTHONPATH` its `src/`, no bytecode written, system Python 3.13) with `--ledger` on the copy gives `render --lint` exit 0, and `render` writes a `CLAUDE.md` block of 984 bytes in 18 lines, as agentik-decisions-head-2026-10-14 records.
 
+Added 2026-10-14 for the glossary, read with `git show 405d1e0:design/relay-r1.md`:
+- `design/relay-r1.md:38-39`, §2 "The packet schema", the header table: `pin`, "a branch or sha; the queue row's `base` wins when both name one"; `wall`, "prose; must contain "this repo only" or a repo name".
+
 ## Limits
 - Counts of files, not of nights: a charter is written by its own sitting, and the ledger of nights is outside the repo.
 - The fix for C4 is read from the design, the packet and one code comment; this note ran no test and no night. A fix in the repo is not proof it holds.
@@ -73,3 +76,4 @@ Added 2026-10-14 for the consistency sweep (docs/journal/posts/2026-09-30-the-pr
 - docs/journal/posts/2026-09-30-the-probe-that-stopped-a-night.md
 - docs/journal/posts/2026-10-14-living-inside-a-usage-window.md
 - docs/tools/decisions.md
+- docs/glossary.md (pin, wall)

@@ -31,7 +31,7 @@ The design draws on a literature the repo surveyed in August 2026. Pairs of peop
 
 respeak keeps the lanes apart and enforces only the human lane with code. The machine lane runs on instruction alone.
 
-| | Machine lane | Human lane |
+| Aspect | Machine lane | Human lane |
 |---|---|---|
 | Who writes, who reads | Agents to agents | A translator subagent or an editorial pass, to a person |
 | The rule | Shorthand only for ratified terms; error messages, security findings, user quotes and numbers with units never shortened | One of three modes; a style gate over banned phrases, sentence length and dash density |
@@ -46,18 +46,18 @@ respeak keeps the lanes apart and enforces only the human lane with code. The ma
 - **The include file.** `/respeak:include write` renders a static file of at most 1,500 bytes from the configuration, with no model call. The file is for CLAUDE.md to import, so a reader without the plugin still gets the rules.[^include]
 
 ```mermaid
-flowchart LR
+flowchart TD
   subgraph Machine["Machine lane: agent to agent"]
-    A1["Agent session"] -->|"ratified shorthand, else full words"| A2["Agent session"]
+    A1["Agent session"] -->|"ratified shorthand,<br>else full words"| A2["Agent session"]
   end
-  Lex[("lexicon: 3 seed entries")] -->|"digest imported by CLAUDE.md"| A1
-  A1 -.->|"traffic is read, never intercepted"| T["Translator subagent"]
-  T -->|"a proposal for an unratified term"| Prop[("proposals")]
+  Lex[("lexicon:<br>3 seed entries")] -->|"digest imported<br>by CLAUDE.md"| A1
+  A1 -.->|"traffic is read,<br>never intercepted"| T["Translator subagent"]
+  T -->|"a proposal for<br>an unratified term"| Prop[("proposals")]
   Prop -->|"a human ratifies"| Lex
-  T -->|"a narrative in eli5, bluf or technical"| S{"Scanner"}
-  S -->|"fail: a report, at most 2 rounds"| T
+  T -->|"a narrative in eli5,<br>bluf or technical"| S{"Scanner"}
+  S -->|"fail: a report,<br>at most 2 rounds"| T
   S -->|"pass"| P["Person"]
-  W["Hook on a Write or Edit of a human-lane file"] -->|"blocks hits the write added"| A1
+  W["Hook: a Write or Edit<br>of a human-lane file"] -->|"blocks hits<br>the write added"| A1
 ```
 
 The diagram follows the README, the architecture document, the gate script and the skill. The skill allows the scan loop at most two rounds, then relays the narrative with the report attached.[^readme][^architecture][^gate][^skill]

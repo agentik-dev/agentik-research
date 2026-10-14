@@ -8,7 +8,7 @@ kind: documented
 ---
 
 ## What it says
-- This is a one-page reproduction of The Joint Commission's official "Do Not Use" list. The Joint Commission's own fact sheet, its list page and its PDF all returned HTTP 403 to my fetch tool, so I could not open the official page itself.
+- This is a one-page reproduction of The Joint Commission's official "Do Not Use" list. The Joint Commission's own fact sheet, its list page and its PDF all returned HTTP 403 to the note author's fetch tool, so the note's author could not open the official page itself.
 - The list has eight rows, each with the potential problem and the replacement to write:
   - "U, u (unit)": mistaken for zero, for the number four, or for "cc"; write "unit".
   - "IU (International Unit)": mistaken for IV (intravenous) or for the number 10; write "International Unit".

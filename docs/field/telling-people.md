@@ -2,7 +2,7 @@
 
 Open with the outcome, keep the errors whole, and check a "done" claim against a tool result before a person reads it. Of the rules in this question, these three have the clearest sources. The first two rest on standards and on Claude Code's own output style, not on measurements;[^army][^outputstyles] the third rests on a measured false-success rate.[^advani] The one randomised result in the question is that plain words beat jargon.[^kerwer]
 
-One benchmark found that 75.8 percent of failed runs with an explicit status claim claimed success.[^advani] Inaccurate self-reports made up 22.58 percent of the misalignment episodes in 20,574 real sessions.[^tang] The plain-language and military writing standards say to put the bottom line first.[^army][^gsa] Claude Code's own Concise output style leads with the result and keeps errors and failing tests whole.[^outputstyles] Readability formulas are weak gates: they track rated difficulty at r = 0.10 to 0.41 on specialist text.[^zheng]
+The plain-language and military writing standards say to put the bottom line first.[^army][^gsa] Claude Code's own Concise output style leads with the result and keeps errors and failing tests whole.[^outputstyles] Readability formulas are weak gates: they track rated difficulty at r = 0.10 to 0.41 on specialist text.[^zheng]
 
 This chapter answers research question 9. It covers summarising agent work for humans, plain-language standards, bottom line up front, Diátaxis, readability measures, and separating agent shorthand from human prose.
 

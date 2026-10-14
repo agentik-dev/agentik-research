@@ -43,14 +43,14 @@ Commands are written as `agentik decisions <verb>`, the form of the suite's fron
 - **`backlog` and `doctor`.** `backlog` places each repo's `NICE_TO_HAVE.md` items against its `HANDOFF.md` build order. S1 (harm) and S2 (blocks the goal) items come first, ahead of step 1; then each open step with the items on its path. It writes nothing and runs no model. `doctor` prints one line per check.[^d23][^src]
 
 ```mermaid
-flowchart LR
-  fork["A sitting meets a fork the design cannot settle"] -->|"agentik decisions new"| q["A question block, 2 to 4 options, at most 5 open; a Proposed line with the same number"]
-  q -->|"agentik decisions ask: one render, then AskUserQuestion, 4 per call"| owner{{"The owner answers"}}
-  owner -->|"answer N --area A"| entry["Entry N under its area, in force"]
-  owner -->|"answer N --amends M"| amend["Entry M's paragraph replaced; its tail kept"]
-  owner -->|"answer N --no-entry"| none["No entry; the number is retired"]
-  entry -->|"agentik decisions render"| block["The generated block in CLAUDE.md"]
-  entry -.->|"a hand edit; the lint checks the date and fate"| sup["A Superseded line"]
+flowchart TD
+  fork["A fork the design<br>cannot settle"] -->|"agentik decisions new"| q["A question block:<br>2 to 4 options,<br>at most 5 open;<br>a Proposed line<br>with the same number"]
+  q -->|"agentik decisions ask:<br>one render, then<br>AskUserQuestion,<br>4 per call"| owner{{"The owner answers"}}
+  owner -->|"answer N<br>--area A"| entry["Entry N under<br>its area, in force"]
+  owner -->|"answer N<br>--amends M"| amend["Entry M's paragraph<br>replaced; its tail kept"]
+  owner -->|"answer N<br>--no-entry"| none["No entry; the<br>number is retired"]
+  entry -->|"agentik decisions<br>render"| block["The generated block<br>in CLAUDE.md"]
+  entry -.->|"a hand edit; the lint<br>checks the date and fate"| sup["A Superseded line"]
 ```
 
 The diagram follows the one-flow design and the code. The repo has no diagram of its own.[^d18][^src]

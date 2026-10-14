@@ -41,9 +41,18 @@ Vercel's own evaluation is reported rather than measured, because it states neit
 ## Where sources disagree
 
 - Placement. A November 2025 post says CLAUDE.md joins the system prompt;[^claudemdblog] the October 2026 documentation says it is a user message.[^memory] The later page governs.
-- Length. HumanLayer's 300 lines against the documentation's 200.[^humanlayer][^memory] Neither is measured.
-- Adherence. The documentation says longer files lower adherence and cites no study.[^memory] The one length experiment found no effect from 25 to 500 lines on one trivial rule.[^mcmillan] The decline with many rules is measured only for keyword lists.[^ifscale]
+- Length. HumanLayer's 300 lines against the documentation's 200.[^humanlayer][^memory]
+- Adherence. The documentation says longer files lower adherence and cites no study.[^memory] The one length experiment found no effect from 25 to 500 lines on one trivial rule.[^mcmillan]
 - Always-loaded against on-demand. An always-loaded index beat a skill in Vercel's evaluation,[^vercel] while the documentation sends situational content to skills.[^bestpractices]
+
+## Where the evidence stops
+
+<div class="ak-limits" markdown>
+
+- Adherence: the one length experiment tested one trivial rule, and the decline with many rules is measured only for keyword lists.[^mcmillan][^ifscale]
+- Length: neither HumanLayer's 300 lines nor the documentation's 200 is measured.[^humanlayer][^memory]
+
+</div>
 
 ## What this means for the agentik tools
 

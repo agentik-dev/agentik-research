@@ -6,13 +6,23 @@ The agentik tools are seven public repos under one GitHub organization, all writ
 
 You leave Claude Code running for hours, or for a night, and nobody watches. The repos record five ways it goes wrong. Each tool meets one of them.
 
-| Tool | The failure it meets | What it does | Version, 2026-10-13 |
-|---|---|---|---|
-| [agentik-session](session.md) | A session runs to its limit with no room to hand off, and a person has to restart it | A meter on the session's own transcript, a checkpoint at 80 percent, a charter under 4 KB, and a launcher that restarts a sitting from the charter instead of compacting[^sessionreadme] | 2.0.0-alpha.14 |
-| [agentik-relay](relay.md) | An unattended night of sessions forks past its means, spends without bound, or damages the repository | A Go binary that runs queued packets headless, one worktree and one child per row, a deterministic gate, thirty stop reasons and two money caps[^relayreadme][^relayr1][^relaycode] | 0.1.3 |
-| [agentik-decisions](decisions.md) | Settled decisions do not reach the next session, or the file that holds them grows past reading | One sectioned ledger per repo, capped at 25 entries in force; the few entries every session needs copied into a generated CLAUDE.md block; owner questions asked in one batch[^decisionsreadme] | 0.8.0 |
-| [agentik-respeak](respeak.md) | Agents write to each other in shorthand and the person reading the output becomes the outsider | Two lanes: a ratified lexicon for agent traffic; a translator, a style gate and a verifier that an edit changed only prose for the human lane[^respeakreadme] | 0.8.0 |
-| [agentik-agents](agents.md) | Delegated work bills in three currencies, fails quietly, and a session reaches one API endpoint | Three lanes (API-billed, subscription, local model), a loopback router that routes on the model name, a pooled fan-out and a cost log[^agentsreadme] | 1.2.0 |
+Each tool, with its version on 2026-10-13:
+
+- [agentik-session](session.md), version 2.0.0-alpha.14
+    - **The failure it meets:** a session runs to its limit with no room to hand off, and a person has to restart it.
+    - **What it does:** a meter on the session's own transcript, a checkpoint at 80 percent, a charter under 4 KB, and a launcher that restarts a sitting from the charter instead of compacting.[^sessionreadme]
+- [agentik-relay](relay.md), version 0.1.3
+    - **The failure it meets:** an unattended night of sessions forks past its means, spends without bound, or damages the repository.
+    - **What it does:** a Go binary that runs queued packets headless, one worktree and one child per row, a deterministic gate, thirty stop reasons and two money caps.[^relayreadme][^relayr1][^relaycode]
+- [agentik-decisions](decisions.md), version 0.8.0
+    - **The failure it meets:** settled decisions do not reach the next session, or the file that holds them grows past reading.
+    - **What it does:** one sectioned ledger per repo, capped at 25 entries in force; the few entries every session needs copied into a generated CLAUDE.md block; owner questions asked in one batch.[^decisionsreadme]
+- [agentik-respeak](respeak.md), version 0.8.0
+    - **The failure it meets:** agents write to each other in shorthand and the person reading the output becomes the outsider.
+    - **What it does:** two lanes, with a ratified lexicon for agent traffic, and a translator, a style gate and a verifier that an edit changed only prose for the human lane.[^respeakreadme]
+- [agentik-agents](agents.md), version 1.2.0
+    - **The failure it meets:** delegated work bills in three currencies, fails quietly, and a session reaches one API endpoint.
+    - **What it does:** three lanes (API-billed, subscription, local model), a loopback router that routes on the model name, a pooled fan-out and a cost log.[^agentsreadme]
 
 The versions are the marketplace's entries. The file is unchanged from 2026-10-13 to commons' head on 2026-10-14, commit 588530f.[^marketplace]
 

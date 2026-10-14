@@ -21,6 +21,7 @@ Read on 2026-10-14 in the attached checkout at 588530f: `git log` from e456f4b t
 - NICE_TO_HAVE.md holds 10 items. The tenth, added by commit 51509e4 (:12): "**rf1 (2026-10-14), the vendored copies, S3.**" The research fixes changed the canonical `scripts/hygiene` and `scripts/bounded`; "The five tool repos and the organization profile still vendor the earlier bytes; `scripts/sync <repo>` in each, at that repo's next packet, brings them over and rewrites `scripts/vendored.sha256`."
 - README.md:3-4: the shared ground of the five tools; "It builds no tool: no `install` target, no plugin of its own."
 - bin/agentik: 96 lines (`wc -l`), `#!/bin/sh`; line 96 is `exec "agentik-$tool" "$@"`; unchanged since e456f4b.
+- scripts/bounded:10-11 (docstring, unchanged since e456f4b): `--wall S`, "counted from bounded's start, the load wait included; at S seconds the command's group gets SIGTERM, then SIGKILL after a grace: exit 124." Line 33: "On a refusal or the wall the last stderr line is `bounded: stop: lock|load|wall`", which the gate reads "as unrun, never red". Read on 2026-10-14 for the glossary's wall.
 - scripts/bounded:61-62: the idle floor of 25 percent is "the relay's night.DefaultIdleFloor (0.25, a share), and the two move together."
 - tests/test_hygiene.py:327-328: "the relay's ADV11-15: a tracked file over 4 MiB whose first line holds a home path and an email passed by path only, exit 0; streamed now (S14), both counted."
 - .claude-plugin/marketplace.json: unchanged since e456f4b (an empty `git diff`); five entries, session 2.0.0-alpha.14, decisions 0.8.0, respeak 0.8.0, relay 0.1.3, agents 1.2.0.
@@ -34,3 +35,4 @@ Read on 2026-10-14 in the attached checkout at 588530f: `git log` from e456f4b t
 ## Used in
 - docs/tools/index.md
 - docs/tools/relay.md (the charter count)
+- docs/glossary.md (wall)

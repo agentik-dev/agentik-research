@@ -2,7 +2,7 @@
 url: https://sites.cc.gatech.edu/reverse/repository/resumptionstrategies.pdf
 title: "Resumption Strategies for Interrupted Programming Tasks"
 author: Chris Parnin and Spencer Rugaber (Georgia Institute of Technology)
-published: undated in the PDF text (the file's metadata gives March 2009; a search summary named a 2011 paper with this title, which I did not open)
+published: undated in the PDF text (the file's metadata gives March 2009; a search summary named a 2011 paper with this title, which the note's author did not open)
 accessed: 2026-10-14
 kind: measured
 ---

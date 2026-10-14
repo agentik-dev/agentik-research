@@ -1,6 +1,6 @@
 # agentik-agents
 
-agentik-agents routes the work a Claude Code session delegates to one of three lanes: headless runs billed to an API key, the interactive subscription seat, or a local model behind a loopback router. It is for one owner who hands work out of Claude Code sessions, and its evidence is our use. Every measurement in the repo is that owner's: the local lane on one Mac, one model family and small tasks, and the API lane on a handful of runs. The repo records no case of the local lane keeping the seat under a usage window.[^readme][^design01] The page describes the repo at its head on 2026-10-14, commit f986500. A claim cited to the first public commit, 78ce312, reads the same at the head unless the page says the head changed it. The test re-run under Does it work? is the one result tied to 78ce312 alone.[^commits]
+agentik-agents routes the work a Claude Code session delegates to one of three lanes: headless runs billed to an API key, the interactive subscription seat, or a local model behind a loopback router. It is for one owner who hands work out of Claude Code sessions. Its evidence is our use: every measurement in the repo is that owner's, of the local lane on one Mac, one model family and small tasks, and of the API lane on a handful of runs.[^readme][^design01]
 
 ## The problem
 
@@ -61,11 +61,11 @@ The router decides by one thing: the model name in the request body. A model is 
 Which lane a task gets follows a fit rule: a four-rung ladder, from local for mechanical and bounded work up to the frontier model for orchestration. The acceptance check decides escalation, not the model's confidence. Privacy is not a routing criterion anywhere in the repo.[^bin][^design01]
 
 ```mermaid
-flowchart LR
-  S["Claude Code session, one base URL"] --> R["agentik agents route, a loopback router"]
-  R -->|"model name claude-*: headers passed through"| A["Anthropic API, the seat login kept"]
-  R -->|"model name local/* or a colon tag"| L["A local backend"]
-  L -.-> N["Four adjustments: strip the reminder, clamp effort, clamp max_tokens, one request at a time"]
+flowchart TD
+  S["Claude Code session,<br>one base URL"] --> R["agentik agents route,<br>a loopback router"]
+  R -->|"model name claude-*:<br>headers passed through"| A["Anthropic API,<br>the seat login kept"]
+  R -->|"model name local/*<br>or a colon tag"| L["A local backend"]
+  L -.-> N["Four adjustments:<br>strip the reminder,<br>clamp effort,<br>clamp max_tokens,<br>one request at a time"]
 ```
 
 The diagram follows the design's own ASCII form.[^design01]
@@ -102,6 +102,8 @@ The record names a hosted router, OpenRouter, as a provider whose key the rig to
 
 </div>
 
+The page describes the repo at its head on 2026-10-14, commit f986500. A claim cited to the first public commit, 78ce312, reads the same at the head unless the page says the head changed it. The test re-run below is the one result tied to 78ce312 alone.[^commits]
+
 The record holds dated measurements, one review round and a test suite. It holds no trial.
 
 - **Measurements.** The local lane's figures come from one Apple Silicon Mac with a 27B model, on 2026-09-04, and the rig's from 2026-09-05; both are listed above.[^design01][^design02][^evidence] The fan-out's ceiling rests on one measured overshoot of 1.2, on a 0.01-dollar cap. Two cost pairs in the README are dated 2026-08-13: 3.13 dollars of API spend beside 155.78 of seat-absorbed work, whose seat figure is a lower bound, and 4.49 dollars uncached against 3.12 actual on the fan-out, a 30 percent cache saving.[^bin][^readmehead]
@@ -132,6 +134,10 @@ Changed in the record since the first public commit. Each is a change to the tex
 - **The undated cost figures.** On 2026-10-14, commit 8825efd dated three sets of figures to 2026-08-13: the 3.13 and 155.78 dollar pair, the cache-saving pair of 4.49 against 3.12 dollars, and the eight-shard efficiency table. It also called the seat figure a lower bound.[^readme][^readmehead]
 - **The overshoot.** On 2026-10-14, commit 741f036 added that the 1.2 overshoot is one measurement on a 0.01-dollar cap, not a fixed ratio. The factor of 1.35 is unchanged.[^readmehead][^binhead]
 - **The price table.** On 2026-10-14, commit 52904aa checked every row against Anthropic's Pricing page and corrected Sonnet 5.5's cache read to 0.10 dollars per million tokens. Commit ee724e2 moved a test's expected cost to match.[^binhead]
+
+## From the journal
+
+No journal entry draws on agentik-agents yet; the [journal](../journal/index.md) lists every entry.
 
 ## Sources
 

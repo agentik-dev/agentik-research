@@ -307,7 +307,7 @@ intro = [lead + f"The {len(entries)} lines come from {nnotes} notes in the repos
              else f" The other {len(dated)} are dated as their notes give: ")
             + "; ".join(dated) + "." if dated else "")]
 out = ["---", "hide: [toc]", "---", "", "# Sources", ""] + [x for p_ in intro for x in (p_, "")]
-out += ['<div class="gb-browse" data-page="sources" data-src="../assets/data/sources.json" data-generated="' + GENERATED + '">Loading the browse of every source; the full list follows below.</div>', "",
+out += ['<div class="gb-browse" data-page="sources" data-src="../assets/data/sources.json" data-generated="' + GENERATED + '">The browse needs JavaScript; the full list follows below.</div>', "",
         '<div class="ak-static-list" markdown>', ""]
 # Each level's heading names the kinds of source it holds, most first, so it stays true when a note's level changes;
 # the line below it counts them with the browse's own kind names.

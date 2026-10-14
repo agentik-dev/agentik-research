@@ -51,21 +51,23 @@ A night is one `agentik relay run`: a plan, then a loop over the queue. A row na
 
 ```mermaid
 flowchart TD
-  Q["Queue row and packet"] --> P["Plan: validate, baseline on main, measure budget 600 s"]
-  P --> B{"Breaker: load over 4 per core, and the CPU confirms?"}
-  B -->|"open over 10 min"| L["Failed: load"]
-  B -->|"closed"| S["Stage: worktree, branch, stage lock; pre-push hook refuses"]
-  S --> C["Child: claude -p, one per worktree; ceilings 80, 90, 120 percent of context; 4 h wall"]
-  C -->|"watchdog every 60 s: HEAD, mtime, CPU"| C
-  C -->|"no change for 2,700 s"| ST["Red: stalled; a second stall stops the night"]
-  C -->|"120 percent, wall, owner kill, helper storm, orphans"| F["Failed: the night stops"]
-  C -->|"usage limit, five-hour window"| PZ["Paused until the reset plus 2 min"] --> C
-  C -->|"weekly limit or auth"| AS["Failed: usage-limit or auth; the night stops"]
-  C -->|"exit"| G{"Gate: exit, commit, clean, origin, orphans, touch, acceptance, verify"}
-  G -->|"green"| M["Branch kept by default; under merge-on-green, verify on the merged tree, then merge with no fast-forward"]
-  G -->|"no result, no commit, dirty tree, origin moved"| SF["Failed: the night stops"]
-  G -->|"touch, acceptance or verify red"| R["Red: the night moves on; dependents skipped; a resume line"]
-  G -->|"facts unreadable"| U["Red: gate unrun, never a pass"]
+  Q["Queue row<br>and packet"] --> P["Plan: validate,<br>baseline on main,<br>measure budget 600 s"]
+  P --> B{"Breaker: load<br>over 4 per core,<br>and the CPU confirms?"}
+  B -->|"open<br>over 10 min"| L["Failed: load"]
+  B -->|"closed"| S["Stage: worktree,<br>branch, stage lock;<br>pre-push hook refuses"]
+  S --> C["Child: claude -p,<br>one per worktree;<br>ceilings 80, 90, 120<br>percent of context;<br>4 h wall"]
+  C -->|"watchdog every 60 s:<br>HEAD, mtime, CPU"| C
+  C -->|"no change<br>for 2,700 s"| ST["Red: stalled;<br>a second stall<br>stops the night"]
+  C -->|"120 percent,<br>wall, owner kill,<br>helper storm,<br>orphans"| F["Failed:<br>the night stops"]
+  C -->|"usage limit,<br>five-hour<br>window"| PZ["Paused until<br>the reset<br>plus 2 min"] --> C
+  C -->|"weekly limit<br>or auth"| AS["Failed: usage-limit<br>or auth;<br>the night stops"]
+  C -->|"exit"| G{"Gate: exit, commit,<br>clean, origin,<br>orphans, touch,<br>acceptance, verify"}
+  G -->|"green"| M["Branch kept<br>by default; under<br>merge-on-green,<br>verify on the<br>merged tree, then<br>merge with no<br>fast-forward"]
+  G -->|"no result,<br>no commit,<br>dirty tree,<br>origin moved"| SF["Failed:<br>the night stops"]
+  G -->|"touch,<br>acceptance or<br>verify red"| R["Red: the night<br>moves on;<br>dependents skipped;<br>a resume line"]
+  G -->|"facts<br>unreadable"| U["Red: gate unrun,<br>never a pass"]
+  %% An invisible link, for layout only: it draws the gate below the child's other exits.
+  F ~~~ G
 ```
 
 - **The packet.** A markdown file under 9,216 bytes with a six-row header (from, pin, wall, may touch, acceptance, budget) and six sections. Acceptance lines come from an allowlist of commands. Whole-suite lines are refused as acceptance, because the repo's verify line is the gate.[^designr1]

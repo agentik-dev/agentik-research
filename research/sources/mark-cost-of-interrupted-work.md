@@ -9,7 +9,7 @@ kind: measured
 
 ## What it says
 I read the PDF text.
-- Re-opened 2026-10-14. The fetch tool returned unreadable binary; I extracted the saved PDF's text locally and checked each line below against it. The earlier lines were right; this pass adds the table figures.
+- Re-opened 2026-10-14. The fetch tool returned unreadable binary; the note's author extracted the saved PDF's text locally and checked each line below against it. The earlier lines were right; this pass adds the table figures.
 - Method: 48 participants (81 percent German university students, mean age 26; 33 women, 15 men) answered work emails in a lab while a "supervisor" interrupted them by telephone or instant message every two minutes, with questions in the same context as the task, in a different context, or none (baseline). Each participant answered 12 emails in each of the three conditions, and the order was counterbalanced.
 - Results (abstract): the context of the interruption did not change the cost; people finished interrupted tasks in less time with no difference in quality, and the price was more stress, frustration, time pressure and effort. Openness to experience and need for personal structure predicted how costly interruptions were.
 - Table 1, task time with the time spent on interruptions taken out: 22.77 minutes with no interruption, 20.31 with same-context interruptions and 20.60 with different-context interruptions (p < .05 for baseline against each). Average errors in the emails did not differ (1.94, 1.93 and 1.84), and interrupted emails were slightly shorter (29.17 and 30.16 words against 31.49).
