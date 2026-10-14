@@ -25,4 +25,4 @@ Re-opened on 2026-10-14 for how clarifying questions reach an owner. As of Octob
 - The handler that answers it can stay pending indefinitely and execution stays paused until it returns. For an owner who may take longer than the process should live, the page advises a `PreToolUse` hook returning the `defer` decision, so the process exits and resumes later from the saved session.
 - A `PermissionRequest` hook can send an outside notification (chat, email, push) when Claude is waiting.
 - Limits (question 8): the page describes the mechanism and gives no guidance on how many questions to ask, when to ask them, or what a waiting agent should do meanwhile.
-- Used in (question 8): research/synthesis/field-8.md
+- Used in (question 8): read for question 8 and not cited in research/synthesis/field-8.md, which is at its size limit; available for the page drafts.

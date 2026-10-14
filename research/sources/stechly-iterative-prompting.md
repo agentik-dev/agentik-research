@@ -17,4 +17,4 @@ Read from the abstract page only.
 - One problem family (graph colouring), GPT-4 of 2023, and no numbers in the abstract, which is all I read. It does not test code review.
 
 ## Used in
-- research/synthesis/field-8.md
+- Read for question 8 and not cited in research/synthesis/field-8.md, which is at its size limit; available for the page drafts.

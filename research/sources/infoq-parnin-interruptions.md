@@ -16,4 +16,4 @@ A secondary news report; I did not open the primary paper (the publisher page re
 - Secondary source for numbers whose primary paper I could not read. The article's framing may differ from the paper's. Research reported in 2013, before coding agents; an agent's question is a different kind of interruption from an editing-time one.
 
 ## Used in
-- research/synthesis/field-8.md
+- Read for question 8 and not cited in research/synthesis/field-8.md, which is at its size limit; available for the page drafts.

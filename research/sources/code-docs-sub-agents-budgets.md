@@ -19,3 +19,10 @@ kind: documented
 
 ## Used in
 - research/synthesis/field-4.md
+
+## Also (question 10)
+Re-read on 2026-10-14 for model routing and permissions. As of October 2026. I read the first 100,000 of 108,488 characters.
+- Section "Choose a model": the subagent `model` field takes an alias (`sonnet`, `opus`, `haiku`, `fable`), a full model id or `inherit`. Precedence from v2.1.251: the Agent tool's per-call `model`, the definition's frontmatter `model`, `CLAUDE_CODE_SUBAGENT_MODEL`, then the main conversation's model. `CLAUDE_CODE_SUBAGENT_MODEL_FORCE=1` (v2.1.257 or later) applies one model to every subagent. Built-in defaults: Explore and Plan follow the main model (Explore runs on Opus when the main model is Fable under a subscription, Console or gateway), the general-purpose agent follows `CLAUDE_CODE_SUBAGENT_MODEL` if set, the statusline-setup agent runs on Sonnet and the guide agent on Haiku.
+- Cost guidance on the page: route tasks to faster, lower-cost models such as Haiku; its example sets `model: haiku` on a custom Explore agent; subagent requests count toward the same usage limits as the main conversation.
+- Section "Permissions in subagents": subagents inherit the parent's permission rules; in `dontAsk` mode prompts are auto-denied and explicitly allowed tools still work; foreground subagents pass prompts to the user; background subagents surface them in the main session. The page, as I read it, does not say what a subagent returns or how much it spends after a tool call is denied. Only the final report returns to the main conversation.
+- Used in (question 10): research/synthesis/field-10.md

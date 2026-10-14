@@ -40,4 +40,4 @@ Re-opened on 2026-10-14 for the evaluation and stop-rule passages (page dated 13
 - Human testers still found what the judge missed: hallucinated answers on unusual queries, system failures and a bias toward search-engine-optimised pages over primary sources.
 - Stop rules: the page describes no formal stop condition; the lead agent decides whether more research is needed, and effort is set by scaling rules in the prompt. Early failures included agents "continuing when they already had sufficient results" and 50 subagents for a simple query.
 - Limits (question 8): a research product, not code review. The judge is calibrated against human testers on the team's own queries; no agreement figure is given.
-- Used in (question 8): research/synthesis/field-8.md
+- Used in (question 8): read for question 8 and not cited in research/synthesis/field-8.md, which is at its size limit; available for the page drafts.

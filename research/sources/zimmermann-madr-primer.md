@@ -18,4 +18,4 @@ kind: reported
 - A primer by the template's authors, not an evaluation; no data on which variant teams keep up to date.
 
 ## Used in
-- research/synthesis/field-8.md
+- Read for question 8 and not cited in research/synthesis/field-8.md, which is at its size limit; available for the page drafts.

@@ -21,3 +21,8 @@ kind: documented
 
 ## Used in
 - research/synthesis/field-6.md
+
+## Also (question 10)
+Re-read part of the page on 2026-10-14 (characters 100,000 to 200,000 of 291,739). As of October 2026.
+- `SDKResultMessage` has a success arm and an error arm; both carry `permission_denials` (a list of `tool_name`, `tool_use_id`, `tool_input`), `total_cost_usd`, `is_error` and an optional `terminal_reason`. The section on the denied-message event says the stream event is best-effort and `permission_denials` on the result message is "the authoritative record." The page, in that part, does not say whether a success result can coexist with denied tool calls, and does not address subagent denials.
+- Used in (question 10): research/synthesis/field-10.md

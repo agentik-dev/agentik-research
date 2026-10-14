@@ -16,4 +16,4 @@ I read the PDF text.
 - A 90-minute lab session with student participants and email tasks, a research note of four pages. It measures work with interruptions against work without them, not batching against piecemeal questions, and not software work.
 
 ## Used in
-- research/synthesis/field-8.md
+- Read for question 8 and not cited in research/synthesis/field-8.md, which is at its size limit; available for the page drafts.

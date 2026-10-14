@@ -17,4 +17,4 @@ Read from the abstract page only.
 - Trained critics of one lab, judged by contractors on its own task set. It supports "a separate critic finds bugs a person misses" and "critics invent bugs", and says nothing about prompted general-purpose agents or about when a review stops.
 
 ## Used in
-- research/synthesis/field-8.md
+- Read for question 8 and not cited in research/synthesis/field-8.md, which is at its size limit; available for the page drafts.

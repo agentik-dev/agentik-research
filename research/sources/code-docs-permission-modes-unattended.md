@@ -33,4 +33,4 @@ Re-opened on 2026-10-14 for plan mode as a sign-off gate (section "Analyze befor
 - Plan mode has Claude research and write a plan without editing source; except in interactive terminal sessions with bypass permissions available, edits stay blocked until the plan is approved. The plan is presented with three choices: approve and use auto mode, approve and review each edit by hand, or keep planning and say what to change. `Ctrl+G` opens the plan in an editor first.
 - Plan mode keeps its blocks wherever Claude Code runs without an interactive terminal, including `-p` runs and the Agent SDK. With bypass permissions available in an interactive terminal, plan mode's blocks are not enforced; Claude is only told to plan without editing.
 - Limits (question 8): the page describes a one-time human approval before work, not a review after it, and gives no figure for how often plans are rejected or revised.
-- Used in (question 8): research/synthesis/field-8.md
+- Used in (question 8): read for question 8 and not cited in research/synthesis/field-8.md, which is at its size limit; available for the page drafts.

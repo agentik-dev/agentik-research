@@ -18,3 +18,8 @@ kind: documented
 
 ## Used in
 - research/synthesis/field-6.md
+
+## Also (question 10)
+Re-read on 2026-10-14 for authentication and billing. As of October 2026.
+- The page's note says: unless previously approved, Anthropic does not allow third-party developers to offer claude.ai login or rate limits for products built on the SDK, and it points to API key authentication instead. The page states no price for SDK use; billing follows the credential (see code-docs-authentication) and, for Max and Team plans, the monthly API credits (anthropic-api-credits-subscribers) and the help article (support-claude-agent-sdk-plan).
+- Used in (question 10): research/synthesis/field-10.md

@@ -16,4 +16,4 @@ kind: documented
 - The README is short; command help and the project's own records may say more. It describes a shell tool for human use and says nothing about size caps or about agents.
 
 ## Used in
-- research/synthesis/field-8.md
+- Read for question 8 and not cited in research/synthesis/field-8.md, which is at its size limit; available for the page drafts.

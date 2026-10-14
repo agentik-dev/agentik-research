@@ -38,3 +38,10 @@ Read for question 7 (guardrails); as of October 2026; I opened the whole page.
 - Section "Stop a run with SIGTERM": on SIGTERM Claude Code terminates the process tree of any running Bash command, then runs only `SessionEnd` hooks.
 
 Used in: research/synthesis/field-7.md
+
+## Also (question 10)
+Re-read on 2026-10-14 for billing and denials. As of October 2026.
+- Section "Start faster with bare mode": `--bare` skips auto-discovery of hooks, skills, commands, subagents, plugins, MCP servers, auto memory and CLAUDE.md. The example says to set `ANTHROPIC_API_KEY` first, "because bare mode doesn't use your subscription login"; bare mode never reads OAuth credentials or the keychain, so it needs `ANTHROPIC_API_KEY` or an `apiKeyHelper` (Bedrock, Google Cloud and Foundry credentials still work). Bare mode sends no system reminders and runs no background tasks (stated for v2.1.286 or later). The page calls `--bare` the recommended mode for scripted and SDK calls and says it will become the default for `-p` in a future release.
+- With `--output-format json` the response includes `total_cost_usd` and a per-model breakdown, which the page calls client-side estimates that can differ from the bill.
+- Section "Turn off permission prompts in unattended runs": in a `-p` run with no permission host, requests that would prompt are denied; Claude is told nobody can approve and not to retry; the run continues; with `stream-json` the denials appear as `permission_denied` system messages and the result lists them in `permission_denials`. The page does not say what a subagent does after its own denial.
+- Used in (question 10): research/synthesis/field-10.md

@@ -16,4 +16,4 @@ kind: documented
 - A directory page: it points to templates and tools rather than saying how long a record should be or how many to keep. I read the front page only.
 
 ## Used in
-- research/synthesis/field-8.md
+- Read for question 8 and not cited in research/synthesis/field-8.md, which is at its size limit; available for the page drafts.

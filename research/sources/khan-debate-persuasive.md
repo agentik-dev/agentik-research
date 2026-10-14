@@ -17,4 +17,4 @@ Read from the abstract page only.
 - The abstract does not name the task (the search listing names a reading-comprehension set; I did not open the paper). The result is for a judge who lacks information that the debaters have, not for a peer reviewer who can run the code. It is the strongest published case for adversarial setups in this note set, and it does not address whether a debate ends.
 
 ## Used in
-- research/synthesis/field-8.md
+- Read for question 8 and not cited in research/synthesis/field-8.md, which is at its size limit; available for the page drafts.

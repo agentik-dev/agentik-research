@@ -17,4 +17,4 @@ As of October 2026.
 - I read the create-a-check-run section only. It gives the vocabulary, not the policy; the Claude Code review check uses the neutral conclusion (see code-docs-code-review).
 
 ## Used in
-- research/synthesis/field-8.md
+- Read for question 8 and not cited in research/synthesis/field-8.md, which is at its size limit; available for the page drafts.

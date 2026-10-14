@@ -16,4 +16,4 @@ Read from the abstract page only.
 - The abstract gives no figures and names no limits. Its comparison with simple voting is disputed: see huang-self-correct (Section 4, Table 7), which replicates the method on the full GSM8K test set and finds it below self-consistency at an equal number of responses, and zhang-stop-overvaluing-mad.
 
 ## Used in
-- research/synthesis/field-8.md
+- Read for question 8 and not cited in research/synthesis/field-8.md, which is at its size limit; available for the page drafts.

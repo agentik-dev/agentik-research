@@ -19,4 +19,4 @@ All figures are Anthropic's own, from its internal use, as of March 2026.
 - A launch post by the vendor about its own product; the 54 percent and the under-1-percent figures have no stated denominator, sample, or definition of "incorrect" (an engineer's mark), and are not independently checked. The figures tell us how often the tool is right when it speaks, not how many bugs it misses.
 
 ## Used in
-- research/synthesis/field-8.md
+- Read for question 8 and not cited in research/synthesis/field-8.md, which is at its size limit; available for the page drafts.

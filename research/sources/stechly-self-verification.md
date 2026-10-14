@@ -17,4 +17,4 @@ Read from the abstract page only.
 - Abstract only; no figures recorded. GPT-4 of 2023 and 2024, on puzzle and planning tasks rather than code review.
 
 ## Used in
-- research/synthesis/field-8.md
+- Read for question 8 and not cited in research/synthesis/field-8.md, which is at its size limit; available for the page drafts.

@@ -27,3 +27,11 @@ Re-read on 2026-10-14 for usage limits and fallback. As of October 2026.
 - The page does not mention a separate weekly limit for Fable; the Help Center page (support-claude-pro-max-usage) does, for Max plans.
 - Fallback chains: `--fallback-model` or `fallbackModel` lists up to three models tried when the primary model is overloaded or unavailable; authentication, billing, rate-limit, request-size and transport errors never trigger a switch; the switch lasts one turn; subagents use the chain.
 - Used in (question 4): research/synthesis/field-4.md
+
+## Also (question 10)
+Re-read on 2026-10-14 for defaults, aliases and routing levers. As of October 2026. I read the first 100,000 of 116,643 characters.
+- Default model: Opus 5.5 on Pro, Max, Team, Enterprise and the Anthropic API, and on Claude Platform on AWS, Amazon Bedrock and Google Cloud's Agent Platform; Microsoft Foundry defaults to Sonnet 4.5. An admin-set organisation default replaces the account-type default. Fable is not the default on any plan or provider.
+- Aliases: `sonnet`, `opus`, `haiku`, `fable`, `best`, `opusplan` (Opus in plan mode, Sonnet for execution). Alias resolution by provider: on the Anthropic API `opus` is Opus 5.5, `sonnet` Sonnet 5.5, `haiku` Haiku 5.5; on Bedrock and Google Cloud `sonnet` is Sonnet 4.5 and `haiku` Haiku 4.5; on Foundry `opus` is Opus 4.6. Without pinned `ANTHROPIC_DEFAULT_*_MODEL` variables aliases follow Claude Code's built-in default for the provider.
+- Priority for setting the model: `/model` in session, `--model` at startup, `ANTHROPIC_MODEL`, the `model` settings field, then `ANTHROPIC_DEFAULT_MODEL` (v2.1.236 or later). `ANTHROPIC_DEFAULT_HAIKU_MODEL` also sets the model for background functionality.
+- Effort levels `low` to `max`; defaults are `high` except `medium` on Opus 5.5, Sonnet 5.5 and Haiku 5.5. The page's cost notes: Fable usage can bill to usage credits; 1M context is standard-priced except Haiku 5.5 above 100K tokens; subagents that inherit the main model move to Opus when the session does. It has no general guidance on the model cost trade-off.
+- Used in (question 10): research/synthesis/field-10.md

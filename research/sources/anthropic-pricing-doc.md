@@ -34,3 +34,8 @@ Re-read on 2026-10-14 for budgets and cache cost. As of October 2026, dollars pe
 - Long-context pricing: no premium above 200k tokens on Claude 4.6 and later, except that Haiku 5.5 prices a request by its prompt length (cache reads and writes count toward the 100,000 tokens) and each request is priced on its own.
 - Arithmetic of mine from the table, which the page does not state: re-reading a 200,000-token context costs 0.04 dollars as a cache read on Opus 5.5 (0.20 per MTok), against 1.60 dollars to rewrite it cold at the 1-hour write price (8 per MTok), a ratio of 40; on Opus 5 the read is 0.10 dollars, the 5-minute rewrite 1.25 dollars and the 1-hour rewrite 2.00 dollars. So a turn-by-turn cost of the form turns times context is weighted by the read price while the cache is warm and by the write price after a miss.
 - Used in (question 4): research/synthesis/field-4.md
+
+## Also (question 10)
+Re-opened on 2026-10-14 to check the rows used for cost lanes; the saved page text matches the figures above. As of October 2026.
+- Section "Batch processing": the Batch API takes 50 percent off both input and output tokens, and the discount stacks with caching multipliers. Section "Fast mode pricing": Opus 5.5 8 / 40 US dollars per million input / output tokens; fast mode is available on the first-party API only and not with the Batch API.
+- Used in (question 10): research/synthesis/field-10.md
