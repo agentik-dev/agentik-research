@@ -57,3 +57,4 @@ nav:
   - index.md
   - The field:
       - field/length-and-compaction.md
+      - field/memory.md
