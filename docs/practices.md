@@ -1,6 +1,6 @@
 # Practices
 
-Twenty-two practices for long-running and multi-agent Claude Code work, grouped by the research question each answers. Each gives what to do, why, the evidence level with its sources, and the agentik tool that automates it, if one does. Four have measured backing that settles the direction: a fresh context from a short brief,[^laban] fan-out only for decomposable work,[^kim] sign-off outside the reviewer,[^huang] and checking a "done" claim against a tool result.[^advani] The rest rest on the vendor's documentation, dated October 2026, or on reports. Where a practice is the owner's rule with no outside evidence, the table says conjecture.
+Twenty-six practices for long-running and multi-agent Claude Code work, grouped by the research question each answers. Each gives what to do, why, the evidence level with its sources, and the agentik tool that automates it, if one does. Four have measured backing that settles the direction: a fresh context from a short brief,[^laban] fan-out only for decomposable work,[^kim] sign-off outside the reviewer,[^huang] and checking a "done" claim against a tool result.[^advani] The rest rest on the vendor's documentation, dated October 2026, or on reports. Where a practice is the owner's rule with no outside evidence, the table says conjecture.
 
 ## Length (question 1)
 
