@@ -2,14 +2,14 @@
 
 This page groups twenty-six practices for long-running and multi-agent Claude Code work by the research question each answers. Each row tells you what to do, why, the evidence level with its sources, and the agentik tool that automates it, if one does.
 
-Measured evidence settles the direction of three: a fresh context from a short brief,[^laban] fan-out only for decomposable work,[^kim] and sign-off outside the reviewer.[^huang] A fourth, checking a "done" claim against a tool result, rests on a measured false-success rate; the effect of checking is not measured.[^advani] The others rest on the vendor's documentation, dated October 2026, or on reports. The Evidence column says conjecture where a practice is the owner's rule with no outside evidence.
+Measured evidence supports the direction of three: a fresh context from a short brief,[^laban] fan-out only for decomposable work,[^kim] and sign-off outside the reviewer.[^huang] A fourth, checking a "done" claim against a tool result, rests on a measured false-success rate; the effect of checking is not measured.[^advani] In the other rows a measurement backs one part of the reason at most, and the rest rests on the vendor's documentation, dated October 2026, or on reports. The Evidence column says conjecture for any part with no outside evidence: an owner's rule, or this site's extrapolation from a narrower finding.
 
 ## Length (question 1)
 
 | Practice | Why | Evidence | Tool |
 |---|---|---|---|
 | **Clear context between unrelated tasks, and start a long task from a short written brief.** | One consolidated message recovered 95.1 percent of the single-turn score, where multi-turn use lost 39 percent; Claude Code's own advice is a clean session over accumulated corrections | Measured;[^laban] documented[^bestpractices] | [agentik-session](tools/session.md): the charter and the respawn |
-| **Keep always-loaded instructions short, and load rare ones on demand.** | Adherence falls as the number of instructions grows: Claude Sonnet 4 scored 94.4 percent at 100 instructions and 42.9 at 500; the documentation says under 200 lines | Measured;[^ifscale] documented[^memory] | [agentik-decisions](tools/decisions.md): the generated block; [agentik-respeak](tools/respeak.md): the include file |
+| **Keep always-loaded instructions short, and load rare ones on demand.** | Adherence falls as the number of instructions grows: Claude Sonnet 4 scored 94.4 percent at 100 instructions and 42.9 at 500; file length alone, from 25 to 500 lines, showed no effect on one rule; the documentation says under 200 lines | Measured for the instruction count,[^ifscale] not for length;[^mcmillan] documented[^memory] | [agentik-decisions](tools/decisions.md): the generated block; [agentik-respeak](tools/respeak.md): the include file |
 | **Mask or clear old tool output, and send large reads to subagents.** | Tool output was about 84 percent of a coding agent's turn tokens, and masking it cut cost by half or more in four of five setups, with solve-rate changes from -4.0 to +2.8 points | Measured;[^masking] documented[^bestpractices] | None; Claude Code's subagents |
 
 ## Compaction or restart (question 2)
@@ -18,13 +18,13 @@ Measured evidence settles the direction of three: a fresh context from a short b
 |---|---|---|---|
 | **Write the handoff to a file before the window fills: the goal, the decisions, the ruled-out approaches, the next step.** | Compaction keeps the gist and loses the specifics; Anthropic's own harness work carried state in a progress file and git, and a Claude Code engineer advises a clear with a written brief | Reported[^harnesses][^sessionmgmt] | [agentik-session](tools/session.md): the charter |
 | **Keep exact values and file lists in files, not in summaries.** | One compaction run kept 3 of 3 high-level facts and lost 3 of 3 obscure values; the artifact trail scored lowest for every compressor tested | Measured[^cookbook][^factory] | [agentik-decisions](tools/decisions.md): the ledger; [agentik-relay](tools/relay.md): the ledger line per sitting |
-| **Decide the compaction policy per sitting, and set `idleCompaction` to match.** | Idle compaction is on by default and runs after about 54 idle minutes above 200,000 tokens | Documented[^settings] | [agentik-session](tools/session.md): the PreCompact hook |
+| **Decide the compaction policy per sitting, and set `idleCompaction` to match.** | Idle compaction is on by default from version 2.1.290; in an interactive session with the one-hour cache, it runs after about 54 idle minutes above 200,000 tokens | Documented[^settings] | [agentik-session](tools/session.md): the PreCompact hook |
 
 ## Memory (question 3)
 
 | Practice | Why | Evidence | Tool |
 |---|---|---|---|
-| **Put a rule that must hold on every turn in a hook, and set `onFailure` to block where failing open is unsafe.** | CLAUDE.md is advisory; a file lifted compliance with one rule from 0 to about two thirds and no further; a timed-out hook fails open unless told to block | Measured;[^mcmillan] documented[^hooks] | [agentik-relay](tools/relay.md): the guards; [agentik-session](tools/session.md): the hooks |
+| **Put a rule that must hold on every turn in a hook, and set `onFailure` to block where failing open is unsafe.** | CLAUDE.md is advisory; a file lifted compliance with one rule from 0 to about two thirds and no further; a timed-out hook fails open unless told to block | Measured;[^mcmillan] documented[^bestpractices][^hooks] | [agentik-relay](tools/relay.md): the guards; [agentik-session](tools/session.md): the hooks |
 | **Keep a short index, and say when to read each pointer.** | A skill was never invoked in 56 percent of cases until the prompt said to use it; an always-loaded index passed every case | Reported;[^vercel] documented[^skills] | [agentik-decisions](tools/decisions.md): the generated block |
 
 ## Budgets and pacing (question 4)
@@ -40,14 +40,14 @@ Measured evidence settles the direction of three: a fresh context from a short b
 | Practice | Why | Evidence | Tool |
 |---|---|---|---|
 | **Fan out only decomposable work; keep sequential work in one agent.** | With matched token budgets, multi-agent designs gained up to 80.8 percent on decomposable work and lost 39 to 70 percent on sequential planning | Measured[^kim] | [agentik-relay](tools/relay.md): independent queue rows; [agentik-agents](tools/agents.md): the fan-out |
-| **One worktree and one file set per parallel writer.** | Worktrees share `.git`, and git gives each its own index and HEAD; two isolation leaks are on record where parallel agents shared state | Documented;[^worktrees][^gitlayout] reported[^issue52958][^issue84685] | [agentik-relay](tools/relay.md): one worktree per row |
+| **One worktree and one file set per parallel writer.** | Worktrees share `.git`, and by the layout git documents each keeps its own index and HEAD; two isolation leaks are on record where parallel agents shared state | Documented;[^worktrees][^gitlayout] reported[^issue52958][^issue84685] | [agentik-relay](tools/relay.md): one worktree per row |
 | **Give a fresh-context reviewer concrete criteria and a report-only role.** | Verifiers declare early victory without criteria; a reviewer asked to find gaps reports gaps | Documented[^multiagentblog][^bestpractices] | [agentik-relay](tools/relay.md): the adversary agent |
 
 ## Unattended runs (question 6)
 
 | Practice | Why | Evidence | Tool |
 |---|---|---|---|
-| **Treat `success` as unproven: read `permission_denials` and `terminal_reason`, and gate outside the model.** | In print mode an unanswered prompt is denied and the run continues; the denials appear in the result's list and in stream messages, not as an error | Documented[^sdkresult][^headless] | [agentik-relay](tools/relay.md): the gate reads the result event, not the claim |
+| **Treat `success` as unproven: read `permission_denials` and `terminal_reason`, and gate outside the model.** | In print mode an unanswered prompt is denied and the run continues; the denials appear in the result's list and in stream messages; the agentik-session runbook records such a run whose result read `success` | Documented;[^sdkresult][^headless] our use[^sessionrunbook] | [agentik-relay](tools/relay.md): the gate reads the result event, not the claim |
 | **Watch progress from outside (HEAD, file times, CPU), and kill a stall.** | Agents never noticed their first error in 38.5 percent of cases; the documentation names no main-session progress watchdog | Measured for the failure;[^hiddenfailures] documented for the gap;[^network] conjecture for the guard | [agentik-relay](tools/relay.md): the watchdog |
 | **Run the test gate once per row, under a lock and a load check.** | 46.5 percent of flaky tests were resource-affected, with CPU starvation worst; the relay's own check went red under load | Measured;[^flaky] our use[^relaynth] | [agentik-commons](tools/index.md): the `bounded` wrapper |
 
@@ -77,8 +77,8 @@ Measured evidence settles the direction of three: a fresh context from a short b
 
 | Practice | Why | Evidence | Tool |
 |---|---|---|---|
-| **Pick the credential per run, and know what each lane turns off.** | A key or gateway credential replaces the login and its plan limits; Remote Control is off under a non-Anthropic base URL | Documented[^auth][^gatewayconnect] | [agentik-agents](tools/agents.md): the three lanes |
-| **Sweep effort before switching models or adding a router.** | Anthropic's internal evaluations found effort the cheaper lever; several routers lose to the best single model | Measured, one vendor-run[^costintel] and one academic[^routerbench] | [agentik-agents](tools/agents.md): the router clamps effort on local routes |
+| **Pick the credential per run, and know what each lane turns off.** | A key or gateway credential replaces the login and its plan limits; Remote Control is off under a non-Anthropic base URL | Documented[^auth][^gateway][^gatewayconnect] | [agentik-agents](tools/agents.md): the three lanes |
+| **Sweep effort before switching models or adding a router.** | Anthropic's guidance calls an effort sweep the cheapest experiment and the baseline any multi-model strategy must beat; several routers did not reliably beat the best single model | Documented, vendor advice;[^costintel] measured for the routers[^routerbench] | [agentik-agents](tools/agents.md): the router clamps effort on local routes |
 
 ## Sources
 
@@ -128,6 +128,8 @@ Measured evidence settles the direction of three: a fresh context from a short b
 [^iqbal]: Shamsi T. Iqbal and Brian P. Bailey, "Leveraging Characteristics of Task Structure to Predict the Cost of Interruption", CHI 2006, <https://www.interruptions.net/literature/Iqbal-CHI06-p741-iqbal.pdf>.
 [^army]: Department of the Army, "Army Regulation 25-50, Preparing and Managing Correspondence", 10 October 2020, <https://www.maine.gov/dvem/policies/documents/AR%2025-50%20(10%20October%202020).pdf>.
 [^outputstyles]: Anthropic, "Output styles", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/output-styles>.
+[^sessionrunbook]: agentik-dev/agentik-session, "RUNBOOK.md", lines 130 to 131, commit e7f0723, <https://github.com/agentik-dev/agentik-session/blob/e7f0723/RUNBOOK.md>.
+[^gateway]: Anthropic, "Other LLM gateways", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/llm-gateway>.
 [^auth]: Anthropic, "Authentication", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/authentication>.
 [^gatewayconnect]: Anthropic, "Connect Claude Code to an LLM gateway", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/llm-gateway-connect>.
 [^costintel]: Anthropic, "Optimizing for cost and intelligence: multi-model strategies", documentation read 2026-10-14, <https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence>.
