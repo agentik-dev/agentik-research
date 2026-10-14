@@ -49,7 +49,7 @@ None of these studies runs Claude Code unattended. They measure other harnesses 
 ### What is measured
 
 - On vendor data from March 2026, Anthropic's auto-mode classifier had a false-positive rate of 0.4 percent on 10,000 real calls. Its miss rate was 17 percent on 52 real overeager actions and 5.7 percent on 1,000 synthetic exfiltration attempts. Users approved 93 percent of manual prompts.[^automode]
-- Auto-approval rose from about 20 percent of sessions, when a user had under 50 sessions, to over 40 percent at 750 sessions. Interrupts rose from about 5 to about 9 percent of turns.[^autonomy]
+- In Anthropic's own study of Claude Code sessions, auto-approval rose from about 20 percent of sessions, when a user had under 50 sessions, to over 40 percent at 750 sessions. Interrupts rose from about 5 to about 9 percent of turns.[^autonomy]
 - Six coding agents, Claude Code among them, gave remote code execution through tool-description and return-value injection on every tested agent and model pair.[^redteam]
 - In the AgentDojo simulator (2024, GPT-4o), a tool filter cut attack success from 57.69 percent to 6.84 while utility rose from 69.00 to 73.13 percent. A detector cut attack success to 7.95 percent, at a utility of 41.49.[^agentdojo]
 

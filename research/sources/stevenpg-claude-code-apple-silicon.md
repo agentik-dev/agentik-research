@@ -1,7 +1,7 @@
 ---
 url: https://stevenpg.com/posts/running-claude-code-locally-on-apple-silicon/
 title: "Running Claude Code Locally on Apple Silicon"
-author: Not named on the page (site: Coding Steve)
+author: Coding Steve
 published: 2026-05-20
 accessed: 2026-10-14
 kind: reported

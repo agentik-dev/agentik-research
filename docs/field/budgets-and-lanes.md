@@ -121,7 +121,7 @@ agentik-agents is right that subscription work and API spend are separate budget
 [^costs]: Anthropic, "Manage costs effectively", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/costs>.
 [^primeline]: Robin, Primeline, "Is Your Claude Code Cache Really 96% Efficient?", 30 August 2026, <https://primeline.cc/blog/claude-md-cache-cost>.
 [^zivtech]: Alex Urevick-Ackelsberg, Zivtech, "The Economics of Claude Code, Part 1: Session Timing", 22 April 2026, <https://www.zivtech.com/blog/economics-of-claude-code-part-1-session-timing>.
-[^issue46829]: Issue reporter, "Cache TTL silently regressed from 1h to 5m", anthropics/claude-code issue 46829, 12 April 2026, <https://github.com/anthropics/claude-code/issues/46829>.
+[^issue46829]: Issue reporter, "Cache TTL silently regressed from 1h to 5m around early March 2026, causing quota and cost inflation", anthropics/claude-code issue 46829, 12 April 2026, <https://github.com/anthropics/claude-code/issues/46829>.
 [^rebench]: SWE-rebench project, "SWE-rebench leaderboard", read 2026-10-14, <https://swe-rebench.com/>.
 [^qwen]: Qwen, "Qwen3.8-27B", model card read 2026-10-14, <https://huggingface.co/Qwen/Qwen3.8-27B>.
 [^routellm]: Isaac Ong et al., "RouteLLM: Learning to Route LLMs with Preference Data", June 2024, <https://arxiv.org/abs/2406.18665>.

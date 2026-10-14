@@ -1,14 +1,14 @@
 # Glossary
 
-One meaning per term, as the agentik repositories and this site use it. Terms from Claude Code and the field come first, then the tools' own. Command forms are the suite's current `agentik <tool> <verb>` names; at the commits read, some repositories still document their earlier names.
+One meaning per term, as the agentik repositories and this site use it. Terms from Claude Code and the field come first, then the tools' own. Command forms are the suite's planned `agentik <tool> <verb>` names; at the commits read, the installed commands still carry their earlier names.
 
 ## The field
 
-**Context window.** The tokens a model reads on one request: the system prompt, the conversation so far, tool definitions and tool output. As of October 2026 the current Claude models list 1,000,000 tokens; the 4.5 models and older list 200,000.
+**Context window.** The tokens a model works with on one request: the system prompt, the conversation so far, tool definitions, tool output, and the output it writes, thinking included. As of October 2026 the current Claude models list 1,000,000 tokens; the 4.5 models and older list 200,000. See [Length and compaction](field/length-and-compaction.md).
 
 **Context rot.** The decline in a model's accuracy and recall as the context fills. Anthropic's documentation uses the name, and the studies part 1 cites measure it across models.
 
-**Compaction.** Claude Code's replacement of the conversation with a summary when the context nears its limit. Automatic compaction runs at the model's limit; manual compaction is `/compact`; idle compaction runs after a long pause.
+**Compaction.** Claude Code's replacement of the conversation with a summary. Automatic compaction runs as the context nears the model's limit; manual compaction is `/compact`, at any time; idle compaction runs after a long pause above a token threshold.
 
 **Handoff.** A written record of the goal, the decisions, the ruled-out approaches and the next step, made so that a fresh session can continue the work. A charter is the agentik form of it.
 
@@ -20,7 +20,7 @@ One meaning per term, as the agentik repositories and this site use it. Terms fr
 
 **Worktree.** A second checkout of the same git repository, with its own files, index and branch, sharing refs and objects with the main checkout.
 
-**Usage window.** On a subscription, the rolling five-hour limit and the weekly limit on use, shared across models and with chat.
+**Usage window.** On a subscription, the rolling five-hour limit on use, shared across models and with chat. A weekly limit sits above it.
 
 **Evidence levels.** Measured, documented, reported, our use and conjecture. The method page defines each.
 
@@ -34,7 +34,7 @@ One meaning per term, as the agentik repositories and this site use it. Terms fr
 
 **Meter.** agentik-session's reading of a session's own transcript after every tool call: context tokens and turns against the profile's two ceilings.
 
-**Profile.** A named launch posture in agentik-session: the model, whose choice decides the window, the two ceilings, the checkpoint threshold and the respawn guards.
+**Profile.** In agentik-session, a named set of launch settings: the model, whose choice decides the window, the two ceilings, the checkpoint threshold and the respawn guards. agentik-agents uses the word for a delegate's read-only tool set, and agentik-respeak for a reader (`exec`, `peer-engineer`, `author`).
 
 **Zone.** A band of the meter: clear, notice at 80 percent, wind-down at 90, reserve at 92, exhausted at 100.
 
@@ -50,11 +50,11 @@ One meaning per term, as the agentik repositories and this site use it. Terms fr
 
 **Child.** The `claude -p` session the relay starts for one row, in that row's worktree, with the packet on its stdin.
 
-**Gate.** The relay's deterministic check after a child exits. It requires a result with no error, a commit, a clean tree, an unmoved origin and no orphans. Every touched path must fall within the packet's list. It then re-runs the acceptance lines and the verify line in a fresh clone, and merges. A gate whose facts cannot be read is unrun, and an unrun gate is never a pass.
+**Gate.** The relay's deterministic check after a child exits. It requires a result with no error, a commit, a clean tree, an unmoved origin and no orphans. Every touched path must fall within the packet's list. It then re-runs the acceptance lines and the verify line in a fresh clone. Under the `merge-on-green` policy it then merges; the queue's default, `branch-only`, keeps the branch for the owner. A gate whose facts cannot be read is unrun, and an unrun gate is never a pass.
 
-**Stop reason.** One of thirty named reasons a night ends: the queue emptied, a count or budget was reached, the owner stopped it, or a sitting failed. A row's own outcome is separate: red, after which the night moves on, or failed, which stops it.
+**Stop reason.** One of thirty named reasons a night ends, among them: the queue emptied, a count or budget was reached, the owner stopped it, or a sitting failed. A row's own outcome is separate: red, after which the night moves on unless it is a second stall, or failed, which stops it.
 
-**Cap and ceiling.** A cap is a money or count limit: a row's `--max-budget-usd`, a night's `--max-usd`, twelve respawns a day. A ceiling is a context or turn limit: a profile's two ceilings in agentik-session, a queue row's context and turns in agentik-relay.
+**Cap and ceiling.** A cap is a money or count limit: a row's `--max-budget-usd`, a night's `--max-usd`, twelve respawns in any rolling 24 hours. In agentik-session and agentik-relay a ceiling is a context or turn limit: a profile's two ceilings, a queue row's context and turns. agentik-agents calls a delegate's spend cap its ceiling.
 
 **Watchdog.** The relay's outside check on a child every 60 seconds: HEAD, the newest file time and the CPU seconds of the process group. No change for 2,700 seconds is a stall.
 
@@ -64,7 +64,7 @@ One meaning per term, as the agentik repositories and this site use it. Terms fr
 
 **Entry.** One numbered line in the ledger: a bold title, a paragraph and a dated tail naming its source. Numbers are never reused.
 
-**In force, proposed, superseded.** The three sections of the ledger. Only the owner's answer moves a question into force; a retired entry keeps its number under superseded.
+**In force, proposed, superseded.** The three sections of the ledger. Only the owner's answer moves a question into force; a retired entry becomes a line under superseded.
 
 **Every session.** The ledger area whose entries are rendered in full into the CLAUDE.md block, so a session reads them on every turn; at most seven.
 
@@ -78,7 +78,7 @@ One meaning per term, as the agentik repositories and this site use it. Terms fr
 
 **Gate (respeak).** The hook and the check that scan a human-lane file for banned phrases and length budgets and block an error-severity hit.
 
-**Verifier.** The script that proves an editorial pass changed prose only: headings, structure, links, code and numbers byte-identical before and after.
+**Verifier.** The script that proves an editorial pass changed prose only: headings, link targets and fenced code unchanged, block counts equal, and inline code and numbers the same multiset before and after.
 
 **Include file.** A static file of at most 1,500 bytes that renders the writing rules for CLAUDE.md to import, so a reader without the plugin gets them.
 
@@ -90,7 +90,7 @@ One meaning per term, as the agentik repositories and this site use it. Terms fr
 
 **Rig.** `agentik agents rig`: the manager for local model backends.
 
-**Delegate.** A run the main session hands off. In the API lane, it is a headless run with a read-only profile, a spend ceiling and a structured result. In the local lane, it is one of the local agents, some of which may edit files and run commands.
+**Delegate.** A run the main session hands off. In the API lane, it is a headless run with a read-only profile, a spend cap and a structured result. In the local lane, it is one of the local agents, some of which may edit files and run commands.
 
 **Front door.** `agentik <tool> <verb>`: the shell script in agentik-commons that finds `agentik-<tool>` on the path and runs it.
 

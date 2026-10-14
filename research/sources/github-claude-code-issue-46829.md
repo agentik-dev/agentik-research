@@ -1,7 +1,7 @@
 ---
 url: https://github.com/anthropics/claude-code/issues/46829
-title: "Cache TTL silently regressed from 1h to 5m (issue 46829)"
-author: seanGSISG (issue author); replies by Anthropic staff in the thread
+title: "Cache TTL silently regressed from 1h to 5m around early March 2026, causing quota and cost inflation (issue 46829)"
+author: Issue reporter; replies by Anthropic staff in the thread
 published: 2026-04-12
 accessed: 2026-10-14
 kind: reported

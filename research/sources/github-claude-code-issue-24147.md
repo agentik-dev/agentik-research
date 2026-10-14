@@ -1,7 +1,7 @@
 ---
 url: https://github.com/anthropics/claude-code/issues/24147
 title: "Cache read tokens consume 99.93% of usage quota - architectural scaling issue with CLAUDE.md re-reads (issue 24147)"
-author: RedhatEnt (issue author), with later commenters
+author: Issue reporter, with later commenters
 published: 2026-02-08
 accessed: 2026-10-14
 kind: reported

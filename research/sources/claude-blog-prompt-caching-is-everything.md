@@ -1,5 +1,5 @@
 ---
-url: https://claude.com/blog/lessons-from-building-claude-code-prompt-caching-is-everything
+url: https://claude.dev/blog/lessons-from-building-claude-code-prompt-caching-is-everything
 title: "Lessons from building Claude Code: Prompt caching is everything"
 author: Thariq Shihipar (Anthropic)
 published: 2026-04-30

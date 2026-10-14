@@ -17,7 +17,7 @@ Measured evidence supports the direction of three: a fresh context from a short 
 | Practice | Why | Evidence | Tool |
 |---|---|---|---|
 | **Write the handoff to a file before the window fills: the goal, the decisions, the ruled-out approaches, the next step.** | Compaction keeps the gist and loses the specifics; Anthropic's own harness work carried state in a progress file and git, and a Claude Code engineer advises a clear with a written brief | Reported[^harnesses][^sessionmgmt] | [agentik-session](tools/session.md): the charter |
-| **Keep exact values and file lists in files, not in summaries.** | One compaction run kept 3 of 3 high-level facts and lost 3 of 3 obscure values; the artifact trail scored lowest for every compressor tested | Measured[^cookbook][^factory] | [agentik-decisions](tools/decisions.md): the ledger; [agentik-relay](tools/relay.md): the ledger line per sitting |
+| **Keep exact values and file lists in files, not in summaries.** | In Anthropic's cookbook, one compaction run kept 3 of 3 high-level facts and lost 3 of 3 obscure values; in Factory's own evaluation, the artifact trail scored lowest for every compressor tested | Measured[^cookbook][^factory] | [agentik-decisions](tools/decisions.md): the ledger; [agentik-relay](tools/relay.md): the ledger line per sitting |
 | **Decide the compaction policy per sitting, and set `idleCompaction` to match.** | Idle compaction is on by default from version 2.1.290; in an interactive session with the one-hour cache, it runs after about 54 idle minutes above 200,000 tokens | Documented[^settings] | [agentik-session](tools/session.md): the PreCompact hook |
 
 ## Memory (question 3)

@@ -1,6 +1,6 @@
 ---
 repo: agentik-dev/agentik-session
-path: NICE_TO_HAVE.md (line 82); design/mod-r1.md (line 78); design/respawn-r1.md (lines 7-11, 134); design/packets/s17-exit-rule-respawns.md (line 22); design/overhaul-r1.md (line 26); hooks.py in the tool's Python package (lines 553-555)
+path: NICE_TO_HAVE.md, design/mod-r1.md, design/respawn-r1.md, design/packets/s17-exit-rule-respawns.md, design/overhaul-r1.md, claude_session/hooks.py
 commit: e7f0723
 title: "agentik-session: the never-compact rule and what the repo recorded about compaction"
 author: agentik-dev

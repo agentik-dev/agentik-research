@@ -1,6 +1,6 @@
 ---
 repo: agentik-dev/agentik-respeak
-path: plugin/skills/ (respeak, init, include, off, on, report)
+path: plugin/skills/
 commit: 319f060
 title: "respeak skills: respeak, init, include, off, on, report"
 author: agentik-dev

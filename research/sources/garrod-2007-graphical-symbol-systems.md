@@ -1,5 +1,5 @@
 ---
-url: https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=Garrod%20graphical%20symbol%20systems&format=json&resultType=core
+url: https://doi.org/10.1080/03640210701703659
 title: "Foundations of representation: where might graphical symbol systems come from?"
 author: S. Garrod, N. Fay, J. Lee, J. Oberlander, T. Macleod
 published: 2007-11 (Cognitive Science 31(6), pp. 961-987; PMID 21635324, DOI 10.1080/03640210701703659)

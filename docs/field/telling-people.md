@@ -66,7 +66,7 @@ Machine-prose tells exist and expert readers see them; the sources found include
 [^kobak]: Dmitry Kobak et al., "Delving into LLM-assisted writing in biomedical publications through excess vocabulary", July 2025, <https://arxiv.org/abs/2406.07016>.
 [^jakesch]: Maurice Jakesch et al., "Human heuristics for AI-generated language are flawed", March 2023, <https://pmc.ncbi.nlm.nih.gov/articles/PMC10089155>.
 [^russell]: Jenna Russell et al., "People who frequently use ChatGPT for writing tasks are accurate and robust detectors of AI-generated text", January 2025, <https://arxiv.org/abs/2501.15654>.
-[^garrod]: Simon Garrod et al., "Foundations of representation: where might graphical symbol systems come from?", Cognitive Science, November 2007, record read through Europe PMC, <https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=Garrod%20graphical%20symbol%20systems&format=json&resultType=core>.
+[^garrod]: Simon Garrod et al., "Foundations of representation: where might graphical symbol systems come from?", Cognitive Science, November 2007, record read through Europe PMC, <https://doi.org/10.1080/03640210701703659>.
 [^govuk]: GOV.UK, "A to Z style guide", read 2026-10-14, <https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/>.
 [^diataxis]: Daniele Procida, "Diátaxis", read 2026-10-14, <https://diataxis.fr/>.
 [^ismp]: Institute for Safe Medication Practices, "List of Error-Prone Abbreviations", 2024, <https://home.ecri.org/blogs/ismp-resources/list-of-error-prone-abbreviations>.

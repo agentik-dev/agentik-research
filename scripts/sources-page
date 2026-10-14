@@ -22,6 +22,26 @@ def fm(text):
                 val = re.sub(r"\s+#.*$", "", val).strip()
             d[k] = val.replace('\\"', '"')
     return d, m.group(2)
+def shorten(s, n=220):
+    # Cut at the last clause end before n characters; else at a word, never between a number and its unit.
+    if len(s) <= n: return s
+    cut = max(s.rfind("; ", 0, n), s.rfind(". ", 0, n))
+    if cut >= 100: return s[:cut]
+    words = s[:n].rsplit(" ", 1)[0].split(" ")
+    while words and re.fullmatch(r"[\d.,%$()-]+", words[-1]): words.pop()
+    return " ".join(words).rstrip(",;:") + " \u2026"
+def display_author(d, key):
+    author = clean(d.get("author", "")) or "Unsigned"
+    al = author.lower()
+    if "github.com" in key and ("issue" in key or "/pull/" in key) and (" " not in author or "reporter" in al or "handle" in al or "author" in al):
+        return "Pull request author" if "/pull/" in key else "Issue reporter"
+    if any(w in al for w in ("unsigned", "not named", "unknown", "handle", "not recorded", "no author", "unnamed", "named in the url")):
+        base = author.split(" (")[0].strip()
+        bl = base.lower()
+        if base and base != author and not bl.startswith("the ") and not any(w in bl for w in ("unsigned", "not named", "unknown", "no author", "unnamed", "reporter")):
+            return base
+        return "Unsigned"
+    return author
 def clean(s):
     s = re.sub(r"\s+", " ", s).strip().rstrip(".")
     s = s.replace('\\"', '"')
@@ -39,21 +59,18 @@ for p in sorted(glob.glob("research/sources/*.md")):
     first = ""
     m = re.search(r"^## What it says\s*\n(.*?)(?=^## |\Z)", body, re.M | re.S)
     if m:
-        b = re.search(r"^\s*[-*]\s+(.+)$", m.group(1), re.M)
-        if b: first = clean(b.group(1))
-    if len(first) > 220: first = first[:217].rsplit(" ", 1)[0] + "..."
+        for b in re.findall(r"^\s*[-*]\s+(.+)$", m.group(1), re.M):
+            if re.match(r"(Read by |Opened:|Skimmed:|Read in full\.?$)", b): continue
+            b = re.sub(r"^(Read in full\.\s+|[\w./-]+:\d[\d-]*\.\s+)", "", b)
+            first = clean(b); break
+    first = shorten(first)
     groups[kind].append((d, key, first))
 out = ["# Sources", "", "Every source this site cites, one line each, grouped by evidence level. Each line gives the author or organization, the title, the date the source states, where it was read, and one line of what it says. The notes behind them, with what was opened and when, are in the repository's `research/sources/` folder; parallel helpers sometimes wrote more than one note for a page, so there are more notes than lines.[^notes] Issue reporters and unsigned pages are not named, since the site names only published authors. Vendor documentation is undated by its publisher and was read on 2026-10-14.", ""]
 for k, items in groups.items():
     out.append(f"## {LABELS[k]}")
     out.append("")
-    for d, key, first in sorted(items, key=lambda t: (t[0].get("author", "").lower(), t[0].get("title", "").lower())):
-        author = clean(d.get("author", "")) or "Unsigned"
-        al = author.lower()
-        if "github.com" in key and ("issue" in key or "/pull/" in key) and (" " not in author or "reporter" in al or "handle" in al or "author" in al):
-            author = "Pull request author" if "/pull/" in key else "Issue reporter"
-        elif any(w in al for w in ("unsigned", "not named", "unknown", "handle", "not recorded", "no author", "unnamed", "named in the url")):
-            author = "Unsigned"
+    for d, key, first in sorted(items, key=lambda t: (display_author(t[0], t[1]).lower(), t[0].get("title", "").lower())):
+        author = display_author(d, key)
         title = clean(d.get("title", ""))
         date = clean(d.get("published", "undated")) or "undated"
         if "url" in d:
@@ -62,14 +79,20 @@ for k, items in groups.items():
             repo = d.get("repo", ""); path = d.get("path", ""); commit = d.get("commit", "")
             short = repo.split("/")[-1]
             where = f"{repo}, `{path}` at {commit}" if commit else f"{repo}, `{path}`"
-            if repo and commit and path and re.fullmatch(r"[\w./-]+", path):
-                where = f"[{short} `{path}` @ {commit}](https://github.com/{repo}/blob/{commit}/{path})"
+            single = re.fullmatch(r"[0-9a-f]{7,40}", commit or "")
+            if repo and single and path and re.fullmatch(r"[\w./-]+", path):
+                kind_ = "tree" if path.endswith("/") else "blob"
+                where = f"[{short} `{path}` @ {commit}](https://github.com/{repo}/{kind_}/{commit}/{path})"
+            elif "/" in repo and single:
+                where = f"{repo}, `{path}`, at [{commit}](https://github.com/{repo}/tree/{commit})"
+            elif repo:
+                where = f"[{repo}](https://github.com/{repo}), `{path}`" + (f" at {commit}" if commit else "")
         line = f"- {author}, \"{title}\", {date}. {where}."
-        if first: line += f" {first}."
+        if first: line += f" {first}" + ("" if first.endswith("\u2026") else ".")
         out.append(line)
     out.append("")
 out.append("## Sources")
 out.append("")
-out.append("[^notes]: agentik-dev/agentik-research, \"research/sources/\", the source notes, <https://github.com/agentik-dev/agentik-research/tree/main/research/sources>.")
+out.append("[^notes]: agentik-dev/agentik-research, \"research/sources/\", the source notes, on the main branch once the pull request merges, <https://github.com/agentik-dev/agentik-research/tree/main/research/sources>.")
 open("docs/sources.md", "w", encoding="utf-8").write("\n".join(out) + "\n")
 print(len(seen), "sources;", os.path.getsize("docs/sources.md"), "bytes")
