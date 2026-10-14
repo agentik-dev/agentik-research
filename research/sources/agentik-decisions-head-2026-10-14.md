@@ -68,3 +68,4 @@ Added 2026-10-14 for the journal entry "The ledger that ran away", read at 569a1
 - docs/tools/decisions.md
 - docs/summary.md
 - docs/journal/posts/2026-10-10-the-ledger-that-ran-away.md
+- docs/tools/index.md (re-read at 569a120 for it: `git diff --stat fabb212 569a120 -- README.md` prints nothing; README.md:5-6, :12 (`render` copies "the few entries every session needs into a generated block in `CLAUDE.md`"), :46, :140, :164-165, :172-174 and :194 (`/decisions:ask`, "in one batch"))

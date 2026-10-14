@@ -41,3 +41,4 @@ Read at c83e9b8, the head on 2026-10-14 (`git log`: the merge "r2-keys-and-done-
 - docs/tools/respeak.md
 - docs/summary.md
 - docs/journal/posts/2026-08-31-two-lanes.md
+- docs/tools/index.md (re-read at c83e9b8 for it: README.md:29-31, shorthand "*ratified* in a lexicon file"; :36, "a translator subagent"; :45, "the same style gates"; :57, "One field test (2026-08-31, n=1)"; :163, `respeak-verify-edit.py`, "exit 0 = the edit changed only prose"; :169, it "checks that a style edit kept the structure")
