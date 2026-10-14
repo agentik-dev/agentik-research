@@ -21,3 +21,8 @@ kind: documented
 
 ## Used in
 - research/synthesis/field-1.md
+
+## Also (question 3)
+- Handoff documents as pointers, not preloaded context: a new coding session starts with `pwd`, reads the git log and the progress file, reads the feature list and picks the highest-priority unfinished item, then runs the init script and a basic end-to-end test. The post presents these as steps the agent performs at the start of each session.
+- The feature list is JSON and only its `passes` field may be changed by coding agents; the authors chose JSON because the model was less likely to change or overwrite it than Markdown. The example list held over 200 features.
+- The same pattern appears in the memory tool's multisession section (platform-docs-memory-tool).

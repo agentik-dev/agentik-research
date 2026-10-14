@@ -23,3 +23,9 @@ kind: documented
 
 ## Used in
 - research/synthesis/field-1.md
+
+## Also (question 3)
+- Hybrid retrieval (section on context retrieval and agentic search): the post describes pre-loading some data for speed and exploring just in time, and names Claude Code as doing so, with CLAUDE.md files dropped in up front and glob and grep fetching the rest. It adds that runtime exploration is slower than retrieving pre-computed data and needs well-designed tools.
+- Progressive disclosure: agents discover context step by step, using file names, sizes and timestamps as signals, and hold in working memory only what is needed. The post gives no token threshold for what to pre-load.
+- Structured note-taking and the memory tool: notes kept outside the window (a to-do list, a NOTES.md file) are pulled back in later; the post says a file-based memory tool entered public beta alongside Claude Sonnet 4.5.
+- System prompt "right altitude": the post warns against both hard-coded brittle logic and vague guidance and says to start minimal and add instructions against observed failure.

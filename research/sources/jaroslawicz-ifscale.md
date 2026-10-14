@@ -20,3 +20,7 @@ kind: measured
 
 ## Used in
 - research/synthesis/field-1.md
+
+## Also (question 3)
+- Appendix A accuracy, in percent at 10, 100, 250 and 500 instructions: Claude Sonnet 4 100.0, 94.4, 77.2, 42.9; Claude Opus 4 100.0, 94.6, 67.9, 44.6; Claude 3.7 Sonnet 100.0, 94.8, 72.9, 52.7; Claude 3.5 Haiku 98.0, 43.4, 16.6, 8.5; o3 (high) 100.0, 98.2, 97.8, 62.8; Gemini 2.5 Pro 100.0, 98.4, 84.8, 68.9.
+- The paper says o3 and Gemini 2.5 Pro keep near-perfect performance through 150 or more instructions before declining. A practitioner post (humanlayer-writing-a-good-claude-md) reads this as frontier models following 150 to 200 instructions; the task was keyword inclusion in a report, not coding rules, and no Claude 4.5 or later model is in the table.

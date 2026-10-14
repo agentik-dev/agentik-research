@@ -20,3 +20,8 @@ kind: documented
 
 ## Used in
 - research/synthesis/field-1.md
+
+## Also (question 3)
+- Section "Prompt caching" (as of October 2026): multipliers relative to base input price are 1.25 for a 5-minute cache write, 2 for a 1-hour cache write, and 0.1 for a cache read (0.025 on Fable 5.1 and Mythos 5.1, 0.05 on Opus 5.5 and Sonnet 5.5). The page says a cache hit costs 10 percent of the standard input price, so caching pays off after one read for the 5-minute duration or after two reads for the 1-hour duration.
+- Model table rows, dollars per million tokens (base input, 5-minute write, 1-hour write, cache hit): Sonnet 5.5 is 2, 2.50, 4, 0.10; Opus 5.5 is 4, 5, 8, 0.20. Cache hits and refreshes both count at the read price.
+- The same multipliers are on the API prompt caching page (anthropic-api-docs-prompt-caching).

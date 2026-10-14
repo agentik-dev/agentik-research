@@ -21,3 +21,8 @@ kind: measured
 
 ## Used in
 - research/synthesis/field-1.md
+
+## Also (question 3)
+- The page I opened on 2026-10-14 lists three versions: v1 on 12 February 2026, v2 on 23 June 2026 and v3 on 29 September 2026. The full text I read (the arXiv HTML page, labelled v3) names the new benchmark CTXbench: 138 instances from 12 repositories that have developer-committed context files; SWE-bench Lite has 300 tasks from 11 repositories. The note above says AGENTbench, which may be the name in an earlier version; I did not check v1.
+- Numbers in the v3 text: generated files changed success by -0.5 points on SWE-bench Lite and -2 points on CTXbench, not significant (p = 0.87 and 0.37). Developer-written files versus none: +2.4 points on average, not significant (p = 0.21). Developer versus generated files: about 7 points, significant (p = 0.038). Generated files raised cost by about 20 percent and 23 percent; developer files raised cost by up to 19 percent.
+- Of 12 developer files, 8 contain a repository overview; overviews did not reduce the steps needed to reach the files the fix changed. Instruction following was close: a tool named in the file was used about 1.6 times per instance, against under 0.01 times when not named. The abstract advises writing context files only for non-standard practices, and evaluating before adoption.

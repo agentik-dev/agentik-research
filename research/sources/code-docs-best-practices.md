@@ -24,3 +24,9 @@ kind: documented
 
 ## Used in
 - research/synthesis/field-1.md
+
+## Also (question 3)
+- Section "Write an effective CLAUDE.md" (as of October 2026): CLAUDE.md is read at the start of every conversation, so include only what applies broadly; use skills for domain knowledge or workflows needed only sometimes. A table lists what to include (Bash commands Claude cannot guess, style rules that differ from defaults, test runners, repository etiquette, project-specific architecture decisions, environment quirks, non-obvious gotchas) and what to exclude (anything derivable from the code, standard conventions, long API documentation, frequently changing information, file-by-file descriptions).
+- The test the page gives for each line: "Would removing this cause Claude to make mistakes?" If not, cut it. If Claude keeps breaking a rule despite having it, the file is probably too long and the rule is getting lost. To make Claude follow one rule, add emphasis to that line alone; emphasising many lines leaves none standing out.
+- Hooks versus CLAUDE.md: instructions in CLAUDE.md are advisory, hooks are deterministic. Compaction can be steered with a CLAUDE.md line such as always preserving the list of modified files and test commands.
+- The page gives no line count for CLAUDE.md; the 200-line figure is on the memory page. The original April 2025 Anthropic engineering post on best practices (the URL claude-code-best-practices under anthropic.com/engineering) now answers with a permanent redirect to this page, so I could not read the 2025 text separately.

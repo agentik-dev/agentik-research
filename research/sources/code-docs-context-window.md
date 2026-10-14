@@ -21,3 +21,8 @@ kind: documented
 
 ## Used in
 - research/synthesis/field-1.md
+
+## Also (question 3)
+- The simulation's "before you type anything" items and their illustrative token counts (the page labels all counts representative): system prompt 4,200; auto memory 680; environment info 280; deferred MCP tool names 120; skill descriptions 450; user-level CLAUDE.md 320; project CLAUDE.md 1,800. My addition of those seven values is 7,850 tokens, about 4 percent of the 200,000 maximum the simulation uses. A subagent in the simulation starts with its own copy of the project CLAUDE.md (1,800 tokens).
+- The simulation's tip on the project CLAUDE.md entry: keep it under 200 lines and move reference content to skills or path-scoped rules, so it loads only when needed. Its description of skill descriptions says a skill with `disable-model-invocation: true` is not in the list and stays out of context until invoked, and that the listing is not re-injected after `/compact`; only skills actually invoked are preserved.
+- Section "What survives compaction" (as of October 2026): path-scoped rules and nested CLAUDE.md files enter message history when triggered, so compaction summarizes them away with the rest; the page advises dropping `paths:` frontmatter or moving the rule to the project-root CLAUDE.md if it must persist.
