@@ -26,7 +26,7 @@ The bottom line: long Claude Code work fails from context length, from compactio
 
 ## Part 3: the practice
 
-Twenty-six practices, grouped by question, each with its evidence and the tool that automates it. Four have measured backing that settles the direction: start long work from a short brief in a fresh context; fan out only decomposable work; put sign-off in a check outside the reviewer; and check a "done" claim against a tool result. Twelve carry measured evidence in all; the rest follow the documentation or a report, and four are marked conjecture. See [Practices](practices.md).
+Twenty-six practices, grouped by question, each with its evidence and the tool that automates it. Three have measured backing that settles the direction: start long work from a short brief in a fresh context; fan out only decomposable work; and put sign-off in a check outside the reviewer. A fourth, checking a "done" claim against a tool result, rests on a measured false-success rate. Twelve carry measured evidence in all; the rest follow the documentation or a report, and four are marked conjecture. See [Practices](practices.md).
 
 ## Method and date
 

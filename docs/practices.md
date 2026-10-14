@@ -1,6 +1,6 @@
 # Practices
 
-Twenty-six practices for long-running and multi-agent Claude Code work, grouped by the research question each answers. Each gives what to do, why, the evidence level with its sources, and the agentik tool that automates it, if one does. Four have measured backing that settles the direction: a fresh context from a short brief,[^laban] fan-out only for decomposable work,[^kim] sign-off outside the reviewer,[^huang] and checking a "done" claim against a tool result.[^advani] The rest rest on the vendor's documentation, dated October 2026, or on reports. Where a practice is the owner's rule with no outside evidence, the table says conjecture.
+Twenty-six practices for long-running and multi-agent Claude Code work, grouped by the research question each answers. Each gives what to do, why, the evidence level with its sources, and the agentik tool that automates it, if one does. Three have measured backing that settles the direction: a fresh context from a short brief,[^laban] fan-out only for decomposable work,[^kim] and sign-off outside the reviewer.[^huang] A fourth, checking a "done" claim against a tool result, rests on a measured false-success rate; the effect of checking is not measured.[^advani] The rest rest on the vendor's documentation, dated October 2026, or on reports. Where a practice is the owner's rule with no outside evidence, the table says conjecture.
 
 ## Length (question 1)
 
@@ -8,7 +8,7 @@ Twenty-six practices for long-running and multi-agent Claude Code work, grouped 
 |---|---|---|---|
 | **Clear context between unrelated tasks, and start a long task from a short written brief.** | One consolidated message recovered 95.1 percent of a single-turn score that multi-turn use had lost 39 percent of; Claude Code's own advice is a clean session over accumulated corrections | Measured;[^laban] documented[^bestpractices] | [agentik-session](tools/session.md): the charter and the respawn |
 | **Keep always-loaded instructions short, and load rare ones on demand.** | Adherence falls as the number of instructions grows: Claude Sonnet 4 scored 94.4 percent at 100 instructions and 42.9 at 500; the documentation says under 200 lines | Measured;[^ifscale] documented[^memory] | [agentik-decisions](tools/decisions.md): the generated block; [agentik-respeak](tools/respeak.md): the include file |
-| **Mask or clear old tool output, and send large reads to subagents.** | Tool output was about 84 percent of a coding agent's turn tokens, and masking it halved cost with no loss in solve rate in most setups | Measured;[^masking] documented[^bestpractices] | None; Claude Code's subagents |
+| **Mask or clear old tool output, and send large reads to subagents.** | Tool output was about 84 percent of a coding agent's turn tokens, and masking it cut cost by half or more in four of five setups, with solve-rate changes from -4.0 to +2.8 points | Measured;[^masking] documented[^bestpractices] | None; Claude Code's subagents |
 
 ## Compaction or restart (question 2)
 
@@ -30,7 +30,7 @@ Twenty-six practices for long-running and multi-agent Claude Code work, grouped 
 | Practice | Why | Evidence | Tool |
 |---|---|---|---|
 | **Set `--max-turns` and `--max-budget-usd` on every unattended run, with headroom for the overshoot.** | Both default to no limit; the budget is checked after each response and can pass the cap by one response plus running subagents | Documented[^cli][^agentloop] | [agentik-relay](tools/relay.md): per-row and per-night caps; [agentik-agents](tools/agents.md): the pooled fan-out |
-| **Keep a self-paced wait under the cache lifetime in force, and know which lifetime you have.** | The one-hour cache applies only on a subscription within plan usage; a cold rewrite of 200,000 tokens costs forty times a warm turn on Opus 5.5 | Documented[^scheduled][^caching][^pricing] | [agentik-session](tools/session.md): an idle-wake cap is proposed, not built |
+| **Keep a self-paced wait under the cache lifetime in force, and know which lifetime you have.** | By default the one-hour cache applies only on a subscription within plan usage, and a setting can choose a lifetime; by the documented prices a cold one-hour rewrite of 200,000 tokens costs forty times a warm read on Opus 5.5 | Documented;[^scheduled][^caching][^pricing] the arithmetic is ours | [agentik-session](tools/session.md): an idle-wake cap is proposed, not built |
 | **Meter the session's own usage, and stop with a reserve left to hand off.** | A session that runs to its limit cannot write its handoff; the 80 percent checkpoint is the owner's rule | Our use; conjecture[^sessionreadme] | [agentik-session](tools/session.md): the meter |
 
 ## Many agents (question 5)
@@ -38,15 +38,15 @@ Twenty-six practices for long-running and multi-agent Claude Code work, grouped 
 | Practice | Why | Evidence | Tool |
 |---|---|---|---|
 | **Fan out only decomposable work; keep sequential work in one agent.** | With matched token budgets, multi-agent designs gained up to 80.8 percent on decomposable work and lost 39 to 70 percent on sequential planning | Measured[^kim] | [agentik-relay](tools/relay.md): independent queue rows; [agentik-agents](tools/agents.md): the fan-out |
-| **One worktree and one file set per parallel writer.** | Worktrees share refs but not the index; two isolation leaks are on record where parallel agents shared state | Documented;[^worktrees] reported[^issue84685] | [agentik-relay](tools/relay.md): one worktree per row |
+| **One worktree and one file set per parallel writer.** | Worktrees share `.git`, and git gives each its own index and HEAD; two isolation leaks are on record where parallel agents shared state | Documented;[^worktrees][^gitlayout] reported[^issue52958][^issue84685] | [agentik-relay](tools/relay.md): one worktree per row |
 | **Give a fresh-context reviewer concrete criteria and a report-only role.** | Verifiers declare early victory without criteria; a reviewer asked to find gaps reports gaps | Documented[^multiagentblog][^bestpractices] | [agentik-relay](tools/relay.md): the adversary agent |
 
 ## Unattended runs (question 6)
 
 | Practice | Why | Evidence | Tool |
 |---|---|---|---|
-| **Treat `success` as unproven: read `permission_denials` and `terminal_reason`, and gate outside the model.** | In print mode an unanswered prompt is denied and the run continues; the denials appear only in the result | Documented[^sdkresult][^headless] | [agentik-relay](tools/relay.md): the gate; [agentik-session](tools/session.md): the partial classification |
-| **Watch progress from outside (HEAD, file times, CPU), and kill a stall.** | Agents never noticed their first error in 38.5 percent of cases; no main-session progress watchdog is documented | Measured for the failure;[^hiddenfailures] conjecture for the guard | [agentik-relay](tools/relay.md): the watchdog |
+| **Treat `success` as unproven: read `permission_denials` and `terminal_reason`, and gate outside the model.** | In print mode an unanswered prompt is denied and the run continues; the denials appear in the result's list and in stream messages, not as an error | Documented[^sdkresult][^headless] | [agentik-relay](tools/relay.md): the gate reads the result event, not the claim |
+| **Watch progress from outside (HEAD, file times, CPU), and kill a stall.** | Agents never noticed their first error in 38.5 percent of cases; no main-session progress watchdog is documented | Measured for the failure;[^hiddenfailures] documented for the gap;[^network] conjecture for the guard | [agentik-relay](tools/relay.md): the watchdog |
 | **Run the test gate once per row, under a lock and a load check.** | 46.5 percent of flaky tests were resource-affected, with CPU starvation worst; the relay's own check went red under load | Measured;[^flaky] our use[^relaynth] | [agentik-commons](tools/index.md): the `bounded` wrapper |
 
 ## Guardrails (question 7)
@@ -61,14 +61,14 @@ Twenty-six practices for long-running and multi-agent Claude Code work, grouped 
 | Practice | Why | Evidence | Tool |
 |---|---|---|---|
 | **Put sign-off in a check outside the reviewer, cap the rounds, and block only on correctness.** | Self-correction with no outside signal lowered accuracy from 95.5 to 89.0 percent; returns per round fell to +0.4 by round four; Claude Code caps a Stop-hook loop at 8 | Measured;[^huang][^wang] documented[^hooks][^codereview] | [agentik-relay](tools/relay.md): the gate; [agentik-commons](tools/index.md): the check |
-| **Supersede decision entries; never edit them; keep them in one capped place.** | ADR practice keeps superseded records and never reuses a number; the cap is the owner's | Reported;[^azure][^nygard] conjecture for the cap | [agentik-decisions](tools/decisions.md) |
-| **Ask the owner at a task boundary, in one batch.** | Interruptions at boundaries cost up to 30 percent less time to resume than random ones; batching itself was never compared | Measured for the boundary;[^iqbal] conjecture for the batch | [agentik-decisions](tools/decisions.md): `ask` |
+| **Supersede decision entries rather than rewrite them, and keep them in one capped place.** | ADR practice keeps superseded records and never reuses a number; the cap is the owner's | Documented and reported;[^azure][^nygard] conjecture for the cap | [agentik-decisions](tools/decisions.md): a capped ledger with superseded lines; its `answer --amends` replaces a paragraph, and retiring an entry is a hand edit |
+| **Ask the owner at a task boundary, in one batch.** | Prior studies Iqbal and Bailey cite found interruptions at random moments cost up to 30 percent longer to resume than at boundaries; batching itself was never compared | Measured for the boundary, in the studies they cite;[^iqbal] conjecture for the batch | [agentik-decisions](tools/decisions.md): `ask` |
 
 ## Telling people what happened (question 9)
 
 | Practice | Why | Evidence | Tool |
 |---|---|---|---|
-| **Open each report with the outcome in one sentence, and keep errors and failing output whole.** | The military and federal writing standards put the bottom line first; Claude Code's Concise style keeps errors whole | Documented[^army][^outputstyles] | [agentik-respeak](tools/respeak.md): the bluf mode |
+| **Open each report with the outcome in one sentence, and keep errors and failing output whole.** | A military writing regulation and the federal plain-language guidelines put the bottom line first; Claude Code's Concise style keeps errors whole | Documented[^army][^gsa][^outputstyles] | [agentik-respeak](tools/respeak.md): the bluf mode |
 | **Check a "done" claim against a tool result before a person reads it.** | One benchmark found a false-success rate of 75.8 percent among runs that made a status claim | Measured for the rate;[^advani] conjecture for the effect of checking | [agentik-relay](tools/relay.md): the gate reads the result, not the claim |
 
 ## Cost lanes (question 10)
@@ -76,7 +76,7 @@ Twenty-six practices for long-running and multi-agent Claude Code work, grouped 
 | Practice | Why | Evidence | Tool |
 |---|---|---|---|
 | **Pick the credential per run, and know what each lane turns off.** | A key or gateway credential replaces the login and its plan limits; Remote Control is off under a non-Anthropic base URL | Documented[^auth][^gatewayconnect] | [agentik-agents](tools/agents.md): the three lanes |
-| **Sweep effort before switching models or adding a router.** | Anthropic's internal evaluations found effort the cheaper lever; several routers lose to the best single model | Measured, vendor-run[^costintel][^routerbench] | [agentik-agents](tools/agents.md): the router clamps effort on local routes |
+| **Sweep effort before switching models or adding a router.** | Anthropic's internal evaluations found effort the cheaper lever; several routers lose to the best single model | Measured, one vendor-run[^costintel] and one academic[^routerbench] | [agentik-agents](tools/agents.md): the router clamps effort on local routes |
 
 ## Sources
 
@@ -105,6 +105,10 @@ Twenty-six practices for long-running and multi-agent Claude Code work, grouped 
 [^sessionreadme]: agentik-dev/agentik-session, "README.md", commit e7f0723, <https://github.com/agentik-dev/agentik-session/blob/e7f0723/README.md>.
 [^worktrees]: Anthropic, "Run parallel sessions with worktrees", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/worktrees>.
 [^issue84685]: Issue reporter, "EnterWorktree/isolation state is session-global", anthropics/claude-code issue 84685, 7 August 2026, <https://github.com/anthropics/claude-code/issues/84685>.
+[^issue52958]: Issue reporter, "Agent `isolation: \"worktree\"` leaks cwd into parent checkout mid-session, destroying untracked files", anthropics/claude-code issue 52958, 24 April 2026, <https://github.com/anthropics/claude-code/issues/52958>.
+[^gitlayout]: Git project, "gitrepository-layout documentation", read 2026-10-14, <https://git-scm.com/docs/gitrepository-layout>.
+[^network]: Anthropic, "Enterprise network configuration", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/network-config>.
+[^gsa]: General Services Administration, "Federal Plain Language Guidelines", the plainlanguage.gov repository copy, read 2026-10-14, <https://raw.githubusercontent.com/GSA/plainlanguage.gov/master/_pages/guidelines/index.md>.
 [^multiagentblog]: Cara Phillips, Anthropic, "Building multi-agent systems: When and how to use them", 23 January 2026, <https://www.claude.com/blog/building-multi-agent-systems-when-and-how-to-use-them>.
 [^sdkresult]: Anthropic, "TypeScript SDK reference", Claude Agent SDK documentation read 2026-10-14, <https://code.claude.com/docs/en/agent-sdk/typescript>.
 [^headless]: Anthropic, "Run Claude Code programmatically", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/headless>.
