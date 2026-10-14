@@ -18,4 +18,4 @@ kind: measured
 - Fitted on one population (Navy trainees) and 18 passages, in 1975. The report does not test whether rewriting to a lower score raises comprehension.
 
 ## Used in
-- research/synthesis/field-9.md
+- none yet. Read for question 9 but not cited in research/synthesis/field-9.md (size cap); a lead for the page draft.

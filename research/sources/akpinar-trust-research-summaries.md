@@ -17,4 +17,4 @@ kind: measured
 - Abstracts of research papers read by readers with machine-learning expertise.
 
 ## Used in
-- research/synthesis/field-9.md
+- none yet. Read for question 9 but not cited in research/synthesis/field-9.md (size cap); a lead for the page draft.

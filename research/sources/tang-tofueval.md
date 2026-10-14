@@ -17,4 +17,4 @@ kind: measured
 - Dialogue summaries from 2024-era models. It supports caution about model-written summaries and about using a model to check another model's summary, not any particular rate.
 
 ## Used in
-- research/synthesis/field-9.md
+- none yet. Read for question 9 but not cited in research/synthesis/field-9.md (size cap); a lead for the page draft.

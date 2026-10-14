@@ -19,4 +19,4 @@ kind: documented
 - The "lead with the outcome" instruction is a prompt Anthropic recommends, not a test of whether readers act faster.
 
 ## Used in
-- research/synthesis/field-9.md
+- none yet. Read for question 9 but not cited in research/synthesis/field-9.md (size cap); a lead for the page draft.

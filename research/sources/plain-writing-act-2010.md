@@ -18,4 +18,4 @@ kind: documented
 - I read the statute's text as rendered by the fetch tool, so I rely on its extraction of sections 3 and 4.
 
 ## Used in
-- research/synthesis/field-9.md
+- none yet. Read for question 9 but not cited in research/synthesis/field-9.md (size cap); a lead for the page draft.

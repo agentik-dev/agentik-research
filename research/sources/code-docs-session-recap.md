@@ -17,4 +17,4 @@ kind: documented
 - Documentation of a feature as of October 2026. The pages give no measure of recap accuracy, and a 400-character cap cannot carry the detail a long unattended run needs.
 
 ## Used in
-- research/synthesis/field-9.md
+- none yet. Read for question 9 but not cited in research/synthesis/field-9.md (size cap); a lead for the page draft.

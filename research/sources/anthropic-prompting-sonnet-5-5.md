@@ -17,4 +17,4 @@ kind: documented
 - Vendor guidance as of October 2026. The page confirms the failure (a change reported as done without a check) but gives no rate for it, and its tests are not described.
 
 ## Used in
-- research/synthesis/field-9.md
+- none yet. Read for question 9 but not cited in research/synthesis/field-9.md (size cap); a lead for the page draft.

@@ -18,4 +18,4 @@ kind: reported
 - The post does not say who created Diátaxis. A web search result named the same author as its creator; I did not confirm that on diataxis.fr.
 
 ## Used in
-- research/synthesis/field-9.md
+- none yet. Read for question 9 but not cited in research/synthesis/field-9.md (size cap); a lead for the page draft.

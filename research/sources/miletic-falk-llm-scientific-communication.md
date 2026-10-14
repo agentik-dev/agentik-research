@@ -17,4 +17,4 @@ kind: measured
 - It is the closest measured result I found to the question whether readers dislike machine-style text, and it points two ways: ratings of the text were favourable, comments about the technology were not.
 
 ## Used in
-- research/synthesis/field-9.md
+- none yet. Read for question 9 but not cited in research/synthesis/field-9.md (size cap); a lead for the page draft.

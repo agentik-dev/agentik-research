@@ -18,4 +18,4 @@ kind: reported
 - Other notes in this repo give different first-publication years for the book; this page states 1987. I did not find a primary source that settles the other years.
 
 ## Used in
-- research/synthesis/field-9.md
+- none yet. Read for question 9 but not cited in research/synthesis/field-9.md (size cap); a lead for the page draft.

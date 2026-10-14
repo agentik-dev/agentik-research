@@ -17,4 +17,4 @@ kind: measured
 - Another note in this repo records this paper as an ACL 2025 Findings paper; the page I read says COLING 2025. Check the venue before citing.
 
 ## Used in
-- research/synthesis/field-9.md
+- none yet. Read for question 9 but not cited in research/synthesis/field-9.md (size cap); a lead for the page draft.
