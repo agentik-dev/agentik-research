@@ -15,6 +15,11 @@
    * the dated ones when the newest come first. */
   var YEARS = ["undated"];
   for (var yr = 1900; yr <= 2100; yr++) YEARS.push(String(yr));
+  /* The Year facet lists the newest year first and "undated" last. Without an
+   * order the kit sorts the options and reverses them for "year", which puts
+   * "undated" first; an order list replaces that sort (options it does not
+   * name are dropped, so it names every year the column can hold). */
+  var YEAR_OPTIONS = YEARS.slice(1).reverse().concat(["undated"]);
 
   GlassBrowse.register({
     sources: {
@@ -40,7 +45,7 @@
       emptyText: "No source matches",
       emptyHint: "Clear a filter or shorten the search."
     }
-  }, { order: { level: LEVELS } });
+  }, { order: { level: LEVELS, year: YEAR_OPTIONS } });
 
   /* Fold the static list once the browse has drawn its table. */
   function foldStaticList() {

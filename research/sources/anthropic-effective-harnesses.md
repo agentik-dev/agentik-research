@@ -4,7 +4,7 @@ title: "Effective harnesses for long-running agents"
 author: Justin Young (Anthropic), with thanks to other Anthropic contributors
 published: 2025-11-26
 accessed: 2026-10-14
-kind: documented
+kind: reported
 ---
 
 ## What it says
@@ -19,6 +19,7 @@ kind: documented
 ## Limits
 - A demonstration on one task type (a claude.ai clone), with no quantified comparison between fresh sessions and continued sessions. It supports "write state to files so a new session can pick up" and does not measure fresh versus long.
 - Model names and the SDK are as of November 2025.
+- Level settled as reported on 2026-10-14 (was documented): the post is a vendor engineering post that demonstrates one task with no quantified comparison, which the method page's levels call reported; anthropic-engineering-effective-harnesses-compaction, on the same address, already said reported.
 
 ## Used in
 - research/synthesis/field-1.md
