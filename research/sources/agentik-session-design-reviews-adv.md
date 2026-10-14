@@ -1,6 +1,6 @@
 ---
 repo: agentik-dev/agentik-session
-path: design/review-adv6.md
+path: design/review-adv6.md, design/review-adv10.md, design/review-adv11.md
 commit: e7f0723
 title: "ADV6, ADV10 and ADV11: three adversarial reviews of agentik-session (design/review-adv6.md, review-adv10.md, review-adv11.md)"
 author: agentik-dev
@@ -24,3 +24,4 @@ kind: our-use
 
 ## Used in
 - research/synthesis/tools-session.md
+- docs/tools/session.md
