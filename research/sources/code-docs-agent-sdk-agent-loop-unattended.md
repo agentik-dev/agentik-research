@@ -28,3 +28,4 @@ kind: documented
 
 ## Used in
 - research/synthesis/field-6.md
+- docs/summary.md

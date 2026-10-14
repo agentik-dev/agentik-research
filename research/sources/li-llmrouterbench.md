@@ -18,3 +18,4 @@ kind: measured
 
 ## Used in
 - research/synthesis/field-10.md
+- docs/summary.md
