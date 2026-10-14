@@ -71,7 +71,7 @@ Measured evidence settles the direction of three: a fresh context from a short b
 | Practice | Why | Evidence | Tool |
 |---|---|---|---|
 | **Open each report with the outcome in one sentence, and keep errors and failing output whole.** | An Army writing regulation and the federal plain-language guidelines put the bottom line first; Claude Code's Concise style keeps errors whole | Documented[^army][^gsa][^outputstyles] | [agentik-respeak](tools/respeak.md): the bluf mode |
-| **Check a "done" claim against a tool result before a person reads it.** | One benchmark found a false-success rate of 75.8 percent among runs that made a status claim | Measured for the rate;[^advani] conjecture for the effect of checking | [agentik-relay](tools/relay.md): the gate reads the result, not the claim |
+| **Check a "done" claim against a tool result before a person reads it.** | One benchmark found that 75.8 percent of failed runs with an explicit status claim claimed success | Measured for the rate;[^advani] conjecture for the effect of checking | [agentik-relay](tools/relay.md): the gate reads the result, not the claim |
 
 ## Cost lanes (question 10)
 

@@ -14,7 +14,7 @@ Part 1 answers ten questions about what goes wrong when you run a Claude Code se
 | 6. Unattended runs | [Unattended runs and guardrails](unattended-and-guardrails.md) | Documented; measured on other harnesses[^headless] |
 | 7. Guardrails | [Unattended runs and guardrails](unattended-and-guardrails.md) | Documented; vendor-measured classifier rates[^automode] |
 | 8. Review that ends | [Review that ends](review.md) | Measured: self-correction without an outside signal can make answers worse[^huang] |
-| 9. Telling people what happened | [Telling people what happened](telling-people.md) | Measured: a false-success rate of 75.8 percent among runs that made a status claim on one benchmark[^advani] |
+| 9. Telling people what happened | [Telling people what happened](telling-people.md) | Measured: that 75.8 percent of failed runs with an explicit status claim claimed success on one benchmark[^advani] |
 | 10. Cost lanes | [Budgets, pacing and cost lanes](budgets-and-lanes.md) | Documented; measured for routers, not coding agents[^routellm] |
 
 ## How to read the evidence levels

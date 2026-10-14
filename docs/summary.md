@@ -12,7 +12,7 @@ Long Claude Code work fails from context length, compaction that loses specifics
 6. **Unattended runs.** An unanswered permission prompt is denied, the model is told, and the run continues. Only the result lists the denials. Agents never notice their first error in 38.5 percent of cases. No main-session watchdog is documented.[^headless][^hiddenfailures]
 7. **Guardrails.** Deny rules match command text and miss alternate spellings. Hooks fail open on a timeout unless told to block. The sandbox covers shell commands only, not file tools or hooks. On vendor data, the auto-mode classifier misses 17 percent of overeager actions.[^permissions][^sandbox][^automode]
 8. **Review.** Self-correction without an outside signal makes answers worse. The gain per round falls fast;[^huang][^wang] four public loops did not end on their own.[^fullsend][^aiwatch][^agentinfra][^meridian] Architecture decision record (ADR) practice supersedes records and sets no cap.[^nygard]
-9. **Telling people.** Put the outcome first and keep errors whole.[^army][^outputstyles] Readability formulas are weak gates.[^zheng] One benchmark found a false-success rate of 75.8 percent among runs that made a status claim.[^advani]
+9. **Telling people.** Put the outcome first and keep errors whole.[^army][^outputstyles] Readability formulas are weak gates.[^zheng] One benchmark found that 75.8 percent of failed runs with an explicit status claim claimed success.[^advani]
 10. **Cost lanes.** A key replaces the login and its limits, and turns off Remote Control. Routers route on difficulty, and several lose to the best single model. Sweep effort first.[^gatewayconnect][^routerbench][^costintel]
 
 ## Part 2: the tools, in six lines
