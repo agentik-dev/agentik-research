@@ -55,6 +55,7 @@ markdown_extensions:
 # Each page in docs/ is listed here; scripts/check holds the two in step.
 nav:
   - index.md
+  - summary.md
   - The field:
       - field/index.md
       - field/length-and-compaction.md
@@ -71,3 +72,7 @@ nav:
       - tools/decisions.md
       - tools/respeak.md
       - tools/agents.md
+  - practices.md
+  - method.md
+  - glossary.md
+  - sources.md
