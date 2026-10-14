@@ -1,6 +1,6 @@
 ---
 repo: agentik-dev/agentik-session
-path: the git history from 89c69a8 to e8477a7; design/review-r6.md, NICE_TO_HAVE.md, claude_session/profiles.yaml, README.md, claude_session/rules.py, RUNBOOK.md, design/packets/s30-cache-lifetime.md
+path: the git history from 89c69a8 to e8477a7; design/review-r6.md, NICE_TO_HAVE.md, claude_session/profiles.yaml, README.md, claude_session/rules.py, RUNBOOK.md, design/packets/s30-cache-lifetime.md, design/packets/s21-priority-default.md, claude_session/charter.py, claude_session/cli.py
 commit: e8477a7
 title: "agentik-session at its head on 2026-10-14: the rf1-research-fixes merge"
 author: agentik-dev (the suite owner)
@@ -24,6 +24,7 @@ Read on 2026-10-14 in the attached checkout at e8477a7: `git log --oneline` from
 - The cache audit, NICE_TO_HAVE.md:119 ("Prompt-cache audit (2026-10-12, the observer; S4)"): ScheduleWakeup turned 3600 s into 3636 to 3648 s, past the main loop's 1h lifetime, so each such wake rewrote the whole context; "26 such misses over three days wrote about 4.8M tokens". It ends "Fixed on branch s30-cache-lifetime (packet S30)".
 - The band mixes accounts, NICE_TO_HAVE.md:204-205, added by fb64f41 (2026-10-14 11:02:42 -0700, "NICE: the band mixes accounts (S3)"): `admission.band()` takes the newest five-hour reading across every session in the ledger, with no account key, so two logins on one machine share one band. On 2026-10-14 the ledger held two accounts at once; each session's prompt line showed whichever wrote last, and the projection and `room` were fitted across both. The statusline gives no account id; the item proposes keying readings by the pair of reset times. It carries no fixed mark at the head. A search of claude_session/admission.py at e8477a7 for `account` finds nothing.
 - The ended-session items (NICE_TO_HAVE.md:183-189: `5h 41% → 260%` with six counted and three ended; after the fix at most 6.9 minutes over 131 end-to-successor cases, against 45) read as at 89c69a8.
+- Added for docs/journal/posts/2026-10-10-the-ledger-that-ran-away.md, read at e8477a7 on 2026-10-14: `git diff --stat 89c69a8 e8477a7` lists 22 files and neither design/packets/s21-priority-default.md nor claude_session/charter.py, so both are byte-identical at 89c69a8 and e8477a7. The packet's ruling 4 (line 23) says "no hook enforces them (a ScheduleWakeup nudge is filed as S4)". Ruling 5 (line 24): with priority on, `open` writes `- open by level: none yet` first under Handover, and `check` and `close` "warn on stderr, exit unchanged, when that line is missing", since "a refusal would fail old charters and a close at 80%". claude_session/charter.py:97-123, `warnings`, does that: it adds a warning when `rules.handover_listed` is false (priority on), beside the WAITING warnings (pacing on). claude_session/rules.py:381-389, `handover_listed`, is true when the `## Handover` section holds a line that starts `- open by level:`; it reads nothing else. README.md lines 132-133 spell the verbs `agentik session charter check <file>` and `agentik session charter close --exit "<text>"`. The `git diff 89c69a8 e8477a7` of claude_session/hooks.py adds the prompt-cache lifetime (S30) and no check on the levels.
 
 ## Limits
 - The 2026-10-14 commits answer this site's first refute round, so part of the record now echoes this site. They change wording, comments and one design record; none records a new run of the tool. Their messages cite vendor pages read that day, which this note does not re-check.
@@ -33,3 +34,4 @@ Read on 2026-10-14 in the attached checkout at e8477a7: `git log --oneline` from
 - docs/index.md
 - docs/summary.md
 - docs/journal/posts/2026-10-14-living-inside-a-usage-window.md
+- docs/journal/posts/2026-10-10-the-ledger-that-ran-away.md

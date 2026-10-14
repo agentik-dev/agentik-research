@@ -23,3 +23,4 @@ kind: reported
 ## Used in
 - research/synthesis/field-8.md
 - journal-ledger
+- docs/journal/posts/2026-10-10-the-ledger-that-ran-away.md

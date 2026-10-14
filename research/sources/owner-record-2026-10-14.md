@@ -24,3 +24,4 @@ kind: our-use
 ## Used in
 - research/synthesis/journal-ledger.md
 - docs/summary.md
+- docs/journal/posts/2026-10-10-the-ledger-that-ran-away.md

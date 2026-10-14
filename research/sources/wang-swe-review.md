@@ -21,3 +21,4 @@ Abstract page plus the HTML text (read to about 100,000 of 167,891 characters). 
 ## Used in
 - research/synthesis/field-8.md
 - journal-ledger (journal draft)
+- docs/journal/posts/2026-10-10-the-ledger-that-ran-away.md

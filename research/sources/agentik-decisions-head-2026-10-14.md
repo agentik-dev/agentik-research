@@ -1,6 +1,6 @@
 ---
 repo: agentik-dev/agentik-decisions
-path: the commits fabb212..569a120; design/d17-four-verbs.md, design/d18-one-flow.md, design/d23-backlog-view.md, history/design/decisions-r1.md, history/design/decisions-r1-changelog.md, history/design/review-r6.md, src/decisions/answer.py, src/decisions/ledger.py, src/decisions/render.py, tests/test_answer.py, tests/test_ledger.py, pyproject.toml, Makefile, plugin/
+path: the commits fabb212..569a120; design/d17-four-verbs.md, design/d18-one-flow.md, design/d23-backlog-view.md, history/design/decisions-r1.md, history/design/decisions-r1-changelog.md, history/design/review-r6.md, src/decisions/answer.py, src/decisions/ledger.py, src/decisions/render.py, tests/test_answer.py, tests/test_ledger.py, pyproject.toml, Makefile, plugin/, README.md, history/sessions/ (the 2026-10-11 intake)
 commit: 569a120
 title: "agentik-decisions at its head on 2026-10-14 (the merge rf1-research-fixes)"
 author: agentik-dev
@@ -49,6 +49,15 @@ Runs at the head, by me, 2026-10-14 (system Python 3.13.16, not the pinned 3.12.
 - `render` on a scratch copy of `tests/fixtures/sectioned/` (1,155 bytes) writes a 563-byte block: the two `Every session` entries verbatim and four title lines, as at 80d59eb.
 - On a scratch copy of agentik-relay's `DECISIONS.md` and `OPEN-QUESTIONS.md` at the relay's head 405d1e0: the ledger is 8,023 bytes (7,995 at a326550; the relay's diff between the two renames tool names in four lines), with 12 numbered entries in force in the same five areas. `render --lint` exits 0, and `render` writes a block of 984 bytes in 18 lines, as at a326550.
 
+Added 2026-10-14 for the journal entry "The ledger that ran away", read at 569a120 by the entry's fixer:
+- `git show --stat` and the messages of 8f9847b and ba78699. ba78699 (2026-10-14 09:52:11 -0700) is titled "d17, ledger.py: record the caps of 25 and 7 as rulings, with the block's bytes at the caps"; its message says "Research fix item 3", cites Anthropic's memory page "(under 200 lines a file)" and Jaroslawicz et al. 2025 "per the research site's reading", and calls the change "Comment and design only" (d17 one line, ledger.py two).
+- `design/d17-four-verbs.md:19-20`: the caps sentence, and the bullet "The caps are rulings, not measurements": the owner set both in a ledger entry dated 2026-09-25, and d17 builds them. `src/decisions/ledger.py:40-42` (the comment and `IN_FORCE_CAP, EVERY_SESSION_CAP = 25, 7`) and `:251-257` (the two cap checks and their messages).
+- `src/decisions/answer.py:198-202`: the comment "An answer removes one block, so it lowers the open count" and the filter that drops a problem holding "questions open; the cap is 5" from the post-write lint; the refusal at :203-205 is unchanged.
+- `README.md:46-47` (`git diff --stat fabb212 569a120 -- README.md history/sessions` prints nothing): "At most 25 entries are in force, and at most 7 sit under `Every session`."; the legacy line ends the parsed part, and "the lint and the caps pass over it". `README.md:84` and `:157`: `render --lint` lints the ledger and the questions file; `render` lints both caps in every mode.
+- `history/design/decisions-r1.md:198`, `:200` and `:212-213`: the ledger is 242,404 bytes with 214 rulings, the hand index 41,576 bytes and "four rulings behind at the pin".
+- The 2026-10-11 intake in `history/sessions/` (unchanged since fabb212), lines 19-28: two sittings put four questions each, within the cap; after the merge `OPEN-QUESTIONS.md` held eight; the sitting holding the owner's answers to four ran one `answer`, which refused with "answer: the result fails the lint; nothing written:" and "OPEN-QUESTIONS.md:100: 7 questions open; the cap is 5"; it set the other sitting's four questions aside, ran the four answers, and restored the four byte for byte, "four hand edits of the two files the tool exists to guard". The intake records one refusal; it does not say the other answers were refused.
+- Re-run by the fixer, 2026-10-14, on a `git archive` copy of 569a120 in a scratch folder (system Python 3.13.16, no bytecode written): `test_an_answer_over_the_cap_lowers_the_count` passes ("Ran 1 test", "OK"); with `PYTHONPATH` set to the `src/` of fabb212 it fails with "AssertionError: 2 != 0" and "6 questions open; the cap is 5".
+
 ## Limits
 - The fixes answer this site's own findings, and d17:20 cites "the research site's reading" for its nearest evidence, so those lines are not independent support for this site's claims.
 - The consumer block in d17:20 belongs to a private repo; I did not re-measure it. The pricing, memory and monorepo figures in §8.3a and §9a are the repo's reading of Anthropic's pages; I did not open those pages for this note.
@@ -58,3 +67,4 @@ Runs at the head, by me, 2026-10-14 (system Python 3.13.16, not the pinned 3.12.
 ## Used in
 - docs/tools/decisions.md
 - docs/summary.md
+- docs/journal/posts/2026-10-10-the-ledger-that-ran-away.md

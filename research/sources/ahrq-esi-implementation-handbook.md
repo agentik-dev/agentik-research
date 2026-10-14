@@ -24,6 +24,7 @@ Opened as a PDF through WebFetch (the agency's own page returned HTTP 403, so th
 - Reliability (p. 3): one hospital's comparison of a three-level scale with ESI version 1 found weighted kappa 0.53 for three levels and 0.68 for five. Over 200 nurses at seven hospitals rated 40 written cases with kappa 0.70 to 0.80, and 386 real triage decisions gave weighted kappa 0.69 to 0.87. A pilot of 493 encounters at two hospitals found 77% exact agreement and 22% within one level between a research nurse and a blinded investigator. A trial with 10 nurses and 200 cases found kappa 0.89 for ESI and 0.91 for the Canadian scale.
 - Validity (p. 3): the handbook tests whether levels track admission, resource use and 6-month mortality. Levels 1 and 2 used more resources and were admitted more often than levels 4 and 5.
 - Adoption (pp. 1 to 2): historically U.S. departments used no standard scale, and before a joint nurse and physician task force reported in 2002 the systems in use were dominated by three-level scales. A 2009 hospital survey reported ESI 57%, three-level 25%, four-level 10%, other five-level 6%, two-level or other 1%, no triage 1%.
+- Re-opened 2026-10-14 (the entry's fixer), the same PDF fetched with curl and read with pdftotext (114 pages). Reassessment (p. 55, Chapter 7): the research team is often asked whether ESI sets a time to reassessment by level; "The ESI system does not include reassessment recommendations." The group has purposely set no reassessment times and leaves them to each department's triage policy, warning that busy triage nurses find set intervals hard to keep. Re-triage (p. 53, Chapter 7, among the reasons a department may switch to ESI): nursing staff "may find that they are continuously re-triaging patients"; in crowded departments with many urgent patients waiting, nurses are forced to keep reprioritizing them for scarce beds.
 
 ## Limits
 - A practice handbook by the method's own developers, published through a federal agency. The studies are the developers' and their colleagues'; the handbook summarizes them without method detail beyond sample sizes.
@@ -33,3 +34,4 @@ Opened as a PDF through WebFetch (the agency's own page returned HTTP 403, so th
 
 ## Used in
 - research/synthesis/journal-ledger.md
+- docs/journal/posts/2026-10-10-the-ledger-that-ran-away.md
