@@ -25,30 +25,30 @@ Reason named two kinds of hole. Active failures are the unsafe acts of people at
 
 ## What the research teaches
 
-The [guardrails half of the unattended-runs chapter](../../field/unattended-and-guardrails.md) reads each Claude Code guard as one slice, with its holes documented. A deny rule matches the command's text: as of October 2026, `Bash(git push *)` misses `git -C . push`, and the documentation says a rule is not a security boundary.[^permissions] The sandbox covers Bash commands and their children, but it is off by default, and file tools and hooks run outside it.[^sandbox] A PreToolUse hook that exits 2 does deny the call, even in the most permissive mode, but only the calls it was written to recognise.[^hooks]
+The [guardrails half of the unattended-runs chapter](../../field/unattended-and-guardrails.md) reads each Claude Code guard as one slice, with its holes documented. A deny rule matches the command's text: as of October 2026, `Bash(git push *)` misses `git -C . push`, and the documentation says a rule is not a security boundary.[^permissions] The sandbox covers Bash commands and their children, but it is off by default, and file tools and hooks run outside it.[^sandbox] A PreToolUse hook that exits 2 stops a call before the allow rules are read, but only the calls it was written to recognise.[^permissions]
 
 No study measures how often agents beside an unattended run damage it. The chapter's incident list holds single accounts, none reproduced.
 
 ## What happened
 
-Between 06:56 and 06:58 UTC on 2026-09-30, a review agent built the relay binary by hand. It gave the binary a lock port of its own and pointed its home and state variables at scratch directories. Then it ran `agentik relay plan` four times against a scratch repository.[^ar36]
+Between 06:56 and 06:58 UTC on 2026-09-30, a review agent built the relay binary by hand. (A later packet dates the same event 2026-09-29 at 23:56, which matches if its clock ran seven hours behind UTC.)[^ar40] It gave the binary a lock port of its own and pointed its home and state variables at scratch directories. Then it ran `agentik relay plan` four times against a scratch repository.[^ar36]
 
 Here the holes lined up:
 
 1. **The pid directory came from the system's user database, not from the home variable.** The scratch home did not apply, so the hand-built binary used the account's real pid directory. A latent condition.
-2. **The pid file write replaced a live holder's file.** Each run took its own free port, wrote its line over the running night's `relay.pid`, and removed the file on exit. Another latent condition.
+2. **The pid file write replaced a live holder's file.** Each run took the binary's own lock port, which was free, wrote its line over the running night's `relay.pid`, and removed the file on exit. Another latent condition.
 3. **The night read a missing pid file as a moved lock.** At its next poll it stopped with the reason `lock-moved`. No new sitting started, and nine rows stayed ready overnight. The night's real lock, its port, was never lost: the file only names the holder.[^ar36]
 4. **The rule against hand-built binaries lived only in prompts.** The guard against a nested run applied inside a night's row, and the reviewer ran outside any row.[^ar40]
 
-The route was not new. A review six days earlier had named it, and the design record listed the lock as advisory "against a child that builds its own relay with its own port link".[^design]
+The route was not new. An earlier review had named it as finding ADV13-13,[^adv13] and the design record listed the lock as advisory "against a child that builds its own relay with its own port link".[^design]
 
 ## What we changed
 
 Packet AR36 closed three holes the same day. The pid file now refuses to replace a file that names a live holder. A binary linked with a lock port and no pid home refuses to touch the account's real pid directory. And the builder and adversary prompts gained one line each: never build the relay by hand.[^ar36]
 
-The next day a read-only helper, whose prompt forbade it, ran `agentik relay run --orchestrate`. A gate happened to hold the lock, so the run was refused. The packet that followed, AR40, put the finding in one line: "the rule lived only in their prompts."[^ar40] It added a hook guard, `helper-relay`, that denies the relay's write verbs and a build of the relay to any subagent, in a row or not.
+A second incident followed. A read-only helper, whose prompt forbade it, ran `agentik relay run --orchestrate`. A gate happened to hold the lock, so the run was refused. The packet that followed, AR40, put the finding in one line: "the rule lived only in their prompts."[^ar40] It added a hook guard, `helper-relay`, that denies the relay's write verbs and a build of the relay to any subagent, in a row or not.
 
-We kept the prompt lines as a slice, and stopped counting on them as the only one.
+The prompt lines stay in the builder and adversary prompts as one slice, no longer the only one.[^prompts]
 
 ## Does it work?
 
@@ -64,9 +64,9 @@ The review of the guard found its holes at once. Spelling bypasses it: `$(which 
 
 ## What has not worked, and what is open
 
-The check that stopped the night is still the check we have, and it reads the wrong thing. The port held; the file moved. One open question in the repo asks whether a missing advisory file should stop a night whose port is still held, or whether the holder should write the file again. It is not decided.[^nth] The same check reads only the file's device and inode, so an in-place rewrite would slip past it.[^nth]
+The check that stopped the night is still the check we have, and it reads the wrong thing. The port held; the file moved. One open question in the repo asks whether a missing advisory file should stop a night whose port is still held, or whether the holder should write the file again. It is not decided.[^nth] The same check reads only the file's device and inode, so an in-place rewrite would slip past it.[^adv14]
 
-The sandbox that would close the whole route is "Not built (the owner's open decision)".[^design] Until it is, the night's safety rests on layers we know have holes, and we have listed each one.
+The sandbox that would close the whole route is "Not built (the owner's open decision)".[^design] Until it is, the night's safety rests on layers with known holes. The repository lists six more from the review of the fix alone.[^nth]
 
 <p class="ak-written">Written 2026-10-14 from agentik-relay at commit 405d1e0.</p>
 
@@ -80,8 +80,10 @@ The sandbox that would close the whole route is "Not built (the owner's open dec
 [^reason]: James Reason, "Human error: models and management", BMJ 320(7237):768-770, 18 March 2000, <https://pmc.ncbi.nlm.nih.gov/articles/PMC1117770/>.
 [^permissions]: Anthropic, "Configure permissions", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/permissions>.
 [^sandbox]: Anthropic, "Configure the sandboxed Bash tool", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/sandboxing>.
-[^hooks]: Anthropic, "Hooks reference", Claude Code documentation read 2026-10-14, <https://code.claude.com/docs/en/hooks>.
 [^ar36]: agentik-dev/agentik-relay, "design/packets/ar36-pid-file-guard.md", commit 405d1e0, <https://github.com/agentik-dev/agentik-relay/blob/405d1e0/design/packets/ar36-pid-file-guard.md>.
 [^ar40]: agentik-dev/agentik-relay, "design/packets/ar40-helper-relay-guard.md", commit 405d1e0, <https://github.com/agentik-dev/agentik-relay/blob/405d1e0/design/packets/ar40-helper-relay-guard.md>.
 [^design]: agentik-dev/agentik-relay, "design/relay-r1.md", commit 405d1e0, <https://github.com/agentik-dev/agentik-relay/blob/405d1e0/design/relay-r1.md>.
+[^adv13]: agentik-dev/agentik-relay, "design/review-adv13.md", commit 405d1e0, <https://github.com/agentik-dev/agentik-relay/blob/405d1e0/design/review-adv13.md>.
+[^adv14]: agentik-dev/agentik-relay, "design/review-adv14.md", commit 405d1e0, <https://github.com/agentik-dev/agentik-relay/blob/405d1e0/design/review-adv14.md>.
+[^prompts]: agentik-dev/agentik-relay, "plugin/agents/builder.md" (and "plugin/agents/adversary.md"), commit 405d1e0, <https://github.com/agentik-dev/agentik-relay/blob/405d1e0/plugin/agents/builder.md>.
 [^nth]: agentik-dev/agentik-relay, "NICE_TO_HAVE.md", commit 405d1e0, <https://github.com/agentik-dev/agentik-relay/blob/405d1e0/NICE_TO_HAVE.md>.

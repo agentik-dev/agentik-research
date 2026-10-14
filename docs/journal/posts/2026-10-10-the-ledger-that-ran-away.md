@@ -4,12 +4,12 @@ date:
 categories:
   - Worked
   - Open
-description: A decision ledger grew past 400 entries because nothing in it said which entries mattered. A cap, a sign-off bar and four severity levels were the fix. The old 401 entries still bind.
+description: A decision ledger grew past 400 entries, and nothing in it said which of them mattered. A cap, a sign-off bar and four priority levels followed. The old 401 entries still bind.
 ---
 
 # The ledger that ran away
 
-A decision ledger exists so that a project stops deciding the same thing twice. One of ours grew past 400 entries, and nothing in it said which of them mattered. We fixed it in three moves over three weeks: a cap of 25 entries in force, a sign-off bar that ends a review, and four severity levels. The cap holds. The old entries are still there.
+A decision ledger exists so that a project stops deciding the same thing twice. One of ours grew past 400 entries, and nothing in it said which of them mattered. The owner answered with four rulings between 2026-09-22 and 2026-10-10: decide inside the design, a cap of 25 entries in force, a sign-off bar that ends a review, and four priority levels. The cap holds. The old entries are still there.
 
 <!-- more -->
 
@@ -17,9 +17,9 @@ A decision ledger exists so that a project stops deciding the same thing twice. 
 
 On 2026-09-25 one commit wrote 322 review rulings into the ledger of the owner's home-infrastructure repository, sorted by domain. By 2026-10-14 the old part of that ledger held 401 entries in about 15,700 words. 385 of them carried a review-round tag, and 346 came from a single review series.[^record]
 
-None of the entries carried a level. Every entry had the same form, so a reader, human or model, could not tell which of them mattered without reading all of them.[^record]
+None of the entries carried a level, so a reader, human or model, could not tell which of them mattered.[^record]
 
-The ledger sat at the end of a chain. Builders asked the owner too many questions, and reviews made findings that became rulings.
+In the same weeks, two related problems showed up in the owner's other repositories: builders asked the owner too many questions, and reviews kept making findings that became work.[^record]
 
 ## A human example: triage at the door
 
@@ -27,13 +27,13 @@ An emergency department must decide, for every patient who walks in, who can wai
 
 Each level has a short test. Level 1 needs a life-saving intervention now. For level 2, the nurse asks: "Would I give my last open bed to this patient?" Levels 3 to 5 turn on how many resources the patient will need, and the nurse never counts past two.[^esi] The scale caps its own effort.
 
-In one hospital's comparison, raters agreed more on the five-level index than on a three-level scale: weighted kappa 0.68 against 0.53.[^esi] A level is a decision about who waits, made once, early, by a rule anyone can apply.
+In one hospital's comparison, raters agreed more on the five-level index than on a three-level scale: weighted kappa 0.68 against 0.53.[^esi] A level is a decision about who waits, made once, early, by a written rule that trained nurses apply.
 
 ## What the research teaches
 
 Two chapters bear on it. The [memory chapter](../../field/memory.md) shows that a model follows fewer instructions as their number grows: in one benchmark, Claude Sonnet 4 followed 94.4 percent of 100 simultaneous keyword instructions and 42.9 percent of 500.[^ifscale] A long, flat list of rules is a list the model will partly ignore.
 
-The [review chapter](../../field/review.md) shows that review rounds return less each time. With one fine-tuned small model as both writer and reviewer, SWE-bench Verified scores after successive rounds read 34.8, 40.6, 43.0, 43.4 and 44.0 percent: gains of 5.8, 2.4, 0.4 and 0.6 points.[^wang] GPT-4 correcting its own math answers with no outside signal got worse, from 95.5 to 89.0 percent over two rounds.[^huang] Michael Nygard's architecture decision records point the same way: each record holds one decision in one or two pages, numbers are never reused, and a reversed decision keeps its record, marked superseded.[^nygard]
+The [review chapter](../../field/review.md) shows that review rounds soon stop paying. With one fine-tuned small model as both writer and reviewer, SWE-bench Verified scores read 34.8 percent before review and 40.6, 43.0, 43.4 and 44.0 percent after four rounds: gains of 5.8, 2.4, 0.4 and 0.6 points.[^wang] GPT-4 correcting its own math answers with no outside signal got worse, from 95.5 to 89.0 percent over two rounds.[^huang] Michael Nygard's architecture decision records point the same way: each record holds one decision in one or two pages, numbers are never reused, and a reversed decision keeps its record, marked superseded.[^nygard]
 
 ## What we changed
 
@@ -45,9 +45,9 @@ Four rulings, in the order they landed.
 
 **A sign-off bar (to 2026-10-05).** In a Go infrastructure product driven by nightly unattended runs, about 40 percent of 72 queued rows added no capability: fixes, repairs and retries. Five of the six rows queued for the next night were fixes. For about four weeks, reviews created findings and findings created rows.[^record] The ruling: each component gets a sign-off bar. Once it is met, a finding becomes work only as a reproduced correctness or safety bug. A review blocks only on an unmet acceptance criterion, a bug or a failing test, or a conflict with the ledger. There are at most two review rounds, and every finding is placed against the build order, never first by default.[^record]
 
-**Four levels (2026-10-10).** The owner asked for priority levels, and agentik-session shipped them: S1 harm, S2 blocks the goal, S3 the build order, S4 the rest. The next act takes the highest level ready, and a sitting takes at most one S4 item.[^record][^s21]
+**Four priority levels (2026-10-10).** The owner asked for priority levels, and agentik-session shipped them: S1 harm, S2 blocks the goal, S3 the build order, S4 the rest. The next act takes the highest level ready, and a sitting takes at most one S4 item.[^record][^s21]
 
-We chose a hard cap over a better index. agentik-decisions had already seen where an index leads: its first user's ruling log reached 242,404 bytes and 214 rulings, with a hand-kept index of 41,576 bytes that lagged four rulings behind.[^r1]
+agentik-decisions had met the cost of a long ledger before. Its first user's ruling log reached 242,404 bytes and 214 rulings, with a hand-kept index of 41,576 bytes that lagged four rulings behind.[^r1] Its records do not argue for the numbers 25 and 7.[^r1]
 
 ## Does it work?
 
