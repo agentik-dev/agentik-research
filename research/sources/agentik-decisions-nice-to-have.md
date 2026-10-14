@@ -2,7 +2,7 @@
 repo: agentik-dev/agentik-decisions
 path: NICE_TO_HAVE.md
 commit: 80d59eb
-title: "claude-code-decisions: what a review left open, none of it blocking"
+title: "agentik-decisions: what a review left open, none of it blocking"
 author: agentik-dev
 published: 2026-10-12
 accessed: 2026-10-14

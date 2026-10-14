@@ -4,7 +4,7 @@ Source: `agentik-dev/agentik-relay` at commit `a326550`, read 2026-10-14 from `.
 
 Citation form: `(agentik-relay <path>:<line> @ a326550; <source-note slug>)`. Every slug is a note in `research/sources/`. Evidence levels follow the brief: every claim here is **our use** (the repo's own record: an incident, a log line, a test, a design page) unless it says **conjecture**. Nothing here is measured in the brief's sense (a study with a method a stranger can read) and nothing is documented (vendor documentation); section 5 lists the claims that need that check.
 
-What the tool is, in one paragraph: a static Go binary, `relay`, and a Claude Code plugin that run queued "packets" headless overnight. Each queue row gets one git worktree, one branch and one `claude -p` child. A deterministic gate decides whether the row merges. Thirty named stop reasons end a night. Two layers cap money. A person reads one report in the morning (agentik-relay README.md, opening paragraph and "The door"; agentik-relay-readme). Status: version 0.1.3, 699 tests by the README's count, "Nothing is stable before 1.0.0" (agentik-relay README.md "Status" @ a326550; agentik-relay-readme).
+What the tool is, in one paragraph: a static Go binary, `relay`, and a Claude Code plugin that run queued "packets" headless overnight. Each queue row gets one git worktree, one branch and one `claude -p` child. A deterministic gate decides whether the row merges. Thirty named stop reasons end a night. Two layers cap money. A person reads one report in the morning (agentik-relay README.md, opening paragraph and "The door"; agentik-relay-readme). Status: version 0.1.3, 699 tests by the README's count, "Nothing is stable before 1.0.0" (agentik-relay README.md "Status" @ a326550; agentik-relay-readme). The "stand-in" below is the earlier Python script `sitting-relay` that the Go relay replaced; its docstring, gate, ledger line and stop conditions were inputs to the design (agentik-relay design/relay-r1.md:3 @ a326550; agentik-relay-design-r1). Its own record is outside this repo.
 
 ---
 
@@ -286,6 +286,7 @@ Meaning as the repo gives it; location in `agentik-relay` at `a326550`.
 - **harness**: the paths (Makefile, scripts) a branch may not use to judge itself; main's copy is laid over the branch. (design/relay-r1.md:77)
 - **pin** (two senses): in a packet, the branch or sha a row is cut from; in the gate, the tools and trees bound by checksum. (design/relay-r1.md:36-42; :145-149)
 - **memo**: baselines keyed (root, HEAD, line). (design/relay-r1.md:586)
+- **stand-in**: the Python predecessor `sitting-relay` that the Go relay replaced. (design/relay-r1.md:3)
 - **fork storm**: a relay or its measurements re-invoking the relay without bound. (design/review-r6.md:50-55)
 - **pause / wake / continuation**: a usage-limit hold of the night; the time it ends; a paused row's next part under a fresh session. (design/usage-limit-resume-r1.md §2)
 - **standing word**: the owner's standing instruction that settles recommended forks; **quiet hours**: window when notices go only to the log. (design/relay-r1.md:564; DECISIONS.md:27)
@@ -301,7 +302,7 @@ Kinds only; none is named in this file or in the source notes.
 - A private umbrella or portfolio repo of the owner that holds the Python stand-in relay, the observer's notes and the portfolio's decision ledger, and sibling private repos for cross-repo operations.
 - A household that first used the tool, named in the README's opening reason.
 - The owner's timezone and the quiet-hours window.
-- The owner's machine: laptop make and core mix, a "this Mac" phrasing, home-directory install paths and a user-level hooks directory path.
+- The owner's machine: laptop make and core mix, first-person device phrasing, home-directory install paths and a user-level hooks directory path.
 - A push-notification service topic and host configuration (the config key names appear; the values do not).
 - Public agentik sibling-tool names (session, respeak, decisions) appear in the README; they are published names.
 - The plugin manifest's author line is a person's name (allowlisted by the repo's hygiene scan).

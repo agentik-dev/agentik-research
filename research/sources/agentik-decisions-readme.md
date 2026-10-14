@@ -2,7 +2,7 @@
 repo: agentik-dev/agentik-decisions
 path: README.md
 commit: 80d59eb
-title: "claude-code-decisions (the repository README)"
+title: "agentik-decisions (the repository README)"
 author: agentik-dev
 published: 2026-10-13
 accessed: 2026-10-14
