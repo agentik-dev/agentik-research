@@ -9,35 +9,35 @@ description: Instead of compacting a full context, a sitting writes a charter un
 
 # Restart, don't compact
 
-When a Claude Code sitting fills its context, the built-in answer is compaction: Claude Code frees up context by summarizing the conversation so far.[^commands] agentik-session stopped doing that, by the owner's ruling.[^s17] A sitting now writes a charter of under 4 KB, exits, and a fresh session starts from the charter. On one night that carried the work across three restarts. We have no comparison that shows it beats compaction.
+When a Claude Code sitting fills its context, the built-in answer is compaction: Claude Code frees up context by summarizing the conversation so far.[^commands] By the owner's ruling, agentik-session no longer compacts.[^s17] A sitting now writes a charter of under 4 KB, exits, and a fresh session starts from the charter. On one night, the charters carried the work across three restarts. We have no comparison that shows it beats compaction.
 
 <!-- more -->
 
 ## The problem
 
-A sitting that runs for hours fills its window. Compaction keeps it going: earlier parts of the conversation are summarized in place, so the same agent carries on with a shortened history. It "preserves continuity", but it "doesn't give the agent a clean slate".[^harnessdesign] In agentik-session's design record, the owner "learns of an auto-compaction after it".[^mod]
+A sitting that runs for hours fills its context. Compaction keeps the sitting going: it summarizes earlier parts of the conversation in place, so the same agent carries on with a shortened history. It "preserves continuity", but it "doesn't give the agent a clean slate".[^harnessdesign] In agentik-session's design record, the owner "learns of an auto-compaction after it".[^mod]
 
 ## A human example: a plan for an unfinished task
 
-E. J. Masicampo and Roy Baumeister asked students to write about two important tasks due in the next few days. One group then wrote out how, when and where they would do them. While the students read a passage of a novel, the tasks kept intruding on those without a plan: their distraction averaged 3.00 on a 7-point scale, against 1.77 for those who had written the plan and 1.82 for a control group whose tasks were already done.[^masicampo] In a later study, students with a plan solved 9.55 anagrams on average, against 6.55 for those who had only the goal.[^masicampo]
+E. J. Masicampo and Roy Baumeister asked students to write about two important tasks due in the next few days. One group then wrote out how, when and where they would do them. While the students read a passage of a novel, the tasks kept intruding on those without a plan. Their distraction averaged 3.00 on a 7-point scale, against 1.77 for the plan group and 1.82 for a control group whose tasks were already done.[^masicampo] In a later study, students with a plan solved 9.55 anagrams on average, against 6.55 for those who had only the goal.[^masicampo]
 
-The tasks were still undone. A plan of how, when and where was enough to stop the intrusions: in the authors' words, "planned (rather than actual) progress was sufficient".[^masicampo] The study is about a person's attention, not a model's context, so the step to software is our analogy: a charter is the written plan, with what is done, the handover and one Next act, so the next session can start clean.
+A plan of how, when and where was enough to stop the intrusions, though the tasks were still undone. In the authors' words, "planned (rather than actual) progress was sufficient".[^masicampo] The study is about a person's attention, not a model's context, so the step to software is our analogy. A charter is the written plan: what is done, the handover and one Next act, so the next session can start clean.
 
 ## What the research teaches
 
-The [length and compaction chapter](../../field/length-and-compaction.md) holds the evidence, and it cuts both ways. In Factory's test of compressors, the artifact trail, which files were touched and how, scored lowest for every compressor, 2.19 to 2.45 out of 5.[^factory] In one run of Anthropic's own cookbook, a compaction kept all three high-level facts and none of three obscure values.[^cookbook] Anthropic's post on harnesses for long-running agents says "compaction isn't sufficient": out of the box, even Opus 4.5, in a loop across context windows and given only a high-level prompt, falls short of a production-quality web app. Its harness carried state between context windows in a progress file the agent writes and in git history.[^harnesses]
+The [length and compaction chapter](../../field/length-and-compaction.md) holds the evidence, and it cuts both ways. In Factory's test of compressors, the artifact trail (which files were touched, and how) scored lowest for every compressor: 2.19 to 2.45 out of 5.[^factory] In one run of Anthropic's own cookbook, a compaction kept all three high-level facts and none of three obscure values.[^cookbook] Anthropic's post on harnesses for long-running agents says "compaction isn't sufficient". Out of the box, even Opus 4.5 falls short of a production-quality web app when it runs in a loop across context windows and has only a high-level prompt. The post's harness carried state between context windows in a progress file the agent writes and in git history.[^harnesses]
 
-In those tests, a summary kept the gist and lost specifics, and that harness carried state in a written file. A later Anthropic post runs the other way. It says that in Anthropic's earlier testing, Sonnet 4.5 wrapped up work early as it neared what it believed was its context limit, so context resets became essential. Opus 4.5 "largely removed that behavior on its own", so the author dropped context resets from the post's harness and ran the build as one session, with the Agent SDK's automatic compaction handling context growth.[^harnessdesign] No source we found compares a restart from a written handoff with compaction in a coding session, under control.
+In those tests, a summary kept the gist and lost specifics, and that harness carried state in a written file. A later Anthropic post runs the other way. It says that in Anthropic's earlier testing, Sonnet 4.5 wrapped up work early as it neared what it believed was its context limit, so context resets became essential. Opus 4.5 "largely removed that behavior on its own", so the author dropped context resets from the post's harness and ran the build as one session, with the Agent SDK's automatic compaction handling context growth.[^harnessdesign] No source we found runs a controlled comparison of a restart from a written handoff against compaction in a coding session.
 
 ## What we built
 
 On 2026-09-29 the owner ruled that a sitting restarts rather than compacts: a restart reads its brief fresh, and a compaction needs the owner's hand.[^s17] agentik-session's exit rule now reads: `EXIT: land the act in flight at a checkpoint, then exit; respawn, never compact`.[^hooks]
 
-The charter is one file per sitting with the goal, the budget, what is done, the handover and one Next act. It must stay under 4,096 bytes, and the rule is to "move text out, never widen the ceiling".[^skill] A PreCompact hook blocks automatic compaction and lets a typed `/compact` through, so the owner keeps the choice.[^mod]
+The charter is one file per sitting. It holds the goal, the budget, what is done, the handover and one Next act. It must stay under 4,096 bytes, and the rule is to "move text out, never widen the ceiling".[^skill] A PreCompact hook blocks automatic compaction and lets a typed `/compact` through, so the owner keeps the choice.[^mod]
 
-The record behind the launcher is one night, 2026-10-05. One orchestrator reached its checkpoint three times, and the owner restarted it by hand each time, after gaps of 113, 181 and 83 minutes: 6 hours 17 minutes spent waiting for a person. Each restart "went cleanly, because the successor read its charter and carried on".[^respawn]
+The case for a launcher rests on one night's record, 2026-10-05. One orchestrator reached its checkpoint three times, and each time the owner restarted it by hand. The gaps were 113, 181 and 83 minutes: 6 hours 17 minutes spent waiting for a person. Each restart "went cleanly, because the successor read its charter and carried on".[^respawn]
 
-So agentik-session gained a launcher, `agentik session run`. It starts `claude` with a fresh session id every time. When a sitting closes on RESPAWN and marks its checkpoint, the launcher waits for the turn to settle, ends the sitting and starts the next. It never compacts, resumes, forks or restarts after a crash, and by default it stops at 12 restarts in any 24 hours.[^respawn][^runbook]
+So we built a launcher into agentik-session: `agentik session run`. It starts `claude` with a fresh session id every time. When a sitting closes on RESPAWN and marks its checkpoint, the launcher waits for the turn to settle, ends the sitting and starts the next. It never compacts, resumes, forks or restarts after a crash. By default it stops at 12 restarts in any 24 hours.[^respawn][^runbook]
 
 ## Does it work?
 
@@ -47,18 +47,18 @@ So agentik-session gained a launcher, `agentik session run`. It starts `claude` 
 
 </div>
 
-The 2026-10-05 night is the evidence: three restarts, each one clean, from charters alone.[^respawn] The tool's own repository holds 61 charters, from 1,606 to 3,993 bytes, all under the ceiling.[^sittings] None of them opens its Next act with RESPAWN, so the repository holds no chain of restarts of its own. The launcher writes a restart line to its ledger before each new sitting,[^runbook] and one chain's stop line records five restarts on 2026-10-13.[^nth] Nobody has summed those lines into a count.
+The evidence is the 2026-10-05 night: three restarts, each one clean, from charters alone.[^respawn] The tool's own repository holds 61 charters, from 1,606 to 3,993 bytes, all under the ceiling.[^sittings] None of them opens its Next act with RESPAWN, so the repository holds no chain of restarts of its own. The launcher writes a restart line to its ledger before each new sitting,[^runbook] and one chain's stop line records five restarts on 2026-10-13.[^nth] Nobody has summed those lines into a count.
 
 ## What has not worked, and what is open
 
 The handoff fails in the gaps between steps.
 
 - A sitting wrote RESPAWN into its charter and stopped without running the checkpoint command. The chain stalled, with `claude` idle at 309,000 of a 400,000-token ceiling, until the owner looked.[^nth]
-- A sitting marked RESPAWN 9 minutes 16 seconds in. The launcher's 600-second floor held it, silently, and it sat idle 47 minutes.[^nth][^respawn]
+- A sitting marked RESPAWN 9 minutes 16 seconds in. The launcher's 600-second floor held it silently, and it sat idle for 47 minutes.[^nth][^respawn]
 - Claude Code's idle compaction compacted two sittings overnight, against the rule. A PreCompact hook cannot tell it from an automatic compaction: both arrive as `auto`.[^nth]
 - Blocking automatic compaction has a cost. A sitting that reaches its hard limit cannot recover by compacting, and the request fails.[^mod]
 
-And the main question is open. We believe a fresh start from a short charter loses less than a summary <span class="ev ev-conjecture">conjecture</span>. No source we found has tested it, and neither have we. A test would run the same long task both ways and count the exact values each one carries forward.
+The main question is still open. We believe a fresh start from a short charter loses less than a summary <span class="ev ev-conjecture">conjecture</span>. No source we found has tested it, and neither have we. A test would run the same long task both ways and count the exact values each one carries forward.
 
 <p class="ak-written">Written 2026-10-14 from agentik-session at commit 89c69a8.</p>
 
