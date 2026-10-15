@@ -31,6 +31,7 @@ make shots   # every page at 390, 768, 1280 and 1680 px, light and dark, into .c
 | `research/synthesis/` | The internal survey per tool, the external survey per question, the journal outlines, and the site sitting's briefs for fixers and the critics' reports |
 | `research/OUTLINE.md` | Each page's claims in order, with sources and evidence levels, from the first sitting |
 | `research/prompts/` | One prompt per agentik repository, listing the numbers and claims the survey found wrong or unsourced |
+| `research/screenshots/` | The screenshots each sitting's pull request shows |
 | `history/` | The briefs and the sitting charters |
 | `scripts/` | `sources` (links the source repos), `check` (the structural checks), `sources-page` (writes `docs/sources.md` and `docs/assets/data/sources.json` from the notes; regenerate them, never edit them by hand), and the shots, a11y and links checks |
 | `.claude/` | The four helper agents and respeak's project configuration |
