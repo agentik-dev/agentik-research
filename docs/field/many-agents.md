@@ -28,24 +28,36 @@ As of October 2026 the documentation says:
 
 ## The strongest case on each side
 
-For: Kim's +80.8 percent on decomposable work, and Anthropic's +90.2 percent on research. The limits are one task family, and an internal evaluation beside a benchmark where tokens explained 80 percent of the variance.[^kim][^anthropicresearch]
+For: Kim's +80.8 percent on decomposable work, and Anthropic's +90.2 percent on research.[^kim][^anthropicresearch]
 
-Against: Kim's -39 to -70 percent on sequential work, MAST's 41 to 86.7 percent failure rates, and Cognition's conflicting decisions. The limits are 50 to 100 instances on the planning benchmark and 20 per coding cell, no single-agent control, and no data.[^kim][^mast][^cognition]
+Against: Kim's -39 to -70 percent on sequential work, MAST's 41 to 86.7 percent failure rates, and Cognition's conflicting decisions.[^kim][^mast][^cognition]
+
+Each side's limits are under [Where the evidence stops](#where-the-evidence-stops), below.
 
 ## When many agents help, and when they hurt
 
-- Help: breadth work that splits into independent parts. Measured.[^kim]
-- Help: a subtask whose output is over 1,000 tokens and mostly irrelevant to the parent. Documented.[^multiagentblog]
-- Hurt: sequential work and shared state. Measured.[^kim]
-- Hurt: cost, at 3 to 10 times the tokens. Documented.[^multiagentblog]
-- Hurt: parallel writers on one working tree. Reported.[^issue52958][^issue84685]
-- For a review role, the vendor's guidance is a fresh context and concrete criteria, since verifiers declare early victory without them; it offers no measurement. Documented.[^multiagentblog]
+- Help: breadth work that splits into independent parts. <span class="ev ev-measured">measured</span>.[^kim]
+- Help: a subtask whose output is over 1,000 tokens and mostly irrelevant to the parent. <span class="ev ev-documented">documented</span>.[^multiagentblog]
+- Hurt: sequential work and shared state. <span class="ev ev-measured">measured</span>.[^kim]
+- Hurt: cost, at 3 to 10 times the tokens. <span class="ev ev-documented">documented</span>.[^multiagentblog]
+- Hurt: parallel writers on one working tree. <span class="ev ev-reported">reported</span>.[^issue52958][^issue84685]
+- For a review role, the vendor's guidance is a fresh context and concrete criteria, since verifiers declare early victory without them; it offers no measurement. <span class="ev ev-documented">documented</span>.[^multiagentblog]
 
 ## Where sources disagree
 
 - Tokens against architecture. Anthropic's gain may be the tokens spent; Kim matched budgets and found losses on sequential work.[^anthropicresearch][^kim]
-- The documentation says worktrees stop collisions; two issues from April and August 2026 report leaks, one in the guard itself. The reports are version-dependent and not reproduced.[^worktrees][^issue52958][^issue84685]
-- Measured: Kim and MAST. Anecdote: Cognition and the issues.
+- The documentation says worktrees stop collisions; two issues from April and August 2026 report leaks, one in the guard itself.[^worktrees][^issue52958][^issue84685]
+
+## Where the evidence stops
+
+<div class="ak-limits" markdown>
+
+- Kim's study and MAST are measured. Cognition's post and the two issues are anecdote.
+- The case for many agents rests on one task family, and on an internal evaluation beside a benchmark where tokens explained 80 percent of the variance.[^kim][^anthropicresearch]
+- The case against them rests on 50 to 100 instances on the planning benchmark and 20 per coding cell, on a taxonomy with no single-agent control, and on an argument with no data.[^kim][^mast][^cognition]
+- The two isolation leaks are version-dependent and not reproduced.[^issue52958][^issue84685]
+
+</div>
 
 ## What this means for the agentik tools
 
@@ -55,9 +67,9 @@ agentik-agents found that three of four delegates that hit a denied tool returne
 
 ## Practices this evidence supports
 
-- Fan out only decomposable work; keep sequential work in one agent. Measured.[^kim]
-- One worktree and one file set per parallel writer. Documented and reported.[^worktrees][^issue84685]
-- Give a fresh-context reviewer concrete criteria. Documented.[^multiagentblog] Make its role report-only. Our use.[^relayadversary]
+- Fan out only decomposable work; keep sequential work in one agent. <span class="ev ev-measured">measured</span>.[^kim]
+- One worktree and one file set per parallel writer. <span class="ev ev-documented">documented</span> and <span class="ev ev-reported">reported</span>.[^worktrees][^issue84685]
+- Give a fresh-context reviewer concrete criteria. <span class="ev ev-documented">documented</span>.[^multiagentblog] Make its role report-only. <span class="ev ev-our-use">our use</span>.[^relayadversary]
 
 ## Sources
 
@@ -74,7 +86,7 @@ agentik-agents found that three of four delegates that hit a denied tool returne
 [^gitlayout]: Git project, "gitrepository-layout documentation", read 2026-10-14, <https://git-scm.com/docs/gitrepository-layout>.
 [^multiagentblog]: Cara Phillips, Anthropic, "Building multi-agent systems: When and how to use them", 23 January 2026, <https://www.claude.com/blog/building-multi-agent-systems-when-and-how-to-use-them>.
 [^cognition]: Walden Yan, Cognition, "Don't Build Multi-Agents", 12 June 2025, <https://cognition.com/blog/dont-build-multi-agents>.
-[^issue52958]: Issue reporter, "Agent `isolation: \"worktree\"` leaks cwd into parent checkout mid-session, destroying untracked files", anthropics/claude-code issue 52958, 24 April 2026, <https://github.com/anthropics/claude-code/issues/52958>.
+[^issue52958]: Issue reporter, "Agent `isolation: "worktree"` leaks cwd into parent checkout mid-session, destroying untracked files", anthropics/claude-code issue 52958, 24 April 2026, <https://github.com/anthropics/claude-code/issues/52958>.
 [^issue84685]: Issue reporter, "EnterWorktree/isolation state is session-global", anthropics/claude-code issue 84685, 7 August 2026, <https://github.com/anthropics/claude-code/issues/84685>.
 [^relayorch]: agentik-dev/agentik-relay, "design/relay-orchestrator-r1.md", commit a326550, <https://github.com/agentik-dev/agentik-relay/blob/a326550/design/relay-orchestrator-r1.md>.
 [^relaydesign]: agentik-dev/agentik-relay, "design/relay-r1.md", line 201, commit a326550, <https://github.com/agentik-dev/agentik-relay/blob/a326550/design/relay-r1.md>.

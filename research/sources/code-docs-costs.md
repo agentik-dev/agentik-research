@@ -13,12 +13,14 @@ kind: documented
 - Reported averages as of October 2026: around 13 US dollars per developer per active day, 150 to 250 dollars per developer per month, below 30 dollars per active day for 90 percent of users.
 - Agent teams use about 7 times the tokens of a standard session when teammates run in plan mode, because each runs its own window.
 - Section "Understanding changes in Claude Code behavior": cost reporting changes across versions (examples cite v2.1.211 and later).
+- Re-opened 2026-10-14 (site sitting), claim check for the wake draft, as of October 2026. Section "Why usage climbs in a long session", bullet "Long context": Claude Code "sends your full conversation with every request" (the page says request, not turn), each tool use sends another request carrying the results, and with prompt caching the history is re-read at the cached token rate, which the page leaves to the linked pricing page (it gives no multipliers). Bullet "Cache misses": the first message after a break longer than the cache lifetime misses and reprocesses the full context (one hour on a subscription, five minutes once drawing on usage credits, five minutes by default on an API key or cloud provider). The four token classes appear only in the sample Session block under "Using the /usage command" (a claude-sonnet-4-6 line with 1.2k input, 5.3k output, 940.0k cache read and 50.0k cache write tokens, 0.55 US dollars); no prose there prices the classes, and section "Adjust extended thinking" says thinking tokens bill as output. Idle sessions: bullet "Scheduled tasks" says a scheduled task "fires on its interval even while the session is idle, sending your full context each time"; the cross-session and goal check-in bullets describe the same for a new turn on an idle session (goal check-ins: at most three per goal between prompts from v2.1.246). The page names scheduled tasks, /loop rows and goal check-ins; I found no scheduled-wakeup feature by that name, and the page does not tie a task interval to the cache lifetime.
 
 ## Limits
 - The page is about cost and usage limits; it measures no quality loss. The 7x and enterprise averages are Anthropic's figures with no method given.
 
 ## Used in
 - research/synthesis/field-1.md
+- research/synthesis/journal-wake.md (journal draft)
 
 ## Also (question 4)
 Re-read in full for question 4 on 2026-10-14. All as of October 2026 unless a version is named.

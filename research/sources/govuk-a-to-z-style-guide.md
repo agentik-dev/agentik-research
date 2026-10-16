@@ -2,7 +2,7 @@
 url: https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide/
 title: "A to Z style guide (GOV.UK writing standards)"
 author: GOV.UK publishing guidance (UK government)
-published: undated (no last-updated date on the page I read)
+published: undated (no last-updated date on the page the note's author read)
 accessed: 2026-10-14
 kind: documented
 ---

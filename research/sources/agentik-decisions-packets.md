@@ -25,3 +25,4 @@ Opened in full: `d19-amends-keeps-clauses.md`, `d21-amends-shows-what-it-drops.m
 
 ## Used in
 - research/synthesis/tools-decisions.md
+- docs/tools/decisions.md

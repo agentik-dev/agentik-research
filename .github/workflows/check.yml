@@ -12,5 +12,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      # The social cards need cairo and the image libraries.
+      - run: sudo apt-get update && sudo apt-get install -y libcairo2-dev libfreetype6-dev libffi-dev libjpeg-dev libpng-dev libz-dev pngquant
       - run: make setup
+      # make setup never downloads a browser; the a11y check needs Playwright's own Chromium.
+      - run: npx playwright install --with-deps chromium
       - run: make check

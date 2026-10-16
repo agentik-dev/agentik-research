@@ -2,7 +2,7 @@
 
 Open with the outcome, keep the errors whole, and check a "done" claim against a tool result before a person reads it. Of the rules in this question, these three have the clearest sources. The first two rest on standards and on Claude Code's own output style, not on measurements;[^army][^outputstyles] the third rests on a measured false-success rate.[^advani] The one randomised result in the question is that plain words beat jargon.[^kerwer]
 
-One benchmark found that 75.8 percent of failed runs with an explicit status claim claimed success.[^advani] Inaccurate self-reports made up 22.58 percent of the misalignment episodes in 20,574 real sessions.[^tang] The plain-language and military writing standards say to put the bottom line first.[^army][^gsa] Claude Code's own Concise output style leads with the result and keeps errors and failing tests whole.[^outputstyles] Readability formulas are weak gates: they track rated difficulty at r = 0.10 to 0.41 on specialist text.[^zheng]
+The plain-language and military writing standards say to put the bottom line first.[^army][^gsa] Readability formulas are weak gates: they track rated difficulty at r = 0.10 to 0.41 on specialist text.[^zheng]
 
 This chapter answers research question 9. It covers summarising agent work for humans, plain-language standards, bottom line up front, Diátaxis, readability measures, and separating agent shorthand from human prose.
 
@@ -31,9 +31,13 @@ This chapter answers research question 9. It covers summarising agent work for h
 
 ## Where the evidence stops
 
+<div class="ak-limits" markdown>
+
 - Formulas: their agreement with readers is weak or mixed, and none of the studies tests agent prose. One surface feature (characters per word) worked in one language, so the dispute is about formulas as a gate, not as a rough proxy.[^zheng][^jansen]
 - Bottom line up front: the standards assert it, and the measured support is for packaged text and one narrow study. No experiment was found in which a manager acts on a report with the bottom line up front.[^morkes][^wise]
 - Machine tone: tells and expert detection are measured; their effect on a reader's trust is not.[^kobak][^russell]
+
+</div>
 
 ## What this means for the agentik tools
 
@@ -41,14 +45,18 @@ agentik-respeak splits agent traffic from human prose and offers an opt-in gate 
 
 The tool's premise that agent shorthand drifts into a dialect that locks out the supervising person rests on an analogy from human pairs.[^garrod][^respeakreadme] No source records an agent dialect locking out a person. A search of the repo's history, design records, changelog and backlog at the commit read found no such incident either.[^respeakrepo]
 
-Machine-prose tells exist and expert readers see them; the sources found include no study of a banned-phrase list or of tone causing dislike.[^kobak][^russell] By the studies found, the readability grades the tool declares per mode are a weak gate.[^zheng][^respeakconfig] Its scanner computes sentence length and dash density, never a grade.[^respeakmeasure] Bottom line up front is a standard, not a measured effect.[^army] That Diátaxis fits a site like this one is our reading, not a finding.[^diataxis]
+Machine-prose tells exist and expert readers see them; the sources found include no study of a banned-phrase list or of tone causing dislike.[^kobak][^russell] The tool declares a readability grade per mode, and by the studies found a grade is a weak gate.[^zheng] Since 2026-10-14 (commit `8dda5c9`), its configuration calls each grade a register cue that no script computes, cites the same study, and keeps the sentence and paragraph budgets as the checks.[^respeakconfig] Its scanner computes sentence length and dash density, never a grade.[^respeakmeasure] Bottom line up front is a standard, not a measured effect.[^army] That Diátaxis fits a site like this one is our reading, not a finding.[^diataxis]
 
 ## Practices this evidence supports
 
-- Open each report with the outcome in one sentence, and keep errors and failing output whole. Documented.[^army][^outputstyles]
-- Gate on sentence length, and test with a reader, not with a grade score. Documented for the sentence check;[^govuk] measured for the formulas' weakness.[^zheng]
-- Replace shorthand with plain words in human prose; a glossary alone did not raise knowledge. Measured.[^kerwer]
-- Check each "done" claim against a tool result before a person reads it. Measured for the false-success rate; the effect of checking is conjecture.[^advani]
+- Open each report with the outcome in one sentence, and keep errors and failing output whole. <span class="ev ev-documented">documented</span>.[^army][^outputstyles]
+- Gate on sentence length, and test with a reader, not with a grade score. <span class="ev ev-documented">documented</span> for the sentence check;[^govuk] <span class="ev ev-measured">measured</span> for the formulas' weakness.[^zheng]
+- Replace shorthand with plain words in human prose; a glossary alone did not raise knowledge. <span class="ev ev-measured">measured</span>.[^kerwer]
+- Check each "done" claim against a tool result before a person reads it. <span class="ev ev-measured">measured</span> for the false-success rate; the effect of checking is <span class="ev ev-conjecture">conjecture</span>.[^advani]
+
+## From the journal
+
+- [Two lanes](../journal/posts/2026-08-31-two-lanes.md): governed shorthand for agents, gated prose for people, and one field test.
 
 ## Sources
 
@@ -72,7 +80,7 @@ Machine-prose tells exist and expert readers see them; the sources found include
 [^ismp]: Institute for Safe Medication Practices, "List of Error-Prone Abbreviations", 2024, <https://home.ecri.org/blogs/ismp-resources/list-of-error-prone-abbreviations>.
 [^willison]: Simon Willison, "Anti-patterns: things to avoid", agentic engineering patterns, read 2026-10-14, <https://simonwillison.net/guides/agentic-engineering-patterns/anti-patterns>.
 [^caveman]: Julius Brussee, "Caveman", project README read 2026-10-14, <https://raw.githubusercontent.com/JuliusBrussee/caveman/main/README.md>.
-[^respeakreadme]: agentik-dev/agentik-respeak, "README.md", commit 319f060, <https://github.com/agentik-dev/agentik-respeak/blob/319f060/README.md>.
-[^respeakconfig]: agentik-dev/agentik-respeak, "plugin/config/respeak.config.yaml", commit 319f060, <https://github.com/agentik-dev/agentik-respeak/blob/319f060/plugin/config/respeak.config.yaml>.
-[^respeakmeasure]: agentik-dev/agentik-respeak, "plugin/scripts/respeak-measure.py", commit 319f060, <https://github.com/agentik-dev/agentik-respeak/blob/319f060/plugin/scripts/respeak-measure.py>.
-[^respeakrepo]: agentik-dev/agentik-respeak, the repository tree at commit 319f060, <https://github.com/agentik-dev/agentik-respeak/tree/319f060>.
+[^respeakreadme]: agentik-dev/agentik-respeak, "README.md", commit c83e9b8, <https://github.com/agentik-dev/agentik-respeak/blob/c83e9b8/README.md>.
+[^respeakconfig]: agentik-dev/agentik-respeak, "plugin/config/respeak.config.yaml", commit c83e9b8, <https://github.com/agentik-dev/agentik-respeak/blob/c83e9b8/plugin/config/respeak.config.yaml>.
+[^respeakmeasure]: agentik-dev/agentik-respeak, "plugin/scripts/respeak-measure.py", commit c83e9b8, <https://github.com/agentik-dev/agentik-respeak/blob/c83e9b8/plugin/scripts/respeak-measure.py>.
+[^respeakrepo]: agentik-dev/agentik-respeak, the repository at commit c83e9b8, searched in "history/", "design/", "CHANGELOG.md", "NICE_TO_HAVE.md" and the commit messages, <https://github.com/agentik-dev/agentik-respeak/tree/c83e9b8>.

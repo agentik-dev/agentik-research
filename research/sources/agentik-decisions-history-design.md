@@ -1,7 +1,7 @@
 ---
 repo: agentik-dev/agentik-decisions
 path: history/design/
-commit: 80d59eb
+commit: fabb212
 title: "history/design (the per-file record design, its reviews and its change-log)"
 author: agentik-dev
 published: 2026-09-22 to 2026-09-24
@@ -20,10 +20,15 @@ Opened: `decisions-r1.md` (sections 1, 3.5, 4.2, 6 to 9; the heading list), `dec
 - Review record: the first refuter returned PASS WITH FOLDS (0 blocking, 5 major, 9 minor); the conversion study's refuter returned FAIL (5 blocking, 4 major, 8 minor) on three counts false at the pin; the record allowed three passes ever. Three adversarial reviews of the built tool (review-adv6, -adv10, -adv11) list 11, 9 and 7 findings by heading, each with one rated high, and each verdict says the tool is not yet the authority for the first consumer's rulings. The first high finding (ADV6-1) is that "only the owner moves a status" and immutability held only against an agent using the verb politely: a direct file edit could forge an in-force record and every gate stayed green.
 - Review r6 (2026-09-23) rebuilt the repo's decisions after one day: 17 entries (R6-1 to R6-17) found across a change-log and charters, seven of them only in the change-log and three only in a charter, so the design record's body still read the first version; five reversals or tensions are listed (review-r6.md sections 1 and 2).
 - The owner ruled the four decisions of section 7 in one message on 2026-09-22, accepted all four, and added three directives (changelog row `ruled`).
+- Line anchors at fabb212 (`history/design/` is unchanged since 80d59eb). In `decisions-r1.md`: Decision 1 (:198) gives the ledger at 242,404 bytes, 214 rulings in one file, newest first except the last three; it records the owner calling the ledger "the log" and "not trimmed", and quotes the owner's sentence of 2026-09-11, "Aggressively purge the noise." Decision 2 (:200) says the hand index was four rulings behind and the mirror table broke three times in four days. The measure table is :210-215: whole ledger 242,404 bytes; hand index 41,576; longest one-line ruling 13,654; one sub-decision 255, 237 or 180 bytes. Section 8.2 (:219) says no token number is claimed. In `ledger-conversion-r1.md`: the input table is :19-30 (210 index rows: 91 in force, 88 spent, 18 superseded, 13 mixed; the 91 together 103,047 bytes; longest entry 6,469 bytes; 75 distinct free-text `governs` cells) and :102 calls the ledger "a 242 KB newest-first prose ledger".
+- What this record shows for the story of a ledger that outgrew its readers: the first consumer's log was about 242 KB in one file with a 41.6 KB hand index, and the response in this record was one file per ruling, which version 0.3.0 later replaced with one capped, sectioned ledger (d17:32-34, `agentik-decisions-d17-four-verbs`). The cap numbers 25 and 7 are not argued in these records; my greps under `history/` for `cap`, `at most 25` and `25 in force` find no rationale for them.
 
 ## Limits
 - This is the superseded design: version 0.3.0 dropped the per-file format and moved these files here (d17 acceptance A12). Counts describe a consumer repo's ledger at a 2026-09-22 pin, not the current tool.
 - The review documents are written by the owner's own reviewer agents; their counts are by heading and not independently checked here. That the three reviews led to the d17 redesign is my inference, not something the repo states.
+- The size of the ledger is measured (`wc -c`, per the record's table); what the size cost in tokens or in repair turns is not: section 8.2 says no measurement isolates the ledger's share of the program's rise in token use.
 
 ## Used in
 - research/synthesis/tools-decisions.md
+- research/synthesis/journal-ledger.md
+- docs/tools/decisions.md

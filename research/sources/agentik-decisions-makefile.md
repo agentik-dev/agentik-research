@@ -20,3 +20,4 @@ kind: our-use
 
 ## Used in
 - research/synthesis/tools-decisions.md
+- docs/tools/decisions.md

@@ -4,9 +4,13 @@
   scripts/check            every check; one line per failure, exit 1 on any
 
 Checks:
-  nav        every page under docs/ is in mkdocs.yml's nav, and every nav entry exists
+  nav        every page under docs/ is in mkdocs.yml's nav, and every nav entry exists;
+             journal posts (docs/journal/posts/) are never in the nav
+  journal    each post opens with front matter holding a date and at least one
+             category from the blog plugin's categories_allowed
   footnotes  every [^key] has a definition and every definition is used; each page
-             but the glossary has one; definitions sit under `## Sources` and carry a URL
+             but the glossary and the journal index has one; definitions sit under
+             `## Sources` and carry a URL
   drafts     no TODO, TBD, FIXME or XXX in docs/ or README.md, outside code
   hygiene    no home-directory path, private IPv4 address or e-mail address in
              docs/, research/ or README.md (the owner's private-term scan runs apart)
@@ -62,13 +66,43 @@ def nav_pages():
 
 
 docs = sorted(os.path.relpath(p, "docs") for p in glob.glob("docs/**/*.md", recursive=True))
+POSTS = "journal/posts/"
 nav = nav_pages()
 for p in docs:
-    if p not in nav:
+    if p.startswith(POSTS):
+        if p in nav:
+            fail("mkdocs.yml", 1, "nav", f"nav names the journal post {p}; posts stay out of the nav")
+    elif p not in nav:
         fail(f"docs/{p}", 1, "nav", "page is not in mkdocs.yml nav")
 for p in nav:
     if p not in docs:
         fail("mkdocs.yml", 1, "nav", f"nav names {p}, which does not exist")
+
+def allowed_categories():
+    with open("mkdocs.yml", encoding="utf-8") as f:
+        m = re.search(r"^\s*categories_allowed:\s*\[([^\]]*)\]", f.read(), re.M)
+    return {c.strip().strip("'\"") for c in m.group(1).split(",")} if m else set()
+
+
+ALLOWED = allowed_categories()
+for p in [p for p in docs if p.startswith(POSTS)]:
+    path = f"docs/{p}"
+    with open(path, encoding="utf-8") as f:
+        text = f.read()
+    m = re.match(r"---\n(.*?)\n---\n", text, re.S)
+    if not m:
+        fail(path, 1, "journal", "post has no front matter")
+        continue
+    head = m.group(1)
+    if not re.search(r"^date:\s*(\d{4}-\d{2}-\d{2}|\n\s+created:\s*\d{4}-\d{2}-\d{2})", head, re.M):
+        fail(path, 1, "journal", "front matter has no date (date: YYYY-MM-DD, or date: created: YYYY-MM-DD)")
+    cats = re.search(r"^categories:\s*\n((?:\s+-\s*.+\n?)+)", head + "\n", re.M)
+    names = [c.strip().strip("'\"") for c in re.findall(r"-\s*(.+)", cats.group(1))] if cats else []
+    if not names:
+        fail(path, 1, "journal", "front matter has no category")
+    for c in names:
+        if ALLOWED and c not in ALLOWED:
+            fail(path, 1, "journal", f"category {c!r} is not in categories_allowed")
 
 REF = re.compile(r"\[\^([^\]\s]+)\](?!:)")
 DEF = re.compile(r"^\[\^([^\]\s]+)\]:\s*(.*)$")
@@ -94,7 +128,7 @@ for p in docs:
             fail(path, n, "footnotes", f"[^{k}] is defined above `## Sources`")
         if not re.search(r"https?://", body):
             fail(path, n, "footnotes", f"[^{k}] carries no URL")
-    if not defs and os.path.basename(p) != "glossary.md":
+    if not defs and p not in ("glossary.md", "journal/index.md"):
         fail(path, 1, "footnotes", "page cites no source")
 
 DRAFT = re.compile(r"\b(TODO|TBD|FIXME|XXX)\b")

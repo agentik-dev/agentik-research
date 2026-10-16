@@ -1,7 +1,7 @@
 ---
 repo: agentik-dev/agentik-decisions
 path: src/decisions/
-commit: 80d59eb
+commit: fabb212
 title: "src/decisions (the package: ledger, questions, render, ask, answer, selector, speak, doctor, backlog)"
 author: agentik-dev
 published: 2026-10-13
@@ -19,9 +19,13 @@ Opened only far enough to confirm the mechanism: the module docstrings, `render.
 - `speak.py`: the respeak contract is a constant, `RENDER_WALL = 600` seconds, helper depth limit 2, a 200-character cap on a warning line, and escapes stripped from the renderer's stderr (`speak.py:30-48`).
 - `doctor` checks python, tool, marketplace and plugin, provider, ledger and respeak; a warn never changes the exit (`doctor.py` docstring). `backlog.py` holds the level and step parsers (constants at `backlog.py:23-45`).
 - Version `0.8.0` (`common.py:18`).
+- Re-checked at fabb212 (`git diff 80d59eb fabb212` shows `ledger.py` and `questions.py` unchanged and `answer.py` changed only in the command name it prints; I re-read the cap lines). `IN_FORCE_CAP, EVERY_SESSION_CAP = 25, 7` is `ledger.py:40`; `LEGACY` is :42; the cap checks are :249-255 with the messages "N entries in force; the cap is 25" and "N entries under `Every session`; the cap is 7"; `OPEN_CAP = 5` is `questions.py:40` and its check :210-212. The lint counts entries only; nothing in `ledger.py` limits an entry's length.
+- Run by me at fabb212 on synthetic ledgers in a scratch folder, importing the checkout without writing bytecode (no model, no network): a ledger with 26 entries in force and 8 under `Every session` lints to exit 1 with `DECISIONS.md:14: 8 entries under `Every session`; the cap is 7` and `DECISIONS.md:35: 26 entries in force; the cap is 25`. A ledger with an empty `## In force`, the legacy marker and 400 old `###` blocks below it lints to exit 0, and `find` finds text below the marker as `L1205 R399: old ruling 399 (legacy)`. The question-cap case of the 2026-10-11 intake is now confirmed by run: with 8 open questions, `answer 2` exits 2 with "7 questions open; the cap is 5" and writes nothing (see `agentik-decisions-history-sessions`).
 
 ## Limits
 - Read for mechanism only, not audited. The package has no network or model calls except the optional respeak child process in `ask`.
 
 ## Used in
 - research/synthesis/tools-decisions.md
+- research/synthesis/journal-ledger.md
+- docs/tools/decisions.md

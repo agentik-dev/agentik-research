@@ -1,0 +1,16 @@
+{#-
+  The home page: the page's own content (hero, doors, findings), with the three
+  newest journal entries placed at the marker <!-- journal: newest --> in
+  docs/index.md. The entries come from Material's blog plugin, newest first.
+-#}
+{% extends "main.html" %}
+{% block content %}
+  <div class="ak-home">
+    {% set parts = page.content.split("<!-- journal: newest -->") %}
+    {{ parts[0] }}
+    {% if parts | length > 1 %}
+      {% include "partials/ak-newest.html" %}
+      {{ parts[1] }}
+    {% endif %}
+  </div>
+{% endblock %}

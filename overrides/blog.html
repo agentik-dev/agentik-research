@@ -1,0 +1,40 @@
+{#-
+  The journal's list pages: Material's blog.html (9.7). The index keeps its
+  own text from docs/journal/index.md. An archive or category page has only a
+  generated H1 ("2026", "Worked"), so a line under it says what the page
+  lists, and the same line becomes the page's meta description.
+-#}
+{% extends "main.html" %}
+{%- set ak = namespace(lede=none) -%}
+{%- if "/archive/" in page.url -%}
+  {%- set ak.lede = "Every journal entry dated " ~ (page.title | striptags) ~ ", newest first." -%}
+{%- elif "/category/" in page.url -%}
+  {%- set name = page.title | striptags -%}
+  {%- set means = {
+    "Worked": "something we tried did what we meant it to",
+    "Did not work": "something we tried failed",
+    "Open": "the entry ends on a question we have not settled"
+  } -%}
+  {%- set ak.lede = "Every journal entry filed under " ~ name ~ (": " ~ means[name] if name in means else "") ~ ". The newest comes first, and an entry can sit in more than one category." -%}
+{%- endif -%}
+{%- if ak.lede and page.meta is mapping and not page.meta.description -%}
+  {%- set _ = page.meta.update({"description": ak.lede}) -%}
+{%- endif -%}
+{% block container %}
+  <div class="md-content" data-md-component="content">
+    <div class="md-content__inner">
+      <header class="md-typeset">
+        {{ page.content }}
+        {% if ak.lede %}<p class="ak-view-lede">{{ ak.lede }}</p>{% endif %}
+      </header>
+      {% for post in posts %}
+        {% include "partials/post.html" %}
+      {% endfor %}
+      {% if pagination %}
+        {% block pagination %}
+          {% include "partials/pagination.html" %}
+        {% endblock %}
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

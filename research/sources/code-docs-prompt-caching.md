@@ -15,12 +15,14 @@ kind: documented
 - Section "Cache lifetime": entries expire after inactivity and each hit resets the timer. The API offers a five-minute TTL and a one-hour TTL (higher write price). In Claude Code the main conversation gets one hour on a Claude subscription within plan usage and five minutes on an API key, usage credits or a cloud provider; subagents, workflows, forks and compaction requests default to five minutes. `promptCacheTtl` or `CLAUDE_CODE_PROMPT_CACHE_TTL` chooses the TTL (Claude Code v2.1.242 or later).
 - Section "Cache scope": in Claude Code the cache is effectively scoped to one machine and directory, because the system prompt embeds the auto memory paths.
 - The page says re-reads are billed at the cached token rate, "below the standard input rate", and does not state multipliers; see anthropic-api-docs-prompt-caching and anthropic-pricing-doc for them.
+- Re-opened 2026-10-14 (site sitting): section "Which TTL each request gets" confirms the claim. Unless the user chooses a TTL, Claude Code requests the one-hour TTL for the main conversation only on a Claude subscription within the plan's included usage; on usage credits, an API key or a cloud provider the main conversation gets five minutes, and going over plan usage drops it to five minutes. The same table gives subagents, workflows, forks, compaction and session titles five minutes even on a subscription, except server-controlled helper requests (one hour). Section "Choose the TTL yourself": `promptCacheTtl` set to `1h` gives an API-key user a one-hour main conversation (v2.1.242 or later). The page states no price multipliers; it says only that re-reads bill at the cached token rate and links to the API page (see anthropic-api-docs-prompt-caching for 1.25, 2 and 0.1 times).
 
 ## Limits
 - Vendor documentation; behaviour and defaults (TTL by billing type, which actions invalidate) are volatile and are as of October 2026.
 
 ## Used in
 - research/synthesis/field-3.md
+- journal-wake
 
 ## Also (question 4)
 Re-read on 2026-10-14 for cache lifetime, idle cost and subagents. As of October 2026.

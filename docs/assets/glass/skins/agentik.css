@@ -1,0 +1,266 @@
+/* agentik.css: the agentik skin for the glass kit. Tokens only.
+ *
+ * Loaded after ../glass.css and before ../../stylesheets/agentik-site.css,
+ * which holds the site's components. The identity is "night shift": warm
+ * paper by day and a deep green-black by night, with one interactive accent
+ * taken from the agentik pixel icon's greens, and a small semantic palette for
+ * the five evidence levels (measured, documented, reported, our use,
+ * conjecture), used the same way on every page. Every text colour here holds
+ * at least 4.5:1 on the canvas and on both glass surfaces. For the evidence
+ * pills, the category chips and --glass-faint the check is made at the
+ * canvas's lowest-contrast point: in light, the bottom-left corner of a
+ * 390 by 900 px viewport, rgb(224, 226, 215), where the green wash sits on
+ * the gradient's darkest stop; a pill's own 11 percent tint is laid over it.
+ */
+
+/* --- Self-hosted Inter (variable, latin + latin-ext) ----------------
+ * mkdocs.yml sets theme.font: false, so no font request leaves the site. */
+@font-face {
+  font-family: "InterVariable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("../fonts/inter-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "InterVariable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("../fonts/inter-latin-ext-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* --- Geometry and type (scheme-independent) -------------------------- */
+:root {
+  --md-text-font: "InterVariable";
+  --md-code-font: ui-monospace, "SFMono-Regular", "Cascadia Mono", "Roboto Mono", Menlo, Consolas;
+  --glass-r-card: 14px;
+  --glass-r-panel: 14px;
+  --glass-r-input: 10px;
+
+  /* Reading measure for prose pages, and the site's content width. */
+  --ak-measure: 38rem;
+  --ak-grid-max: 68rem;
+  /* The home page's one column: the hero, doors, findings and prose share it. */
+  --ak-home-max: 42rem;
+}
+
+/* --- Light: warm paper ------------------------------------------------ */
+:root,
+[data-md-color-scheme="default"] {
+  --glass-canvas:
+    radial-gradient(1100px 700px at 88% -12%, rgba(136, 220, 150, 0.22), transparent 60%),
+    radial-gradient(900px 700px at -10% 110%, rgba(23, 112, 58, 0.07), transparent 55%),
+    linear-gradient(170deg, #f4f2eb 0%, #efede6 55%, #eae7de 100%);
+  --glass-1: #fffdf8;
+  --glass-2: #f4f1ea;
+  --glass-border: rgba(40, 46, 36, 0.13);
+  --glass-border-hover: rgba(23, 80, 45, 0.24);
+  --glass-border-faint: rgba(40, 46, 36, 0.06);
+  --glass-hover-wash: rgba(23, 80, 45, 0.045);
+  --glass-shadow-card: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 4px 18px rgba(40, 46, 30, 0.08);
+  --glass-shadow-pop: inset 0 1px 0 rgba(255, 255, 255, 0.95), 0 10px 30px rgba(40, 46, 30, 0.14);
+
+  --glass-text: #18201b;
+  --glass-text-2: #38433c;
+  --glass-muted: #59645c;
+  --glass-faint: #5a655d;            /* 4.6:1 at the canvas's lowest point; 6.0:1 on glass-1 */
+
+  --glass-accent: #17703a;           /* the one interactive accent: agentik green, deepened for paper */
+  --glass-accent-soft: rgba(23, 112, 58, 0.10);
+  --glass-accent-soft-2: rgba(23, 112, 58, 0.17);
+  --glass-accent-border: rgba(23, 112, 58, 0.32);
+  --glass-on-accent: #ffffff;
+  --glass-danger: #b3362f;
+
+  --glass-input-bg: #f1eee6;
+  --glass-scroll-thumb: #cdc9bd;
+  --glass-scroll-thumb-hover: #8a928c;
+  --glass-glyph-bg: rgba(255, 253, 248, 0.95);
+
+  /* The five evidence levels. Semantic only: never decoration. */
+  /* As a pill (text on its own 11 percent tint) at the canvas's lowest
+   * point: measured 4.8:1, documented 4.6:1, reported 4.8:1, our use 4.6:1,
+   * conjecture 5.0:1. */
+  --ak-ev-measured: #1b48c9;
+  --ak-ev-documented: #6d28d9;
+  --ak-ev-reported: #8a4106;
+  --ak-ev-our-use: #0a6075;
+  --ak-ev-conjecture: #57534e;
+
+  /* The journal's three categories, as chips at the same point: worked
+   * 4.7:1, did not work 4.6:1, open 4.8:1. */
+  --ak-cat-worked: #146534;
+  --ak-cat-failed: #a22f28;
+  --ak-cat-open: #8a4106;
+
+  /* The header is quiet glass over the canvas, not a coloured bar. */
+  --ak-header-bg: rgba(250, 248, 242, 0.82);
+
+  /* Material's hooks follow the tokens. */
+  --md-default-bg-color: #f6f4ee;
+  --md-default-fg-color: #18201b;
+  --md-default-fg-color--light: #59645c;
+  --md-default-fg-color--lighter: rgba(24, 32, 27, 0.32);
+  --md-default-fg-color--lightest: rgba(24, 32, 27, 0.08);
+  --md-primary-fg-color: #f6f4ee;
+  --md-primary-fg-color--light: #fffdf8;
+  --md-primary-fg-color--dark: #e8e5dc;
+  --md-primary-bg-color: #18201b;
+  --md-primary-bg-color--light: #59645c;
+  --md-accent-fg-color: #0f5c2e;
+  --md-accent-fg-color--transparent: rgba(23, 112, 58, 0.10);
+  --md-accent-bg-color: #ffffff;
+  --md-accent-bg-color--light: rgba(255, 255, 255, 0.7);
+  --md-typeset-color: #18201b;
+  --md-typeset-a-color: #17703a;
+  --md-code-bg-color: #f1eee6;
+  --md-code-fg-color: #2b332d;
+  /* Inline code as a chip: the tint is 1.11:1 on the canvas and the edge
+   * 1.63:1 at its lowest point (1.67:1 on glass-1); the code text holds
+   * 8.9:1 on the chip there. */
+  --ak-code-chip-bg: rgba(40, 46, 36, 0.06);
+  --ak-code-chip-border: rgba(40, 46, 36, 0.26);
+  --md-footer-bg-color: #e6e3d9;
+  --md-footer-bg-color--dark: #dedad0;
+  --md-footer-fg-color: #18201b;
+  --md-footer-fg-color--light: #4a544d;
+  --md-footer-fg-color--lighter: #59645c;
+
+  /* Mermaid diagrams draw from the same tokens. */
+  --md-mermaid-font-family: "InterVariable", -apple-system, "Segoe UI", sans-serif;
+  --md-mermaid-edge-color: #59645c;
+  --md-mermaid-node-bg-color: rgba(23, 112, 58, 0.08);
+  --md-mermaid-node-fg-color: #18201b;
+  --md-mermaid-label-bg-color: #fffdf8;
+  --md-mermaid-label-fg-color: #18201b;
+  --md-mermaid-sequence-actor-bg-color: #fffdf8;
+  --md-mermaid-sequence-actor-fg-color: #18201b;
+  --md-mermaid-sequence-actor-border-color: rgba(23, 112, 58, 0.32);
+  --md-mermaid-sequence-actor-line-color: #8a928c;
+  --md-mermaid-sequence-actorman-bg-color: #fffdf8;
+  --md-mermaid-sequence-actorman-line-color: #59645c;
+  --md-mermaid-sequence-box-bg-color: rgba(23, 112, 58, 0.06);
+  --md-mermaid-sequence-box-fg-color: #18201b;
+  --md-mermaid-sequence-label-bg-color: #fffdf8;
+  --md-mermaid-sequence-label-fg-color: #18201b;
+  --md-mermaid-sequence-loop-bg-color: rgba(23, 112, 58, 0.05);
+  --md-mermaid-sequence-loop-fg-color: #18201b;
+  --md-mermaid-sequence-loop-border-color: rgba(23, 112, 58, 0.32);
+  --md-mermaid-sequence-message-fg-color: #18201b;
+  --md-mermaid-sequence-message-line-color: #59645c;
+  --md-mermaid-sequence-note-bg-color: #f4f1ea;
+  --md-mermaid-sequence-note-fg-color: #18201b;
+  --md-mermaid-sequence-note-border-color: rgba(40, 46, 36, 0.2);
+  --md-mermaid-sequence-number-bg-color: #17703a;
+  --md-mermaid-sequence-number-fg-color: #ffffff;
+}
+
+/* --- Dark: night shift ------------------------------------------------ */
+[data-md-color-scheme="slate"] {
+  --glass-canvas:
+    radial-gradient(1100px 700px at 88% -12%, rgba(125, 220, 146, 0.075), transparent 60%),
+    radial-gradient(900px 700px at -10% 110%, rgba(111, 208, 228, 0.04), transparent 55%),
+    linear-gradient(170deg, #0d110f 0%, #0f1311 55%, #121714 100%);
+  --glass-1: #161b18;
+  --glass-2: #1d2320;
+  --glass-border: rgba(214, 240, 220, 0.12);
+  --glass-border-hover: rgba(125, 220, 146, 0.30);
+  --glass-border-faint: rgba(214, 240, 220, 0.05);
+  --glass-hover-wash: rgba(214, 240, 220, 0.04);
+  --glass-shadow-card: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 8px 24px rgba(0, 0, 0, 0.38);
+  --glass-shadow-pop: inset 0 1px 0 rgba(255, 255, 255, 0.09), 0 14px 34px rgba(0, 0, 0, 0.5);
+
+  --glass-text: #e7ece8;
+  --glass-text-2: #b0bab3;
+  --glass-muted: #939e97;
+  --glass-faint: #848f88;            /* 5.2:1 at the canvas's lightest point; 4.8:1 on glass-2 */
+
+  --glass-accent: #7ddc92;           /* the icon's own green */
+  --glass-accent-soft: rgba(125, 220, 146, 0.13);
+  --glass-accent-soft-2: rgba(125, 220, 146, 0.21);
+  --glass-accent-border: rgba(125, 220, 146, 0.32);
+  --glass-on-accent: #0b1f12;
+  --glass-danger: #f19a92;
+
+  --glass-input-bg: #101412;
+  --glass-scroll-thumb: #2a322d;
+  --glass-scroll-thumb-hover: #45504a;
+  --glass-glyph-bg: rgba(22, 27, 24, 0.92);
+
+  --ak-ev-measured: #93b4fd;
+  --ak-ev-documented: #c4b0fc;
+  --ak-ev-reported: #f2b46d;
+  --ak-ev-our-use: #6fd0e4;
+  --ak-ev-conjecture: #b8b2ab;
+
+  --ak-cat-worked: #7ddc92;
+  --ak-cat-failed: #f19a92;
+  --ak-cat-open: #f2b46d;
+
+  --ak-header-bg: rgba(15, 19, 17, 0.80);
+
+  --md-default-bg-color: #111613;
+  --md-default-bg-color--light: rgba(17, 22, 19, 0.7);
+  --md-default-bg-color--lighter: rgba(17, 22, 19, 0.3);
+  --md-default-bg-color--lightest: rgba(17, 22, 19, 0.12);
+  --md-default-fg-color: #e7ece8;
+  --md-default-fg-color--light: #939e97;
+  --md-default-fg-color--lighter: rgba(231, 236, 232, 0.32);
+  --md-default-fg-color--lightest: rgba(231, 236, 232, 0.08);
+  --md-primary-fg-color: #111613;
+  --md-primary-fg-color--light: #161b18;
+  --md-primary-fg-color--dark: #0b0e0c;
+  --md-primary-bg-color: #e7ece8;
+  --md-primary-bg-color--light: #939e97;
+  --md-accent-fg-color: #a6ebb4;
+  --md-accent-fg-color--transparent: rgba(125, 220, 146, 0.12);
+  --md-accent-bg-color: #0b1f12;
+  --md-accent-bg-color--light: rgba(11, 31, 18, 0.7);
+  --md-typeset-color: #e7ece8;
+  --md-typeset-a-color: #7ddc92;
+  --md-code-bg-color: #1a201d;
+  --md-code-fg-color: #d4dbd6;
+  /* Inline code as a chip: tint 1.16:1 and edge 1.83:1 on the canvas; the
+   * code text holds 9.5:1 on the chip at its lightest, on glass-2. */
+  --ak-code-chip-bg: rgba(214, 240, 220, 0.07);
+  --ak-code-chip-border: rgba(214, 240, 220, 0.22);
+  --md-footer-bg-color: #0b0e0c;
+  --md-footer-bg-color--dark: #080a09;
+  --md-footer-fg-color: #e7ece8;
+  --md-footer-fg-color--light: #b0bab3;
+  --md-footer-fg-color--lighter: #939e97;
+  --md-hue: 140;
+
+  --md-mermaid-edge-color: #939e97;
+  --md-mermaid-node-bg-color: rgba(125, 220, 146, 0.10);
+  --md-mermaid-node-fg-color: #e7ece8;
+  --md-mermaid-label-bg-color: #161b18;
+  --md-mermaid-label-fg-color: #e7ece8;
+  --md-mermaid-sequence-actor-bg-color: #161b18;
+  --md-mermaid-sequence-actor-fg-color: #e7ece8;
+  --md-mermaid-sequence-actor-border-color: rgba(125, 220, 146, 0.32);
+  --md-mermaid-sequence-actor-line-color: #6c7770;
+  --md-mermaid-sequence-actorman-bg-color: #161b18;
+  --md-mermaid-sequence-actorman-line-color: #939e97;
+  --md-mermaid-sequence-box-bg-color: rgba(125, 220, 146, 0.06);
+  --md-mermaid-sequence-box-fg-color: #e7ece8;
+  --md-mermaid-sequence-label-bg-color: #161b18;
+  --md-mermaid-sequence-label-fg-color: #e7ece8;
+  --md-mermaid-sequence-loop-bg-color: rgba(125, 220, 146, 0.05);
+  --md-mermaid-sequence-loop-fg-color: #e7ece8;
+  --md-mermaid-sequence-loop-border-color: rgba(125, 220, 146, 0.32);
+  --md-mermaid-sequence-message-fg-color: #e7ece8;
+  --md-mermaid-sequence-message-line-color: #939e97;
+  --md-mermaid-sequence-note-bg-color: #1d2320;
+  --md-mermaid-sequence-note-fg-color: #e7ece8;
+  --md-mermaid-sequence-note-border-color: rgba(214, 240, 220, 0.2);
+  --md-mermaid-sequence-number-bg-color: #7ddc92;
+  --md-mermaid-sequence-number-fg-color: #0b1f12;
+}

@@ -14,6 +14,7 @@ kind: reported
 - Status and superseding: a record is proposed while people are still deciding and accepted once they agree. If a later decision changes or reverses it, the old record is kept and marked deprecated or superseded with a pointer to its replacement; reversed decisions are not deleted, so the history stays.
 - Storage and style: records live in the project repository as plain-text or Markdown files in a documentation directory, one file per decision. The essay prefers full sentences to bullet points and wants each record written as a conversation with a future developer.
 - Experience report: the author says the format was used on several projects after August 2011, that developers who joined later valued the context, and that records kept in private repositories were easy for non-developers to read.
+- Re-opened 2026-10-14 (site sitting): confirmed against the post by Michael Nygard dated November 15, 2011, with one inference marked. Length: "The whole document should be one or two pages long." One decision: each ADR describes one significant decision for a specific project. Numbering: sequential and monotonic, and "Numbers will not be reused." Reversal: the old record is kept and marked superseded. The post does not state a rule against editing a record's text; "superseded rather than edited" is an inference from its keep-and-mark rule for reversed decisions. I read it through a summarising fetch, so apart from the two quotes the wording is paraphrase.
 
 ## Limits
 - A 2011 blog post by one practitioner, written for human readers. It says nothing about a model reading the records at the start of each session, or about a cap on how many records are active.
@@ -21,3 +22,5 @@ kind: reported
 
 ## Used in
 - research/synthesis/field-8.md
+- journal-ledger
+- docs/journal/posts/2026-10-10-the-ledger-that-ran-away.md

@@ -30,12 +30,16 @@ Decision records are the other half of the answer. An unrecorded decision invite
 
 ## Where the evidence stops
 
+<div class="ak-limits" markdown>
+
 - Self-Refine's gains and Huang's losses fit one pattern: a gain needs specific feedback or an outside signal. Self-Refine compares with one pass; Huang measures self-correction against one pass too, and uses equal-cost baselines only for debate.[^madaan][^huang]
 - The round limits in use are choices: 8 in Claude Code, 10 in one loop report, 4 in Self-Refine. The per-round figures come from three studies, each on its own benchmark; the coding one is Wang's.[^wang][^madaan][^huang] The loop reports are anecdote.
 
+</div>
+
 ## What this means for the agentik tools
 
-agentik-decisions' first design ties rulings that get re-cut to rulings with no consumer, and makes a named consumer the cure.[^decisionsr1] Its README says to ask the owner once, in one batch, and caps the ledger at 25 entries in force.[^decisionsreadme] The named-consumer rule is in no outside source, though the loops that did not end are on record. No source compares batching with asking as questions arise. The measured result: an interruption at a boundary is cheaper than a random one.[^iqbal] The ledger's compact entries and supersession rule match ADR practice; its cap has no source.[^nygard][^azure]
+agentik-decisions' first design ties rulings that get re-cut to rulings with no consumer, and makes a named consumer the cure.[^decisionsr1] Its README says to ask the owner once, in one batch, and caps the ledger at 25 entries in force.[^decisionsreadme] The named-consumer rule is in no outside source, though the loops that did not end are on record. No source compares batching with asking as questions arise. The measured result: an interruption at a boundary is cheaper than a random one.[^iqbal] The ledger's compact entries and supersession rule match ADR practice, and neither ADR source sets its cap.[^nygard][^azure] Since 2026-10-14 the repo's design records the cap as the owner's ruling, with no outside source for the number.[^d17]
 
 agentik-relay ships a read-only adversary agent.[^relayadversary] An outside signal beats self-correction. A ground-truth gate lifted accuracy where self-correction lowered it, and the survey finds reliable external feedback is what works.[^huang][^kamoi] No study compares a report-only agent with self-review, and a reviewer asked to find gaps will usually report some gaps.[^bestpractices]
 
@@ -43,11 +47,15 @@ In the relay, a sign-off is a check that must pass, and an unrun gate is never a
 
 ## Practices this evidence supports
 
-- Put sign-off in a check outside the reviewer, and cap the rounds. Measured and documented.[^huang][^hooks]
-- Block only on correctness; list nits once; demand a file and line. Documented and reported.[^codereview][^meridian]
-- Review in a fresh context, with a different model if you can. Documented and measured.[^bestpractices][^zhang]
-- Supersede decision entries; do not edit them. Documented and reported.[^azure][^nygard]
-- Ask the owner at a task boundary, not mid-task. Measured for people in the studies Iqbal and Bailey cite; conjecture for batching.[^iqbal]
+- Put sign-off in a check outside the reviewer, and cap the rounds. <span class="ev ev-measured">measured</span> and <span class="ev ev-documented">documented</span>.[^huang][^hooks]
+- Block only on correctness; list nits once; demand a file and line. <span class="ev ev-documented">documented</span> and <span class="ev ev-reported">reported</span>.[^codereview][^meridian]
+- Review in a fresh context, with a different model if you can. <span class="ev ev-documented">documented</span> and <span class="ev ev-measured">measured</span>.[^bestpractices][^zhang]
+- Supersede decision entries; do not edit them. <span class="ev ev-documented">documented</span> and <span class="ev ev-reported">reported</span>.[^azure][^nygard]
+- Ask the owner at a task boundary, not mid-task. <span class="ev ev-measured">measured</span> for people in the studies Iqbal and Bailey cite; <span class="ev ev-conjecture">conjecture</span> for batching.[^iqbal]
+
+## From the journal
+
+- [The ledger that ran away](../journal/posts/2026-10-10-the-ledger-that-ran-away.md): a decision ledger past 400 entries, and the cap, sign-off bar and levels that followed.
 
 ## Sources
 
@@ -70,8 +78,9 @@ In the relay, a sign-off is a check that must pass, and an unrun gate is never a
 [^aiwatch]: Issue reporter, "Review loop keeps adopting agents' suggested rewrites", bentleypark/aiwatch issue 1298, 31 August 2026, <https://github.com/bentleypark/aiwatch/issues/1298>.
 [^agentinfra]: Issue reporter, "Review loops never converge when the fix pass adds the text the reviewers read", daniel-ospina/agent-infra issue 1089, 15 September 2026, <https://github.com/daniel-ospina/agent-infra/issues/1089>.
 [^meridian]: Pull request author, "Review loop passes on no blocking findings; nits no longer spend fix rounds", meridianlabs-ai/agents pull request 58, 4 September 2026, <https://github.com/meridianlabs-ai/agents/pull/58>.
-[^decisionsreadme]: agentik-dev/agentik-decisions, "README.md", commit 80d59eb, <https://github.com/agentik-dev/agentik-decisions/blob/80d59eb/README.md>.
-[^decisionsr1]: agentik-dev/agentik-decisions, "history/design/decisions-r1.md", section 7, decision 4, commit 80d59eb, <https://github.com/agentik-dev/agentik-decisions/blob/80d59eb/history/design/decisions-r1.md>.
+[^decisionsreadme]: agentik-dev/agentik-decisions, "README.md", commit 569a120, <https://github.com/agentik-dev/agentik-decisions/blob/569a120/README.md>.
+[^decisionsr1]: agentik-dev/agentik-decisions, "history/design/decisions-r1.md", section 7, decision 4, commit 569a120, <https://github.com/agentik-dev/agentik-decisions/blob/569a120/history/design/decisions-r1.md>.
+[^d17]: agentik-dev/agentik-decisions, "design/d17-four-verbs.md", commit 569a120, <https://github.com/agentik-dev/agentik-decisions/blob/569a120/design/d17-four-verbs.md>.
 [^relayadversary]: agentik-dev/agentik-relay, "plugin/agents/adversary.md", commit a326550, <https://github.com/agentik-dev/agentik-relay/blob/a326550/plugin/agents/adversary.md>.
 [^commonsguide]: agentik-dev/agentik-commons, "GUIDE.md", section 5, commit e456f4b, <https://github.com/agentik-dev/agentik-commons/blob/e456f4b/GUIDE.md>.
 [^relaydesign]: agentik-dev/agentik-relay, "design/relay-r1.md", commit a326550, <https://github.com/agentik-dev/agentik-relay/blob/a326550/design/relay-r1.md>.

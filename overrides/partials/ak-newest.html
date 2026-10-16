@@ -1,0 +1,26 @@
+{#- The three newest journal entries, as glass cards. Empty when there are none.
+    The date line is one unit: no-break spaces keep "· 8 min read" whole. The
+    title and the text share one wrapper, one row of the cards' subgrid
+    (agentik-site.css), so the text follows its title directly. -#}
+{% set blog = config.plugins.get("material/blog") %}
+{% if blog and blog.blog and blog.blog.posts %}
+  <div class="ak-posts">
+    {% for post in blog.blog.posts[:3] %}
+      <article class="ak-door ak-post">
+        <p class="ak-post-meta">
+          <time datetime="{{ post.config.date.created.strftime('%Y-%m-%d') }}">{{ post.config.date.created | date }}</time>
+          {%- if post.config.readtime %}<span class="ak-post-time">&nbsp;·&nbsp;{{ post.config.readtime }}&nbsp;min read</span>{% endif %}
+        </p>
+        <div class="ak-post-body">
+          <h3><a href="{{ post.url | url }}">{{ post.title }}</a></h3>
+          {% if post.meta.description %}<p>{{ post.meta.description }}</p>{% endif %}
+        </div>
+        {% if post.categories %}
+          <p class="ak-door-go">
+            {% for category in post.categories %}<span class="ak-cat ak-cat-{{ category.title | lower | replace(' ', '-') }}">{{ category.title }}</span> {% endfor %}
+          </p>
+        {% endif %}
+      </article>
+    {% endfor %}
+  </div>
+{% endif %}

@@ -1,0 +1,9 @@
+# Draft outline: "Restart, don't compact" (journal entry, 2026-10-05)
+
+1. Problem: compaction lets the model choose what to keep; in an unattended run nobody reads the summary (conjecture framed as the design's reason; agentik-session-charter-respawn).
+2. Human example: Masicampo and Baumeister 2011, Study 1 distraction 3.00 unfulfilled, 1.77 plan, 1.82 control (1 to 7); Study 4 anagrams 9.55 plan against 6.55 goal (masicampo-baumeister-plan-making-2011; measured).
+3. Research: artifact trail lowest for every compressor, 2.19 to 2.45 of 5 (factory-evaluating-compression; measured); one cookbook compaction kept 3 of 3 high-level facts and 0 of 3 obscure values, one run (anthropic-cookbook-context-engineering; reported); Anthropic's harness carried state in an agent-written progress file and git (anthropic-effective-harnesses; reported); no controlled comparison (field/length-and-compaction.md).
+4. Approach: ruling of 2026-09-29 (s17 packet :22); exit rule (hooks.py:52-53); charter under 4,096 bytes, "move text out, never widen the ceiling" (SKILL.md:117); PreCompact blocks auto, passes typed /compact (mod-r1.md:78); the 2026-10-05 night, gaps 113, 181, 83 minutes, 6 h 17 min (respawn-r1.md:11); the launcher: fresh session id, cap 12 in 24 h, floor 600 s, settle 60 s (respawn-r1.md, RUNBOOK.md:297-320) (agentik-session-charter-respawn; our use).
+5. Does it work: one night by hand; 61 charters 1,606 to 3,993 bytes; none opens on RESPAWN; no restart count.
+6. Open: RESPAWN without the verb stalled at 309k of 400k (NICE_TO_HAVE.md:166); floor-held idle 47 minutes (:131-132); idle compaction against the rule (:89); a blocked auto compaction fails at the hard limit (mod-r1.md:78); the comparison is untested (conjecture).
+Links: field/length-and-compaction.md, tools/session.md.

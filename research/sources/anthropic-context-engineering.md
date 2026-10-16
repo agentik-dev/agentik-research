@@ -4,7 +4,7 @@ title: "Effective context engineering for AI agents"
 author: Prithvi Rajasekaran, Ethan Dixon, Carly Ryan, Jeremy Hadfield (Anthropic Applied AI team), with contributions from Rafi Ayub, Hannah Moran, Cal Rueb, Connor Jennings
 published: 2025-09-29
 accessed: 2026-10-14
-kind: documented
+kind: reported
 ---
 
 ## What it says
@@ -20,6 +20,7 @@ kind: documented
 - An engineering essay with no data of its own. The context-rot claim rests on needle-in-a-haystack studies the post names but does not cite by title.
 - Vendor guidance written around Anthropic's own products. Dated September 2025; model names and features have moved since.
 - The sibling repository's note on this post (agentik-respeak research) was used only for leads; this note is from a fresh open of the page.
+- Level settled as reported on 2026-10-14 (was documented): the post is a vendor engineering essay with no data or sample of its own, which the method page's levels call reported; anthropic-engineering-context-engineering-compaction, on the same address, already said reported.
 
 ## Used in
 - research/synthesis/field-1.md
