@@ -14,3 +14,5 @@ The prompts change documentation, comments and constants, not behaviour, unless 
 | agentik-commons and the organization profile | `FIX-agentik-commons.md` |
 
 The site's own record of each finding is in `docs/tools/<tool>.md` under "What part 1 says", and the sources are in `research/sources/` by slug.
+
+**Audit, 2026-10-16.** `AUDIT-2026-10-16.md` checks every item against each repo's main: of 67 items, 54 landed, 10 landed in part, 1 no longer applies and 2 asked for no fix; nothing is open. Each partial item is recorded in that repo's `NICE_TO_HAVE.md`.

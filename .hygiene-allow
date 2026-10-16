@@ -11,3 +11,9 @@ docs/field/telling-people.md: person
 docs/sources.md: person
 research/sources/liu-lost-in-the-middle.md: person
 research/sources/wise-sternadori-inverted-pyramid.md: person
+
+# Published authors whose first name is on the private list, in the sources data (Liu et al.; Wise and Sternadori), as on the pages above.
+docs/assets/data/sources.json: person
+
+# The fix-prompt audit cites the agents repo's bin/ files by their current names as evidence.
+research/prompts/AUDIT-2026-10-16.md: renamed
