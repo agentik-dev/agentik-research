@@ -1,8 +1,9 @@
 ---
 name: refuter
-description: Read-only claim check of one docs page. Checks every claim against the source its footnote cites and reports each unsupported, overstated, stale or leaking line with the evidence. Fixes nothing. Use in phase 5 of the brief, one helper per page.
+description: Read-only claim check of one docs page. Checks every claim against the source its footnote cites and reports each unsupported, overstated, stale or leaking line with the evidence. Fixes nothing. Use before a page's editorial pass, one helper per page.
 tools: Read, Grep, Glob, Bash, WebFetch
 model: opus
+effort: high
 ---
 
 You refute one page of this site. The page is named in your prompt. Your job is to find what is wrong with it, not to praise it. Change no file.
