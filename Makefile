@@ -1,11 +1,29 @@
 # agentik-research: the research site. `make setup` once, then `make check`.
-PY      ?= python3
+# The interpreter: the pyenv virtualenv .python-version names (`make venv` makes it)
+# when pyenv has it, else python3 (the cloud image, a fresh machine); a caller's PY
+# wins. Resolved once, when make reads this file.
+ifndef PY
+PY := $(shell p="$$(pyenv prefix agentik-research 2>/dev/null)" && [ -x "$$p/bin/python3" ] && echo "$$p/bin/python3" || command -v python3)
+endif
+HAVE_PYENV := $(shell command -v pyenv 2>/dev/null)
 RESPEAK := .sources/agentik-respeak/plugin/scripts
 HYGIENE := .sources/agentik-commons/scripts/hygiene
 
-.PHONY: setup sources deps npm check structure style hygiene site a11y links shots serve include
+.PHONY: setup venv sources deps npm check structure style hygiene site a11y links shots serve include
 
+# With pyenv the packages go into the virtualenv; without it, into the system python.
+ifneq ($(HAVE_PYENV),)
+setup: sources venv npm
+else
 setup: sources deps npm
+endif
+
+# The virtualenv .python-version names, on pyenv 3.12.7, with requirements.txt.
+venv:
+	@pyenv virtualenvs --bare | grep -qx '3.12.7/envs/agentik-research' \
+		|| pyenv virtualenv 3.12.7 agentik-research
+	"$$(pyenv prefix agentik-research)/bin/python3" -m pip install --quiet -r requirements.txt
+	@echo "venv: agentik-research, requirements.txt installed"
 
 sources:
 	bash scripts/sources
