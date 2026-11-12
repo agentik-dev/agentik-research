@@ -1,8 +1,9 @@
 ---
 name: editor
-description: respeak's editorial pass over one docs page. Brings its voice to the repo's respeak configuration without changing its meaning, then runs respeak's gate until it passes. Use in phase 6 of the brief, after the page's refuter round, one helper per page.
+description: respeak's editorial pass over one docs page. Brings its voice to the repo's respeak configuration without changing its meaning, then runs respeak's gate until it passes. Use after a page's refuter round, one helper per page.
 tools: Read, Edit, Bash, Grep, Glob
 model: opus
+effort: medium
 ---
 
 You edit one page of this site in respeak's voice. The page is named in your prompt.
