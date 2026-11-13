@@ -6,6 +6,9 @@ ifndef PY
 PY := $(shell p="$$(pyenv prefix agentik-research 2>/dev/null)" && [ -x "$$p/bin/python3" ] && echo "$$p/bin/python3" || command -v python3)
 endif
 HAVE_PYENV := $(shell command -v pyenv 2>/dev/null)
+# The browser steps skip, with a line saying so, where node_modules is absent and CI is
+# unset or empty; in CI, or with node_modules present, they run, so a missing install is red.
+node_run = if [ ! -d node_modules ] && [ -z "$$CI" ]; then echo "$@: skipped, node_modules absent (run make npm)"; else node $(1); fi
 RESPEAK := .sources/agentik-respeak/plugin/scripts
 HYGIENE := .sources/agentik-commons/scripts/hygiene
 
@@ -53,12 +56,12 @@ site:
 
 # axe on every page, light and dark; fails on a serious or critical violation.
 a11y:
-	node scripts/a11y.mjs
+	@$(call node_run,scripts/a11y.mjs)
 
 # linkinator over site/; fails on a broken internal link, lists external
 # failures in .cache/links.txt. LINKS_EXTERNAL=0 skips the external links.
 links:
-	node scripts/links.mjs
+	@$(call node_run,scripts/links.mjs)
 
 # Every page at 390, 768, 1280 and 1680 px, light and dark, into .cache/shots/.
 # PAGES=index,journal/ WIDTHS=390 SCHEMES=dark narrow a run. Needs `make site`.

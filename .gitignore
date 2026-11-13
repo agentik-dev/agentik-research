@@ -6,3 +6,4 @@ __pycache__/
 .claude/respeak/config.local.yaml
 .claude/settings.local.json
 node_modules/
+.claude/worktrees/
