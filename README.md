@@ -16,7 +16,7 @@ make serve   # http://127.0.0.1:8000
 make shots   # every page at 390, 768, 1280 and 1680 px, light and dark, into .cache/shots/
 ```
 
-`make setup` links an attached checkout of each agentik-dev repository under `.sources/`, or clones it shallow from GitHub, and installs the packages `requirements.txt` and `package.json` pin. Where pyenv is installed, `make venv` creates the virtualenv `agentik-research` on Python 3.12.7 and installs the Python packages into it, `make setup` runs it, and every target uses its python; elsewhere they use `python3`, and `PY=<path>` overrides either. The a11y, links and shots checks need Chromium for Playwright: `npx playwright install chromium` fetches it, and on a machine that has one already, `CHROMIUM=<path>` points at it. `make check` must pass before a push, and the pull request workflow runs it.
+`make setup` links an attached checkout of each agentik-dev repository under `.sources/`, or clones it shallow from GitHub, and installs the packages `requirements.txt` and `package.json` pin. Where pyenv is installed, `make venv` creates the virtualenv `agentik-site` on Python 3.12.7 and installs the Python packages into it, `make setup` runs it, and every target uses its python; elsewhere they use `python3`, and `PY=<path>` overrides either. The a11y, links and shots checks need Chromium for Playwright: `npx playwright install chromium` fetches it, and on a machine that has one already, `CHROMIUM=<path>` points at it. `make check` must pass before a push, and the pull request workflow runs it.
 
 `.github/workflows/pages.yml` builds the site with `mkdocs build --strict` and deploys it with `actions/deploy-pages` on every push to `main`.
 
