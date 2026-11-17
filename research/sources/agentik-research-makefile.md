@@ -1,5 +1,5 @@
 ---
-repo: agentik-dev/agentik-research
+repo: agentik-dev/agentik-site
 path: Makefile, .claude/respeak/config.yaml
 commit: 11ffca6
 title: "agentik-research Makefile"

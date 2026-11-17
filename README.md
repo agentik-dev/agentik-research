@@ -1,6 +1,6 @@
-# agentik-research
+# agentik-site
 
-A public research site on long-running and multi-agent Claude Code work, and on why the agentik tools exist. Once the owner turns on GitHub Pages it lives at <https://agentik-dev.github.io/agentik-research/>.
+A public research site on long-running and multi-agent Claude Code work, and on why the agentik tools exist. Once the owner turns on GitHub Pages it lives at <https://agentik-dev.github.io/agentik-site/>.
 
 The site answers three questions. What goes wrong when a Claude Code session runs for hours or days, or when many run unattended, and what the evidence says helps. Why each agentik tool exists: the problem, a human example, the design, the evidence, and what is still unproven. And which practices follow, each tied to its evidence and to the tool that automates it, if one does. A journal of dated entries tells what the owner tried, what worked, what did not, and what changed because of it.
 

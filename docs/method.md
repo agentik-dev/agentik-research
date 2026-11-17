@@ -88,16 +88,16 @@ This section gives the record as of commit 5c75210, on 2026-10-14.[^log]
 
 ## Sources
 
-[^brief]: agentik-dev/agentik-research, "history/sessions/PROMPT-2026-10-13-cloud-research.md", the research sitting's brief, commit b33bd13, <https://github.com/agentik-dev/agentik-research/blob/b33bd13/history/sessions/PROMPT-2026-10-13-cloud-research.md>.
-[^sitebrief]: agentik-dev/agentik-research, "history/sessions/PROMPT-2026-10-14-cloud-site.md", the site sitting's brief, commit b33bd13, <https://github.com/agentik-dev/agentik-research/blob/b33bd13/history/sessions/PROMPT-2026-10-14-cloud-site.md>.
-[^charter]: agentik-dev/agentik-research, "history/sittings/2026-10-13-1-research.md", the research sitting's charter, commit b33bd13, <https://github.com/agentik-dev/agentik-research/blob/b33bd13/history/sittings/2026-10-13-1-research.md>.
-[^sitecharter]: agentik-dev/agentik-research, "history/sittings/2026-10-14-1-research.md", the site sitting's charter, commit 0b9f4c7, <https://github.com/agentik-dev/agentik-research/blob/0b9f4c7/history/sittings/2026-10-14-1-research.md>.
-[^log]: agentik-dev/agentik-research, the commit history from 9663532 to 5c75210, read 2026-10-14, <https://github.com/agentik-dev/agentik-research/commits/5c75210>.
-[^critics]: agentik-dev/agentik-research, "research/synthesis/critic-round-1.md" and "research/synthesis/critic-round-2.md", the critics' reports, commit 5c75210, <https://github.com/agentik-dev/agentik-research/tree/5c75210/research/synthesis>.
+[^brief]: agentik-dev/agentik-site, "history/sessions/PROMPT-2026-10-13-cloud-research.md", the research sitting's brief, commit b33bd13, <https://github.com/agentik-dev/agentik-site/blob/b33bd13/history/sessions/PROMPT-2026-10-13-cloud-research.md>.
+[^sitebrief]: agentik-dev/agentik-site, "history/sessions/PROMPT-2026-10-14-cloud-site.md", the site sitting's brief, commit b33bd13, <https://github.com/agentik-dev/agentik-site/blob/b33bd13/history/sessions/PROMPT-2026-10-14-cloud-site.md>.
+[^charter]: agentik-dev/agentik-site, "history/sittings/2026-10-13-1-research.md", the research sitting's charter, commit b33bd13, <https://github.com/agentik-dev/agentik-site/blob/b33bd13/history/sittings/2026-10-13-1-research.md>.
+[^sitecharter]: agentik-dev/agentik-site, "history/sittings/2026-10-14-1-research.md", the site sitting's charter, commit 0b9f4c7, <https://github.com/agentik-dev/agentik-site/blob/0b9f4c7/history/sittings/2026-10-14-1-research.md>.
+[^log]: agentik-dev/agentik-site, the commit history from 9663532 to 5c75210, read 2026-10-14, <https://github.com/agentik-dev/agentik-site/commits/5c75210>.
+[^critics]: agentik-dev/agentik-site, "research/synthesis/critic-round-1.md" and "research/synthesis/critic-round-2.md", the critics' reports, commit 5c75210, <https://github.com/agentik-dev/agentik-site/tree/5c75210/research/synthesis>.
 [^profile]: agentik-dev, ".github/profile/README.md", commit 8a0a188, <https://github.com/agentik-dev/.github/blob/8a0a188/profile/README.md>.
 [^changelog]: Anthropic, "Claude Code changelog", documentation page read 2026-10-14, <https://code.claude.com/docs/en/changelog>.
 [^issue46829]: Issue reporter, "Cache TTL silently regressed from 1h to 5m around early March 2026, causing quota and cost inflation", anthropics/claude-code issue 46829, 12 April 2026, <https://github.com/anthropics/claude-code/issues/46829>.
 [^chroma]: Kelly Hong, Anton Troynikov and Jeff Huber, Chroma Research, "Context Rot: How Increasing Input Tokens Impacts LLM Performance", July 2025, <https://www.trychroma.com/research/context-rot>.
 [^ifscale]: Jaroslawicz et al., "How Many Instructions Can LLMs Follow at Once?", July 2025, <https://arxiv.org/abs/2507.11538>.
-[^notes]: agentik-dev/agentik-research, "research/sources/", the research sitting's source notes, commit 2c11bbd, <https://github.com/agentik-dev/agentik-research/tree/2c11bbd/research/sources>.
-[^check]: agentik-dev/agentik-research, "scripts/check" and "Makefile", commit b33bd13, <https://github.com/agentik-dev/agentik-research/blob/b33bd13/scripts/check>.
+[^notes]: agentik-dev/agentik-site, "research/sources/", the research sitting's source notes, commit 2c11bbd, <https://github.com/agentik-dev/agentik-site/tree/2c11bbd/research/sources>.
+[^check]: agentik-dev/agentik-site, "scripts/check" and "Makefile", commit b33bd13, <https://github.com/agentik-dev/agentik-site/blob/b33bd13/scripts/check>.

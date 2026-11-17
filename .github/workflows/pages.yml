@@ -1,6 +1,6 @@
 name: pages
 # Build the site with `mkdocs build --strict` and deploy it to GitHub Pages
-# (https://agentik-dev.github.io/agentik-research/) on every push to main.
+# (https://agentik-dev.github.io/agentik-site/) on every push to main.
 # The owner turns Pages on, with GitHub Actions as its source, in the
 # repository's settings; until then the deploy job fails and nothing is served.
 on:

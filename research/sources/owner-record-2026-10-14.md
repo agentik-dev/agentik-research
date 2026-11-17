@@ -1,5 +1,5 @@
 ---
-repo: agentik-dev/agentik-research
+repo: agentik-dev/agentik-site
 path: history/sessions/PROMPT-2026-10-14-cloud-site.md
 commit: 576aaa1
 title: "The site sitting's brief, section \"The owner's record\""

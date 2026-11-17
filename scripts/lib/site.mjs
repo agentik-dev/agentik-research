@@ -8,7 +8,7 @@ export const ROOT = resolve(new URL('../..', import.meta.url).pathname);
 export const SITE = join(ROOT, 'site');
 export const CACHE = join(ROOT, '.cache');
 // The path GitHub Pages serves the site under (mkdocs.yml site_url).
-export const PREFIX = '/agentik-research/';
+export const PREFIX = '/agentik-site/';
 export const SITE_URL = 'https://agentik-dev.github.io' + PREFIX;
 
 const TYPES = {
@@ -18,7 +18,7 @@ const TYPES = {
   '.txt': 'text/plain; charset=utf-8', '.webmanifest': 'application/manifest+json',
 };
 
-// Serve site/ at http://127.0.0.1:<port>/agentik-research/, with site/404.html
+// Serve site/ at http://127.0.0.1:<port>/agentik-site/, with site/404.html
 // for a missing path, as GitHub Pages does. Resolves to { url, close }.
 export function serve() {
   if (!existsSync(join(SITE, 'index.html'))) {

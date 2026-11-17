@@ -1,9 +1,9 @@
 site_name: Long-running Claude Code
-site_url: https://agentik-dev.github.io/agentik-research/
+site_url: https://agentik-dev.github.io/agentik-site/
 site_description: Research on long-running and multi-agent Claude Code sessions, and why the agentik tools exist.
 site_author: agentik-dev
-repo_url: https://github.com/agentik-dev/agentik-research
-repo_name: agentik-dev/agentik-research
+repo_url: https://github.com/agentik-dev/agentik-site
+repo_name: agentik-dev/agentik-site
 edit_uri: ""
 # The footer's line, raw HTML in the theme's copyright partial: it also carries the
 # one link from every page back to the suite's own page.
@@ -63,7 +63,7 @@ extra:
       link: https://github.com/agentik-dev
       name: agentik-dev on GitHub
     - icon: material/rss
-      link: https://agentik-dev.github.io/agentik-research/feed_rss_created.xml
+      link: https://agentik-dev.github.io/agentik-site/feed_rss_created.xml
       name: The journal's RSS feed
 
 plugins:

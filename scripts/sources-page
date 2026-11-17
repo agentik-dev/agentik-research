@@ -271,7 +271,7 @@ unmatched = []  # (page, footnote key, the address it cites, whether it cites an
 for rel, (_, fns) in pages.items():
     for f in fns:
         urls = re.findall(r"<([^>\s]+)>", f["raw"]) + re.findall(r"\]\(([^)\s]+)\)", f["raw"])
-        if all(norm(u).startswith("github.com/agentik-dev/agentik-research/tree/main/research/sources") for u in urls): continue
+        if all(norm(u).startswith("github.com/agentik-dev/agentik-site/tree/main/research/sources") for u in urls): continue
         ours = [i for i in f["items"] if i[1].startswith("agentik-dev/")]
         if ours: ok = all(any(covers(e, i) for e in entries.values() if "url" not in e["d"]) for i in ours)
         else: ok = any(cites(e, f) for e in entries.values())
@@ -360,7 +360,7 @@ out.append("</div>")
 out.append("")
 out.append("## Sources")
 out.append("")
-out.append("[^notes]: agentik-dev/agentik-research, \"research/sources/\", the source notes in this site's repository, <https://github.com/agentik-dev/agentik-research/tree/main/research/sources>.")
+out.append("[^notes]: agentik-dev/agentik-site, \"research/sources/\", the source notes in this site's repository, <https://github.com/agentik-dev/agentik-site/tree/main/research/sources>.")
 open("docs/sources.md", "w", encoding="utf-8").write("\n".join(out) + "\n")
 
 os.makedirs("docs/assets/data", exist_ok=True)
