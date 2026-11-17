@@ -1,7 +1,7 @@
 ---
 repo: agentik-dev/agentik-research
 path: history/sessions/PROMPT-2026-10-14-cloud-site.md
-commit: 25e72df
+commit: 576aaa1
 title: "The site sitting's brief, section \"The owner's record\""
 author: agentik-dev (the owner's facts, written into the brief)
 published: 2026-10-14

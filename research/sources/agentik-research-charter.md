@@ -1,7 +1,7 @@
 ---
 repo: agentik-dev/agentik-research
 path: history/sittings/2026-10-13-1-research.md
-commit: 6b5e5b0
+commit: b33bd13
 title: "The charter of sitting 2026-10-13-1"
 author: agentik-dev
 published: 2026-10-14
@@ -9,7 +9,7 @@ accessed: 2026-10-14
 kind: our-use
 ---
 
-Read whole at 6b5e5b0, its final state (last changed in 5f8ca0a, "phase 7: README layout rows, charter done").
+Read whole at b33bd13, its final state (last changed in 983d5b3, "phase 7: README layout rows, charter done").
 
 ## What it says
 - The sitting's charter: the source commits linked in phase 0, what each phase finished and when, and the next act.
@@ -27,7 +27,7 @@ Read whole at 6b5e5b0, its final state (last changed in 5f8ca0a, "phase 7: READM
 - Line 28, Next act: "Done: the owner reviews the pull request."
 
 ## Limits
-- The charter is the session's own record. It says round 1's findings were "committed per page"; the commit log shows the first round-1 commit, 6060f64, also holds the phase 1 to 4 work (note agentik-research-git-log).
+- The charter is the session's own record. It says round 1's findings were "committed per page"; the commit log shows the first round-1 commit, 372539c, also holds the phase 1 to 4 work (note agentik-research-git-log).
 
 ## How this site uses it
 - The method page cites it for the source commits and the phase record of the research sitting.

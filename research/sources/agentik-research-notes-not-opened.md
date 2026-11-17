@@ -1,7 +1,7 @@
 ---
 repo: agentik-dev/agentik-research
 path: research/sources/
-commit: 1f1c37a
+commit: 2c11bbd
 title: "The research sitting's source notes: the records of pages not opened"
 author: agentik-dev
 published: 2026-10-14
@@ -9,11 +9,11 @@ accessed: 2026-10-14
 kind: our-use
 ---
 
-Read with a grep over the notes at 1f1c37a ("refute round 2: practices"), then each matching line in its note. The command:
+Read with a grep over the notes at 2c11bbd ("refute round 2: practices"), then each matching line in its note. The command:
 
-`git grep -l -i -E "not opened|did not open|could not (be )?(read|open)|returned (HTTP )?4[0-9][0-9]" 1f1c37a -- research/sources/`
+`git grep -l -i -E "not opened|did not open|could not (be )?(read|open)|returned (HTTP )?4[0-9][0-9]" 2c11bbd -- research/sources/`
 
-It matches 32 notes at 1f1c37a, and the same 32 at 5f8ca0a, the research sitting's last commit.
+It matches 32 notes at 2c11bbd, and the same 32 at 983d5b3, the research sitting's last commit.
 
 ## What it says
 - One match is not about a page: kodam-80b-local-claude-code.md line 13 says a tool's background calls "returned HTTP 404" because the model does not exist in Ollama.

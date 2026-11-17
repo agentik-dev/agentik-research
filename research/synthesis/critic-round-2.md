@@ -1,6 +1,6 @@
 # Critic round 2 (phase 6, the last), the reports
 
-Machine lane. Read from the shots of commit 744382e in `.cache/wt2/.cache/shots/`. The last polish fixer works from this file; no third critic round follows.
+Machine lane. Read from the shots of commit 7c519a1 in `.cache/wt2/.cache/shots/`. The last polish fixer works from this file; no third critic round follows.
 
 ## Home and summary: PASS
 

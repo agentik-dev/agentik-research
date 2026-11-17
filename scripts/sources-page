@@ -182,7 +182,7 @@ for e in entries.values():
     # A note's `commit:` may list several commits (a note on the whole organization, one per repository); a history
     # read over a range ("the commits fabb212..569a120", "from 89c69a8 to e8477a7") covers the range's end too.
     e["commits"] = SHA.findall(d.get("commit", "").lower()) + [b or y for _, b, _, y in RANGE.findall(d.get("path", "").lower())]
-    # Each path with the commits it was read at: the note's, or the one the field gives for it ("mkdocs.yml at 49fcc10").
+    # Each path with the commits it was read at: the note's, or the one the field gives for it ("mkdocs.yml at 8f77e45").
     at = {re.sub(r":\d[\d-]*$", "", t).rstrip(".:"): c for t, c in re.findall(r"(\S+) at ([0-9a-f]{7,40})\b", d.get("path", ""))}
     e["read"] = [(n, [at[n]] if n in at else e["commits"]) for n in paths_in(d.get("path", ""))]
     e["history"] = reads_history(d.get("path", ""))
