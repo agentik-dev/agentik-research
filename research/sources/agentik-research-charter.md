@@ -1,5 +1,5 @@
 ---
-repo: agentik-dev/agentik-research
+repo: agentik-dev/agentik-site
 path: history/sittings/2026-10-13-1-research.md
 commit: b33bd13
 title: "The charter of sitting 2026-10-13-1"

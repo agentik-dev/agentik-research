@@ -1,5 +1,5 @@
 ---
-repo: agentik-dev/agentik-research
+repo: agentik-dev/agentik-site
 path: research/sources/
 commit: 2c11bbd
 title: "The research sitting's source notes: the records of pages not opened"

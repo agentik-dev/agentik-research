@@ -1,5 +1,5 @@
 ---
-repo: agentik-dev/agentik-research
+repo: agentik-dev/agentik-site
 path: history/sessions/PROMPT-2026-10-14-cloud-site.md
 commit: b33bd13
 title: "The brief for the site sitting"

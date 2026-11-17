@@ -1,5 +1,5 @@
 ---
-repo: agentik-dev/agentik-research
+repo: agentik-dev/agentik-site
 path: the commit history from 9663532 to 5c75210; research/synthesis/critic-round-1.md and research/synthesis/critic-round-2.md (git log with dates, git show --stat per commit, git show of the charters at 3ea8756, db0f856 and 7676b3e, of mkdocs.yml at 8f77e45 and requirements.txt at b2845c8, git ls-tree of research/sources/ at 372539c)
 commit: 5c75210
 title: "The commit history of agentik-research to 5c75210"

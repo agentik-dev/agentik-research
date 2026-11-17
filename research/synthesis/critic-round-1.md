@@ -12,7 +12,7 @@ Machine lane. The critics' reports, verbatim, read from the shots of commit 3a09
 6. 1280/1680, index. Three different right edges: the hero and doors run full width, the findings cards stop at measure+8rem (line 274), and the prose stops at the measure.
 7. Copy. Two sentences read badly on first pass: "No independent study found measures" (docs/index.md:56) and "first review found numbers two repositories stated wrongly" (docs/index.md:81). The tool count disagrees: the home page says "five tools and a front door" (docs/index.md:33), the summary says "six agentik tools" (docs/summary.md:3). The Part 3 counts at docs/summary.md:37 are hard to follow.
 8. 390. Bad line breaks in "2026-10-/14", "4/KB" and `stream-/json`.
-9. Links and axe. No broken internal links. The repository link https://github.com/agentik-dev/agentik-research returns 404 on all three pages (the repo is private until the owner publishes it), and so does the summary's blob/576aaa1 link. Axe finds nothing on index, summary or 404 in light or dark.
+9. Links and axe. No broken internal links. The repository link https://github.com/agentik-dev/agentik-site returns 404 on all three pages (the repo is private until the owner publishes it), and so does the summary's blob/576aaa1 link. Axe finds nothing on index, summary or 404 in light or dark.
 
 ## Journal (index, six entries, archive, categories): FAIL
 

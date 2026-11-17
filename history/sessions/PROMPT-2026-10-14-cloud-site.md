@@ -15,7 +15,7 @@ The first sitting (`PROMPT-2026-10-13-cloud-research.md`, merged as pull request
 1. **The look.** Rebuild the site on the owner's glass design system, vendored in `docs/assets/glass/`, with a new skin of its own. It must look as finished as a good product's documentation, in light and dark, from a phone to a wide screen.
 2. **The stories.** Add a journal of dated narratives: what the owner tried, what worked, what did not, and what changed because of it. The site is an evolving exploration. The journal is where it evolves, and each new lesson becomes a new entry.
 3. **The shape.** Rewrite the home page, the summary and each tool page in the shape of respeak's README (see "The story shape"), so a reader meets the problem and a human example before the mechanism.
-4. **The publish.** Build and deploy to GitHub Pages at `https://agentik-dev.github.io/agentik-research/` from a workflow on `main`.
+4. **The publish.** Build and deploy to GitHub Pages at `https://agentik-dev.github.io/agentik-site/` from a workflow on `main`.
 
 The reader is the same: an engineer who uses Claude Code and has not seen these tools. The citations, the evidence levels and the honesty about limits stay. Polish never buys a claim its source does not make.
 

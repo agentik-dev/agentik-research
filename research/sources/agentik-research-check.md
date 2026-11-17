@@ -1,5 +1,5 @@
 ---
-repo: agentik-dev/agentik-research
+repo: agentik-dev/agentik-site
 path: scripts/check, Makefile, .claude/respeak/config.yaml
 commit: b33bd13
 title: "The site's structural check and its Makefile"
