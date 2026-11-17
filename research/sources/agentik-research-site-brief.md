@@ -1,7 +1,7 @@
 ---
 repo: agentik-dev/agentik-research
 path: history/sessions/PROMPT-2026-10-14-cloud-site.md
-commit: 6b5e5b0
+commit: b33bd13
 title: "The brief for the site sitting"
 author: agentik-dev
 published: 2026-10-14
@@ -9,7 +9,7 @@ accessed: 2026-10-14
 kind: our-use
 ---
 
-Read whole at 6b5e5b0; the file is unchanged since 25e72df, the commit that added it (`git diff --stat 25e72df 6b5e5b0` on the path is empty). The section "The owner's record" has its own note, owner-record-2026-10-14.
+Read whole at b33bd13; the file is unchanged since 576aaa1, the commit that added it (`git diff --stat 576aaa1 b33bd13` on the path is empty). The section "The owner's record" has its own note, owner-record-2026-10-14.
 
 ## What it says
 - Line 13: the first sitting (`PROMPT-2026-10-13-cloud-research.md`) was "merged as pull request #1" and wrote twenty cited pages.

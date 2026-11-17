@@ -1,7 +1,7 @@
 ---
 repo: agentik-dev/agentik-research
 path: history/sessions/PROMPT-2026-10-13-cloud-research.md
-commit: 6b5e5b0
+commit: b33bd13
 title: "The brief for the research site"
 author: agentik-dev
 published: 2026-10-13
@@ -9,7 +9,7 @@ accessed: 2026-10-14
 kind: our-use
 ---
 
-Read at 6b5e5b0; the file is byte-identical to its first commit, 4703b79 (`git diff 4703b79 6b5e5b0` on the path is empty). Lines read: 13-30, 46-48, 87-114, 125-143.
+Read at b33bd13; the file is byte-identical to its first commit, 4703b79 (`git diff 4703b79 b33bd13` on the path is empty). Lines read: 13-30, 46-48, 87-114, 125-143.
 
 ## What it says
 - The owner's brief for this site: three parts (the field, the tools, the practices), phases 0 to 7, the helper types, the evidence levels, the footnote rule, and the limits on private names.

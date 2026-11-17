@@ -84,7 +84,7 @@ And once, a cap blocked the owner's own answers. Two sittings each opened four q
 
 ## Sources
 
-[^record]: agentik-dev/agentik-research, "history/sessions/PROMPT-2026-10-14-cloud-site.md", section "The owner's record", commit 25e72df, <https://github.com/agentik-dev/agentik-research/blob/25e72df/history/sessions/PROMPT-2026-10-14-cloud-site.md>.
+[^record]: agentik-dev/agentik-research, "history/sessions/PROMPT-2026-10-14-cloud-site.md", section "The owner's record", commit 576aaa1, <https://github.com/agentik-dev/agentik-research/blob/576aaa1/history/sessions/PROMPT-2026-10-14-cloud-site.md>.
 [^esi]: Nicki Gilboy, Paula Tanabe, Debbie Travers and Alexander M. Rosenau, "Emergency Severity Index (ESI): A Triage Tool for Emergency Department Care, Version 4, Implementation Handbook, 2012 Edition", Agency for Healthcare Research and Quality, November 2011, <https://www.govinfo.gov/content/pkg/GOVPUB-HE20_6500-PURL-gpo23161/pdf/GOVPUB-HE20_6500-PURL-gpo23161.pdf>.
 [^ifscale]: Daniel Jaroslawicz et al., "How Many Instructions Can LLMs Follow at Once?", July 2025, <https://arxiv.org/abs/2507.11538>.
 [^wang]: Ruoyu Wang et al., "SWE-Review: Closing the Loop on Issue Resolution with Agentic Code Review", July 2026, <https://arxiv.org/abs/2607.06065>.

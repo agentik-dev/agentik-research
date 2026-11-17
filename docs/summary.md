@@ -108,6 +108,6 @@ Two Claude Code cloud sessions with helper agents researched and wrote this site
 [^respeakchangelog]: agentik-dev/agentik-respeak, "CHANGELOG.md", commit c83e9b8, <https://github.com/agentik-dev/agentik-respeak/blob/c83e9b8/CHANGELOG.md>.
 [^agentsreadme]: agentik-dev/agentik-agents, "README.md", commit 78ce312, <https://github.com/agentik-dev/agentik-agents/blob/78ce312/README.md>.
 [^commonsrecord]: agentik-dev/agentik-commons, "design/agentik-r1.md", commit e456f4b, <https://github.com/agentik-dev/agentik-commons/blob/e456f4b/design/agentik-r1.md>.
-[^record]: agentik-dev/agentik-research, "history/sessions/PROMPT-2026-10-14-cloud-site.md", section "The owner's record", commit 25e72df, <https://github.com/agentik-dev/agentik-research/blob/25e72df/history/sessions/PROMPT-2026-10-14-cloud-site.md>.
+[^record]: agentik-dev/agentik-research, "history/sessions/PROMPT-2026-10-14-cloud-site.md", section "The owner's record", commit 576aaa1, <https://github.com/agentik-dev/agentik-research/blob/576aaa1/history/sessions/PROMPT-2026-10-14-cloud-site.md>.
 [^s21]: agentik-dev/agentik-session, "design/packets/s21-priority-default.md", commit 89c69a8, <https://github.com/agentik-dev/agentik-session/blob/89c69a8/design/packets/s21-priority-default.md>.
 [^reason]: James Reason, "Human error: models and management", BMJ 320(7237):768-770, 18 March 2000, <https://pmc.ncbi.nlm.nih.gov/articles/PMC1117770/>.
