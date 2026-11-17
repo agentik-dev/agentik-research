@@ -1,7 +1,7 @@
 {
-  "name": "agentik-research",
+  "name": "agentik-site",
   "private": true,
-  "description": "Checks for the agentik-research site: screenshots, accessibility and links.",
+  "description": "Checks for agentik-site: screenshots, accessibility and links.",
   "license": "MIT",
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",
