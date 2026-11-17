@@ -1,4 +1,4 @@
-# agentik-research
+# agentik-site
 
 The public research site on long-running Claude Code sessions and the agentik tools. Work arrives as packets from the suite's management repo.
 

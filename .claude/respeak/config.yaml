@@ -1,4 +1,4 @@
-# respeak project configuration for agentik-research (seeded 2026-10-13).
+# respeak project configuration for agentik-site (seeded 2026-10-13).
 #
 # One layer of respeak's stack: it overrides the plugin defaults and the user
 # file, and is overridden by .claude/respeak/config.local.yaml (gitignored) and
