@@ -5,7 +5,9 @@ site_author: agentik-dev
 repo_url: https://github.com/agentik-dev/agentik-research
 repo_name: agentik-dev/agentik-research
 edit_uri: ""
-copyright: The agentik-dev contributors. MIT licence; see the repository's LICENSE.
+# The footer's line, raw HTML in the theme's copyright partial: it also carries the
+# one link from every page back to the suite's own page.
+copyright: 'Part of <a href="https://agentik-dev.github.io/">the agentik suite</a>. The agentik-dev contributors. MIT licence; see the repository''s LICENSE.'
 
 theme:
   name: material
